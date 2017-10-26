@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.0.52" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_TBRC_Meth_20140530_122209</name>
+    <date>2014-05-30T12:22:09.945-05:00</date>
+    <depositAgent>01814776</depositAgent>
+    <contactInfo>
+        <successEmail>devs@tbrc.org</successEmail>
+        <failureEmail>devs@tbrc.org</failureEmail>
+        <successMethod>email</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="20b96a8fe8cd7224eb636f69d3617fdc">TBRC_MethObj/descriptor.xml</object>
+    </add>
+</batch>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="document">
+    <directory name="TBRC_Sample_Donor_Agreement_object">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="accessFlag" value="P"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="FHCL"/>
+        </metadataCategory>
+        <metadataCategory name="documentObjectMetadata">
+            <property name="role" value="DOCUMENTATION"/>
+            <property name="role" value="DONOR_AGREEMENT"/>
+        </metadataCategory>
+        <directory name="document">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="HIGHUSE"/>
+            </metadataCategory>
+            <metadataCategory name="documentFileMetadata">
+                <property name="role" value="ARCHIVAL_MASTER"/>
+                <property name="role" value="PRODUCTION_MASTER"/>
+                <property name="role" value="DELIVERABLE"/>
+                <property name="role" value="DOCUMENTATION"/>
+                <property name="role" value="LICENSE"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>

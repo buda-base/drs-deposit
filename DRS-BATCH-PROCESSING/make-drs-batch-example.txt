@@ -1,0 +1,4 @@
+time ./make-drs-batch.sh HARVARD-DRS-TESTS/batch006.txt BB_tbrc2drs testProj201406241217 /image BatchBuilder-2.0.58
+
+
+time ./make-drs-batch.sh HARVARD-DRS-TESTS/batch006.txt BB_tbrc2drs testProj201502171519 /Volumes/TBRC_ARCHIVE_20120813   BatchBuilder-2.0.58

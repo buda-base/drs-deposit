@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.0.58" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_batchW30339-1_20150217_143409</name>
+    <date>2015-02-17T14:34:09.168-06:00</date>
+    <depositAgent>01814776</depositAgent>
+    <contactInfo>
+        <successEmail>devs@tbrc.org</successEmail>
+        <failureEmail>devs@tbrc.org</failureEmail>
+        <successMethod>dropbox</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="d85d0a0b2e0b4c065223fdb5124b7bc3">W30339-6080/descriptor.xml</object>
+    </add>
+</batch>

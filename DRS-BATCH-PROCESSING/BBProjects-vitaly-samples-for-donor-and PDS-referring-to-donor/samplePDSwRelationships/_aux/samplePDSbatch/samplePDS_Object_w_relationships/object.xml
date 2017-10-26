@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="pds document">
+    <directory name="samplePDS_Object_w_relationships">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="accessFlag" value="P"/>
+            <property name="has_methodology" value="Methodology object URN here"/>
+            <property name="has_documentation" value="Project Documentation Object URN here"/>
+            <property name="has_documentation" value="sample object urn: urn-3:HUL.DRS.OBJECT:404525"/>
+            <property name="has_methodology" value="sample object urn: urn-3:HUL.DRS.OBJECT:404525"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.OIS"/>
+        </metadataCategory>
+        <metadataCategory name="importMetadata">
+            <property name="alephID" value="123456789"/>
+        </metadataCategory>
+        <metadataCategory name="otherRightsMetadata">
+            <property name="license" value="donor agreement object URN here"/>
+            <property name="license" value="Rights statement object URN here"/>
+            <property name="license" value="sample object URN: urn-3:HUL.DRS.OBJECT:404525"/>
+        </metadataCategory>
+        <directory name="image">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="HIGHUSE"/>
+            </metadataCategory>
+            <metadataCategory name="pdsDocumentImageFileMetadata">
+                <property name="role" value="ARCHIVAL_MASTER"/>
+                <property name="role" value="PRODUCTION_MASTER"/>
+                <property name="role" value="DELIVERABLE"/>
+                <property name="role" value="THUMBNAIL"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>
