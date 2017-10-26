@@ -1,0 +1,2787 @@
+<collection xmlns='http://www.loc.gov/MARC21/slim' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd'>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103335</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">thob yig nor bu'i phreng ba</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">gsan yig/_ngag dbang kun dga' theg chen dpal 'bar</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">ཐོབ་ཡིག་ནོར་བུའི་ཕྲེང་བ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">[2005 ?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">2 v.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo; copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Record of teachings received by Sakya Trichen 42 (1945- ). Printed from woodblocks carved at the Degge Printery. Acquired from the library of Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India. The first volume is missing.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">thob yig/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sa skya pa/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">ngag dbang kun dga' theg chen dpal 'bar/  sa skya khri chen 42 ngag dbang kun dga' theg chen dpal 'bar, 1945.</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">5</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103335</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103340</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">bla ma 'jam dpal dbyangs kyi ye shes skus dngos su rjes su bzung ba mkhan chen thams cad mkhyen pa bsod nams lhun grub legs pa'i 'byung gnas kyi gsung 'bum </subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">gsung thor bu/_bsod nams lhun grub</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">བླ་མ་འཇམ་དཔལ་དབྱངས་ཀྱི་ཡེ་ཤེས་སྐུས་དངོས་སུ་རྗེས་སུ་བཟུང་བ་མཁན་ཆེན་ཐམས་ཅད་མཁྱེན་པ་བསོད་ནམས་ལྷུན་གྲུབ་ལེགས་པའི་འབྱུང་གནས་ཀྱི་གསུང་འབུམ་</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">(19-?)</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">4 v.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo; copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod 1  pod 2 pod 3 pod 4 </subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Miscellaneous Writings by Sakya scholar Lowo Kenchen Sonam Lhundrub (1456-1532). Reproduced from the Degge Printery blockprints. Made available by Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gsung thor bu/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sa skya pa/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">bsod nams lhun grub//  glo bo mkhan chen bsod nams lhun grub/, 1456? 1441?-1532? 1525?</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">7</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103340</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103341</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">rgyal rabs rnams kyi byung tshul gsal ba'i me long chos 'byung</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">rgyal rabs gsal ba'i me long</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">རྒྱལ་རབས་རྣམས་ཀྱི་བྱུང་ཚུལ་གསལ་བའི་མེ་ལོང་ཆོས་འབྱུང</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge dgon chen,</subfield>
+        <subfield code="c"/>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">104 folia</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo; copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a"> rgyal rabs gsal ba'i me long ngam chos 'byung gsal ba'i me long /</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">History of royal chronicles by Sakya Trichen 14 Lama Dampa Sonam Gyaltsen (1312-1375). Reproduced from Degge Printery blockprints. Made available by Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">tibet/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rgyal rabs/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">bsod nams rgyal mtshan/  bla ma dam pa bsod nams rgyal mtshan, 1312-1375</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">5</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">5</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103341</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103342</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">ston mchog thams cad mkhyen pa thub pa'i dbang po'i skyes rabs gsal bar brjod pa brgya lnga bcu pa nor bu'i phreng ba</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">thub pa'i dbang po'i skyes rabs gsal bar brjod pa brgya lnga bcu pa/</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">སྟོན་མཆོག་ཐམས་ཅད་མཁྱེན་པ་ཐུབ་པའི་དབང་པོའི་སྐྱེས་རབས་གསལ་བར་བརྗོད་པ་བརྒྱ་ལྔ་བཅུ་པ་ནོར་བུའི་ཕྲེང་བ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">[n.d.]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">173 folia</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo; copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">ston pa'i skyes rabs brgya lnga bcu pa nor bu'i phreng ba/ par byang smon tshig</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">History of Buddhist genealogies by Sakya Trichen 14 Lama Dampa Sonam Gyaltsen (1312-1375). Reproduced from Degge Printery blockprints. Made available by Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">skyes rabs/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">buddha/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">'jam dbyangs blo gter dbang po/  ngor pa dpon slob blo gter dbang po, 1847-1914</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">8</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103342</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103343</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">dam pa'i chos rin po che 'phags pa'i yul du ji ltar dar ba'i tshul gsal bar ston pa dgos 'dod kun 'byung </subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">rgya gar chos 'byung /</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">དམ་པའི་ཆོས་རིན་པོ་ཆེ་འཕགས་པའི་ཡུལ་དུ་ཇི་ལྟར་དར་བའི་ཚུལ་གསལ་བར་སྟོན་པ་དགོས་འདོད་ཀུན་འབྱུང་</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">(200-?)</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">131 folia</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo; copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">rgya gar chos 'byung / par byang /</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">History of the spread of Buddhism in India by Jonang Jetsun Taranatha (1575-1634). Reproduced from Degge Printery blockprints. Made available by Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos 'byung/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rgya gar/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">tA ra nA tha/  jo nang rje btsun tA ra nA tha, 1575-1634</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">5</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103343</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103344</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">rgya nag gi yul du dam pa'i chos dar tshul gtso bor bshad pa blo gsal kun tu dga' ba'i rna rgyan</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">rgya nag chos 'byung</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">རྒྱ་ནག་གི་ཡུལ་དུ་དམ་པའི་ཆོས་དར་ཚུལ་གཙོ་བོར་བཤད་པ་བློ་གསལ་ཀུན་ཏུ་དགའ་བའི་རྣ་རྒྱན</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">[19-?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">110 folia</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo; copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">rgya nag chos 'byung /</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">History of Buddhism in China by Mongolian scholar Gonpo Kyab (18th cent.). Kyab sent a manuscript of the Rgya nag chos ‘byung to Situ Panchen (1700-1774), a contemporary scholar in Tibet. Reproduced from Degge Printery blockprints. Made available by Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rgya nag/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos 'byung/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">mgon po skyabs/  mi dbang mgon po skyabs, 17uu.</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">5</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103344</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00CHZ0103345</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">de bzhin gshegs pa thams cad kyi bgrod pa gcig pa'i lam chen gsung ngag rin po che'i bla ma brgyud pa'i rnam thar glegs bam</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">lam 'bras bla ma brgyud pa'i rnam thar</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">དེ་བཞིན་གཤེགས་པ་ཐམས་ཅད་ཀྱི་བགྲོད་པ་གཅིག་པའི་ལམ་ཆེན་གསུང་ངག་རིན་པོ་ཆེའི་བླ་མ་བརྒྱུད་པའི་རྣམ་ཐར་གླེགས་བམ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">[19-?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">7 v.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Printed from blocks carved at sde dge par khang chen mo. copy made available from the library of tai si tu rin po che at shes rab gling, kangra, himachal pradesh, india.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Biographies of the lives of gurus in the Sakya lamdre transmission lineage. Reproduced from seven volumes of blockprints carved at Degge Printery. Made available by Tai Situ Rinpoche at Sherab Ling Monastery in Himachal Pradesh, India. Volume 01 of Situ Rinpoche's biography is missing.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bla ma brgyud pa'i rnam thar/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">lam 'bras/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sa skya pa/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">7</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00CHZ0103345</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+ <z:results type="marc" xmlns:z="http://www.tbrc.org/models/results#" status="exception" exmsg="exerr:ERROR XPTY0004: The actual cardinality for parameter 1 does not match the cardinality declared in the function's signature: x:c008($pub-info as element()?, $language as element()?) element()*. Expected cardinality: zero or one, got 2. [at line 612, column 23, source: /db/modules/public/work.xqm]
+In function:
+	x:c008(element()?, element()?) [612:15:/db/modules/public/work.xqm]
+	public:marc(xs:string*) [1:123:/db/modules/public/work.xqm]"/>
+ <z:results type="marc" xmlns:z="http://www.tbrc.org/models/results#" status="exception" exmsg="exerr:ERROR XPTY0004: The actual cardinality for parameter 1 does not match the cardinality declared in the function's signature: x:c008($pub-info as element()?, $language as element()?) element()*. Expected cardinality: zero or one, got 4. [at line 612, column 23, source: /db/modules/public/work.xqm]
+In function:
+	x:c008(element()?, element()?) [612:15:/db/modules/public/work.xqm]
+	public:marc(xs:string*) [1:123:/db/modules/public/work.xqm]"/>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016199</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^xx^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">rje btsun bla ma pra dz+yA in+t+ra'i rnam par thar pa ngo mtshar rmad du byung ba'i dad pa'i 'byung ngogs</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">རྗེ་བཙུན་བླ་མ་པྲ་ཛྱཱ་ཨིནྟྲའི་རྣམ་པར་ཐར་པ་ངོ་མཚར་རྨད་དུ་བྱུང་བའི་དད་པའི་འབྱུང་ངོགས</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">72 folia</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Scanned from photocopy borrowed from geshe tsulga.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Biography of Jedrung Sherab Wangpo (1500-1586), abbot of the Geluk monastery, Chamdo Jampa Ling.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">shes rab dbang po/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rnam thar/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016199</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+ <z:results type="marc" xmlns:z="http://www.tbrc.org/models/results#" status="exception" exmsg="exerr:ERROR XPTY0004: The actual cardinality for parameter 1 does not match the cardinality declared in the function's signature: x:c008($pub-info as element()?, $language as element()?) element()*. Expected cardinality: zero or one, got 3. [at line 612, column 23, source: /db/modules/public/work.xqm]
+In function:
+	x:c008(element()?, element()?) [612:15:/db/modules/public/work.xqm]
+	public:marc(xs:string*) [1:123:/db/modules/public/work.xqm]"/>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016213</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">sgom sde nam mkha' rgyal mtshan gyis mdzad pa'i dbu ma'i spyi don zla ba'i dgongs rgyan</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">sgom sde dbu ma'i spyi don</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">dbu ma'i spyi don zla ba'i dgongs rgyan</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">སྒོམ་སྡེ་ནམ་མཁའ་རྒྱལ་མཚན་གྱིས་མཛད་པའི་དབུ་མའི་སྤྱི་དོན་ཟླ་བའི་དགོངས་རྒྱན</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Mundgod :</subfield>
+        <subfield code="b">Dga' ldan byang rtse thos bsam nor gling grwa tshang,</subfield>
+        <subfield code="c">[2000?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[2], vi, 274 p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Computerized input produce text.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Instructions on Madhyamaka by Gomdewa Namkha Gyaltsen (1532-1592), an abbot of Gyuto Tantric Monastery.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dbu ma madhyamika/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">spyi don exegesis of the general meaning/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">nam mkha' rgyal mtshan/  sgom sde ba nam mkha' rgyal mtshan, 1532-1592</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">11</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016213</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016236</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">dpal  ldan shar pa mkhan chen rdo rje 'chang rin chen mi 'gyur rgyal mtshan gyi gsung 'bum rdo rje'i tshig rkang gi dkar chag nor bu'i bum bzang don gnyis dpal ster
+</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">klu sdings</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">དཔལ་་ལྡན་ཤར་པ་མཁན་ཆེན་རྡོ་རྗེ་འཆང་རིན་ཆེན་མི་འགྱུར་རྒྱལ་མཚན་གྱི་གསུང་འབུམ་རྡོ་རྗེའི་ཚིག་རྐང་གི་དཀར་ཆག་ནོར་བུའི་བུམ་བཟང་དོན་གཉིས་དཔལ་སྟེར
+</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge par khang chen mo :</subfield>
+        <subfield code="b">Sde dge,</subfield>
+        <subfield code="c">[1999?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">206 folia</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">shar chen rin chen mi 'gyur rgyal mtshan gyi gsung 'bum dkar chag nor bu'i bum bzang don gnyis dpal ster/ dkon mchog gsum la bstod pa/ 'jam mgon tshul khrims lhun grub la gsol ba 'debs pa byin rlabs drod 'bar/ rgya bod mkhas grub rnams la bstod pa/ tshe lha'i gsol 'debs/ rje btsun rdo rje dbyangs can ma bstod pa blo gsal blo gros kha 'byed/ chos srung gsol 'debs tshig gi dung chen/ bla ma rnam gnyis la bstod pa/ dge slong bstan 'dzin gyi dris lan zin bris/ chos rje ngag dbang shes rab kyi dris lan/ chos gtam yan lag brgyad ldan chu/  chos pa kun la phan pa'i gtam/ rang skyon mun pa sel ba'i tshig gi sgron me/ rang skyon khung bu 'dru ba'i tshig gi tog rtse/ kun phan pad+ma 'dzum byed/ grwa rgyun rnams la phan pa'i gtam/ chos pa spyi dang btsun chung rnams la phan pa'i gtam/ dge stobs 'phel thabs/ bkra shis dpal bzang dris len/  khro phu bla mar gdams pa/ lho 'brug pa'i sde srid la zhu yig snying gi gros 'debs/ 'phan la 'dri rgyu'i zin bris/ chos khrims la gdams pa/ 'phan la 'bru rgyu'i yi ge/ rgyun gyi nyams len rang gis rang la gros btab rnam mkhyen bgrod pa'i them skas/ bsgom don gong ma'i gsung bshad/ sangs rgyas kun bzang gi dris lan/ mkhas grub tshul khrims rin chen la bstod pa/  zhu chen sku bstod ka sogs can/ zhu chen zhabs brtan/ tshe lha'i gsol bdebs/ thub bstod/ chos rje ye shes chos dbang dris lan/ bsam bzang bsod nmas rgyas byed/  chang rag nyes dmigs sku tshe ring don ma/ grub mtha' dge ba'i rgyu can/ phan 'dod tshig gi sgron me don skyon mun sel/ bra'u bla dgon la gdams pa/ yul gyi ming la 'pho rgyu med na ma/ zin bris sna tshogs/ phyag rdor bstod pa phrin bcol sogs/ dmag zor bsang bsdus/ spyan gzigs 'dod gsol/ drung chos rje'i dbu thod yid bzhin nor bu'i dkar chag shes ldan bzang ngan rnam dbye ya rabs 'phel thabs/ mi gzhi bzang ngan 'byed pa/ dkon mchog rjes dran yig mkhan bdud rtsi/ dpal ldan sa skya'i bstod pa/ dam tshig srung sdom skyon yon/ gtan gyi bde skyid kyi lo legs thabs/ dug blo spong byed ma/ kun tu dge thabs/ dga' skyid sa bon 'phel thabs/ stong nyid brgal len dang 'dod don 'grub pa'i gegs sel/ 'dod don 'grub pa'i gegs sel/ chos mthun dge legs bya ba 'phel byed/ khro zil khrom la bstod pa/ gzhi bdag la bsangs nyung ngu/ kha char bcad 'bab gyi spang blang bstan pa dar byed/ dam tshig gtsang thabs bshad pa dngos grub char 'bebs/ dam tshig gtsang thabs dngos grub 'byung ba'i lam ston/ mkhas pa'i gsung la the tshom skyes pa'i gtam/ tshul khrims dpal bzang bstod pa/ bla ma lha rjer gdams pa/ lha khang bzhengs pa'i phan yon/ mna' mthu dkar thab dmar gzhob nyes dmigs/ nyal ldang gi gdams pa/ a ti sha la gsol ba 'debs pa/ mkhan po sangs rgyas ye shes zhal gzigs/ sangs rgyas rin chen bsangs yig zhu lan/ sde dge'i dri med bshags rgyud par byang / skyabs 'gro'i don 'grol/ bar chad zhi thabs/ dpal ldan sa skya pa la gsol ba 'debs pa skal ldan dad pa 'phel byed/ dpal ldan chos skyong la bstod pa/ mkhas grub tshul khrims rin chen la bstod pa/ tshul khrims kyi yon tan/ shes rab rin chen la lha rgyan phul 'bras/ shes rab rin chen la gdams pa/ dgra ri dwags kyi nyes dmigs lha bsnyen bkur phan yon sogs/ zhal gzigs ngo mtshar can/ klu sdings lha bya dgon gsar smon lam/ sa ris pa dga' byed/ gnas mjal phan yon/ dge bcu spyod byed/ ma Ni che 'don ma/ chos smon nyi ma rku jag mun sel/ rang la gdams pa blo thugs bde byed/ byams pa bsod nams bzang po'i zhabs brtan/ don gyi smon lam/ rten 'brel ldan pa'i bkra shis/ bkra shis rgyun 'phael/ shar pa mkhan rin po che mi 'gyur rgyal mtshan gyi rnam thar smra ba'i seng ge sa skya pa kun dga' blo gros kyi gsung rdo rje sgra ma'i mchod pa/ dpal shar pa mkhan rin po che rdo rje 'chang rin chen mi 'gyur rgyal mtshan gyi rnam par thar pa/ smra ba'i seng ge'i gsung rdo rje sgra ma'i mchod pa rgyas par spros pa zhing khams rgya mtsho'i mchod sprin/ brda dag snang brnyan gsal byed me long /</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collected Works by Ngor Khenchen 37 Mingyur Gyaltsen (b. 1717) of Luding Labrang at Ngor Evam Chode Monastery. This volume was printed from blockprints at the Degge Printery.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gsung 'bum collected works/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sa skya pa/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">mi 'gyur rgyal mtshan/  ngor mkhan chen 37 mi 'gyur rgyal mtshan, 1717.</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016236</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016238</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">'jam dbyangs blo gter dbang po'i bka' 'bum</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">gsung 'bum/_blo gter dbang po</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">འཇམ་དབྱངས་བློ་གཏེར་དབང་པོའི་བཀའ་འབུམ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Khreng tu'u :</subfield>
+        <subfield code="b">Blo gros phun tshogs sogs,</subfield>
+        <subfield code="c">[1998]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">6 v.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod ka (1) pod kha (2) pod ga (3) pod nga (4) pod ca (5) pod cha (6)</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collected Works by Jamyang Loter Wangpo (1847-1914), a Sakya and Rime figure from Ngor Tartse Monastery. Includes several commentaries on Mahayana classics as well as writings on the Lamdre Lobshe transmissions. See also his compilations, the Rgyud sde kun btus [W27883] and the Sgrub thabs kun btus [W23681].</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sa skya pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gsung 'bum collected works/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">'jam dbyangs blo gter dbang po/  ngor pa dpon slob blo gter dbang po, 1847-1914</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016238</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016240</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">rgyal ba'i sras po thogs med chen po'i bka' 'bum/</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">རྒྱལ་བའི་སྲས་པོ་ཐོགས་མེད་ཆེན་པོའི་བཀའ་འབུམ།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">[1999?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">297 folia</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collected Works by Gyalse Tokme Zangpo (1295-1369), the 73rd Lamrim lineage holder. This volume was reproduced from blockprints at Degge Printery that were carved during the rule of Kunga Trinle Gyatso.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bka' gdams pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gsung 'bum collected works/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">thogs med bzang po dpal//  rgyal sras thogs med bzang po/, 1295-1369</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016240</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016242</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7695</subfield>
+        <subfield code="b">.D36 </subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">dbus 'gyur chos sde chen po dpal ldan 'bras spungs tshogs chen dang dpal ldan bkra shis sgo mang grwa tshang bcas kyi tshogs 'don chos spyod kyi rim pa bskal bzang mgrin rgyan</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Dbus ʾgyur chos sde chen po Dpal ldan ʾBras-spuṅs Tshogs-chen daṅ Dpal ldan Bkra-śis Sgo-maṅ Grwa-tshaṅ bcas kyi tshogs ʾdon chos spyod kyi rim pa bskal bzaṅ mgrin rgyan źes bya ba bźugs so.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">དབུས་འགྱུར་ཆོས་སྡེ་ཆེན་པོ་དཔལ་ལྡན་འབྲས་སྤུངས་ཚོགས་ཆེན་དང་དཔལ་ལྡན་བཀྲ་ཤིས་སྒོ་མང་གྲྭ་ཚང་བཅས་ཀྱི་ཚོགས་འདོན་ཆོས་སྤྱོད་ཀྱི་རིམ་པ་བསྐལ་བཟང་མགྲིན་རྒྱན</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Ldi li :</subfield>
+        <subfield code="b">Chos 'phel legs ldan,</subfield>
+        <subfield code="c">[1974]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">231 p.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of liturgical writings from Drepung Gomang Monastic College.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos spyod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sgo mang grwa tshang ('bras spungs) 'bras spungs sgo mang grwa tshang/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa dga' ldan pa/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   75900479</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016242</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016244</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7695</subfield>
+        <subfield code="b">.G74 1975</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">gsang chen rig 'dzin gyi sde chen po dpal ldan stod rgyud grwa tshang gi gsung rgyun chos spyod nyer mkho 'ga' zhig phyogs gcig tu bkod pa yid 'phrog nor bu'i do shal</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">the collected ritual texts used in the rgyud-stod grwa-tshan</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the collected ritual texts used in the rgyud-stod grwa-tshan</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Gsaṅ chen rig ʾdzin gyi sde chen po Dpal ldan Stod rgyud Grwa tshaṅ gi gsuṅ rgyun Chos spyod ñer mkho ʾgaʾ źig phyogs gcig tu bkod pa yid ʾphrog nor buʾi do śal :the collected ritual texts used in the Rgyud-stod Grwa-tshaṅ.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">གསང་ཆེན་རིག་འཛིན་གྱི་སྡེ་ཆེན་པོ་དཔལ་ལྡན་སྟོད་རྒྱུད་གྲྭ་ཚང་གི་གསུང་རྒྱུན་ཆོས་སྤྱོད་ཉེར་མཁོ་འགའ་ཞིག་ཕྱོགས་གཅིག་ཏུ་བཀོད་པ་ཡིད་འཕྲོག་ནོར་བུའི་དོ་ཤལ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Tenzin gang :</subfield>
+        <subfield code="b">Rgyud-stod tantric college,</subfield>
+        <subfield code="c">1975-1977</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">5 v.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod ka pa/（1） pod kha pa/（2） pod ga pa/（3） pod nga pa/（4） pod ca pa/（5）</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of religious instructions from Gyuto Monastic College.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos spyod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rgyud stod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa dga' ldan pa/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   75904358</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016244</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016246</controlfield>
+    <controlfield tag="008">^^^^^^s1975^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7695</subfield>
+        <subfield code="b">.B545 1975</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">bkra shis lhun po'i rgyud pa grwa tshang gi rig sngags 'chang ba rnams kyi 'don cha'i rim pa</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">the collected ritual texts used in the rgyud-pa grwa-tshan (tantric college) of bkra-sis-lhun-po monastery</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">bkras lhun rgyud pa grwa tshang gi chos spyod</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the collected ritual texts used in the rgyud-pa grwa-tshan (tantric college) of bkra-sis-lhun-po monastery</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Bkra śis lhun po'i Rgyud pa Grwa tshaṅ gi rig sṅags 'chaṅ ba rnams kyi 'don cha'i rim pa bźugs so.</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Bkra śis lhun po'i Rgyud pa Grwa tshaṅ gi rig sṅags 'chaṅ ba rnams kyi 'don cha'i rim pa bźugs so.</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Bkra śis lhun poʾi Rgyud pa Grwa tshaṅ gi rig sṅags ʾchaṅ ba rnams kyi ʾdon chaʾi rim pa :the collected ritual texts used in the Rgyud-pa Grwa-tshaṅ (Tantric College) of Bkraśis-lhun-po Monastery.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">བཀྲ་ཤིས་ལྷུན་པོའི་རྒྱུད་པ་གྲྭ་ཚང་གི་རིག་སྔགས་འཆང་བ་རྣམས་ཀྱི་འདོན་ཆའི་རིམ་པ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Delhi :</subfield>
+        <subfield code="b">T. gyalpo,</subfield>
+        <subfield code="c">1975</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">3 v.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod dang po/（1） pod gnyis pa/（2） pod gsum pa/（3）</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of ritual texts from Tashi Lunpo Monastic College.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos spyod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa dga' ldan pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bkra shis lhun po rgyud pa grwa tshang/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">7</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   75903773</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016246</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016248</controlfield>
+    <controlfield tag="008">^^^^^^s1983^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7695</subfield>
+        <subfield code="b">.C65 1983</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="a">the collected works of liturgy of the gnas-chun rdo-rje-sgra-dbyans-glin monastery</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Delhi :</subfield>
+        <subfield code="b">Lobzang tondan,</subfield>
+        <subfield code="c">1983</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">3 v.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod dang po/(1) pod gnyis pa/(2) pod gsum pa/(3)</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of liturgical writings from Nechung Dorje Drayang Ling.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos spyod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa dga' ldan pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rnying ma/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gnas chung dgon pa/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   83902737</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016248</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016251</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7890</subfield>
+        <subfield code="b">.G73 1972</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">'dul ba'i bslab bya chen mo 'dul 'dzin grags pa rgyal mtshan gyis mdzad pa</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">'dul ba'i bslab bya chen mo</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">ʾDul baʾi bslab bya chen mo /ʾDul-ʾdzin Grags-pa-rgyal-mtshan gyis mdzad pa bźugs so.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">འདུལ་བའི་བསླབ་བྱ་ཆེན་མོ་འདུལ་འཛིན་གྲགས་པ་རྒྱལ་མཚན་གྱིས་མཛད་པ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Dehradun :</subfield>
+        <subfield code="b">'bras grong snga 'gyur rig gzhung slob gnyer khang gi yan lag gsung rab rgyun spel par khang,</subfield>
+        <subfield code="c">[1972?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">folia 248 [i.e. 496 p.]</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">rab byung gi gzhi'i skabs kyi bslab bya mdor bsdus sdom pa thob pa mi nyams par srung ba gso sbyong gi gzhi'i skabs kyi bslab bya mdor bsdus dbyar gyi gzhi'i skabs kyi bslab bya mdor bsdus dgag dbye'i gzhi'i skabs kyi bslab bya mdor bsdus gos gzhi'i skabs kyi bslab bya mdor bsdus ko lpags kyi gzhi'i bslab bya mdor bsdus sman gi gzhi'i skabs kyi bslab bya mdor bsdus las byed pa'i gzhi'i skabs kyi bslab bya mdor bsdus gnas mal gyi gzhi'i skabs kyi bslab bya mdor msdus par byang smon tshig</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Work on Vinaya rules of monastic discipline by the Geluk author, Duldzin Drakpa Gyaltsen (1374-1434), founder of Tsunmo Tsel Monastery in Taktse Dzong, central Tibet.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">'dul ba monastic discipline vinaya/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">'dul ba'i cho ga monastic ordination manuals/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">grags pa rgyal mtshan/  'dul 'dzin grags pa rgyal mtshan, 1374-1434</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   72905163</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016251</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016253</controlfield>
+    <controlfield tag="008">^^^^^^s1982^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ8920.2</subfield>
+        <subfield code="b">.S63 1982</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">smad rgyud grwa tshang gi chos spyod rgyas pa</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">the collected rituals and explanatory texts used by the monks of tantric college</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">gsang chen dpal ldan smad rgyud grwa tshang gis nyams bzhes chos skor gyi rim pa</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the collected rituals and explanatory texts used by the monks of tantric college</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">སྨད་རྒྱུད་གྲྭ་ཚང་གི་ཆོས་སྤྱོད་རྒྱས་པ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Gyudmed tantric college :</subfield>
+        <subfield code="b">Hunsur, karnataka,</subfield>
+        <subfield code="c">1982</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">11 v.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod dang po/（1） pod gnyis pa/（2） pod gsum pa/（3） pod bzhi pa/（4） pod lnga pa/（5） pod drug pa/（6） pod bdun pa/（7） pod brgyad pa/（8） pod dgu pa/（9） pod bcu pa/（10） pod bcu gcig pa/（11）</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collected liturgies and explanations of Geluk Megyu Tantric College. Compiled from blockprints and manuscripts in Karnataka, India, by Ngakrampa Lobzang Gelek and Ngakrampa Chime Dorje.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos spyod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa dga' ldan pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">smad rgyud rgyud smad/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   83903663</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016253</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016255</controlfield>
+    <controlfield tag="008">^^^^^^s1984^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7697</subfield>
+        <subfield code="b">.B34 1984</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">bde chen pad+mo chos lding gi bstan srung rgya mtsho'i bskang 'phrin nag 'gros chu 'babs su bkod pa dgra bgegs gzhom pa tshangs pa'i sgra dbyangs</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">rituals for the propitiation of the protective deities involked by the monastery of bde-chen padma-chos-sdins, a monastery of the bo-don tradition in spo ron, western tibet</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">rituals for the propitiation of the protective deities involked by the monastery of bde-chen padma-chos-sdins, a monastery of the bo-don tradition in spo ron, western tibet</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">བདེ་ཆེན་པདྨོ་ཆོས་ལྡིང་གི་བསྟན་སྲུང་རྒྱ་མཚོའི་བསྐང་འཕྲིན་ནག་འགྲོས་ཆུ་འབབས་སུ་བཀོད་པ་དགྲ་བགེགས་གཞོམ་པ་ཚངས་པའི་སྒྲ་དབྱངས</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Delhi :</subfield>
+        <subfield code="b">Ngawang topgyel,</subfield>
+        <subfield code="c">1984</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">456 p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a rare manuscript belonging to a monk of the tradition.".</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">dkar chag bde chen pad+ma chos lding gi bstan srung rgya mtsho'i skang 'phrin/ chos bdag chen po bkra shis 'od 'bar gyi bskang ba/ dpal rdo rje 'jigs byed kyi mngon rtogs tshigs su bcad pa/ pad+ma chos lding gi gtor bsngo/</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collected writings on ritual for the propitiation of protector deities by the Bodng monastery, Dechen Padma Choding in Porong.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos spyod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bo dong pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">pad ma chos gling/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   85901464</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016255</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016257</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^cc^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">bdud rtsi snying po yan lag brgyad pa gsang ba man ngag gi rgyud...</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">བདུད་རྩི་སྙིང་པོ་ཡན་ལག་བརྒྱད་པ་གསང་བ་མན་ངག་གི་རྒྱུད..</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Sde dge :</subfield>
+        <subfield code="b">Sde dge par khang chen mo,</subfield>
+        <subfield code="c">[1999?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">9. 49. 244, 63 folia (732 pp.)</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Impressions from the sde dge blocks carved in 1733 at the order of the ruler bstan pa tshe ring on the basis of the late 17th century po ta la print.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">On the science and study of Tibetan medicine. Made from reproductions of Degge Printery woodblocks carved in 1733, based on late 17th century Potala prints at the order of the King of Degge, Tenpa Tsering (1678-1738).</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sman medicine gso rig/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016257</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016259</controlfield>
+    <controlfield tag="008">^^^^^^s1982^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7672.4</subfield>
+        <subfield code="b">.S28 1982</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">bsangs yig dgos 'dod kun 'grub</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">rituals for the offering of bsans in propitiation of the local and mountain deities</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">rituals for the offering of bsans in propitiation of the local and mountain deities</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">བསངས་ཡིག་དགོས་འདོད་ཀུན་འགྲུབ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Bir, distt. kangra, h.p., india :</subfield>
+        <subfield code="b">D. tsondu senghe,</subfield>
+        <subfield code="c">1982</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">188 p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a rare manuscript from the library of bla-ma chos-grags-rgya-mtsho.".</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">gser skyems dang bsangs yig dgos 'dod kun 'grub sa bsang gi tho yig bla bslu 'chi bdag g.yul las rgyal ba'i go mtshon</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Instructions on ritual offerings for the propitiation of local mountain deities. Written by Sakya Trichen 20 Dakchen Gyagarba Sherab Zangpo (1436-1494) and other Sakya writers. Reproduced from a manuscript in the library of Sakya Trichen 20 Dakchen Gyagarba Sherab Zangpo.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bsangs mchod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sa skya pa/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">shes rab rgyal mtshan/  rgya gar ba shes rab rgyal mtshan, 1436-1494</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   82904037</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016259</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016261</controlfield>
+    <controlfield tag="008">^^^^^^s1983^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7685.4</subfield>
+        <subfield code="b">.D57 1983</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">dpal stag lung pa chen po'i ring lugs kyi bsang gsol chen mo</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">the largest version of the rituals for the offering bsans of the stag-lun bka'-brgyud-pa tradition</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the largest version of the rituals for the offering bsans of the stag-lun bka'-brgyud-pa tradition</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">དཔལ་སྟག་ལུང་པ་ཆེན་པོའི་རིང་ལུགས་ཀྱི་བསང་གསོལ་ཆེན་མོ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Bir, h. p. :</subfield>
+        <subfield code="b">Pema gyaltsen,</subfield>
+        <subfield code="c">1983</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">595 p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from rare manuscripts from the library of takpa gyaltsen of riwoche.".</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of instructions for ritual offerings in the Taklung Kagyu order. Reproduced from a manuscript in the library of Drakpa Gyeltsen of Riwoche.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bsangs mchod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">stag lung bka' brgyud pa/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   83904364</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016261</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016263</controlfield>
+    <controlfield tag="008">^^^^^^s1977^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7682.4</subfield>
+        <subfield code="b">.K37 </subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">karma pa sgar bsangs chen mo</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">the collected rituals for the offering of bsans of the karma-pa sgar</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">sgar bsangs chen mo dang gtor bsngo nyer mkho'i rigs</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the collected rituals for the offering of bsans of the karma-pa sgar</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Karma pa Sgar bsans chen mo :the collected rituals for the offering of bsaṅs of the Karma-pa Sgar /by the 15th Rgyal-bdaṅ Karma-pa Mkhaʾ-khyab-rdo-rje and other masters.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">ཀརྨ་པ་སྒར་བསངས་ཆེན་མོ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Delhi :</subfield>
+        <subfield code="b">Karma chophel,</subfield>
+        <subfield code="c">1977</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">628 p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a collection of prints from blocks of dpal-spuns and lha-thog.".</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">tshogs bsags chos spyod kyi rim pa skal ldan thar par bgrod pa'i lam bzang / zung 'jug don gyi brgyud pa'i rim pa la gsol ba 'debs pa/ sgrub brgyud karma kaM tshang gi sngon 'gro/ sgar bsangs chen mo yid bzhin dbang rgyal dngos grub char 'bebs/ bsangs mchod bdud rtsi sprin phung bkra shis char 'bebs/ rgyun gyi bsangs mchod dge legs sprin phung/ mgon po legs ldan gyi dgra chos dgra bla bcu gsum gyi bsangs mchod/ legs ldan dgra bla'i bsangs mchod bsdus pa/ sde brgyad bcos thabs gnubs sangs rgyas ye shes kyi mdzad pa sde brgyad gser skyems/ rtsa gsum bka' srung bcas kyi gtor bsngos/ dpal mgon legs ldan gyi bzlog pa/ rgyun khyer gyi lus sbyin bsdus pa/ bka' 'gyur ro cog gi snying po bsdus pa/ gtsug tor dkar mo'i bsgom bzlas bde can zhing du bgrod pa'i gdams pa/</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of instructions for ritual offerings by Karmapa 15 Khakyab Dorje (1870/1871-1921/1922) and other writers. Reproduced from a collection of blockprints from Pelpung Monastery and the Lhatok region.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">karma 'i sgar chen traveling encampment of the karma pa lama/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bsangs mchod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">karma bka' brgyud pa kaM tshang bka' brgyud pa/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">mkha' khyab rdo rje/  karma pa 15 mkha' khyab rdo rje, 1870/1871-1921/1922</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   78900720</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016263</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016265</controlfield>
+    <controlfield tag="008">^^^^^^s1972^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7450</subfield>
+        <subfield code="b">.B77 </subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="a">ston thun chen mo of mkhas-grub dge-legs-dpal-bzan and other texts on madhyamika philosophy</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">zab mo stong pa nyid de kho na nyid rab tu gsal bar byed pa'i bstan bcos</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">dbu ma stong thun chen mo/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">zab mo stong pa nyid de kho na nyid rab tu gsal bar byed pa'i bstan bcos</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Stoṅ thun chen mo of Mkhas-grub Dge-legs-dpal-bzaṅ :and other texts on Madhyamika Philosophy /edited by Lha-mkhar Yoṅs-ʼdzin Bstanpa Rgyal mtshan.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">New delhi :</subfield>
+        <subfield code="b">Lha mkhar yongs 'dzin bstan pa rgyal mtshan,</subfield>
+        <subfield code="c">1972</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">1 v. (unpaged)</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">madhyamika text series ;</subfield>
+        <subfield code="v">v. 1</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Reproduced from original blockprints.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">dkar chag zab mo stong pa nyid kyi de kho na nyid rab tu gsal bar byed pa'i bstan bcos skal bzang mig 'byed/ dbu ma rtsa ba'i 'grel pa tshig gsal gyi mtha' bzhi'i skye ba 'gog pa'i stong thun zhang zhung pa phyogs las rnam par rgyal ba chos grags pa'i dpal gyis zin bris su mdzad pa/ rten 'brel bstod pa legs bshad snying po zhes bya ba'i bsdus don snying po mchog zhi lhag gnyis kyi dka' gnas grub rje'i gsung bzhin rdo rje 'chang zhang zhung pa chen pos zin bris su mdzad pa/ zab mo dbu ma'i lta khrid mthaaar 'dzin kun sel/ lta mgur a ma ngos 'dzin rtsa 'grel/ lta ba'i mgur gyi 'grel pa tshig gi sgron me/ </subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Works on Madhyamaka by Ganden Tripa 03 and Panchen Lama 01 Khedrub Gelek Pelzang (1385-1438) with contributions also by Zhang Zhung Chowang Drakpa (1404-1469/1471), Ganden Tripa 08 Monlam Pelpa (1414-1491) and Jamyang Zhepa 02 Konchok
+        Jigme Wangpo (1728-1791).</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dbu ma/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos bshad/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">dge legs dpal bzang/  mkhas grub rje dge legs dpal bzang, 1385-1438</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">chos dbang grags pa/  zhang zhung chos dbang grags pa, 1404-1469/1471</subfield>
+        <subfield code="e">contributor</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">smon lam dpal ba, 1414-1491</subfield>
+        <subfield code="e">contributor</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">dkon mchog 'jigs med dbang po/  'jam dbyangs bzhad pa 02 dkon mchog 'jigs med dbang po, 1728-1791</subfield>
+        <subfield code="e">contributor</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   72901805</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016265</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016267</controlfield>
+    <controlfield tag="008">^^^^^^s1975^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">calendrical calculation and astrological texts from ladakh</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Calendrical calculation and astrological texts from Ladakh.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">ཅལེནདྲིཅལ་ཅལྕུལཏིཨོན་ཨནད་ཨསྟྲོལོགིཅལ་ཏེxཙ་ཕ༹ྲོམ་ལདཁ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Leh :</subfield>
+        <subfield code="b">S.w. tashigangpa,</subfield>
+        <subfield code="c">1975</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">525 columns</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">smanrtsis shesrig spendzod ;</subfield>
+        <subfield code="v">v. 67</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from manuscripts in the possession of emchi tashi wangyal.".</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">byed grub rtsis kyi bstan bcos mkhas pa'i spyod yul rtsis kyi legs bshad 'chi med 'dod 'jo blo gsar yid kyi bdud rtsis las dus sbyor 'di bi chos kyi dbang phyug dam pa rdo rje'i lags pa'i dus sbyor ngo mtshar bltas chog gsal ba'i sgron me grub rtsis rnam dag legs bshad las khyim sleb sgang tshad dbugs thob legs nyer mkho'i man ngag mnam myong ma rgya mtsho las grub rtsis rnam par dag pa'i re'u mig skal ldan mkhas pa'i mu tig gi do shal rin chen yi bang mdzod kyi kyi lde mig rnam dag grub pa'i gza' nyi rtag long rgya mtsho las 'grub rtsis rnam dag gi zla rkang cha shas kyi  re'u mig 'byung lugs dpal ldan byed pa'i skal dru'i re'u mig rkang drug bzhi lngas sbyangs pa dpal ldan byed pa'i gza' nyi rtag long dpal dus kyi 'khor lo'i man ngag khyim slebs kyi dngos 'dzin gsal ba'i me long dpal dus 'khor las man ngag sgang tshad kyi zla grangs tshes grangs 'dod cha lnga cha bcas kyi bya ra ba dpal dus 'khor lo'i man ngag las dbugs thob dbyar dgun nyi ldog ri shi phag zhag bcas kyi zla grangs tshes grangs 'dod cha lnga cha bzas kyi bya ra drag gza' gsum las mig dmar gyi dal dag zhag rtsis re'u mig bcu gnyis su spel ba mkhas pa dang blo gsar spro ba skye ba drag gza' gsum gyi rkang 'dzin dang zhi gza' gnyis kyi dal dag re'u mig legs pa cig gza' lnga'i myur ba'i re'u mig mkhas pa dgyes shing blo gsar rigs pa dpun pa gcig dpal ldan sgra gcan gyi bskal dru'i re'u mig mkha' me lag pa'i bar du spel ba phug lugs rtsis kyi legs bshad rtsis kyi legs bshad mkhas pa'i mgul rgyan bai Dur dkar po'i do shal spyod ldan snying nor las drag gsum rkang 'dzin dang gzhi gnyis dal dag gi re'u mig lhung grub phun tshogs drag gza' gsum las bkra shis kyi dal dag re'u mig bcur spel ba mkhas pa'i mgul rgyan bkra shis myur ba bla med pa'i 'byung khungs mkhas pa'i phyag len nyi ma bar pa'i nges pas nyi ldog phag zhag sgang dbugs rnams kyi sgrub tshul re'u mig tu bkod pa mkhas pa'i snying nor</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of texts on astrological and calendendrical system in Ladakh. At least one of the texts is by Drikung Kagyu master Konchok Trinle Zangpo (1656-1718). Reproduced from manuscripts in the possession of Amchi Tashi Wangyal.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dkar rtsis/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">li tho/ le'u tho/ lo tho//</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">Core Text Collection 09.</subfield>
+        <subfield code="g"/>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   76900094</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016267</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016269</controlfield>
+    <controlfield tag="008">^^^^^^suuuu^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ4275</subfield>
+        <subfield code="b">.B56 1988</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">drang ba dang nges pa'i don rnam par 'byed pa'i bstan bcos legs par bshad pa'i snying po'i dgongs pa'i don gsal bar byed pa'i me long</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Draṅ ba daṅ ṅes paʾi don rnam par ʾbyed paʾi bstan bcos legs par bśad paʾi sñiṅ poʾi dgoṅs paʾi don gsal bar byed paʾi me loṅ źes bya ba bźugs so /[Ser-byas Rab-ʾbyams Blo-bzaṅ-dge-legs].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Draṅ ba daṅ ṅes paʾi don rnam par ʾbyed paʾi bstan bcos legs par bśad paʾi sñiṅ poʾi dgoṅs paʾi don gsal bar byed paʾi me loṅ źes bya ba bźugs so /[Ser-byas Rab-ʾbyams Blo-bzaṅ-dge-legs].</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">དྲང་བ་དང་ངེས་པའི་དོན་རྣམ་པར་འབྱེད་པའི་བསྟན་བཅོས་ལེགས་པར་བཤད་པའི་སྙིང་པོའི་དགོངས་པའི་དོན་གསལ་བར་བྱེད་པའི་མེ་ལོང</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Karnataka? :</subfield>
+        <subfield code="b">Se ra byes,</subfield>
+        <subfield code="c">[1988?]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">786 p.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Commentary on the Prajnaparamita by Drati Geshe Lobzang Gelek (18th cent.).</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bden gnyis drang don nges don/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">phar phyin paramita/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">blo bzang dge legs/  bra ti dge bshes chung ba blo bzang dge legs, 17uu.</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   93908689</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016269</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016271</controlfield>
+    <controlfield tag="008">^^^^^^s1985^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7460</subfield>
+        <subfield code="b">.B56 1985</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">rtsod lan blo dman snying gi gdung sel ga bur thig pa'i spun zla</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">a refutation of the views of 'jam-mgon 'ju mi-pham-rgya-mtsho in the series of polemical writings on the nature of sunyata and madhyamika philosophy</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">a refutation of the views of 'jam-mgon 'ju mi-pham-rgya-mtsho in the series of polemical writings on the nature of sunyata and madhyamika philosophy</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">རྩོད་ལན་བློ་དམན་སྙིང་གི་གདུང་སེལ་ག་བུར་ཐིག་པའི་སྤུན་ཟླ</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Mundgod, u.k., karnataka :</subfield>
+        <subfield code="b">Drepung loseling library society,</subfield>
+        <subfield code="c">1985</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">109 p.</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">pan-chen bsod-nams-grags-pa literature series ;</subfield>
+        <subfield code="v">v. 40</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a print from the 'bras-spuns blo-gsal-glin blocks.".</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Polemical writing by Denma Geshe Lobzang Choying (19th cent.) of Drepung Loseling Monastic College. Refutations on the views of Jamgong Ju Mipam Gyatso (1846-1912) on topics such as Madhyamaka philosophy and emptiness.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dbu ma madhyamika/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">mi pham rgya mtsho 'ju mi pham rnam rgyal rgya mtsho mi pham rnam rgyal rgya mtsho 'jam mgon mi pham rgya mtsho/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">blo bzang chos dbyings, 18uu.</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   86900171</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016271</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016273</controlfield>
+    <controlfield tag="008">^^^^^^s1974^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">bkra shis sgo mang gi mkhas dbang dag gi gsung deng dus dpe rgyun shin tu dkon pa rnams las 'dir gang byung zhig phyogs bsdus/</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">བཀྲ་ཤིས་སྒོ་མང་གི་མཁས་དབང་དག་གི་གསུང་དེང་དུས་དཔེ་རྒྱུན་ཤིན་ཏུ་དཀོན་པ་རྣམས་ལས་འདིར་གང་བྱུང་ཞིག་ཕྱོགས་བསྡུས།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Mundgod :</subfield>
+        <subfield code="b">Sgo mang dge bshes bskal bzang thabs mkhas,</subfield>
+        <subfield code="c">1974</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">2 v.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">pod dang po/ (1) pod gnyis pa/ (2)</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of rare texts of the sgo mang college of 'bras spungs monastery.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">nang bstan buddhism/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dge lugs pa dga' ldan pa/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">phyogs bsgrigs//</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016273</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016276</controlfield>
+    <controlfield tag="008">^^^^^^s1975^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">R603.T5</subfield>
+        <subfield code="b">K37 1975</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">gso rig man ngag gces btus rin chen gter mdzod</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">a treatise on tibetan medical practice containing numerous instructions and formulae</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">a treatise on tibetan medical practice containing numerous instructions and formulae</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Gso rig man ṅag gces btus Rin chen gter mdzod :a treatise on Tibetan medical practice containing numerous instructions and formulae /by Karma-chos-rgyal.</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Gso rig man ṅag gces btus Rin chen gter mdzod :a treatise on Tibetan medical practice containing numerous instructions and formulae /by Karma-chos-rgyal.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">གསོ་རིག་མན་ངག་གཅེས་བཏུས་རིན་ཆེན་གཏེར་མཛོད</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">New delhi :</subfield>
+        <subfield code="b">Rta-rna bla-ma,</subfield>
+        <subfield code="c">1975</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">611 columns</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a manuscript from gser-bzan dri-med.".</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Treatise on Tibetan medical practices by Karma Chogyel. Reproduced from a manuscript by Serzan Drime.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sman medicine gso rig/</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   75901333</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016276</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016278</controlfield>
+    <controlfield tag="008">^^^^^^s1974^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7699.G36</subfield>
+        <subfield code="b">G32 1974</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">gcod kyi chos skor</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">three texts on the history and practice of the zi-byed and gcod precepts</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">three texts on the history and practice of the zi-byed and gcod precepts</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Gcod kyi chos skor :three texts on the history and practice of the Źi-byed and Gcod precepts.</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Gcod kyi chos skor :three texts on the history and practice of the Źi-byed and Gcod precepts.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">གཅོད་ཀྱི་ཆོས་སྐོར</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">New delhi :</subfield>
+        <subfield code="b">Tibet house,</subfield>
+        <subfield code="c">1974</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[130] p.</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">series 2-tibet house ;</subfield>
+        <subfield code="v">v. 26</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Contents: ser phyin tshigs bcad chen mo of aryadeva.--phun po gzan skyur gyi rnam bsad.--zi byed dan gcod yul gyi chos 'byun of 'jigs bral chos kyi senge.</subfield>
+    </datafield>
+    <datafield tag="505" ind1="0" ind2=" ">
+        <subfield code="a">shes rab kyi pha rol tu phyin pa'i tshigs su bcad pa chen mo phung po gzan skyur gyi rnam bshad gcod kyi don gsal byed zhi byed dang gcod yul gyi chos 'byung rin po che'i phreng ba thar pa'i rgyan</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Three 19th century to early 20th century works from central Tibet on the history and practice of zhije and chod.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gcod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">zhi byed/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos skor//</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">6</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   76900091</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016278</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016280</controlfield>
+    <controlfield tag="008">^^^^^^s1976^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7662.4</subfield>
+        <subfield code="b">.M398 </subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">mdos chog sna tshogs/</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">a collection of mdos and related rituals</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">a collection of mdos and related rituals</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">མདོས་ཆོག་སྣ་ཚོགས།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Bir, h.p. :</subfield>
+        <subfield code="b">Pema lodoe,</subfield>
+        <subfield code="c">1976</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[163] p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from the collection of manuscripts from the library of rgya-ston em-chi by pema lodoe.".</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collected ritual texts by Karma Chakme, founder of the &#160;Nedo branch of the Kamtsang Kagyu order, the Nyingma author Lekden Dudjom Dorje (1512- ?) and others. Reproduced from a collection of manuscripts from the library of Gyaton Amchi by Pema Lodro.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">mdos chog thread-cross rituals/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">karma chags med/  gnas mdo karma chags med, 1613-1678</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">legs ldan rdo rje//  rig 'dzin legs ldan bdud 'joms/, 1512-1625?</subfield>
+        <subfield code="e">contributor</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">Core Text Collection 09.</subfield>
+        <subfield code="g"/>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   76903122</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016280</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016282</controlfield>
+    <controlfield tag="008">^^^^^^s1972^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7662.6</subfield>
+        <subfield code="b">.M49 1972</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">las sna tshogs pa'i sngags kyi be'u bum dgos 'dod kun 'byung gter gyi bum pa bzang po/</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">a rare collection of secret spells and incantations to accomplish various desired results</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">a rare collection of secret spells and incantations to accomplish various desired results</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Las sna tshogs paʾi sṅags kyi beʾu bum dgos ʾdod kun ʾbyuṅ gter gyi bum pa bzaṅ po :a rare collection of secret spells and incantations to accomplish various desired results /by ʾJam-mgon ʾJu Mi-pham-rgya-mtsho.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">ལས་སྣ་ཚོགས་པའི་སྔགས་ཀྱི་བེའུ་བུམ་དགོས་འདོད་ཀུན་འབྱུང་གཏེར་གྱི་བུམ་པ་བཟང་པོ།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">New delhi :</subfield>
+        <subfield code="b">S.n.,</subfield>
+        <subfield code="c">1972</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">494 p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a manuscript belonging to b. jamyang norbu.".</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Collection of tantric ritual instructions written by Ju Mipam Namgyal Gyatso (1846-1912). Reproduced from a manuscript belonging to B. Jamyang Norbu.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">be bum/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">sngags/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">mi pham 'jam dbyangs rnam rgyal rgya mtsho/, 1846-1912</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">7</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   72903209</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016282</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016284</controlfield>
+    <controlfield tag="008">^^^^^^s1972^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7662.4</subfield>
+        <subfield code="b">.J38 1972</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="a">thugs rje chen po spyan ras gzigs nan son ran grol chos skor</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">thugs rje chen po spyan ras gzigs ngan song rang grol chos skor/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">texts concerned with the propitiation of avalokitesvara</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">spyan ras gzigs nan son ran grol</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Thugs rje chen po Spyan ras gzigs ṅan soṅ raṅ ʾgrol chos skor :texts concerned with the propitiation of Avalokiteśvara /rediscovered by Rig-ʾdzin ʾjaʾ-tshon-sñiṅ-po.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Leh :</subfield>
+        <subfield code="b">S.w. tashigangpa,</subfield>
+        <subfield code="c">1972</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[3], 3 [i.e. 2] leaves, [144] p.</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">smanrtsis shesrig spendzod ;</subfield>
+        <subfield code="v">v. 13</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Reproduced from the manuscript belonging to the ven. drukpa toosay rimpoche.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Cycle of practice devoted to Avalokitesvara in the form of Tukje Chenpo Chenrezik Ngensong Rangdrol. Revealed by the Nyingma treasure revealer Jatson Nyingpo (1585-1656). Reproduced from a manuscript belonging to Drukpa Tukse Rinpoche.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">thugs chen ngan song rang grol thugs rje chen po ngan song rang grol ('ja' tshon snying po)/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">chos skor//</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">'ja' tshon snying po, 1585-1656</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">7</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   78928502</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016284</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016286</controlfield>
+    <controlfield tag="008">^^^^^^s1974^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">sgom gyi gnad gsal bar phye ba bsam gtan mig sgron/</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">a treatise on bhavana and dhyana and the relationships between the various approaches to buddhist contemplative practice</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">rnal 'byor mig gi bsam gtan/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">bsam gtan mig sgron/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">a treatise on bhavana and dhyana and the relationships between the various approaches to buddhist contemplative practice</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">སྒོམ་གྱི་གནད་གསལ་བར་ཕྱེ་བ་བསམ་གཏན་མིག་སྒྲོན།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Leh :</subfield>
+        <subfield code="b">S.w. tashigangpa,</subfield>
+        <subfield code="c">1974</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">505 columns</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">smanrtsis shesrig spendzod ;</subfield>
+        <subfield code="v">v. 74</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Reproduced from a manuscript made presumably from an eastern tibetan print by 'khor-gdon gter-sprul 'chi-med-rig-'dzin.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Eighth century treatise on types of Buddhist meditation written by Nubchen Sanggye Yeshe (9th cent.). Reproduced from a manuscript likely made from an eastern Tibetan blockprint by Khordon Tertrul Chime Rigdzin.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rdzogs chen/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">rnying ma/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">sangs rgyas ye shes/  gnubs chen sangs rgyas ye shes, 8uu.</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">8</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016286</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016288</controlfield>
+    <controlfield tag="008">^^^^^^s1973^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ7450.B76</subfield>
+        <subfield code="b">1973 ORIEN</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">'bras spungs blo gsal gling dbu ma'i yig cha/</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">dbu ma'i spyi don zab don gsal ba'i sgron me/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">dbu ma la 'jug pa'i brgal lan zab don yang gsal sgron me/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">phar phyin dang dbu ma'i spyi thal sogs kyi dogs gnas 'ga' zhig las brtsams pa'i dri lan/</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the obligatory texts (yig-cha) for the study of madhyamika at 'bras-spuns blo-gsal-glin</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">འབྲས་སྤུངས་བློ་གསལ་གླིང་དབུ་མའི་ཡིག་ཆ།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">New delhi :</subfield>
+        <subfield code="b">Lha-mkhar yons-'dzin bstan-pa-rgyal-mtshan,</subfield>
+        <subfield code="c">1973</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">646 columns</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">madhyamika text series ;</subfield>
+        <subfield code="v">v. 6</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Drepung Losel Ling monastic textbooks focusing on the study of Madhyamaka. Written by Ganden Tripa 15, Paṇchen Sonam Drakpa (1529-1543) with contributions by Geshe Tsultrim Namgyel (20th cent.).</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">dbu ma madhyamika/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">yig cha/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">bsod nams grags pa/  paN chen bsod nams grags pa, 1478-1554</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">tshul khrims rnam rgyal/  dge bshes tshul khrims rnam rgyal, 19uu.</subfield>
+        <subfield code="e">contributor</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">8</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   </subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016288</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016290</controlfield>
+    <controlfield tag="008">^^^^^^s1976^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ2155</subfield>
+        <subfield code="b">.A79 1976</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="6">880-01</subfield>
+        <subfield code="a">spyod pa bsdus pa'i sgron me/</subfield>
+        <subfield code="h">[electronic resource].</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">the caryamelapakapradipa of aryadeva</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">Spyod ba bsdus paʼi sgron me :the Caryāmelāpakapradīpa of Āryadeva in its Tibetan translation by Śraddhākaravarman and Rin-chen-bzaṅ-po, with annotations by an unknown follower of the Gcod tradition.</subfield>
+    </datafield>
+    <datafield tag="880" ind1="0" ind2="0">
+        <subfield code="6">245-01</subfield>
+        <subfield code="a">སྤྱོད་པ་བསྡུས་པའི་སྒྲོན་མེ།</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">Dolanji, h.p. :</subfield>
+        <subfield code="b">Tashi dorji,</subfield>
+        <subfield code="c">1976</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[96] p.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Reproduced from a manuscript from nepal by tashi dorji.</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Tibetan translation of Aryadeva’s (3rd cent.) Caryamelapakapradipa. Translated by Sraddhakavarma (10th cent.) and his student, Rinchen Zangpo (958-1055), a principle translator of the second diffusion of Buddhism in Tibet.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gcod/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">gsang 'dus guhyasamaja/</subfield>
+    </datafield>
+    <datafield tag="720" ind1="1" ind2=" ">
+        <subfield code="a">/  slob dpon 'phags pa lha, 2uu.</subfield>
+        <subfield code="e">author</subfield>
+    </datafield>
+    <datafield tag="773" ind1="0" ind2=" ">
+        <subfield code="t">TBRC Core Text Collection.</subfield>
+        <subfield code="g">7</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   76903112</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016290</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>     nam a22     5i 4500</leader>
+    <controlfield tag="001">W00EGS1016292</controlfield>
+    <controlfield tag="008">^^^^^^s1982^^^^ii^^^^^^^^^^^|||||||tib^d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">MaCbTBRC</subfield>
+        <subfield code="c">MaCbTBRC</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+        <subfield code="a">BQ1267</subfield>
+        <subfield code="b">.R94 1982</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+        <subfield code="a">rgyal ba'i bka' 'gyur rin po che'i 'bri klog dan 'chad nan byed mkhan rnams la ne bar mkho ba'i yi ge gzan phan rnam dag gi gsal byed me lon</subfield>
+        <subfield code="h">[electronic resource] :</subfield>
+        <subfield code="b">detailed comparisons of the textual variations between the snar-than and urga redactions of the tibetan bka'-'gyur with notesconcerning the co-ne, sde-dge, and beijing red prints</subfield>
+    </datafield>
+    <datafield tag="246" ind1="1" ind2="3">
+        <subfield code="a">detailed comparisons of the textual variations between the snar-than and urga redactions of the tibetan bka'-'gyur with notesconcerning the co-ne, sde-dge, and beijing red prints</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">New delhi :</subfield>
+        <subfield code="b">Tibet house,</subfield>
+        <subfield code="c">1982</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[156] p.</subfield>
+    </datafield>
+    <datafield tag="490" ind1="0" ind2=" ">
+        <subfield code="a">rare buddhist manuscripts from the u.s.s.r. ;</subfield>
+        <subfield code="v">v. 1</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">"reproduced from a manuscript presented by the ven. tanpai nyima of the ribo gegye geden phuntsokling datshang of buryat a.s.s.r.".</subfield>
+    </datafield>
+    <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">No restrictions on access.</subfield>
+    </datafield>
+    <datafield tag="524" ind1="1 " ind2=" ">
+        <subfield code="d">Tibetan Buddhist Resource Center</subfield>
+        <subfield code="f">CC-BY</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+        <subfield code="a">Detailed comparative analysis between the Tibetan Nartang and Mongolia Khure editions of the Kangyur. Contains notes specifically concerning Chonne, Degge, and Beijing red prints. Reproduced from a manuscript of Venerable Tenpai Nyima of the Riwo Gegye Geden Puntsok Ling Dratsang in Buryatia, Russia.</subfield>
+    </datafield>
+    <datafield tag="533" ind1=" " ind2=" ">
+        <subfield code="a">Electronic reproduction.</subfield>
+        <subfield code="b">Cambridge, Mass. :</subfield>
+        <subfield code="c">Tibetan Buddhist Resource Center.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+        <subfield code="a">In Tibetan</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">bka' 'gyur dang bstan 'gyur/</subfield>
+    </datafield>
+    <datafield tag="653" ind1=" " ind2=" ">
+        <subfield code="a">/</subfield>
+    </datafield>
+    <datafield tag="776" ind1="0" ind2=" ">
+        <subfield code="c">Original</subfield>
+        <subfield code="w">(DLC)   83903670</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+        <subfield code="u">http://www.tbrc.org/link?RID=W00EGS1016292</subfield>
+        <subfield code="z">Available from TBRC</subfield>
+    </datafield>
+</record>

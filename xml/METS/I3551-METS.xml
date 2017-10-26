@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version17/mets.v1-7.xsd">
+    <mets:dmdSec ID="DMDLOG_0001">
+        <mets:mdWrap MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+                    <mods:classification authority="GDZ">Tibetan</mods:classification>
+                    <mods:relatedItem type="host">
+                        <mods:recordInfo>
+                            <mods:recordIdentifier source="gbv-ppn">W23946</mods:recordIdentifier>
+                        </mods:recordInfo>
+                    </mods:relatedItem>
+                    <mods:recordInfo>
+                        <mods:recordIdentifier source="tbrc">I3551</mods:recordIdentifier>
+                    </mods:recordInfo>
+                    <mods:identifier type="tbrc">I3551</mods:identifier>
+                    <mods:titleInfo>
+                        <mods:title>
+                            the collected works (gsun 'bum) of mkhan-po kun bzan-dpal-ldan
+                        </mods:title>
+                        <mods:subTitle>Volume 1</mods:subTitle>
+                    </mods:titleInfo>
+                    <mods:part order="10" type="host">
+                        <mods:detail>
+                            <mods:number>Volume 1</mods:number>
+                        </mods:detail>
+                    </mods:part>
+                    <mods:language>
+                        <mods:languageTerm authority="iso639-2b" type="code">bo</mods:languageTerm>
+                    </mods:language>
+                    <mods:originInfo>
+                        <mods:place>
+                            <mods:placeTerm type="text">Paro, Bhutan</mods:placeTerm>
+                        </mods:place>
+                        <mods:dateIssued encoding="w3cdtf" keyDate="yes">1982</mods:dateIssued>
+                        <mods:publisher>lama ngodru and sherab demy</mods:publisher>
+                    </mods:originInfo>
+                    <mods:name type="personal">
+                        <mods:role>
+                            <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+                        </mods:role>
+                        <mods:displayForm>kun dga' dpal ldan</mods:displayForm>
+                    </mods:name>
+                    <mods:physicalDescription>
+                        <mods:extent>2, 744</mods:extent>
+                    </mods:physicalDescription>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:dmdSec ID="DMDLOG_0002">
+        <mets:mdWrap MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+                    <mods:titleInfo>
+                        <mods:title>byang chub sems dpa'i spyod pa la 'jug pa'i tshig 'grel 'jam dbyangs bla ma'i zhal lung bdud rtsi'i thigs pa (ka spyod 'jug mkhan po kun dpal bka' 'bum)</mods:title>
+                    </mods:titleInfo>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:dmdSec ID="DMDPHYS_0000">
+        <mets:mdWrap MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+                    <mods:location>
+                        <mods:physicalLocation type="shelfmark">???</mods:physicalLocation>
+                    </mods:location>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="AMD">
+        <mets:rightsMD ID="RIGHTS">
+            <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVRIGHTS">
+                <mets:xmlData>
+                    <tbrc:rights xmlns:tbrc="http://tbrc.org/mets">
+                        <tbrc:owner>
+                            Tibetan Buddhist Resource Center
+                        </tbrc:owner>
+                        <tbrc:ownerLogo>http://tbrc.org/browser/images/TBRC_logo.gif</tbrc:ownerLogo>
+                        <tbrc:ownerSiteURL>http://tbrc.org</tbrc:ownerSiteURL>
+                        <tbrc:ownerContact/>
+                    </tbrc:rights>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:digiprovMD ID="DIGIPROV">
+            <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS">
+                <mets:xmlData>
+                    <tbrc:links xmlns:tbrc="http://tbrc.org/mets">
+                        <tbrc:reference>
+                            http://tbrc.org/xmldoc?rid=W23946
+                        </tbrc:reference>
+                        <tbrc:presentation>
+                            http://tbrc.org/#!rid=W23946
+                        </tbrc:presentation>
+                    </tbrc:links>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="PRESENTATION">
+            <mets:file ID="FILE_0001_PRESENTATION" MIMETYPE="image/png">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/web/W23946-3551/35510001.png"/>
+            </mets:file>
+            <mets:file ID="FILE_0002_PRESENTATION" MIMETYPE="image/png">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/web/W23946-3551/35510002.png"/>
+            </mets:file>
+            <mets:file ID="FILE_0003_PRESENTATION" MIMETYPE="image/png">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/web/W23946-3551/35510003.png"/>
+            </mets:file>
+            <!-- files 4 - 743 -->
+            <mets:file ID="FILE_0744_PRESENTATION" MIMETYPE="image/png">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/web/W23946-3551/35510744.png"/>
+            </mets:file>
+            <mets:file ID="FILE_0745_PRESENTATION" MIMETYPE="image/png">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/web/W23946-3551/35510745.png"/>
+            </mets:file>
+            <mets:file ID="FILE_0746_PRESENTATION" MIMETYPE="image/png">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/web/W23946-3551/35510746.png"/>
+            </mets:file>
+        </mets:fileGrp>
+        <mets:fileGrp USE="REFERENCE">
+            <mets:file ID="FILE_0001_REFERENCE" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/images/W23946-3551/35510001.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0002_REFERENCE" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/images/W23946-3551/35510002.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0003_REFERENCE" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/images/W23946-3551/35510003.tif"/>
+            </mets:file>
+            <!-- files 4 - 743 -->
+            <mets:file ID="FILE_0744_REFERENCE" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/images/W23946-3551/35510744.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0745_REFERENCE" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/images/W23946-3551/35510745.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0746_REFERENCE" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/images/W23946-3551/35510746.tif"/>
+            </mets:file>
+        </mets:fileGrp>
+        <mets:fileGrp USE="MASTER">
+            <mets:file ID="FILE_0001_MASTER" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/archive/W23946-3551/35510001.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0002_MASTER" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/archive/W23946-3551/35510002.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0003_MASTER" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/archive/W23946-3551/35510003.tif"/>
+            </mets:file>
+            <!-- files 4 - 743 -->
+            <mets:file ID="FILE_0744_MASTER" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/archive/W23946-3551/35510744.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0745_MASTER" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/archive/W23946-3551/35510745.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0746_MASTER" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/archive/W23946-3551/35510746.tif"/>
+            </mets:file>
+        </mets:fileGrp>
+        <mets:fileGrp USE="BORDERS">
+            <mets:file ID="FILE_0001_BORDERS" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/borders/W23946-3551/35510001.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0002_BORDERS" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/borders/W23946-3551/35510002.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0003_BORDERS" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/borders/W23946-3551/35510003.tif"/>
+            </mets:file>
+            <!-- files 4 - 743 -->
+            <mets:file ID="FILE_0744_BORDERS" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/borders/W23946-3551/35510744.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0745_BORDERS" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/borders/W23946-3551/35510745.tif"/>
+            </mets:file>
+            <mets:file ID="FILE_0746_BORDERS" MIMETYPE="image/tiff">
+                <mets:FLocat xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                    xlink:href="file:///volume1/Archive/W23946/borders/W23946-3551/35510746.tif"/>
+            </mets:file>
+        </mets:fileGrp>
+     </mets:fileSec>
+    <mets:structMap TYPE="LOGICAL">
+        <mets:div ID="LOG_0002"
+            LABEL="gsung 'bum/_kun bzang dpal ldan/"
+            TYPE="MultiVolumeWork">
+            <mets:mptr xmlns:xlink="http://www.w3.org/1999/xlink" LOCTYPE="URL"
+                xlink:href="http://tbrc.org/mets_export?RID=W23946"/>
+            <mets:div ADMID="AMD" DMDID="DMDLOG_0001" ID="LOG_0003"
+                LABEL="Volume 1"
+                TYPE="Volume">
+                <mets:div DMDID="DMDLOG_0002" ID="LOG_0005" LABEL="byang chub sems dpa'i spyod pa la 'jug pa'i tshig 'grel 'jam dbyangs bla ma'i zhal lung bdud rtsi'i thigs pa (ka spyod 'jug mkhan po kun dpal bka' 'bum)"
+                    TYPE="Teaching"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+    <mets:structMap TYPE="PHYSICAL">
+        <mets:div DMDID="DMDPHYS_0000" ID="PHYS_0000" TYPE="physSequence">
+            <mets:div ID="PHYS_0001" ORDER="1" TYPE="page">
+                <mets:fptr FILEID="FILE_0001_PRESENTATION"/>
+                <mets:fptr FILEID="FILE_0001_REFERENCE"/>
+                <mets:fptr FILEID="FILE_0001_MASTER"/>
+                <mets:fptr FILEID="FILE_0001_BORDERS"/>
+            </mets:div>
+            <mets:div ID="PHYS_0002" ORDER="2" TYPE="page">
+                <mets:fptr FILEID="FILE_0002_PRESENTATION"/>
+                <mets:fptr FILEID="FILE_0002_REFERENCE"/>
+                <mets:fptr FILEID="FILE_0002_MASTER"/>
+                <mets:fptr FILEID="FILE_0002_BORDERS"/>
+            </mets:div>
+            <mets:div ID="PHYS_0003" ORDER="3" TYPE="page">
+                <mets:fptr FILEID="FILE_0003_PRESENTATION"/>
+                <mets:fptr FILEID="FILE_0003_REFERENCE"/>
+                <mets:fptr FILEID="FILE_0003_MASTER"/>
+                <mets:fptr FILEID="FILE_0003_BORDERS"/>
+            </mets:div>
+            <!-- files 4 - 743 -->
+            <mets:div ID="PHYS_0744" ORDER="744" TYPE="page">
+                <mets:fptr FILEID="FILE_0744_PRESENTATION"/>
+                <mets:fptr FILEID="FILE_0744_REFERENCE"/>
+                <mets:fptr FILEID="FILE_0744_MASTER"/>
+                <mets:fptr FILEID="FILE_0744_BORDERS"/>
+            </mets:div>
+            <mets:div ID="PHYS_0745" ORDER="745" TYPE="page">
+                <mets:fptr FILEID="FILE_0745_PRESENTATION"/>
+                <mets:fptr FILEID="FILE_0745_REFERENCE"/>
+                <mets:fptr FILEID="FILE_0745_MASTER"/>
+                <mets:fptr FILEID="FILE_0745_BORDERS"/>
+            </mets:div>
+            <mets:div ID="PHYS_0746" ORDER="746" TYPE="page">
+                <mets:fptr FILEID="FILE_0746_PRESENTATION"/>
+                <mets:fptr FILEID="FILE_0746_REFERENCE"/>
+                <mets:fptr FILEID="FILE_0746_MASTER"/>
+                <mets:fptr FILEID="FILE_0746_BORDERS"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+    <mets:structLink>
+        <mets:smLink xmlns:xlink="http://www.w3.org/1999/xlink" xlink:to="PHYS_0001"
+            xlink:from="LOG_0005"/>
+        <mets:smLink xmlns:xlink="http://www.w3.org/1999/xlink" xlink:to="PHYS_0002"
+            xlink:from="LOG_0005"/>
+        <mets:smLink xmlns:xlink="http://www.w3.org/1999/xlink" xlink:to="PHYS_0003"
+            xlink:from="LOG_0005"/>
+        <!-- files 4 - 743 -->
+        <mets:smLink xmlns:xlink="http://www.w3.org/1999/xlink" xlink:to="PHYS_0744"
+            xlink:from="LOG_0005"/>
+        <mets:smLink xmlns:xlink="http://www.w3.org/1999/xlink" xlink:to="PHYS_0745"
+            xlink:from="LOG_0005"/>
+        <mets:smLink xmlns:xlink="http://www.w3.org/1999/xlink" xlink:to="PHYS_0746"
+            xlink:from="LOG_0005"/>
+    </mets:structLink>
+</mets:mets>
