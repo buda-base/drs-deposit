@@ -22,7 +22,7 @@
 #
 #		targetProject	is the name of the project that will contain the generated batches
 #
-#		archiveDir		is the path to the image archive from which the imagegroups are 
+#		archiveDir		is the path to the image archive from which the imagegroups are
 #						retrieved
 #
 #		bbDir			this is the path to the directory containing batchbuildercli.sh and
@@ -34,7 +34,7 @@
 # This script copies and renames the images in each imagegroup of each Work listed in the
 # worksList. The images are copied into the project/template/image directory.
 #
-# Then the batchbuildercli.sh is called to create the batch directory structure in the 
+# Then the batchbuildercli.sh is called to create the batch directory structure in the
 # project directory. After this, the batchbuildercli.sh is called again to create the control
 # files: batch.xml and descriptor.xml which are used to control the DRS import.
 #
@@ -50,6 +50,7 @@
 # The following needs to be reworked so that copying the project is done inside the loop
 # and the update to the project.conf is performed followed by running the bb inside the
 # loop - once for each line of the $worksList
+
 
 if [ "$#" -ne 5 ]; then
 	echo "Needs 5 parameters"
@@ -74,14 +75,6 @@ if [ ! -d $projectMaster ]; then
 fi
 projConf=$projectMaster/project.conf
 
-targetProject=$3
-echo Target Project Name: $targetProject
-if [ -e $targetProject ]; then
-	echo "targetProject already exists. Remove it or use a different name"
-	exit 2
-fi
-targetConf="$targetProject/project.conf"
-
 archiveDir=$4
 echo Archive Directory: $archiveDir
 if [ ! -d $archiveDir ]; then
@@ -100,16 +93,39 @@ if [ ! -f $bbDir/$bb ]; then
 	echo "batchbuildercli.sh does not exist in $bbDir"
 	exit 2
 fi
+bb=${bbDir}/$bb
+
+
+targetProject=$3
+# template dir path is defined in the project conf. If changed there,
+# must be changed here.
+templateDir=$targetProject/template/image
+
+projectDir=$workingDir/$targetProject
+echo Target Project Name: $targetProject
+if [ -e $projectDir ]; then
+	echo "targetProject ${projectDir} already exists. Remove it or use a different name"
+	exit 2
+else
+	mkdir $projectDir
+	# create a BB project to hold the batches that will be created
+	# jsk 11/7/17: create this structure
+	# bb has to be defined before this works
+	echo Create target dir cp -R $projectMaster $targetProject
+	echo cp -R $projectMaster/* $targetProject  >> $projectDir/bb-console.txt 2>&1
+	cp -Rp $projectMaster/* $targetProject  >> $projectDir/bb-console.txt 2>&1
+
+	# Fill in the template
+    echo $bb -a templatedirs -p $projectDir
+	echo $bb -a templatedirs -p $projectDir  >> $projectDir/bb-console.txt 2>&1
+	$bb -a templatedirs -p $projectDir>> $projectDir/bb-console.txt 2>&1
+fi
+targetConf="$targetProject/project.conf"
 
 volsPerBatch=30
 echo Volumes per Batch: $volsPerBatch
 
-# create a BB project to hold the batches that will be created
-cp -R $projectMaster $targetProject
 
-
-projectDir=$workingDir/$targetProject
-templateDir=$targetProject/template/image
 echo Template Image Directory: $templateDir
 
 echo Works List File: $worksList >> $projectDir/bb-console.txt 2>&1
@@ -133,11 +149,10 @@ while IFS=',' read -ra LINE; do
 	echo Batch Name base: $batchName
 	echo Images Directory: $imagesDir
 	echo Images Directory: $imagesDir >> $projectDir/bb-console.txt 2>&1
-	
+
 	declare -a volNms=($imagesDir/*)
 	numVols=${#volNms[@]}
 	numBatches=$(((numVols + volsPerBatch - 1) / volsPerBatch))
-	
 	start=0
 	for part in $(seq 1 ${numBatches%.*}) ; do
 		# create a batch for the current slice of the array of volumes
@@ -147,7 +162,7 @@ while IFS=',' read -ra LINE; do
 			echo ImageGroup Directory: $v >> $projectDir/bb-console.txt 2>&1
 			pdsName=$(basename $v)
 			seq=1
-			
+
 			for f in $v/* ; do
 			# do the cp and rename of each image
 				fullNm=$(basename $f)
@@ -156,27 +171,28 @@ while IFS=',' read -ra LINE; do
 				suffix=$(printf %04d $seq)
 				destNm="$pdsName--${fnm}__${suffix}.$ext"
 				cp $f $templateDir/$destNm
-				seq=$[seq + 1]
 			done
 		done
 
 		batchName="$batchNameBase-$part"
-		cd $bbDir
+	# jsk: already prepended bb with the bb path.
+		# cd $bbDir
+
 		echo $bb -a buildtemplate -p $projectDir -b $batchName
 		echo $bb -a buildtemplate -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
 		$bb -a buildtemplate -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
-	
+
 		echo $bb -a build -p $projectDir -b $batchName
 		echo $bb -a build -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
 		$bb -a build -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
-		
+
 		if [ -f $projectDir/$batchName/batch.xml ]; then
 			mv $projectDir/$batchName/batch.xml $projectDir/$batchName/batch.xml.wait
 		else
 			echo BB failed for $batchName
 			echo BB failed for $batchName >> $projectDir/bb-console.txt 2>&1
 		fi
-		
+
 		cd $workingDir
 		start=$[start + volsPerBatch]
 	done
