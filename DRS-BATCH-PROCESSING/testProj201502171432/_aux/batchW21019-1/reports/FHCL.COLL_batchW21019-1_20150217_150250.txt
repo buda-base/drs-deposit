@@ -1,0 +1,76 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/testProj201502171432/batchW21019-1
+Batch Name: FHCL.COLL_batchW21019-1_20150217_150250
+Batch Size: 56403966 / 53.7910 megabytes
+Number of valid files: 4622
+
+Number of valid files per format:
+	TIFF Baseline bilevel (Class B): 1
+	Tagged Image File Format: 759
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/testProj201502171432/batchW21019-1/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: W21019-2487
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 7599324 bytes / 7.2473 megabytes
+	File Count: 626
+	Tagged Image File Format: 626
+
+Name: W21019-2488
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 6199353 bytes / 5.9122 megabytes
+	File Count: 516
+	Tagged Image File Format: 516
+
+Name: W21019-2489
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 6472402 bytes / 6.1726 megabytes
+	File Count: 558
+	Tagged Image File Format: 558
+
+Name: W21019-2490
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 6859335 bytes / 6.5416 megabytes
+	File Count: 548
+	Tagged Image File Format: 548
+
+Name: W21019-2491
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 6812977 bytes / 6.4974 megabytes
+	File Count: 562
+	Tagged Image File Format: 562
+
+Name: W21019-2492
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 6553602 bytes / 6.2500 megabytes
+	File Count: 538
+	Tagged Image File Format: 538
+
+Name: W21019-2493
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 6007900 bytes / 5.7296 megabytes
+	File Count: 514
+	Tagged Image File Format: 514
+
+Name: W21019-2494
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 9899073 bytes / 9.4405 megabytes
+	File Count: 760
+	TIFF Baseline bilevel (Class B): 1
+	Tagged Image File Format: 759
+

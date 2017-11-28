@@ -1,0 +1,109 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/testProj201502171432/batchW12827-1
+Batch Name: FHCL.COLL_batchW12827-1_20150217_145136
+Batch Size: 260211980 / 248.1575 megabytes
+Number of valid files: 7217
+
+Number of valid files per format:
+	Tagged Image File Format: 571
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/testProj201502171432/batchW12827-1/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: W12827-2061
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 15530550 bytes / 14.8111 megabytes
+	File Count: 459
+	Tagged Image File Format: 459
+
+Name: W12827-2062
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 15895590 bytes / 15.1592 megabytes
+	File Count: 493
+	Tagged Image File Format: 493
+
+Name: W12827-2063
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 16022448 bytes / 15.2802 megabytes
+	File Count: 451
+	Tagged Image File Format: 451
+
+Name: W12827-2064
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 23126370 bytes / 22.0550 megabytes
+	File Count: 597
+	Tagged Image File Format: 597
+
+Name: W12827-2065
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 23704132 bytes / 22.6060 megabytes
+	File Count: 617
+	Tagged Image File Format: 617
+
+Name: W12827-2066
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 27214940 bytes / 25.9542 megabytes
+	File Count: 729
+	Tagged Image File Format: 729
+
+Name: W12827-2067
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 23202074 bytes / 22.1272 megabytes
+	File Count: 645
+	Tagged Image File Format: 645
+
+Name: W12827-2068
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 20100900 bytes / 19.1697 megabytes
+	File Count: 535
+	Tagged Image File Format: 535
+
+Name: W12827-2069
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 21362082 bytes / 20.3725 megabytes
+	File Count: 559
+	Tagged Image File Format: 559
+
+Name: W12827-2070
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 18858876 bytes / 17.9852 megabytes
+	File Count: 547
+	Tagged Image File Format: 547
+
+Name: W12827-2071
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 18096096 bytes / 17.2578 megabytes
+	File Count: 525
+	Tagged Image File Format: 525
+
+Name: W12827-2072
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 17175078 bytes / 16.3794 megabytes
+	File Count: 489
+	Tagged Image File Format: 489
+
+Name: W12827-2073
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 19922844 bytes / 18.9999 megabytes
+	File Count: 571
+	Tagged Image File Format: 571
+

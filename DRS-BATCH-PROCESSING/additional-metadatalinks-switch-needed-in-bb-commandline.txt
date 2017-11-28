@@ -1,0 +1,1 @@
+-objectprop object_name1::harvardMetadataLinks="Type=Aleph --- Identifier=hollis-id";object_name2::harvardMetadataLinks="Type=Aleph --- Identifier=hollis-id"

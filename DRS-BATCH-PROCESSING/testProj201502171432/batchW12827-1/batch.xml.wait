@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.0.58" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_batchW12827-1_20150217_145136</name>
+    <date>2015-02-17T14:51:36.933-06:00</date>
+    <depositAgent>01814776</depositAgent>
+    <contactInfo>
+        <successEmail>devs@tbrc.org</successEmail>
+        <failureEmail>devs@tbrc.org</failureEmail>
+        <successMethod>dropbox</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="859fa34a770adefff2165926f6602fec">W12827-2061/descriptor.xml</object>
+        <object md5="f9539e41057e4d05791f46c0a883245c">W12827-2062/descriptor.xml</object>
+        <object md5="0cad6382b2ef874c6cf4846cb8aca911">W12827-2063/descriptor.xml</object>
+        <object md5="2773169f634d77ce9ce565a7ccd7c5ed">W12827-2064/descriptor.xml</object>
+        <object md5="846fe7decfac5417fc3b2949b56a3621">W12827-2065/descriptor.xml</object>
+        <object md5="dc0c12c55dbdaece12f7bfaf61602229">W12827-2066/descriptor.xml</object>
+        <object md5="aa15691e06a372a92611032814cde019">W12827-2067/descriptor.xml</object>
+        <object md5="0cad5dc13b9ef9418bf4745222070c89">W12827-2068/descriptor.xml</object>
+        <object md5="6d0510061c46248a440e6a3498a970a6">W12827-2069/descriptor.xml</object>
+        <object md5="5d4d12bea1070756211cd69799d7dff5">W12827-2070/descriptor.xml</object>
+        <object md5="21d653966eac22a28383bc506f07ad83">W12827-2071/descriptor.xml</object>
+        <object md5="61e21980932b7bdd3169e1d4a7c6994a">W12827-2072/descriptor.xml</object>
+        <object md5="76cb43b54a656c17407db63fe9020a56">W12827-2073/descriptor.xml</object>
+    </add>
+</batch>

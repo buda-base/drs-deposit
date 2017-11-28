@@ -1,0 +1,42 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcLic-Doc-Ownr/TBRC_LicDocDnr-01
+Batch Name: FHCL.COLL_TBRC_LicDocDnr-01_20150312_111811
+Batch Size: 64602 / 0.0616 megabytes
+Number of valid files: 3
+
+Number of valid files per format:
+	Portable Document Format: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:3):
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcLic-Doc-Ownr/TBRC_LicDocDnr-01/TBRC_Agreement/.DS_Store
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcLic-Doc-Ownr/TBRC_LicDocDnr-01/TBRC_Copyright/.DS_Store
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcLic-Doc-Ownr/TBRC_LicDocDnr-01/TBRC_Documentation/.DS_Store
+
+Batch.xml written to: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcLic-Doc-Ownr/TBRC_LicDocDnr-01/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: TBRC_Agreement
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 36099 bytes / 0.0344 megabytes
+	File Count: 1
+	Portable Document Format: 1
+
+Name: TBRC_Copyright
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 15037 bytes / 0.0143 megabytes
+	File Count: 1
+	Portable Document Format: 1
+
+Name: TBRC_Documentation
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 13466 bytes / 0.0128 megabytes
+	File Count: 1
+	Portable Document Format: 1
+

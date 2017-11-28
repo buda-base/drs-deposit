@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="text">
+    <directory name="TBRC_MethObj">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="accessFlag" value="R"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="FHCL"/>
+        </metadataCategory>
+        <directory name="textTBRC_text">
+            <metadataCategory name="fileMetadata">
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="accessFlag" value="P"/>
+                <property name="isFirstGenerationInDrs" value="yes"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>

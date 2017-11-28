@@ -1,0 +1,25 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: Z:\DRS2-VZ\New_Users\TBRC\BBProjects\Sample_project_for_Donor_Agreement\TBRC_Sample_Donor_Agreement_Batch
+Batch Name: FHCL.COLL_TBRC_Sample_Donor_Agreement_Batch_20150311_160810
+Batch Size: 36099 / 0.0344 megabytes
+Number of valid files: 1
+
+Number of valid files per format:
+	Portable Document Format: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: Z:\DRS2-VZ\New_Users\TBRC\BBProjects\Sample_project_for_Donor_Agreement\TBRC_Sample_Donor_Agreement_Batch\batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: TBRC_Sample_Donor_Agreement_object
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 36099 bytes / 0.0344 megabytes
+	File Count: 1
+	Portable Document Format: 1
+

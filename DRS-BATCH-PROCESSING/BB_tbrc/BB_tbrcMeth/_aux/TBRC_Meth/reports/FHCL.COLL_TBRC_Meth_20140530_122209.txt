@@ -1,0 +1,29 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcMeth/TBRC_Meth
+Batch Name: FHCL.COLL_TBRC_Meth_20140530_122209
+Batch Size: 233 / 0.0002 megabytes
+Number of valid files: 1
+
+Number of valid files per format:
+	Extensible Markup Language: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:4):
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcMeth/TBRC_Meth/TBRC_MethObj/.DS_Store
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcMeth/TBRC_Meth/TBRC_MethObj/.DS_Store
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcMeth/TBRC_Meth/TBRC_MethObj/.DS_Store
+	/Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcMeth/TBRC_Meth/TBRC_MethObj/textTBRC_text/.DS_Store
+
+Batch.xml written to: /Users/chris/Desktop/TBRC/HARVARD-LIBRARY-PROJECT/DRS-BATCH-PROCESSING/BB_tbrcMeth/TBRC_Meth/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: TBRC_MethObj
+	Content Model: text
+	Owner: FHCL.COLL
+	Size: 233 bytes / 0.0002 megabytes
+	File Count: 1
+	Extensible Markup Language: 1
+
