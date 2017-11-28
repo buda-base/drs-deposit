@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.11" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_Methodology_20171128_175946</name>
+    <date>2017-11-28T17:59:46.679-05:00</date>
+    <depositAgent>11303056</depositAgent>
+    <depositAgentUri>http://idtest.lib.harvard.edu:9020/wordshack/person/76085</depositAgentUri>
+    <contactInfo>
+        <successEmail>travis@tbrc.org</successEmail>
+        <failureEmail>travis@tbrc.org</failureEmail>
+        <successMethod>email</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="11e23a815372a29cd2d4709343e5dafa">Methodology/descriptor.xml</object>
+    </add>
+</batch>

@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="text">
-    <directory name="TBRC_MethObj">
+    <directory name="Methodology">
         <metadataCategory name="objectMetadata">
             <property name="ownerCode" value="FHCL.COLL"/>
             <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
             <property name="accessFlag" value="R"/>
+            <property name="adminCategory" value="Vitaly's Test Content edited (id=22265)"/>
         </metadataCategory>
         <metadataCategory name="nrsMetadata">
             <property name="resourceNamePattern" value="{n}"/>
             <property name="urnAuthorityPath" value="FHCL"/>
         </metadataCategory>
+        <metadataCategory name="textObjectMetadata">
+            <property name="role" value="DOCUMENTATION"/>
+        </metadataCategory>
         <directory name="textTBRC_text">
             <metadataCategory name="fileMetadata">
                 <property name="usageClass" value="LOWUSE"/>
-                <property name="accessFlag" value="P"/>
+                <property name="fileAccessFlag" value="P"/>
                 <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="fileAdminCategory" value="Vitaly's Test Content edited (id=22265)"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=22344)"/>
             </metadataCategory>
         </directory>
     </directory>
