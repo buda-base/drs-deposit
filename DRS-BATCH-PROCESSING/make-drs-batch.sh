@@ -74,14 +74,6 @@ if [ ! -d $projectMaster ]; then
 fi
 projConf=$projectMaster/project.conf
 
-targetProject=$3
-echo Target Project Name: $targetProject
-if [ -e $targetProject ]; then
-	echo "targetProject already exists. Remove it or use a different name"
-	exit 2
-fi
-targetConf="$targetProject/project.conf"
-
 archiveDir=$4
 echo Archive Directory: $archiveDir
 if [ ! -d $archiveDir ]; then
@@ -100,16 +92,39 @@ if [ ! -f $bbDir/$bb ]; then
 	echo "batchbuildercli.sh does not exist in $bbDir"
 	exit 2
 fi
+bb=${bbDir}/$bb
+
+
+targetProject=$3
+# template dir path is defined in the project conf. If changed there,
+# must be changed here.
+templateDir=$targetProject/template/image
+
+projectDir=$workingDir/$targetProject
+echo Target Project Name: $targetProject
+if [ -e $projectDir ]; then
+	echo "targetProject ${projectDir} already exists. Remove it or use a different name"
+	exit 2
+fi
+	mkdir $projectDir
+	# create a BB project to hold the batches that will be created
+	# jsk 11/7/17: create this structure
+	# bb has to be defined before this works
+	echo Create target dir cp -R $projectMaster $targetProject
+	echo cp -R $projectMaster/* $targetProject  >> $projectDir/bb-console.txt 2>&1
+	cp -Rp $projectMaster/* $targetProject  >> $projectDir/bb-console.txt 2>&1
+
+	# Fill in the template
+    echo $bb -a templatedirs -p $projectDir
+	echo $bb -a templatedirs -p $projectDir  >> $projectDir/bb-console.txt 2>&1
+	$bb -a templatedirs -p $projectDir>> $projectDir/bb-console.txt 2>&1
+
+targetConf="$targetProject/project.conf"
 
 volsPerBatch=30
 echo Volumes per Batch: $volsPerBatch
 
-# create a BB project to hold the batches that will be created
-cp -R $projectMaster $targetProject
 
-
-projectDir=$workingDir/$targetProject
-templateDir=$targetProject/template/image
 echo Template Image Directory: $templateDir
 
 echo Works List File: $worksList >> $projectDir/bb-console.txt 2>&1
@@ -146,22 +161,25 @@ while IFS=',' read -ra LINE; do
 			echo ImageGroup Directory: $v
 			echo ImageGroup Directory: $v >> $projectDir/bb-console.txt 2>&1
 			pdsName=$(basename $v)
-			seq=1
+			pageSeq=1
 			
 			for f in $v/* ; do
-			# do the cp and rename of each image
+			# cp and rename each image
 				fullNm=$(basename $f)
 				ext="${fullNm##*.}"
 				fnm="${fullNm%.$ext}"
-				suffix=$(printf %04d $seq)
-				destNm="$pdsName--${fnm}__${suffix}.$ext"
+				suffix=$(printf %04d $pageSeq)
+				# This transform makes the file name comply with PDS sequencing
+				destNm="$pdsName--${fnm}__${suffix}.$ext"			
 				cp $f $templateDir/$destNm
-				seq=$[seq + 1]
+			    pageSeq=$[pageSeq + 1]
 			done
 		done
 
 		batchName="$batchNameBase-$part"
-		cd $bbDir
+	# jsk: already prepended bb with the bb path.
+		# cd $bbDir
+
 		echo $bb -a buildtemplate -p $projectDir -b $batchName
 		echo $bb -a buildtemplate -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
 		$bb -a buildtemplate -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
