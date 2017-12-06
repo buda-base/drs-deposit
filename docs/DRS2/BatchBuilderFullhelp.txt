@@ -1,0 +1,314 @@
+Usage:
+batchbuildercli -a action -p project_dir -b batch_name 
+[-aleph object_name=123;...] 
+[-batchprop property=value,property=value,property=value...] 
+[-objectprop object_name::property=value,property=value;...] 
+[-dirprop object_name::directory_path::property=value,property=value;...] 
+
+	-a actions,	templatedirs buildtemplate or build
+
+or: batchbuildercli -advanced TYPE -d DIRECTORY
+
+-advanced TYPE,	audio, wax, easi, or video
+-d DIRECTORY,	path to root of the content
+Version: 2.2.11
+Build Date: 09/19/2017
+Copyright: Copyright 2014 by the President and Fellows of Harvard College
+
+Overridable Properties: 
+
+PROJECT METADATA (-batchprop)
+-------------------------------
+	projectName
+	projectDescription
+	batchName
+	successEmail
+	failureEmail
+	successMethod
+	depositAgent
+	depositAgentEmail
+
+SECURE STORAGE RIGHTS (-objectprop)
+-------------------------------
+
+EMBARGO RIGHTS (-objectprop)
+-------------------------------
+	embargoBasis
+	embargoLicense
+	embargoLicenseTerms
+	embargoGrantStart
+	embargoDuration
+	embargoDurationUnit
+	embargoGrantEnd
+
+METADATA IMPORT PROPERTIES (-objectprop)
+-------------------------------
+	alephID
+
+OBJECT METADATA (-objectprop)
+-------------------------------
+	ownerCode
+	billingCode
+	accessFlag
+	adminCategory
+	captionBehavior
+	captionUnitName
+	captionDescription
+	metsLabel
+	methodology
+	nonPublicNote
+	processingLevel
+	producer
+	relatedLinks
+	harvardMetadataLinks
+	viewText
+	has_documentation
+	has_methodology
+
+MODS METADATA (-objectprop)
+-------------------------------
+	titleInfoType
+	titleInfoTitle
+	titleInfoSubTitle
+	titleInfoPartNumber
+	titleInfoPartName
+	titleInfoNonSort
+	titleInfoType2
+	titleInfoTitle2
+	titleInfoSubTitle2
+	titleInfoPartNumber2
+	titleInfoPartName2
+	titleInfoNonSort2
+	nameType
+	nameAuthority
+	nameNamePart
+	nameNamePartType
+	nameDisplayForm
+	nameAffiliation
+	nameRoleTerm
+	nameDescription
+	nameType2
+	nameAuthority2
+	nameNamePart2
+	nameNamePartType2
+	nameDisplayForm2
+	nameAffiliation2
+	nameRoleTerm2
+	nameDescription2
+	nameType3
+	nameAuthority3
+	nameNamePart3
+	nameNamePartType3
+	nameDisplayForm3
+	nameAffiliation3
+	nameRoleTerm3
+	nameDescription3
+	typeOfResource
+	typeOfResourceCollection
+	typeOfResourceManuscript
+	genre
+	originInfoPlaceTerm
+	originInfoPublisher
+	originInfoDateIssued
+	originInfoDateCreated
+	originInfoDateCaptured
+	originInfoDateValid
+	originInfoDateModified
+	originInfoCopyrightDate
+	originInfoDateOther
+	originInfoEdition
+	languageTerm
+	physicalDescriptionReformattingQuality
+	physicalDescriptionDigitalOrigin
+	abstract
+	tableOfContents
+	classification
+	identifier
+	identifierType
+	identifier2
+	identifierType2
+	identifier3
+	identifierType3
+	accessCondition
+	accessConditionDisplayLabel
+	accessConditionType
+	recordInfoRecordIdentifier
+	recordInfoSource
+
+NRS (-objectprop)
+-------------------------------
+	urnAuthorityPath
+	resourceNamePattern
+
+(PDS OBJECTS ONLY) (-objectprop)
+-------------------------------
+	objectResourceNamePattern
+
+FILE METADATA (-dirprop)
+-------------------------------
+	fileAccessFlag
+	fileAdminCategory
+	adminFlag
+	adminFlagNote
+	isFirstGenerationInDrs
+	isPreferredDeliverableSource
+	fileNonPublicNote
+	processing
+	fileproducer
+	quality
+	usageClass
+	filemethodology
+
+TEXT METADATA (-dirprop)
+-------------------------------
+	processingNote
+	encodingAgent
+	encodingRole
+	language
+
+AUDIO TECHNICAL METADATA (-dirprop)
+-------------------------------
+	disposition
+	useType
+	leftRightPanMap
+	frontRearPanMap
+
+VIDEO TECHNICAL METADATA (-dirprop)
+-------------------------------
+	leftRightPanMap
+	frontRearPanMap
+
+PDS DOCUMENT IMAGE FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+	has_target
+	has_color_profile
+	has_world_reference_data
+	file_has_documentation
+
+PDS DOCUMENT TEXT FILE METADATA (-dirprop)
+-------------------------------
+	file_has_documentation
+
+STILL IMAGE OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+
+STILL IMAGE FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+	has_target
+	has_color_profile
+	has_world_reference_data
+	file_has_documentation
+
+FILE TO FILE (DIFFERENT OBJECT) RELATIONSHIPS (-dirprop)
+-------------------------------
+	has_subset
+
+TARGET IMAGE FILE METADATA (-dirprop)
+-------------------------------
+	has_color_profile
+	file_has_documentation
+
+DOCUMENT OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+	has_supplement
+
+DOCUMENT FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+	file_has_documentation
+
+TEXT OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+
+TEXT FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+	file_has_documentation
+
+AUDIO OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+
+AUDIO FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+	file_has_documentation
+	has_presentation
+
+VIDEO OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+
+VIDEO FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+
+OPAQUE OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+
+OPAQUE FILE METADATA (-dirprop)
+-------------------------------
+	filerole
+	file_has_documentation
+
+OPAQUE CONTAINER FILE METADATA (-dirprop)
+-------------------------------
+	file_has_documentation
+
+COLOR PROFILE OBJECT METADATA (-objectprop)
+-------------------------------
+	role
+
+COLOR PROFILE FILE METADATA (-dirprop)
+-------------------------------
+	file_has_documentation
+
+IMAGE FILE RIGHTS (-dirprop)
+-------------------------------
+	maxPixelDimension
+	maxPixelBasis
+	maxPixelLicense
+	maxPixelLicenseTerms
+
+AUDIO FILE RIGHTS (-dirprop)
+-------------------------------
+	downloadProhibited
+	downloadProhibitedBasis
+	downloadProhibitedLicense
+	downloadProhibitedLicenseTerms
+	downloadProhibitedGrantStart
+	downloadProhibitedGrantEnd
+
+VIDEO FILE RIGHTS (-dirprop)
+-------------------------------
+	downloadProhibited
+	downloadProhibitedBasis
+	downloadProhibitedLicense
+	downloadProhibitedLicenseTerms
+
+OTHER RIGHTS DOCUMENTATION (-objectprop)
+-------------------------------
+	harvardPolicy
+	license
+	statute
+
+OTHER RIGHTS DOCUMENTATION (-dirprop)
+-------------------------------
+	fileHarvardPolicy
+	filelicense
+	filestatute
+
+ADDITIONAL IDS URNS (-dirprop)
+-------------------------------
+	idsDeliverableURNs
+
+PDS DOCUMENT OBJECT LIST METADATA (-objectprop)
+-------------------------------
+	pdsObject
+
