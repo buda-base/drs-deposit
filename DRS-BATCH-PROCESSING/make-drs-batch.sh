@@ -102,6 +102,9 @@ templateDir=$targetProject/template/image
 
 projectDir=$workingDir/$targetProject
 echo Target Project Name: $targetProject
+echo projectDir: $projectDir 
+echo Target Project Name: $targetProject  >> $projectDir/bb-console.txt 2>&1
+echo projectDir: $projectDir  >> $projectDir/bb-console.txt 2>&1
 if [ -e $projectDir ]; then
 	echo "targetProject ${projectDir} already exists. Remove it or use a different name"
 	exit 2
