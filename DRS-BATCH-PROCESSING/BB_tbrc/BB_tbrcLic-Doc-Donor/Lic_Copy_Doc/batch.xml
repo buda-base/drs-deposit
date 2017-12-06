@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.11" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_Lic_Copy_Doc_20171128_173135</name>
+    <date>2017-11-28T17:31:35.091-05:00</date>
+    <depositAgent>1130356</depositAgent>
+    <depositAgentUri>http://idtest.lib.harvard.edu:9020/wordshack/person/76085</depositAgentUri>
+    <contactInfo>
+        <successEmail>travis@tbrc.org</successEmail>
+        <failureEmail>travis@tbrc.org</failureEmail>
+        <successMethod>all</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="cff9044093c4cb4392f4743fc26dfcab">Agreement/descriptor.xml</object>
+        <object md5="415b38a67c135b466a0fadbbd47fc934">Copyright/descriptor.xml</object>
+        <object md5="a084e7229281f4378bc33c6196ba2540">Documentation/descriptor.xml</object>
+    </add>
+</batch>

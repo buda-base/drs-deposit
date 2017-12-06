@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="document">
-    <directory name="TBRC_Documentation02">
+    <directory name="Documentation">
         <metadataCategory name="objectMetadata">
             <property name="accessFlag" value="R"/>
             <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="producer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            <property name="adminCategory" value="Vitaly's2 (id=66955)"/>
             <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
-            <property name="adminCategory" value="VZ's test objects (id=245)"/>
-            <property name="producer" value="Tibetan Buddhist Resource Center (id=802)"/>
         </metadataCategory>
         <metadataCategory name="nrsMetadata">
             <property name="resourceNamePattern" value="{n}"/>
@@ -14,14 +14,21 @@
         </metadataCategory>
         <metadataCategory name="documentObjectMetadata">
             <property name="role" value="DOCUMENTATION"/>
+            <property name="role" value="DONOR_AGREEMENT"/>
+            <property name="role" value="LICENSE"/>
         </metadataCategory>
         <directory name="documentTBRC_docObj">
             <metadataCategory name="fileMetadata">
                 <property name="isFirstGenerationInDrs" value="yes"/>
                 <property name="usageClass" value="LOWUSE"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=22344)"/>
             </metadataCategory>
             <metadataCategory name="documentFileMetadata">
-                <property name="role" value="DOCUMENTATION"/>
+                <property name="filerole" value="ARCHIVAL_MASTER"/>
+                <property name="filerole" value="PRODUCTION_MASTER"/>
+                <property name="filerole" value="DELIVERABLE"/>
+                <property name="filerole" value="DOCUMENTATION"/>
+                <property name="filerole" value="LICENSE"/>
             </metadataCategory>
         </directory>
     </directory>

@@ -1,0 +1,25 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/jimk/svn/DRS-BATCH-PROCESSING/BB_tbrc/BB_tbrcLic-Doc-Donor/Lic_Copy_Doc
+Batch Name: FHCL.COLL_Lic_Copy_Doc_20171128_172907
+Batch Size: 36099 / 0.0344 megabytes
+Number of valid files: 1
+
+Number of valid files per format:
+	Portable Document Format: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: /Users/jimk/svn/DRS-BATCH-PROCESSING/BB_tbrc/BB_tbrcLic-Doc-Donor/Lic_Copy_Doc/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: Agreement
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 36099 bytes / 0.0344 megabytes
+	File Count: 1
+	Portable Document Format: 1
+
