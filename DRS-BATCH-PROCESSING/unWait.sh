@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#
+# Undo a failed batchs change to batch.xml.wait
 DEFAULT_BATCH_DIR_PATTERN="batchW*"
 BATCH_DIR_PATTERN=$DEFAULT_BATCH_DIR_PATTERN
 BATCH_XML=batch.xml
@@ -22,15 +23,6 @@ ME=$(basename $0)
 BATCH_ROOT=${1}$BATCH_DIR_PATTERN
 
 for b in ${BATCH_ROOT} ; do # rm /* it goes one level too deep
-	bTarget=$(basename $b)
-	 [ -f $b/$BATCH_XML ] && mv $b/$BATCH_XML $b/${BATCH_XML}${WAIT_SUFFIX}
-	 sftp -o LogLevel=ERROR -P 15366 -i /Users/jimk/ppk/rootAtWeyrSSH.ppk jimk@inner.tbrc.org:incoming/ << FTPHERE 2> ftp.log
-	 mkdir $bTarget
-	 # you have to make the directory, and then put stuff in it. here,
-	 # $bTarget must be the last directory in the path $b 
-	 put -r $b 
-	 # operations are relative to the directory in the command line ":incoming"
-	 rename ${bTarget}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML
-FTPHERE
+	 [ -f $b/${BATCH_XML}${WAIT_SUFFIX} ] && mv $b/$BATCH_XML${WAIT_SUFFIX} $b/${BATCH_XML}
 done
 
