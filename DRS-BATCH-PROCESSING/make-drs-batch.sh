@@ -47,110 +47,138 @@
 #
 #    java -jar saxonhe-9.4.0.7.jar the-project.conf make-proj-conf.xsl hId=the-hollis-id
 #
-# The following needs to be reworked so that copying the project is done inside the loop
-# and the update to the project.conf is performed followed by running the bb inside the
-# loop - once for each line of the $worksList
+
+
+
+TIMING_LOG_FILE=timeBuildBatch.log
+# bash builtin time format
+TIMEFORMAT=$'%R\t%U\t%S\t%P'
+export TIMEFORMAT
+
+# Who's running?
+ME=`basename ${0}`
 
 if [ "$#" -ne 5 ]; then
-	echo "Needs 5 parameters"
-	echo "Usage: make-drs-batch worksList projectMaster targetProject archiveDir bbDir"
+	echo "${ME}: Needs 5 parameters"
+	echo "Usage: make-drs-batch worksList projectMaster targetProjectDir archiveDir bbDir"
 	exit 1
 fi
 
-workingDir=`pwd`
+# jsk: need full path to script for components
+ MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 worksList=$1
 echo Works List File: $worksList
 if [ ! -f $worksList ]; then
-	echo "worksList file does not exist"
+	echo "${ME}: worksList \'${1}\' does not exist or is not a directory"
 	exit 2
 fi
 
 projectMaster=$2
 echo BB Project Directory: $projectMaster
 if [ ! -d $projectMaster ]; then
-	echo "projectMaster does not exist or is not a directory"
+	echo "${ME}: projectMaster \'${2}\' does not exist or is not a directory"
 	exit 2
 fi
-projConf=$projectMaster/project.conf
+masterProjConf=$projectMaster/project.conf
 
 archiveDir=$4
 echo Archive Directory: $archiveDir
 if [ ! -d $archiveDir ]; then
-	echo "archiveDir does not exist or is not a directory"
+	echo "${ME}: archiveDir \'${4}\' does not exist or is not a directory"
 	exit 2
 fi
 
 bbDir=$5
-bb=./batchbuildercli.sh
+bb=batchbuildercli.sh
+
 echo BB: $bbDir $bb
 if [ ! -d $bbDir ]; then
-	echo "BatchBuilder directory does not exist"
+	echo "${ME}: BatchBuilder directory  \'${5}\' does not exist or is not a directory"
 	exit 2
 fi
 if [ ! -f $bbDir/$bb ]; then
-	echo "batchbuildercli.sh does not exist in $bbDir"
+	echo "${ME}: batchbuildercli.sh does not exist in $bbDir"
 	exit 2
 fi
 bb=${bbDir}/$bb
 
 
-targetProject=$3
-# template dir path is defined in the project conf. If changed there,
-# must be changed here.
-templateDir=$targetProject/template/image
+# jsk: Target project might be absolute
+targetProjectDir=$3
 
-projectDir=$workingDir/$targetProject
-echo Target Project Name: $targetProject
-echo projectDir: $projectDir 
-echo Target Project Name: $targetProject  >> $projectDir/bb-console.txt 2>&1
-echo projectDir: $projectDir  >> $projectDir/bb-console.txt 2>&1
-if [ -e $projectDir ]; then
-	echo "targetProject ${projectDir} already exists. Remove it or use a different name"
+# template dir path suffix (template/image) is defined in the project conf. If changed there,
+# must be changed here.
+templateDir=$targetProjectDir/template/image
+
+logPath=$targetProjectDir/bb-console.txt
+
+echo Target Project Directory: $targetProjectDir
+
+if [ -e $targetProjectDir ]; then
+	echo "${ME}: targetProjectDir ${targetProjectDir} already exists. Remove it or use a different name"
 	exit 2
 fi
-	mkdir $projectDir
-	# create a BB project to hold the batches that will be created
-	# jsk 11/7/17: create this structure
-	# bb has to be defined before this works
-	echo Create target dir cp -R $projectMaster $targetProject
-	echo cp -R $projectMaster/* $targetProject  >> $projectDir/bb-console.txt 2>&1
-	cp -Rp $projectMaster/* $targetProject  >> $projectDir/bb-console.txt 2>&1
+mkdir "$targetProjectDir"
 
-	# Fill in the template
-    echo $bb -a templatedirs -p $projectDir
-	echo $bb -a templatedirs -p $projectDir  >> $projectDir/bb-console.txt 2>&1
-	$bb -a templatedirs -p $projectDir>> $projectDir/bb-console.txt 2>&1
+echo targetProjectDir: $targetProjectDir  >> $logPath 2>&1
+# 
+# Start timing log
 
-targetConf="$targetProject/project.conf"
+# create a BB project to hold the batches that will be created
+# jsk 11/7/17: create this structure
+# bb has to be defined before this works
+#
+# jsk 12/5/17: don't need to create this anymore. The folders 
+# are created in the templatedirs BB action, and the 
+# project.conf is written by doing an xsl transform on the master
+#
+# echo Create target dir cp -R $projectMaster $targetProjectDir
+# echo cp -R $projectMaster/* $targetProjectDir  >> $logPath 2>&1
+# cp -Rp $projectMaster/* $targetProjectDir  >> $logPath 2>&1
+# You do nees to copy something
+cp $masterProjConf $targetProjectDir >> $logPath 2>&1
+
+# Fill in the template
+
+echo $bb -a templatedirs -p $targetProjectDir
+echo $bb -a templatedirs -p $targetProjectDir  >> $logPath 2>&1
+$bb -a templatedirs -p $targetProjectDir>> $logPath 2>&1
+
+targetConf="$targetProjectDir/project.conf"
 
 volsPerBatch=30
 echo Volumes per Batch: $volsPerBatch
 
-
 echo Template Image Directory: $templateDir
 
-echo Works List File: $worksList >> $projectDir/bb-console.txt 2>&1
-echo BB Project Directory: $projectMaster >> $projectDir/bb-console.txt 2>&1
-echo Target Project Name: $targetProject >> $projectDir/bb-console.txt 2>&1
-echo Archive Directory: $archiveDir >> $projectDir/bb-console.txt 2>&1
-echo Template Image Directory: $templateDir >> $projectDir/bb-console.txt 2>&1
-echo Volumes per Batch: $volsPerBatch >> $projectDir/bb-console.txt 2>&1
-
+echo Works List File: $worksList >> $logPath 2>&1
+echo BB Project Directory: $projectMaster >> $logPath 2>&1
+echo Target Project Name: $targetProjectDir >> $logPath 2>&1
+echo Archive Directory: $archiveDir >> $logPath 2>&1
+echo Template Image Directory: $templateDir >> $logPath 2>&1
+echo Volumes per Batch: $volsPerBatch >> $logPath 2>&1
 
 while IFS=',' read -ra LINE; do
 	RID=${LINE[0]}
 	HID=${LINE[1]}
 	echo TBRC $RID at HOLLIS $HID
-	echo TBRC $RID at HOLLIS $HID >> $projectDir/bb-console.txt 2>&1
-	cd $workingDir
-	# make a custom project.conf for the current work
-	java -jar saxonhe-9.4.0.7.jar $projConf make-proj-conf.xsl hId=$HID > $targetConf
+	echo TBRC $RID at HOLLIS $HID >> $logPath 2>&1
+	#
+	# jsk Pos indep 12/7/17
+	# cd $workingDir
+	# make a custom project.conf for the current work.
+	# jsk 12/5/17: Sketchy, because it writes
+	# project.conf with the HOLLIS number after every build.
+	# Look into using property arguments to bb
+	java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" $masterProjConf ${MEPATH}/make-proj-conf.xsl hId=$HID > $targetConf
+
+
 	imagesDir=$archiveDir/$RID/images
 	batchNameBase="batch$RID"
 	echo Batch Name base: $batchName
 	echo Images Directory: $imagesDir
-	echo Images Directory: $imagesDir >> $projectDir/bb-console.txt 2>&1
+	echo Images Directory: $imagesDir >> $logPath 2>&1
 	
 	declare -a volNms=($imagesDir/*)
 	numVols=${#volNms[@]}
@@ -162,7 +190,7 @@ while IFS=',' read -ra LINE; do
 		for v in ${volNms[@]:start:volsPerBatch} ; do
 			# for each volume in the slice cp and rename the images
 			echo ImageGroup Directory: $v
-			echo ImageGroup Directory: $v >> $projectDir/bb-console.txt 2>&1
+			echo ImageGroup Directory: $v >> $logPath 2>&1
 			pdsName=$(basename $v)
 			pageSeq=1
 			
@@ -183,22 +211,36 @@ while IFS=',' read -ra LINE; do
 	# jsk: already prepended bb with the bb path.
 		# cd $bbDir
 
-		echo $bb -a buildtemplate -p $projectDir -b $batchName
-		echo $bb -a buildtemplate -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
-		$bb -a buildtemplate -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
-	
-		echo $bb -a build -p $projectDir -b $batchName
-		echo $bb -a build -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
-		$bb -a build -p $projectDir -b $batchName >> $projectDir/bb-console.txt 2>&1
+		echo $bb -a buildtemplate -p $targetProjectDir -b $batchName
+		echo $bb -a buildtemplate -p $targetProjectDir -b $batchName >> $logPath 2>&1
+	    $bb -a buildtemplate -p $targetProjectDir -b $batchName >> $logPath 2>&1
+
+	    		nFiles=`find $targetProjectDir -type f | wc -l`
+		echo -n ${batchName} nFiles  $nFiles ' ' >> $TIMING_LOG_FILE
 		
-		if [ -f $projectDir/$batchName/batch.xml ]; then
-			mv $projectDir/$batchName/batch.xml $projectDir/$batchName/batch.xml.wait
-		else
-			echo BB failed for $batchName
-			echo BB failed for $batchName >> $projectDir/bb-console.txt 2>&1
-		fi
+		echo $bb -a build -p $targetProjectDir -b $batchName
+		echo $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
+        
+        # { time $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
+        $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
+
+
+		# jsk 11.dec.17. Dont rename here. Do it in ftp script
+		# if [ -f $targetProjectDir/$batchName/batch.xml ]; then
+		# 	mv $targetProjectDir/$batchName/batch.xml $targetProjectDir/$batchName/batch.xml.wait
+		# else
+		# 	echo BB failed for $batchName
+		# 	echo BB failed for $batchName >> $logPath 2>&1
+		# fi
+		[ -f $targetProjectDir/$batchName/batch.xml ] || { 
+
+			echo BB failed for $batchName ;
+			echo BB failed for $batchName >> $logPath 2>&1 ; 
+
+			# We could decide to continue 
+			# exit 1;
+		}
 		
-		cd $workingDir
 		start=$[start + volsPerBatch]
 	done
 done < $worksList
