@@ -48,6 +48,23 @@
 #    java -jar saxonhe-9.4.0.7.jar the-project.conf make-proj-conf.xsl hId=the-hollis-id
 #
 
+# jsk 12.21.17 ##https://github.com/BuddhistDigitalResourceCenter/drs-deposit/issues/14
+# Filter out banned extensions
+declare -a BANNED_EXT=('db' 'DS_Store' )
+
+
+function toLower() {
+	echo $1 | tr '[:upper:]' '[:lower:]'
+}
+#
+# return true (0) if an extension is banned
+function isBannedExt() {
+	testExt=$(toLower "$1")
+	for anExt in ${BANNED_EXT[@]} ; do
+		[ "$testExt" == "$(toLower $anExt)"  ] && return 0;
+    done
+	return 1 
+}
 
 
 TIMING_LOG_FILE=timeBuildBatch.log
@@ -198,6 +215,9 @@ while IFS=',' read -ra LINE; do
 			# cp and rename each image
 				fullNm=$(basename $f)
 				ext="${fullNm##*.}"
+
+				# jsk: 12.21.17: Issue #14
+				 if $(isBannedExt ${ext} ) ; then continue ; fi
 				fnm="${fullNm%.$ext}"
 				suffix=$(printf %04d $pageSeq)
 				# This transform makes the file name comply with PDS sequencing
