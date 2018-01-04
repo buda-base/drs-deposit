@@ -254,8 +254,8 @@ while IFS=',' read -ra LINE; do
 		# fi
 		[ -f $targetProjectDir/$batchName/batch.xml ] || { 
 
-			echo BB failed for $batchName ;
-			echo BB failed for $batchName >> $logPath 2>&1 ; 
+			echo error BB failed for $batchName ;
+			echo error BB failed for $batchName >> $logPath 2>&1 ; 
 
 			# We could decide to continue 
 			# exit 1;
