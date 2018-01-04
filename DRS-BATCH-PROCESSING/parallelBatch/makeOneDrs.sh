@@ -1,22 +1,41 @@
 #! /bin/bash
 #   Make one DRS Launch, with tracking control
-# 
+#
 # arguments:
 
-# 
+#
 function Usage {
 cat << ENDUSAGE
-synopsis:   
-		makeOneDrs  workListFileName statusRoot completionRoot
-		
-		worksListFileName: a file containing lines of comma separated Work,HOLLIS tuples
-							HACK: filename must have the format worksList[0-9]+.*
+synopsis:
+	makeOneDrs  workListFileName statusRoot completionRoot
 
-		statusRoot: a directory to hold the tracking file for underway jobs.
+	worksListFileName: 	Path to a file containing lines of
+						comma separated Work,HOLLIS tuples.
+						HACK ALERT: filename must have the format
+						worksList[0-9]+.txt
 
-		completionRoot: directory the tracking files for completed jobs
+	statusRoot: 		a directory to hold the tracking file for underway jobs.
 
-		statusRoot and completionRoot are created if they do not exist
+	completionRoot: 	directory the tracking files for completed jobs
+
+	statusRoot and completionRoot are created if they do not exist
+
+Before using:
+
+	edit this script and set up
+
+	WORKS_SOURCE_HOME	Where the works live. Parent of folders named W......
+
+	DRS_CODE_HOME		Where the DRS processing scripts live: typically,
+						the subdirectory DRS-BATCH-PROCESSING of your local
+						repository of
+						https://github.com/BuddhistDigitalResourceCenter/drs-deposit
+
+	BATCH_OUTPUT_HOME	Where you'd like your finished batches to go.
+						Under this folder are Batch Builder projects, each one
+						corresponding to one work list.
+
+	BB_HOME				Location of the HUL Batch Builder executable.
 
 ENDUSAGE
 
@@ -50,11 +69,11 @@ fi
 
 statusRoot=$2
 [ -d "$2" ] &&  { echo "${ME}":info: creating status directory  \'"$2"\'
-				mkdir $2; 
+				mkdir $2;
 			 }
 completionRoot=$3
 [ -d "$3" ] &&  { echo "${ME}":info: creating completion directory  \'"$3"\'
-				mkdir $3; 
+				mkdir $3;
 			 }
 
 # build the output path
@@ -62,7 +81,7 @@ series=$(basename $1)
 #
 # Strip the extension
 series="${series%.*}"
-# 
+#
 # get the number
 x=${series#$(expr $WORKS_LIST_FN)}
 # echo 'series:' $series
@@ -90,7 +109,7 @@ batchPath=${BATCH_OUTPUT_HOME}/${series}.$(date +%F.%H.%M)
 wait $thisRun
 
 # Capture the batch's status.This is somewhat coarse grained, because
-# the batch will continue after one has failed, so we need to look for batch.xml 
+# the batch will continue after one has failed, so we need to look for batch.xml
 # in the subdir
 childRc=$?
 
@@ -98,18 +117,7 @@ childRc=$?
 # cat ${doneFile} | awk \{ printf "%s_%d_%s" $0 $childRc  $(date +%H:%M:%S) \} #   >   ${resultsDir}/$doneFileName
 #	set -x
 #	cat ${doneFile} | awk -v newFields=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")  '{printf "!%s_%s@\n", $0, $newFields }' #   >   ${resultsDir}/$doneFileName
-finishedArgs=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)") 
+finishedArgs=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")
 #
 cat ${statusRoot}/worksList${x} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/worksList${x}
 rm ${statusRoot}/worksList${x}
-
-
-
-
-
-
-
-
-
-
-

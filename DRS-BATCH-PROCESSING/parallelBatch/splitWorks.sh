@@ -2,11 +2,19 @@
 ME=$(basename $0)
 
 usage() {
-	 printf "\b\nUsage: ${ME} worksList  where  \
-\n\t worksList\t\tis the list of works to be batched.\n" ; 
+	cat << USAGE
+
+	Usage: splitWorks.sh worksList where
+		worksList		is the list of works to be batched.
+	Setup:
+	 	default is to write 240 lines / worksList. Change it by editing this
+	file
+USAGE
 exit 1;
 }
 
+declare -i worksPerRun
+worksPerRun=240
 # do we have what we need?
 [ "x$1" == "x" ] && usage
 
@@ -16,9 +24,8 @@ sourceFile=$1
 [ -f $sourceFile ] || { echo "${ME}: source file \"$sourceFile\" does not exist or is not a file." ; exit 2 ; }
 
 
-declare -i worksPerRun
-worksPerRun=240
-# 
+
+#
 declare -i fileCount
 fileCount=0
 
