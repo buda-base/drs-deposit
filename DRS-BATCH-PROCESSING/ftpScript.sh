@@ -23,11 +23,12 @@
 #
 #section 
 ME=$(basename $0)
+ME_DIR=$(dirname $0)
 
 #section
 
 #section error logging. Requires trailing /
-. ./setupErrorlog.sh "${ME}"
+. ${ME_DIR}/setupErrorlog.sh "${ME}"
 #endsection Set up logging
 
 usage() {
