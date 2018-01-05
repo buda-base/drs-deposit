@@ -50,7 +50,7 @@
 
 # jsk 12.21.17 ##https://github.com/BuddhistDigitalResourceCenter/drs-deposit/issues/14
 # Filter out banned extensions
-declare -a BANNED_EXT=('db' 'DS_Store' )
+declare -a BANNED_EXT=('pdf' 'db' 'DS_Store' )
 
 
 function toLower() {
