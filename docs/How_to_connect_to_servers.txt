@@ -1,0 +1,78 @@
+To:	Zakuta, Vitaly
+Subject:	RE: VPN established, trying to connect to servers
+
+Yup, that was it – I’m in. (using the telnet port 22) was what threw me.
+
+
+Thanks,  much
+
+Jim Katz
+Buddhist Digital Resource Center
+jimk@tbrc.org
++1 781.254.7537
+
+From: Zakuta, Vitaly [mailto:vitaly_zakuta@harvard.edu]  
+Sent: Tuesday, January 9, 2018 3:22 PM 
+To: Katz, James <jimk@tbrc.org> 
+Subject: Re: VPN established, trying to connect to servers
+
+Jim,
+One more thing, I noticed after looking at the screenshots you provided: right now BDRC only has the 
+DRS2 QA drop box credentials, so you should be only able to connect to drs2drop-qa.hul.harvard.edu. 
+Make sure you set the connection to SFTP, port 22. 
+
+Vitaly
+
+From: Vitaly Zakuta <vitaly_zakuta@harvard.edu> 
+Date: Tuesday, January 9, 2018 at 3:11 PM 
+To: "Katz, James" <jimk@tbrc.org> 
+Subject: Re: VPN established, trying to connect to servers
+
+Jim,
+Make sure you are using the VPN tunnel #hul when you connect. 
+In the VPN login name field the you should put in:
+jimk@tbrc.org#hul
+ 
+Then, once you are connected to the #hul tunnel, try to access the DRS2 QA dropbox again.
+Let me know how it goes.
+ 
+Vitaly
+ 
+From: "jimk@tbrc.org" <jimk@tbrc.org> 
+Date: Tuesday, January 9, 2018 at 2:22 PM 
+To: Vitaly Zakuta <vitaly_zakuta@harvard.edu> 
+Subject: VPN established, trying to connect to servers
+ 
+HI Vitaly,
+Thank you for establishing my VPN id. I’ve installed the Cisco software, it’s up on a couple of clients.
+ 
+However,….
+ 
+On https://wiki.harvard.edu/confluence/display/LibraryStaffDoc/DRS+Quick+Start+Reference
+The production and QA DRS2 dropboxes are given as 
+DRS 2 Production Dropboxes
+*	 
+*	Host Name: drs2drop.lib.harvard.edu
+*	…
+DRS 2 QA (Test) Dropboxes
+*	 
+*	Host Name: drs2drop-qa.hul.harvard.edu
+*	…
+Yet when I try to access them from Filezilla from in the firewall (as jimk@tbrc.org, with my Harvard 
+password, or with the older drc2_tbrctest id, the results are always the same as in the screen shot (I 
+think it’s an id issue, because when I log on with a random email and password, the response is the 
+same as below.)
+Also, my HUID is not authorized to use drs webadmin. Would you be the person to correct that, or 
+should I enter a ticket?
+ 
+Thanks, 
+jim
+ 
+ 
+ 
+ 
+Jim Katz
+Buddhist Digital Resource Center
+jimk@tbrc.org
++1 781.254.7537
+ 
