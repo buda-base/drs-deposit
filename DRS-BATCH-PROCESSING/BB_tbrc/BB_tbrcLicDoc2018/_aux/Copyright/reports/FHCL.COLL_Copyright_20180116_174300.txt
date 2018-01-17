@@ -1,0 +1,25 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/jimk/drs-deposit/DRS-BATCH-PROCESSING/BB_tbrc/BB_tbrcLicDoc2018/Copyright
+Batch Name: FHCL.COLL_Copyright_20180116_174300
+Batch Size: 15037 / 0.0143 megabytes
+Number of valid files: 1
+
+Number of valid files per format:
+	Portable Document Format: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: /Users/jimk/drs-deposit/DRS-BATCH-PROCESSING/BB_tbrc/BB_tbrcLicDoc2018/Copyright/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: Copyright
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 15037 bytes / 0.0143 megabytes
+	File Count: 1
+	Portable Document Format: 1
+
