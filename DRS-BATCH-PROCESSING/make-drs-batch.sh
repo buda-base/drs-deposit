@@ -50,7 +50,7 @@
 
 # jsk 12.21.17 ##https://github.com/BuddhistDigitalResourceCenter/drs-deposit/issues/14
 # Filter out banned extensions
-declare -a BANNED_EXT=('pdf' 'db' 'DS_Store' )
+declare -a BANNED_EXT=('png''pdf' 'db' 'DS_Store' )
 
 
 function toLower() {
@@ -235,8 +235,9 @@ while IFS=',' read -ra LINE; do
 		echo $bb -a buildtemplate -p $targetProjectDir -b $batchName >> $logPath 2>&1
 	    $bb -a buildtemplate -p $targetProjectDir -b $batchName >> $logPath 2>&1
 
-	    		nFiles=`find $targetProjectDir -type f | wc -l`
-		echo -n ${batchName} nFiles  $nFiles ' ' >> $TIMING_LOG_FILE
+		# Count files in batch
+		# nFiles=`find $targetProjectDir -type f | wc -l`
+		# echo -n ${batchName} nFiles  $nFiles ' ' >> $TIMING_LOG_FILE
 		
 		echo $bb -a build -p $targetProjectDir -b $batchName
 		echo $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
