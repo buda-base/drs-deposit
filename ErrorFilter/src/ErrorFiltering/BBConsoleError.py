@@ -1,7 +1,9 @@
 '''
 Created on Jan 2, 2018
 
-@author: jsk
+@author: TBRC-jimk
+
+Holds information about error instances in bb-console.txt
 '''
 
 

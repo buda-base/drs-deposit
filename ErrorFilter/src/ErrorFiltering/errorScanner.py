@@ -2,6 +2,10 @@
 Created on Jan 1, 2018
 
 @author: TBRC-jimk
+
+Scans an input stream for a specific set of error texts.
+	The stream is assumed to be in grep -n format:
+	filename:line:Other text (which can include the grep delimiter ':'
 '''
 import fileinput
 import posixpath
@@ -9,9 +13,6 @@ from ErrorFiltering import errorBead
 
 
 class ErrorScanner:
-	"""Scans an input stream for a specific set of error texts.
-	The stream is assumed to be in grep -n format:
-	filename:line:Other text (which can include the grep delimiter, ':' """
 	
 	errorResults = []
 	lineCount = 0

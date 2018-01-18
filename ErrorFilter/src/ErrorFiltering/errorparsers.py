@@ -34,7 +34,7 @@ def WorkThenVolumeText(errorText):
 		if len(beads) == 1:
 			work = beads[0]
 	
-	return work, volume
+	return f"work:{work}:Vol:{volume}
 
 
 EXIFre = None
@@ -50,7 +50,7 @@ def EXIFWork(errorBead):
 	m = EXIFre.match(errorBead.errorText)
 	s = m.group(1)
 	w, v = WorkThenVolumeText(s)
-	return w + v, s
+	return f"{w}-{v} file:", s
 
 
 '''
@@ -59,4 +59,5 @@ The TIKA errors dont have a work/volume descriptor, so just return the bbconsole
 
 
 def TikaParse(errorBead):
-	return errorBead.file, errorBead.lineNumber
+	
+	return f"{errorBead.file} line:", errorBead.lineNumber

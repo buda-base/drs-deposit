@@ -2,13 +2,12 @@
 Created on Jan 2, 2018
 
 @author: jsk
-'''
 
-
-class ErrorBead:
-	'''
 	ErrorBead: base class for error handling
-	'''
+'''
+class ErrorBead:
+	"More pydoc here"
+
 	file = ''
 	lineNumber = ''
 	bbErrorKey = None
