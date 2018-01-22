@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.13" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
-    <name>FHCL.COLL_LinkTest_20180117_115210</name>
-    <date>2018-01-17T11:52:10.918-05:00</date>
+    <name>FHCL.COLL_LinkTest_20180117_145357</name>
+    <date>2018-01-17T14:53:57.978-05:00</date>
     <depositAgent>10684323</depositAgent>
     <depositAgentUri>http://idtest.lib.harvard.edu:9020/wordshack/person/78504</depositAgentUri>
     <contactInfo>
@@ -10,6 +10,7 @@
         <successMethod>all</successMethod>
     </contactInfo>
     <add>
-        <object md5="295eace8d5f8956e30c37afe172aa1ef">LinkTestObj/descriptor.xml</object>
+        <object md5="8d182c63c52026d0dfad7095ca518e24">LinkTestObject3/descriptor.xml</object>
+        <object md5="0fd647769727e8327fbded486d64b546">LinkTestObject2/descriptor.xml</object>
     </add>
 </batch>
