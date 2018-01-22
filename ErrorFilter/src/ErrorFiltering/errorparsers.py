@@ -34,7 +34,7 @@ def WorkThenVolumeText(errorText):
 		if len(beads) == 1:
 			work = beads[0]
 	
-	return f"work:{work}:Vol:{volume}
+	return work,volume
 
 
 EXIFre = None
