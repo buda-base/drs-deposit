@@ -15,7 +15,7 @@ from ErrorFiltering.BBErrorKey import BBErrorKey
 from ErrorFiltering.errorparsers import WorkThenVolume, EXIFWork, TikaParse	
 							
 from ErrorFiltering.errorLabels import *
-import pdb
+from ErrorFiltering.errorprinters import *
 
 knownErrors = []
 """List of possible errors. Key is a mnemonic constant, value is the text in the 
@@ -34,7 +34,8 @@ def usage():
 def main(argv):
 	inputFile, _args = parseArgs(argv)
 	if not os.path.exists(inputFile):
-		usage()
+		
+		print (f"file {inputFile} not found.")
 		sys.exit(2)
 		
 	print ('Input file is ', inputFile)
@@ -73,10 +74,10 @@ def parseArgs(argv):
 def loadErrors():
 	"""Build the error dictionary"""
 
-	knownErrors.append(BBErrorKey(FAIL_MODS_ID, FAIL_MODS_CALL, lambda errBead: WorkThenVolume(errBead)))
-	knownErrors.append(BBErrorKey(FAIL_EXIF_ID, FAIL_EXIF_STR, lambda errBead: EXIFWork(errBead)))
-	knownErrors.append(BBErrorKey(FAIL_TIKA_ID, FAIL_TIKA_STR, lambda errBead: TikaParse(errBead)))
-	knownErrors.append(BBErrorKey(FAIL_MULTI_PAGE_TIF_ID, FAIL_MULTI_PAGE_TIF_STR, lambda errBead: TikaParse(errBead)))
+	knownErrors.append(BBErrorKey(FAIL_MODS_ID, FAIL_MODS_CALL, lambda errBead: WorkThenVolume(errBead), lambda l,e: dumpFunc(l,e)))
+	knownErrors.append(BBErrorKey(FAIL_EXIF_ID, FAIL_EXIF_STR, lambda errBead: EXIFWork(errBead), lambda l,e: dumpFunc(l,e)))
+	knownErrors.append(BBErrorKey(FAIL_TIKA_ID, FAIL_TIKA_STR, lambda errBead: TikaParse(errBead), lambda l,e: dumpFunc(l,e)))
+	knownErrors.append(BBErrorKey(FAIL_MULTI_PAGE_TIF_ID, FAIL_MULTI_PAGE_TIF_STR, lambda errBead: TikaParse(errBead), lambda l,e: fileLocationDump(l,e)))
 
 	
 def invertErrors(errors):
@@ -92,7 +93,7 @@ def invertErrors(errors):
 		k = anError.bbErrorKey
 		#TODO: Return one path
 		work, volume = k.parserFunc(anError)
-		workVolume = f'{work}-{volume}-'
+		workVolume = f'{work}{volume}'
 		if k.errorId in errByType.keys() :			
 			errByType[k.errorId].append(workVolume)
 		else:
@@ -117,7 +118,8 @@ def dumpErrors(errMaster, errByType):
 				break
 		if foundBBError is None:
 			continue
-				
+
+		foundBBError.printFunc(foundBBError,errByType[foundBBError.errorId])	
 		print(f"{foundBBError.errorId}\t{foundBBError.searchText}\t")
 		for work in errByType[foundBBError.errorId]:
 			print(f"\t\t{work}")

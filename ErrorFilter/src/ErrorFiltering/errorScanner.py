@@ -40,7 +40,7 @@ class ErrorScanner:
 		file = lineFrags[0]
 		bbConsoleLine = lineFrags[1]
 		# We always know the file is bb-console.txt
-		_rootPath, bbConsoleHome = posixpath.split(posixpath.dirname(file))
+		# _rootPath, bbConsoleHome = posixpath.split(posixpath.dirname(file))
 		# dont care about other colon-delimited fields
 		# HACK: This removes colons from the raw text. Search strings have to take 
 		# this into account
@@ -53,7 +53,9 @@ class ErrorScanner:
 			# print(f"+ {self.lineCount}__{bbConsoleLine}_|_{bbConsoleText}")
 			if anError[1] in bbConsoleText:
 				# print(f"found in {bbConsoleLine} {bbConsoleText}")
-				self.errorResults.append(errorBead.ErrorBead(bbConsoleHome, bbConsoleLine, anError, bbConsoleText))
+				# self.errorResults.append(errorBead.ErrorBead(bbConsoleHome, bbConsoleLine, anError, bbConsoleText))
+				# jsk 1/18: lets have the full path - we'll need it
+				self.errorResults.append(errorBead.ErrorBead(file, bbConsoleLine, anError, bbConsoleText))
 			#------------------------------------------------------------- else:
 				#------------------------ print(f"NOT found in {bbConsoleLine}")
 
