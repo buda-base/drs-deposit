@@ -15,6 +15,7 @@ from ErrorFiltering.BBErrorKey import BBErrorKey
 from ErrorFiltering.errorparsers import WorkThenVolume, EXIFWork, TikaParse	
 							
 from ErrorFiltering.errorLabels import *
+import pdb
 
 knownErrors = []
 """List of possible errors. Key is a mnemonic constant, value is the text in the 
@@ -49,10 +50,11 @@ def main(argv):
 #------------------------------------------------------------
 def parseArgs(argv):
 	"""Only input argument is -i input file"""
-	
+
 	if not argv or (argv.count == 0):
 		usage()
 		sys.exit(1)
+
 	try:
 		opts, args = getopt.getopt(argv, "hi:", ["ifile="])
 	except getopt.GetoptError:
