@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="pds document">
+    <directory name="LinkTestObject2">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="accessFlag" value="R"/>
+            <property name="adminCategory" value="Vitaly's2 (id=66955)"/>
+            <property name="producer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            <property name="has_documentation" value="urn-3:HUL.DRS.OBJECT:679553"/>
+            <property name="has_methodology" value="urn-3:HUL.DRS.OBJECT:679559"/>
+        </metadataCategory>
+        <metadataCategory name="nrsPDSMetadata">
+            <property name="objectResourceNamePattern" value="{n}"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="urnAuthorityPath" value="FHCL"/>
+            <property name="resourceNamePattern" value="{n}"/>
+        </metadataCategory>
+        <metadataCategory name="otherRightsMetadata">
+            <property name="license" value="urn-3:HUL.DRS.OBJECT:679555"/>
+        </metadataCategory>
+        <directory name="imageLinkTest">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="HIGHUSE"/>
+                <property name="fileAccessFlag" value="R"/>
+            </metadataCategory>
+            <metadataCategory name="pdsDocumentImageFileMetadata">
+                <property name="filerole" value="PRODUCTION_MASTER"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>
