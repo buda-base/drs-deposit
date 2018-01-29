@@ -74,9 +74,9 @@ def parseArgs(argv):
 def loadErrors():
 	"""Build the error dictionary"""
 
-	knownErrors.append(BBErrorKey(FAIL_MODS_ID, FAIL_MODS_CALL, lambda errBead: WorkThenVolume(errBead), lambda l,e: dumpFunc(l,e)))
-	knownErrors.append(BBErrorKey(FAIL_EXIF_ID, FAIL_EXIF_STR, lambda errBead: EXIFWork(errBead), lambda l,e: dumpFunc(l,e)))
-	knownErrors.append(BBErrorKey(FAIL_TIKA_ID, FAIL_TIKA_STR, lambda errBead: TikaParse(errBead), lambda l,e: dumpFunc(l,e)))
+# 	knownErrors.append(BBErrorKey(FAIL_MODS_ID, FAIL_MODS_CALL, lambda errBead: WorkThenVolume(errBead), lambda l,e: dumpFunc(l,e)))
+# 	knownErrors.append(BBErrorKey(FAIL_EXIF_ID, FAIL_EXIF_STR, lambda errBead: EXIFWork(errBead), lambda l,e: dumpFunc(l,e)))
+# 	knownErrors.append(BBErrorKey(FAIL_TIKA_ID, FAIL_TIKA_STR, lambda errBead: TikaParse(errBead), lambda l,e: dumpFunc(l,e)))
 	knownErrors.append(BBErrorKey(FAIL_MULTI_PAGE_TIF_ID, FAIL_MULTI_PAGE_TIF_STR, lambda errBead: TikaParse(errBead), lambda l,e: fileLocationDump(l,e)))
 
 	
@@ -120,9 +120,9 @@ def dumpErrors(errMaster, errByType):
 			continue
 
 		foundBBError.printFunc(foundBBError,errByType[foundBBError.errorId])	
-		print(f"{foundBBError.errorId}\t{foundBBError.searchText}\t")
-		for work in errByType[foundBBError.errorId]:
-			print(f"\t\t{work}")
+# 		print(f"{foundBBError.errorId}\t{foundBBError.searchText}\t")
+# 		for work in errByType[foundBBError.errorId]:
+# 			print(f"\t\t{work}")
 		
 
 if __name__ == "__main__":

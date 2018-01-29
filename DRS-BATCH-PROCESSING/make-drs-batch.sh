@@ -50,7 +50,7 @@
 
 # jsk 12.21.17 ##https://github.com/BuddhistDigitalResourceCenter/drs-deposit/issues/14
 # Filter out banned extensions
-declare -a BANNED_EXT=('png''pdf' 'db' 'DS_Store' )
+declare -a BANNED_EXT=('tmp' 'png' 'pdf' 'db' 'DS_Store' )
 
 
 function toLower() {
@@ -119,6 +119,8 @@ if [ ! -f $bbDir/$bb ]; then
 	exit 2
 fi
 bb=${bbDir}/$bb
+# jimk 24.1.18: copy  batchbuilder logs, including failed files
+bbLogDir=${bbDir}/logs
 
 
 # jsk: Target project might be absolute
@@ -244,7 +246,9 @@ while IFS=',' read -ra LINE; do
         
         # { time $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
         $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
-
+        
+        # jimk 21.I.18: copy batchbuilder log
+        cp -R $bbLogDir $targetProjectDir
 
 		# jsk 11.dec.17. Dont rename here. Do it in ftp script
 		# if [ -f $targetProjectDir/$batchName/batch.xml ]; then
