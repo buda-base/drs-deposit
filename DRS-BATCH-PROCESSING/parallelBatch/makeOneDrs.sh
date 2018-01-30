@@ -31,7 +31,7 @@ Before using:
 						repository of
 						https://github.com/BuddhistDigitalResourceCenter/drs-deposit
 
-	BATCH_OUTPUT_HOME	Where you'd like your finished batches to go.
+	BATCH_OUTPUT_HOME	Where completed batches go.
 						Under this folder are Batch Builder projects, each one
 						corresponding to one work list.
 
@@ -43,8 +43,8 @@ ENDUSAGE
 # Some constants
  WORKS_SOURCE_HOME=/Volumes/WebArchive
  DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
- BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/TestBigRuns
- BB_HOME=/Users/jimk/DRS/BatchBuilder-2.2.12
+ BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/Run6Works
+ BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
  #
  # HACK: Magic phrase. Depends on ./splitWorks.sh
  WORKS_LIST_FN='worksList'
@@ -64,8 +64,8 @@ fi
 
 [ -e "$1" ] || { echo "${ME}":error: worksList file \'"$1"\' must exist but does not. ; exit 2; }
 	# is the processing for this worksList underway?
-     underFile=underway/worksList${x}
-	[ -e $underFile ]  && { echo "worksList${x} already underway."; continue; }
+     underFile=underway/${WORKS_LIST_FN}${x}
+	[ -e $underFile ]  && { echo "${WORKS_LIST_FN}${x} already underway."; continue; }
 
 statusRoot=$2
 [ -d "$2" ] &&  { echo "${ME}":info: creating status directory  \'"$2"\'
@@ -94,16 +94,23 @@ x=${series#$(expr $WORKS_LIST_FN)}
 # Generate the batch path
 batchPath=${BATCH_OUTPUT_HOME}/${series}.$(date +%F.%H.%M)
 
+# Copy BatchBuilder code to a location for this instance.
+# $MAKEDRS will copy the batchbuilder log to the
+# batch output directory
+BB_HOME=$(mktemp -d)
+cp -rp $BB_SOURCE/* $BB_HOME
+rm -f $BB_HOME/logs/*
+
 # Invoke the build in the background
  ${DRS_CODE_HOME}/${MAKEDRS} \
 	"$1" ${DRS_CODE_HOME}/BB_tbrc/BB_tbrc2drs $batchPath \
-   	$WORKS_SOURCE_HOME ${BB_HOME} &
+	$WORKS_SOURCE_HOME ${BB_HOME} &
 #
 # Capture its pid and mark as underway
  thisRun=$!
 #
 # Mark as underway, with details
- printf "%d_%s" $thisRun $(date +%H:%M:%S) > ${statusRoot}/worksList${x}
+ printf "%d_%s" $thisRun $(date +%H:%M:%S) > ${statusRoot}/${WORKS_LIST_FN}${x}
 
  #
 wait $thisRun
@@ -119,5 +126,7 @@ childRc=$?
 #	cat ${doneFile} | awk -v newFields=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")  '{printf "!%s_%s@\n", $0, $newFields }' #   >   ${resultsDir}/$doneFileName
 finishedArgs=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")
 #
-cat ${statusRoot}/worksList${x} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/worksList${x}
-rm ${statusRoot}/worksList${x}
+cat ${statusRoot}/${WORKS_LIST_FN}${x} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${WORKS_LIST_FN}${x}
+rm ${statusRoot}/${WORKS_LIST_FN}${x}
+
+rm -rf $BB_HOME

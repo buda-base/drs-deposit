@@ -8,5 +8,6 @@ named tuple:  errorId searchText parserFunc
 
 from collections import namedtuple
 
-BBErrorKey = namedtuple('BBErrorKey', 'errorId searchText parserFunc')
+BBErrorKey = namedtuple('BBErrorKey', 'errorId searchText parserFunc printFunc')
+
 	
