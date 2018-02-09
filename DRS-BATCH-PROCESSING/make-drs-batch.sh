@@ -65,6 +65,74 @@ function isBannedExt() {
     done
 	return 1 
 }
+#
+# copy logs for this bath builder run,
+# and remove them
+function cleanUpLogs() {
+	  # jimk 21.I.18: copy batchbuilder log
+	  batchLogDir=$targetProjectDir/${1}"-"logs
+        mkdir $batchLogDir
+        # Keep al the logs for reference, but extract into a summary
+        cp -R $bbLogDir $batchLogDir
+        cp $logPath $batchLogDir
+        rm -rf $bbLogDir
+        rm -rf $logPath
+        # Summarize and extract
+        find $batchLogDir -name $(basename $logPath) -o -name batchbuilder.log -exec grep -H -n -i 'err\|warn\|except' {} \; \
+        > ${batchLogDir}/errorSummary.txt
+}
+
+#
+# function trailingNums
+# returns the integer defined by the last 'n' digits of a string
+#
+# Args:
+# $1...$n-1 testString (can contain spaces)
+# $@ maxLength: max length to parse
+#
+# loop L from maxLength to 1 until the last L characters form a numeric
+#
+# Returns empty string if args are empty, invalid (i.e. maxLength > length of string)
+# or testString does not end with a numeric. (i.e. should fail trailingNumbs "fr3d" 2)
+
+function trailingNums() {
+	# the arg length
+	wordsInArgs=$(($#-1))
+	array=${@:1:$wordsInArgs}
+
+	for s in ${array} ; do
+		testString=$(printf " %s %s" $testString $s)
+	done
+	#Strip trailing
+	testString=${testString%${testString##*[![:space:]]}}
+	#
+	# last arg
+	maxLength="${!#}" 
+	# Anything?
+	[ -z "$testString"  ]  && return
+	# maxLength must be positive integer
+	# // strips out all the numerics, -n tests the remainder for anything left
+	# if there was anything, it's not a sequence of digits
+	[ -z "${maxLength//[0-9]}" ] && [ -n "$maxLength" ] || return
+	[ $maxLength -le 0 ] && return
+
+	# invert maxlength, to get end of string
+	result=""
+	maxLength=-$maxLength
+
+	while [ -z "$result" -a $maxLength -lt 0 ] ; do
+		testNum=${testString: maxLength}
+		#
+		# See above
+		[ -z "${testNum//[0-9]}" ] && [ -n "$testNum" ] || { 
+			d=$((maxLength++))
+			continue
+		}
+	echo $testNum
+	return
+done
+return
+}
 
 
 TIMING_LOG_FILE=timeBuildBatch.log
@@ -211,7 +279,7 @@ while IFS=',' read -ra LINE; do
 			echo ImageGroup Directory: $v
 			echo ImageGroup Directory: $v >> $logPath 2>&1
 			pdsName=$(basename $v)
-			pageSeq=1
+			
 			
 			for f in $v/* ; do
 			# cp and rename each image
@@ -221,11 +289,22 @@ while IFS=',' read -ra LINE; do
 				# jsk: 12.21.17: Issue #14
 				 if $(isBannedExt ${ext} ) ; then continue ; fi
 				fnm="${fullNm%.$ext}"
-				suffix=$(printf %04d $pageSeq)
+
+				# jsk 01Feb18: Issue #33. Note this requires the filename to end in 4 digits
+				# dont use page seq - suffix=$(printf %04d $pageSeq)
+				#
+				# TrailingNums returns a string of numerics, not a real integer
+				suffix=$(trailingNums ${fnm} 4)
+
+				[ "$suffix" == "0" -o -z "$suffix" ] && { 
+						echo ${ME}:ERROR: Invalid sequence in file $fnm
+						echo ${ME}:ERROR: Invalid sequence in file $fnm >> $logPath 2>&1
+					continue
+				}
+
 				# This transform makes the file name comply with PDS sequencing
 				destNm="$pdsName--${fnm}__${suffix}.$ext"			
-				cp $f $templateDir/$destNm
-			    pageSeq=$[pageSeq + 1]
+				cp $f $templateDir/$destNm			
 			done
 		done
 
@@ -247,8 +326,7 @@ while IFS=',' read -ra LINE; do
         # { time $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
         $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
         
-        # jimk 21.I.18: copy batchbuilder log
-        cp -R $bbLogDir $targetProjectDir
+       cleanUpLogs $batchName
 
 		# jsk 11.dec.17. Dont rename here. Do it in ftp script
 		# if [ -f $targetProjectDir/$batchName/batch.xml ]; then
@@ -259,8 +337,8 @@ while IFS=',' read -ra LINE; do
 		# fi
 		[ -f $targetProjectDir/$batchName/batch.xml ] || { 
 
-			echo error BB failed for $batchName ;
-			echo error BB failed for $batchName >> $logPath 2>&1 ; 
+			echo ${ME}:ERROR:BB failed for $batchName ;
+			echo ${ME}:ERROR:BB failed for $batchName >> $logPath 2>&1 ; 
 
 			# We could decide to continue 
 			# exit 1;
