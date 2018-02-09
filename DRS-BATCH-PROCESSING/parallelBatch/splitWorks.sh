@@ -14,15 +14,17 @@ exit 1;
 }
 
 declare -i worksPerRun
-worksPerRun=240
+worksPerRun=3 
 # do we have what we need?
-[ "x$1" == "x" ] && usage
-
+[ "x$1" == "x" ]  && usage
 
 sourceFile=$1
 
 [ -f $sourceFile ] || { echo "${ME}: source file \"$sourceFile\" does not exist or is not a file." ; exit 2 ; }
 
+#
+# worksList fileName
+worksFn=${2:-worksList}
 
 
 #
@@ -32,8 +34,12 @@ fileCount=0
 declare -i fileIndex
 fileIndex=0
 
-while IFS=',' read -ra  workLine; do
-	echo ${workLine[0]},${workLine[1]},${workLine[2]}   >> worksList${fileCount}.txt
+while IFS=',' read -ra  workLine ; do
+	# This allows csv files to have their lines copied.
+	# Could have just copied the raw line....
+	# doublequoted "${x[*]}" shows IFS separated list of array elements
+	IFS=',' # while's IFS setting is ex scope
+	echo "${workLine[*]}"  >> ${worksFn}${fileCount}.txt
 	[ $fileIndex  == 0 ]  && echo "Creating file ${fileCount}"
 		((fileIndex++))
 	[ $fileIndex  == ${worksPerRun} ]  && ((fileCount++))
