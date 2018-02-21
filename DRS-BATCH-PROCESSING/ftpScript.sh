@@ -48,25 +48,22 @@ exit 1;
 # Build a script for remote ftp to execute
 #
 # args:
-# $1: list of directories we need to upload
+# $1: target directory
 # 
 buildSFTPBatch() {
-
+		$_targetPath=$1
 	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
-	while read sourcePath ; do
-		targetPath=$(basename $sourcePath)
 		# the - prefix allows continuation on command failure.
 		# sftp rmdir builtin may fail if directory is not empty.
 		# The script should have removed the directory with ssh
-	    echo "-rmdir $targetPath" >> ${SFTP_CMD_FILE}
+	    echo "-rmdir $_targetPath" >> ${SFTP_CMD_FILE}
 		# you have to make the directory, and then put stuff in it. here,
 		# $remoteTarget must be the last directory in the path $b 
-		echo "mkdir $targetPath" >> ${SFTP_CMD_FILE}
-		echo "put -r $sourcePath" >> ${SFTP_CMD_FILE}
+		echo "mkdir $_targetPath" >> ${SFTP_CMD_FILE}
+		echo "put -r $_sourcePath" >> ${SFTP_CMD_FILE}
 		# operations are relative to the directory in the command line ":incoming"
 		# jimk Probably not needed: ingestion waits for upload to disconnect
 		# echo "rename ${1}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML" >> ${SFTP_CMD_FILE}
-	done < $1
 }
 
 
@@ -82,28 +79,32 @@ buildSFTPBatch() {
 targetList="$1"
 
 #endsection setup and arg parse
+	while read sourcePath ; do
+		targetPath=$(basename $sourcePath)
 
-buildSFTPBatch $targetList
+		buildSFTPBatch $targetPath
 
-# Clean up this batch only. If the dir exists, ftp wont be able to clean it up
-# If this fails, the ftp wwont work, and the fail will be logged
-# Were not force removing the file anymore. No context, since we moved the 
-# processing loop into buildSftpBatch
-# -n flag for use in read loop
-# ssh -n -i $ME_PPK -l $DRS_DROP_USER $DRS_DROP_HOST  rm -rf incoming/${remoteTarget}
+		# Clean up this batch only. If the dir exists, ftp wont be able to clean it up
+		# If this fails, the ftp wwont work, and the fail will be logged
+		# Were not force removing the file anymore. No context, since we moved the 
+		# processing loop into buildSftpBatch
+		# -n flag for use in read loop
+		# ssh -n -i $ME_PPK -l $DRS_DROP_USER $DRS_DROP_HOST  rm -rf incoming/${remoteTarget}
 
-sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${DRS_DROP_USER}@${DRS_DROP_HOST}:incoming/   2>> $ERR_LOG
+		sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${DRS_DROP_USER}@${DRS_DROP_HOST}:incoming/   2>> $ERR_LOG
 
-[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
+		[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
 
-rc=$?
-# rm ${SFTP_CMD_FILE}
-[ $rc == 0 ] || { 
-	errx=$(printf "${ME}:${ERROR_TXT}: sftp $DRS_DROP_HOST failed: code $rc") ;
-	echo $errx;
-	echo $errx >> $ERR_LOG;
-	exit $rc ; 
-}
+		rc=$?
+		# rm ${SFTP_CMD_FILE}
+		[ $rc == 0 ] || { 
+			errx=$(printf "${ME}:${ERROR_TXT}: sftp $DRS_DROP_HOST failed: code $rc") ;
+			echo $errx;
+			echo $errx >> $ERR_LOG;
+			exit $rc ; 
+		}
+
+	done < $targetList
 
 ##############################################
 #
