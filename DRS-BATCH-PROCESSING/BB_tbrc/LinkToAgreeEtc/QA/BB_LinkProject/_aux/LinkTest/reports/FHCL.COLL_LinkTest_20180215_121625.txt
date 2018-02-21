@@ -1,0 +1,40 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/jimk/drs-deposit/DRS-BATCH-PROCESSING/BB_tbrc/LinkToAgreeEtc/QA/BB_LinkProject/LinkTest
+Batch Name: FHCL.COLL_LinkTest_20180215_121625
+Batch Size: 128638 / 0.1227 megabytes
+Number of valid files: 6
+
+Number of valid files per format:
+	JPEG File Interchange Format: 2
+	TIFF EXIF: 2
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: /Users/jimk/drs-deposit/DRS-BATCH-PROCESSING/BB_tbrc/LinkToAgreeEtc/QA/BB_LinkProject/LinkTest/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: LinkTestObj
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 56312 bytes / 0.0537 megabytes
+	File Count: 2
+	JPEG File Interchange Format: 2
+
+Name: LinkTestObject2
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 16014 bytes / 0.0153 megabytes
+	File Count: 2
+	TIFF EXIF: 2
+
+Name: LinkTestObject3
+	Content Model: pds document
+	Owner: FHCL.COLL
+	Size: 56312 bytes / 0.0537 megabytes
+	File Count: 2
+	JPEG File Interchange Format: 2
+
