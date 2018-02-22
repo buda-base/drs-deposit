@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -vx
 ME=$(basename $0)
 
 usage() {
@@ -10,9 +10,11 @@ usage() {
 		-w (width)  split the source into 'n' files, of as close to equal length as possible
 		-n 				number of files/lines (default is 4)
 		-p (prefix)		Prefix of output file names (default worksList)
+		-h (help)		Shows this message
 		worksList		is a file containing lines of text which get put into output files
 
-	splitWorks.sh splits worksList into files. If 
+	splitWorks.sh splits worksList into files in the current directory.
+	The files retain the extension of the original file
 
 
 USAGE
@@ -28,24 +30,21 @@ declare direction=$HFLAG
 direction=
 # do we have what we need?
 
-while getopts n:hvp: opt ; do
+while getopts n:hlwp: opt ; do
 	case $opt in
-		h)
-echo "H";
+		l)
 			direction=$HFLAG;
 			;;
-		v)
-echo "V";
+		w)
 			direction=$VFLAG;
 			;;
 		n)
 			unitsPerList=$OPTARG ;
-echo "units per ${unitsPerList}";
 			;;
 		p)
 			worksFn=$OPTARG ;
-echo "worksFn ${worksFn}";
 			;;
+		h)
 
 	esac
 done
@@ -58,31 +57,55 @@ sourceFile=$1
 
 [ -f $sourceFile ] || { echo "${ME}: source file \"$sourceFile\" does not exist or is not a file." ; exit 2 ; }
 
+#
+# Give worksFn a default, if none
+srcBase=$(basename $sourceFile)
+# Take only the first segment with %%
+worksFn=${worksFn:-${srcBase%%.*}}"."
 
 #
-declare -i fileCount
-fileCount=0
+# if VFLAG, we want a certain number of files.
 
-declare -i fileIndex
-fileIndex=0
+fileCount=$(($(wc -l < $sourceFile)))
+#
+# If creating a specific number of files, adjust the lines per file
+if [ "$direction" == "$VFLAG" ] ; then
+	#
+	# Allow for remainder
+	linesPerFile=$(( 1 + $fileCount/$unitsPerList))
+	read -p "lpf?"
+else
+	linesPerFile=$(($unitsPerList))
+fi
 
-read -p "$(printf "direction=%s unitsPerList=%s file=%s" $direction $unitsPerList  $worksList )"
-while IFS=',' read -ra  workLine ; do
-	# This allows csv files to have their lines copied.
-	# Could have just copied the raw line....
-	# doublequoted "${x[*]}" shows IFS separated list of array elements
-	IFS=',' # while's IFS setting is ex scope
+#
+# HACK alert: convert base 10 to base 26
+suffixLen=$(($(echo $((($fileCount/$linesPerFile)+1)) | awk '{print int(log($1)/log(26)) + 1}')))
 
-	if [ $direction == $HFLAG ]  ; then 
-		echo "${workLine[*]}"  >> ${worksFn}${fileCount}.txt
-		[ $fileIndex  == 0 ]  && echo "Creating file ${fileCount}"	
-	else	
-		echo "${workLine[*]}"  >> ${worksFn}${fileIndex}.txt
-		[ $fileIndex  == 0 ]  && echo "Wrapping back to file ${fileIndex}"		
-	fi
 
-	((fileIndex++))
-	[ $fileIndex  == ${unitsPerList} ]  && ((fileCount++))
-	[ $fileIndex  == ${unitsPerList} ]  && fileIndex=0
+read -p "$suffixLen :"  # "$(printf "direction=%s unitsPerList=%s file=%s" $direction $unitsPerList  $worksList )"
 
-done < $sourceFile
+#
+# This is BSD split. If we move to Ubuntu, look up GNU
+split -l $linesPerFile -a $suffixLen $sourceFile $worksFn
+
+exit $!
+# while IFS=',' read -ra  workLine ; do
+# 	# This allows csv files to have their lines copied.
+# 	# Could have just copied the raw line....
+# 	# doublequoted "${x[*]}" shows IFS separated list of array elements
+# 	IFS=',' # while's IFS setting is ex scope
+
+# 	if [ $direction == $HFLAG ]  ; then 
+# 		echo "${workLine[*]}"  >> ${worksFn}${fileCount}.txt
+# 		[ $fileIndex  == 0 ]  && echo "Creating file ${fileCount}"	
+# 	else	
+# 		echo "${workLine[*]}"  >> ${worksFn}${fileIndex}.txt
+# 		[ $fileIndex  == 0 ]  && echo "Wrapping back to file ${fileIndex}"		
+# 	fi
+
+# 	((fileIndex++))
+# 	[ $fileIndex  == ${unitsPerList} ]  && ((fileCount++))
+# 	[ $fileIndex  == ${unitsPerList} ]  && fileIndex=0
+
+# done < $sourceFile
