@@ -10,6 +10,7 @@
 # Arguments
 #
 #	listToUpload:		The parent of the directories containing batches.
+#	remoteUser:			The credential of the remote user
 #
 #
 # Monitoring
@@ -24,8 +25,9 @@ ME_PPK='/Users/jimk/ppk/DrsDropQa.ppk'
 export ME_PPK
 DRS_DROP_HOST=drs2drop-qa.hul.harvard.edu
 export DRS_DROP_HOST
-DRS_DROP_USER=drs2_tbrctest
-export DRS_DROP_USER
+
+# DRS_DROP_USER=drs2_tbrctest
+# export DRS_DROP_USER
 
 # If running in parallel, cant collide
 SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || exit 1 
@@ -37,9 +39,10 @@ SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || exit 1
 
 usage() {
 	cat <<  USAGE
-Usage: ${ME} listToUpload  where
- 	listToUpload		is the file list containing the upload paths. Each line contains a directory
- 						to upload
+Usage: ${ME} listToUpload remoteUser  where
+ 	listToUpload	is the file list containing the upload paths.
+ 					Each line contains a directory to upload
+ 	remoteUser		is the user on the remote system
 USAGE
 exit 1;
 }
@@ -48,41 +51,46 @@ exit 1;
 # Build a script for remote ftp to execute
 #
 # args:
-# $1: target directory
+# $1: source directory
+# $2: target directory
 # 
 buildSFTPBatch() {
-		$_targetPath=$1
+	_sourcePath=$1
+	_targetPath=$2
 	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
-		# the - prefix allows continuation on command failure.
-		# sftp rmdir builtin may fail if directory is not empty.
-		# The script should have removed the directory with ssh
-	    echo "-rmdir $_targetPath" >> ${SFTP_CMD_FILE}
-		# you have to make the directory, and then put stuff in it. here,
-		# $remoteTarget must be the last directory in the path $b 
-		echo "mkdir $_targetPath" >> ${SFTP_CMD_FILE}
-		echo "put -r $_sourcePath" >> ${SFTP_CMD_FILE}
-		# operations are relative to the directory in the command line ":incoming"
-		# jimk Probably not needed: ingestion waits for upload to disconnect
-		# echo "rename ${1}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML" >> ${SFTP_CMD_FILE}
+	# the - prefix allows continuation on command failure.
+	# sftp rmdir builtin may fail if directory is not empty.
+	# The script should have removed the directory with ssh
+    echo "-rmdir $_targetPath" >> ${SFTP_CMD_FILE}
+	# you have to make the directory, and then put stuff in it. here,
+	# $remoteTarget must be the last directory in the path $b 
+	echo "mkdir $_targetPath" >> ${SFTP_CMD_FILE}
+	echo "put -r $_sourcePath" >> ${SFTP_CMD_FILE}
+	# operations are relative to the directory in the command line ":incoming"
+	# jimk Probably not needed: ingestion waits for upload to disconnect
+	# echo "rename ${1}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML" >> ${SFTP_CMD_FILE}
 }
 
 
 # do we have what we need?
-[ "x$1" == "x" ] && usage
 
+[ "x$1" == "x" ] && { usage ; exit 1; }
+
+targetList="$1"
 # Does the input exist?
-[ -f "$1" ] || { 
-	echo "${ME}:${ERROR_TXT}:listToUpload "$1" is not a file or does not exist" ; 
+[ -f "$targetList" ] || { 
+	echo "${ME}:${ERROR_TXT}:listToUpload ${targetList} is not a file or does not exist" ; 
 	exit 2 ;  
 }
 
-targetList="$1"
+drsDropUser=${2?${ME}:error: remote user is not given}
+
 
 #endsection setup and arg parse
 	while read sourcePath ; do
 		targetPath=$(basename $sourcePath)
 
-		buildSFTPBatch $targetPath
+		buildSFTPBatch "$sourcePath" "$targetPath" 
 
 		# Clean up this batch only. If the dir exists, ftp wont be able to clean it up
 		# If this fails, the ftp wwont work, and the fail will be logged
@@ -91,7 +99,7 @@ targetList="$1"
 		# -n flag for use in read loop
 		# ssh -n -i $ME_PPK -l $DRS_DROP_USER $DRS_DROP_HOST  rm -rf incoming/${remoteTarget}
 
-		sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${DRS_DROP_USER}@${DRS_DROP_HOST}:incoming/   2>> $ERR_LOG
+		sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${DRS_DROP_HOST}:incoming/   2>> $ERR_LOG
 
 		[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
 

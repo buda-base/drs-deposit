@@ -7,13 +7,15 @@
 function Usage {
 cat << ENDUSAGE
 synopsis:
-	${ME}  batchDirPath statusRoot completionRoot
+	${ME}  batchDirPath statusRoot completionRoot remoteUserName
 
-	batchDirPath: 	Path to a directory containing one batch
+	batchDirPath: 		Path to a file containing a list of folders to upload
 
 	statusRoot: 		a directory to hold the tracking file for underway jobs.
 
 	completionRoot: 	directory the tracking files for completed jobs
+
+	remoteUserName		credential for remote system
 
 	statusRoot and completionRoot are created if they do not exist
 
@@ -40,39 +42,44 @@ ENDUSAGE
 # BATCH_OUTPUT_HOME=./testOut
 
 
-ME=$(basename $0)
+ME=$(basename "$0" )
 
-if (( $# != 3)); then
+if (( $# != 4)); then
 	Usage
 	exit 1;
 fi
 
 [ -f "$1" ] || { echo "${ME}":error: source list  \'"$1"\' must exist but does not. ; exit 2; }
 srcListPath=$1
-srcListName=$(basename $1)
+srcListName=$(basename "$1" )
 
 statusRoot=$2
-[ -d "$2" ] &&  { echo "${ME}":info: creating status directory  \'"$2"\'
-				mkdir $2;
+[ -d "$statusRoot" ] &&  { echo "${ME}":info: creating status directory  \'"$2"\'
+				mkdir $statusRoot ;
 			 }
-# is the processing for this batch underway?
+# container for status of underway jobs
 underFile=${statusRoot}/${srcListName}
 
 [ -e $underFile ]  && { echo "${ME}":error:"${srcListName} already underway."; exit 5; }			 
 
+# container for status of completed jobs
 completionRoot=$3
 [ -d "$3" ] &&  { echo "${ME}":info: creating completion directory  \'"$3"\'
 				mkdir $3;
 			 }
 
+: ${4?${ME}:error: remote User Name not given}
+remoteUserName=$4
+
 # Invoke the upload in the background
- ${DRS_CODE_HOME}/${FTPSCRIPT} "$1"  &
+${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName &
+# ${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName &
 #
 # Capture its pid and mark as underway
  thisRun=$!
 #
 # Mark as underway, with details
- printf "%d_%s" $thisRun $(date +%H:%M:%S) > underFile
+ printf "%d_%s" "$thisRun" $(date +%H:%M:%S) > $underFile
 
  #
 wait $thisRun

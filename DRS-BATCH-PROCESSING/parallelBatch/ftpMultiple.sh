@@ -49,10 +49,13 @@ function usage() {
 			for each user in userFileName, and numbers them
 			(dirname worksListPath)/basename worksListPath{1..n}.txt
 
-			if the two arguments wl1 [ wl2 ] are given, and the -u flag is
-			NOT given, then wl1 and wl2 stand for a range of integers which 
-			defines a set of files, and the -w option is a pattern consisting
-			of "directory name"/prefix "directory name" is created if it does
+		-w worksListPath
+			if the two arguments wl1 [ wl2 ] are given, AND the -u flag is
+			NOT given, then 
+			* wl1 and wl2 stand for a range of integers which 
+			  defines a set of files, and
+			* the -w option is a pattern consisting
+			of "directory name"/prefix. "directory name" is created if it does
 			not exist. The files are created in the current directory if 
 			worksListPath has no directory component. $ME sends the files
 			worksListPath{1..n}.txt to the makeOneFtp.sh
@@ -87,19 +90,27 @@ function die() {
 # 	One file for each user line in userList.
 #
 #   Populates:
-#		the outer scope's sendUsers array
+#		the outer scope's sendingUsers array
 #		the outer scope's $wl1 and $wl2 indices (the limits of the)
 # 
 function splitWorks() {
-	worksDir=$(dirname $worksListPath)
-	worksName=$(basename $worksListPath)
-	worksSuffix=${worksName##*.}
+	declare worksDir=$(dirname $worksListPath) \
+			worksFileName=$(basename $worksListPath)
 
 	while read aUser ; do
-		sendingUsers+=$aUser
+		sendingUsers+=($aUser)
 	done < $userListPath
 
+	
+	pushd ${worksDir}
+	wl1=1
+	wl2=${#sendingUsers[*]}
 
+	splitWorks.sh -f ${wl2} $worksFileName
+	ls 
+	read -p "what you see" glurm
+
+	popd
 }
 
 #
@@ -109,9 +120,8 @@ function splitWorks() {
 while getopts hu:w: opt ; do
 	case $opt in
 		u)
-
-			userListPath=$OPTARG
-			[ -f $userListPath ] || { die 2 "${ME}:error:List of users file \'$userListPath\' must exist but does not"}
+			userListPath=$OPTARG;
+			[ -f $userListPath ] || { die 2 "${ME}:error:List of users file \'$userListPath\' must exist but does not" ; }
 			;;
 		w)
 			worksListPath=$OPTARG;
@@ -129,16 +139,23 @@ shift $((OPTIND-1))
 # if we dont have a user list, and we dont have any args,
 # we're toast, and we're outta here
 
-[ "${userList:-$NO_VALUE}"  == "$NO_VALUE" ] &&  [ "${1:-$NO_VALUE}"  == "$NO_VALUE" ] &&  ${ usage ; exit 1 ; }
+[ "${userListPath:-$NO_VALUE}"  == "$NO_VALUE" ] &&  [ "${1:-$NO_VALUE}"  == "$NO_VALUE" ] &&  { usage ; exit 1 ; }
 
 # worksListPath required
 worksListPath=${worksListPath:?${ME}:usage:worksListPath is empty, or -w flag not given}
 
 
-if "${userList:-$NO_VALUE}"  !=  "$NO_VALUE" ; then
+if [ "${userListPath:-${NO_VALUE}}" != "$NO_VALUE" ] ; then
 # splitWorks fills this in
 	sendingUsers=()
-	splitWorks()
+	splitWorks
+
+	# Fix up worksListPath to have one calling sequence. REM that worksListPath
+	# for this case is a fully qualified file name, and in its directory 'splitWorks'
+	# has created a number
+	# of files with its prefix.
+	# Now worksListPath must represent a file name template:
+	worksListPath=${worksListPath%.*}
 else
 
 # Set default for wl2 if not given
@@ -147,6 +164,13 @@ else
 fi
 
 # 
+#
+# the number of lines in  is the same as the 
+# number of files to transfer.
+
+# user index
+ui=$((0))
+export ui
 
 for x in $(seq $wl1 $wl2 ); do
 	#
@@ -155,7 +179,8 @@ for x in $(seq $wl1 $wl2 ); do
 	# jsk 12.22.17 Put the iteration here where we can see it
 	# Run each iteration in the background
 	# jsk 21.I.18: shell scripts can be in ~/bin
-        
-	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR &
+	# Har: the autoincrement doesnt work when executing in background.
+	aUser=${sendingUsers[$((ui++))]} 
+	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR  $aUser &
  
 done
