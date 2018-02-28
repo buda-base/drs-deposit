@@ -2,3 +2,5 @@
 .metadata/
 __pycache__/
 output/~$RS3Archives2017-12-06.xlsx
+*.textClipping
+
