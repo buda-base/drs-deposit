@@ -10,7 +10,9 @@
 DRS_LOG_DIR="${HOME}/DRS/log/"
 ERROR_TXT="error"
 INFO_TXT="info"
-ERR_LOG_NAME="${1}$(date +%F.%H.%M).log"
+# 
+# Watch parallel
+ERR_LOG_NAME="${1}$(date +%F.%H.%M.%S).${RANDOM}.log"
 ERR_LOG="${DRS_LOG_DIR}${ERR_LOG_NAME}"
 [ -d $DRS_LOG_DIR ] || { 
 	errstr="${1} : ${INFO_TXT}: ${DRS_LOG_DIR} does not exist. Creating it"
