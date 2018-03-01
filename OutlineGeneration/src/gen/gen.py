@@ -37,6 +37,7 @@ def write_list( outFilePath, vals):
 #         wr = _csv.writer(out)
 #         wr.writerow(['workName','outlineText'])
 #         [ wr.writerow([aVal[0],aVal[1]]) for aVal in vals ]
+
         out.write('{0},{1}\n'.format('workName','outlineText'))
         _ =  [ out.write('{0},"{1}"\n'.format(aVal[0],aVal[1].strip())) \
                for aVal in vals ]
