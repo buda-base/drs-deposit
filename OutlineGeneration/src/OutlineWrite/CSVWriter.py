@@ -11,15 +11,6 @@ class CSVWriter(ListWriter):
     Writes a list formatted as a CSV file
     '''
 
-
-    '''
-    Constructor
-    :param configInfo is a file to write to: target on disk  
-    '''
-    def __init__(self,configInfo):
-        self.oConfig = configInfo
-        
-
     '''
     :summary: write_list writes a formatted text to a two column CSV.
     :param srcList: source list to write out

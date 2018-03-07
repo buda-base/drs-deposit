@@ -25,8 +25,9 @@ class ListWriter(metaclass=ABCMeta):
     Constructor
     :param config: opaque configuration
     '''
-    def __init__(self):
-        pass
+    def __init__(self,configInfo):
+        self.oConfig = configInfo
+        
     
     '''
     :summary: Abstract method to write a list

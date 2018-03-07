@@ -5,11 +5,10 @@ Created on Mar 6, 2018
 '''
 import sys
 import argparse
-from  OutlineWrite.CSVWriter  import * # We want it all
 
 from TBRCSrc.read import get_attr_text
 from lxml import etree
-from lxml.html._diffcommand import description
+from OutlineWrite import DbWriter, CSVWriter
 
 
 
@@ -33,9 +32,9 @@ def main(args):
 
     writer = None
     if myArgs.csv is None:
-        writer = DbWriter(myArgs.db)
+        writer = DbWriter.DbWriter(myArgs.db)
     if myArgs.db is None:
-        writer = CSVWriter(myArgs.csv)
+        writer = CSVWriter.CSVWriter(myArgs.csv)
     
     writer.write_list(outlines)
         

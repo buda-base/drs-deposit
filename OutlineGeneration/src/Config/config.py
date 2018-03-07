@@ -27,6 +27,37 @@ class DbConfig(object):
     @property
     def host(self):
         return self._config[self._section]['server']
+
+    '''
+    port - read only
+    '''
+    @property
+    def port(self):
+        return self._config[self._section].getint('port')    
+    
+    '''
+    schema - read only
+    '''
+    @property
+    def schema(self):
+        return self._config[self._section]['schema']    
+    
+    '''
+    user - read only
+    '''
+    @property
+    def user(self):
+        return self._config[self._section]['user']    
+
+    
+    '''
+    vol- read only
+    '''
+    @property
+    def voldeMort(self):
+        return self._config[self._section]['pass']    
+        
+
         
 
     
