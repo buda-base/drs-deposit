@@ -6,7 +6,7 @@ Created on Mar 6, 2018
 import sys
 import argparse
 
-from TBRCSrc.read import get_attr_text
+from TBRCSrc import readOutlineXml as xr
 from lxml import etree
 from OutlineWrite import DbWriter, CSVWriter
 
@@ -27,12 +27,13 @@ def main(args):
     '''
     @todo: Allow redirect from URI query
     '''
+
     outlines = get_attr_text_from_file(myArgs.sourceFile,'work','/outlines/outline')
     
-
     writer = None
     if myArgs.csv is None:
-        writer = DbWriter.DbWriter(myArgs.db)
+        myArgs.sproc = 'AddOutline'
+        writer = DbWriter.DbWriter(myArgs)
     if myArgs.db is None:
         writer = CSVWriter.CSVWriter(myArgs.csv)
     
@@ -60,10 +61,10 @@ def parseArgs(argNamespace):
 def get_attr_text_from_file(inFilePath,attrName,path):
     """Builds a list of the attributes"""
     doc = etree.parse(inFilePath)
-    return get_attr_text(doc,attrName, path)
+    xrr = xr.OutlineReader()
+    return xrr.get_attr_text(doc,attrName, path)
     
-
-
-
+#
+#----------------        MAIN     ------------------------------------
 if __name__ == '__main__':
         main(sys.argv[1:])

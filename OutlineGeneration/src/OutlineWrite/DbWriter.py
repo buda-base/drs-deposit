@@ -18,13 +18,19 @@ class DbWriter(ListWriter):
     '''
 
     def write_list(self, srcList):
+        '''
+        @summary: emits a list into the configured database
+        @param srcList: Comma separated list of values
+        
+        Requires self.oConfig.sproc to exist
+        '''
         
         dbConnection = None
         curs = None
         hadBarf = False
         try:
         # Load the db configuration from the file
-            cfg = DbConfig('dev', self.oConfig)
+            cfg = DbConfig('dev', self.oConfig.db)
             dbConnection = self.start_connect(cfg)
             
             with dbConnection:
@@ -32,7 +38,7 @@ class DbWriter(ListWriter):
 
                 for aVal in srcList:
                     try:
-                        curs.callproc('AddOutline', (aVal[0].strip(), aVal[1].strip()))
+                        curs.callproc(self.oConfig.sproc, (aVal[0].strip(), aVal[1].strip()))
                     except UnicodeEncodeError:
                         print(':{0}::{1}:'.format(aVal[0].strip(), aVal[1].strip()))
                         pass 
