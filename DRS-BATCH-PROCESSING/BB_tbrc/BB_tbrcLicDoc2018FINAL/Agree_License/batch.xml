@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.13" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_Agree_License_20180316_125215</name>
+    <date>2018-03-16T12:52:15.828-04:00</date>
+    <depositAgent>10864323</depositAgent>
+    <depositAgentUri>http://id.lib.harvard.edu/wordshack/person/160177</depositAgentUri>
+    <contactInfo>
+        <successEmail>jimk@tbrc.org</successEmail>
+        <failureEmail>jimk@tbrc.org</failureEmail>
+        <successMethod>all</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="020d7a2641ecda252ecd17ad4423787f">Agreement/descriptor.xml</object>
+        <object md5="5d1a1fba9b114c67cbb3f073746aafc8">License/descriptor.xml</object>
+    </add>
+</batch>

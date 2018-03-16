@@ -1,0 +1,32 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: C:\Users\jsk\Northgate\bdrc\drs-deposit\DRS-BATCH-PROCESSING\BB_tbrc\BB_tbrcLicDoc2018FINAL\Agree_License
+Batch Name: FHCL.COLL_Agree_License_20180316_125215
+Batch Size: 1068298 / 1.0188 megabytes
+Number of valid files: 2
+
+Number of valid files per format:
+	Portable Document Format: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: C:\Users\jsk\Northgate\bdrc\drs-deposit\DRS-BATCH-PROCESSING\BB_tbrc\BB_tbrcLicDoc2018FINAL\Agree_License\batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: Agreement
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 954276 bytes / 0.9101 megabytes
+	File Count: 1
+	Portable Document Format: 1
+
+Name: License
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 114022 bytes / 0.1087 megabytes
+	File Count: 1
+	Portable Document Format: 1
+
