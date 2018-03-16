@@ -3,7 +3,7 @@ Created on Jan 5, 2018
 
 @author: TBRC-jimk
 
-named tuple:  errorId searchText parserFunc
+:summary  named tuple:  errorId searchText parserFunc
 '''
 
 from collections import namedtuple
