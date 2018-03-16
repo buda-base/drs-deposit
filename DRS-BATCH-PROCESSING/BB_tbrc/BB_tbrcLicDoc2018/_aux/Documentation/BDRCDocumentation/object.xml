@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="document">
-    <directory name="BDRCDocumentation2018">
+    <directory name="BDRCDocumentation">
         <metadataCategory name="objectMetadata">
             <property name="ownerCode" value="FHCL.COLL"/>
             <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
             <property name="accessFlag" value="R"/>
             <property name="adminCategory" value="Vitaly's2 (id=66955)"/>
-            <property name="producer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            <property name="producer" value="Tibetan Buddhist Resource Center (id=802)"/>
         </metadataCategory>
         <metadataCategory name="nrsMetadata">
             <property name="resourceNamePattern" value="{n}"/>
@@ -16,6 +16,8 @@
             <metadataCategory name="fileMetadata">
                 <property name="isFirstGenerationInDrs" value="yes"/>
                 <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAdminCategory" value="Buddhist Digital Resource Center (id=169937)"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=802)"/>
             </metadataCategory>
         </directory>
     </directory>
