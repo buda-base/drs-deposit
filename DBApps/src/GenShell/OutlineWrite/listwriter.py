@@ -6,6 +6,7 @@ Created on Mar 6, 2018
 from abc import ABCMeta, abstractmethod
 from distutils.sysconfig import _config_vars
 
+
 class ListWriter(metaclass=ABCMeta):
     '''
     Base class for writing lists
@@ -17,25 +18,19 @@ class ListWriter(metaclass=ABCMeta):
     @property
     def oConfig(self):
         return self._config
-    
+
     @oConfig.setter
-    def oConfig(self,value):
+    def oConfig(self, value):
         self._config = value
     '''
     Constructor
     :param config: opaque configuration
     '''
-    def __init__(self,configInfo):
+    def __init__(self, configInfo):
         self.oConfig = configInfo
-        
-    
+
     '''
     :summary: Abstract method to write a list
     '''
     @abstractmethod
-    def write_list(self,outData): pass
-    
- 
-    
-    
-    
+    def write_list(self, outData): pass

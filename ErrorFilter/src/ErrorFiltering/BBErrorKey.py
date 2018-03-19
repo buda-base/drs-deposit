@@ -8,6 +8,5 @@ Created on Jan 5, 2018
 
 from collections import namedtuple
 
-BBErrorKey = namedtuple('BBErrorKey', 'errorId searchText parserFunc printFunc')
-
-	
+BBErrorKey = namedtuple('BBErrorKey',
+                        'errorId searchText parserFunc printFunc')

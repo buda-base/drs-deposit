@@ -11,7 +11,6 @@ from DBApp import config
 import pymysql
 
 
-
 class DbWriter(ListWriter):
     '''
     Writes to a db, connection string in the config file
@@ -21,33 +20,34 @@ class DbWriter(ListWriter):
         '''
         @summary: emits a list into the configured database
         @param srcList: Comma separated list of values
-        
+
         Requires self.oConfig.sproc to exist
         '''
-        
+
         dbConnection = None
         curs = None
         hadBarf = False
         try:
-        # Load the db configuration from the file given in 
+            # Load the db configuration from the file given in
             cfg = config.DBConfig('dev', self.oConfig.drsDbConfig)
             dbConnection = self.start_connect(cfg)
-            
+
             with dbConnection:
                 curs = dbConnection.cursor()
 
                 for aVal in srcList:
                     try:
-                        curs.callproc(self.oConfig.sproc, (aVal[0].strip(), aVal[1].strip()))
-                        
+                        curs.callproc(self.oConfig.sproc, (aVal[0].strip(),
+                                                           aVal[1].strip()))
+
                     # Some outlines are not in unicode
                     except UnicodeEncodeError:
-                        print(':{0}::{1}:'.format(aVal[0].strip(), aVal[1].strip()))
-                        pass 
-                    
+                        print(':{0}::{1}:'.format(aVal[0].strip(),
+                                                  aVal[1].strip()))
+                        pass
                 curs.close()
                 curs = None
-            
+
         except Exception:
             hadBarf = True
             if dbConnection is not None:
