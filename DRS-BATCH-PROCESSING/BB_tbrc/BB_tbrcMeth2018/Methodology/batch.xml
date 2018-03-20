@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.13" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
-    <name>FHCL.COLL_Methodology_20180116_183150</name>
-    <date>2018-01-16T18:31:50.812-05:00</date>
+    <name>FHCL.COLL_Methodology_20180319_172518</name>
+    <date>2018-03-19T17:25:18.472-04:00</date>
     <depositAgent>10684323</depositAgent>
-    <depositAgentUri>http://idtest.lib.harvard.edu:9020/wordshack/person/78504</depositAgentUri>
+    <depositAgentUri>http://id.lib.harvard.edu/wordshack/person/160177</depositAgentUri>
     <contactInfo>
         <successEmail>jimk@tbrc.org</successEmail>
         <failureEmail>jimk@tbrc.org</failureEmail>
         <successMethod>all</successMethod>
     </contactInfo>
     <add>
-        <object md5="4aa17c235a9854ec10babcfe5e16fe17">BDRCMethodology2018/descriptor.xml</object>
+        <object md5="62cd224e5786fd454478ea0378117720">Methodology/descriptor.xml</object>
     </add>
 </batch>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="text">
-    <directory name="BDRCMethodology2018">
+    <directory name="Methodology">
         <metadataCategory name="objectMetadata">
-            <property name="ownerCode" value="FHCL.COLL"/>
             <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="ownerCode" value="FHCL.COLL"/>
             <property name="accessFlag" value="R"/>
-            <property name="adminCategory" value="Vitaly's Test Content edited (id=22265)"/>
-            <property name="producer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            <property name="adminCategory" value="Buddhist Digital Resource Center (id=169937)"/>
+            <property name="producer" value="Tibetan Buddhist Resource Center (id=802)"/>
         </metadataCategory>
         <metadataCategory name="nrsMetadata">
             <property name="resourceNamePattern" value="{n}"/>
@@ -15,13 +15,13 @@
         <metadataCategory name="textObjectMetadata">
             <property name="role" value="DOCUMENTATION"/>
         </metadataCategory>
-        <directory name="textTBRC_text">
+        <directory name="text">
             <metadataCategory name="fileMetadata">
                 <property name="usageClass" value="LOWUSE"/>
-                <property name="fileAccessFlag" value="P"/>
+                <property name="fileAccessFlag" value="R"/>
                 <property name="isFirstGenerationInDrs" value="yes"/>
-                <property name="fileAdminCategory" value="Vitaly's Test Content edited (id=22265)"/>
-                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+                <property name="fileAdminCategory" value="Buddhist Digital Resource Center (id=169937)"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=802)"/>
             </metadataCategory>
             <metadataCategory name="textFileMetadata">
                 <property name="filerole" value="DOCUMENTATION"/>

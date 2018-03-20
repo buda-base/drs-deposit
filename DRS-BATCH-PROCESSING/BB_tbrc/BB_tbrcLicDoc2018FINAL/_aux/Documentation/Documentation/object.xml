@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Projectconfig genre="document">
-    <metadataCategory name="projectMetadata">
-        <property name="batchName" value="{owner}_{batchDir}_{yyyy}{mo}{dd}_{hh24}{mm}{ss}"/>
-        <property name="successMethod" value="all"/>
-        <property name="projectName" value="LicenseDoc2018"/>
-        <property name="projectDescription" value="License and Documentation objects for BDRC DRS upload"/>
-        <property name="successEmail" value="jimk@tbrc.org"/>
-        <property name="failureEmail" value="jimk@tbrc.org"/>
-        <property name="depositAgent" value="10684323"/>
-        <property name="depositAgentEmail" value="jimk@tbrc.org"/>
-    </metadataCategory>
-    <directory name="OBJECT TEMPLATE">
+<Objectconfig cm="document">
+    <directory name="Documentation">
         <metadataCategory name="objectMetadata">
             <property name="ownerCode" value="FHCL.COLL"/>
             <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
@@ -29,4 +19,4 @@
             </metadataCategory>
         </directory>
     </directory>
-</Projectconfig>
+</Objectconfig>

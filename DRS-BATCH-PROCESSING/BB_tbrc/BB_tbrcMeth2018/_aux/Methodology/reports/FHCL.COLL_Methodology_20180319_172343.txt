@@ -1,0 +1,31 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: C:\Users\jsk\Northgate\bdrc\drs-deposit\DRS-BATCH-PROCESSING\BB_tbrc\BB_tbrcMeth2018\Methodology
+Batch Name: FHCL.COLL_Methodology_20180319_172343
+Batch Size: 242 / 0.0002 megabytes
+Number of valid files: 1
+
+Number of valid files per format:
+	Extensible Markup Language: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: C:\Users\jsk\Northgate\bdrc\drs-deposit\DRS-BATCH-PROCESSING\BB_tbrc\BB_tbrcMeth2018\Methodology\batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: Methodology
+	Content Model: text
+	Owner: FHCL.COLL
+	Size: 242 bytes / 0.0002 megabytes
+	File Count: 1
+	Extensible Markup Language: 1
+
+Name: Methodology2
+	Content Model: text
+	Owner: FHCL.COLL
+	Size: 0 bytes / 0.0000 megabytes
+	File Count: 0
+
