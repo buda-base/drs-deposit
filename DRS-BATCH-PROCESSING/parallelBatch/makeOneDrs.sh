@@ -35,15 +35,38 @@ Before using:
 						Under this folder are Batch Builder projects, each one
 						corresponding to one work list.
 
-	BB_HOME				Location of the HUL Batch Builder executable.
+	BB_SOURCE				Location of the HUL Batch Builder executable.
+
+	REQUIRES "bindirectory/SetBBLevel.sh" to be run
 
 ENDUSAGE
 
 }
+
+
+# 
+# Set up Batch builder home
+#
+function prepBBHome {
+	# Copy BatchBuilder code to a location for this instance.
+	# $MAKEDRS will copy the batchbuilder log to the
+	# batch output directory
+	export BB_HOME=$(mktemp -d)
+	cp -rp $BB_SOURCE/* $BB_HOME
+	rm -f $BB_HOME/logs/*
+
+	propFile="$BB_HOME/conf/bb.properties" 
+	[ -f $propFile ] && { rm -f $propFile ; }
+	#
+	# See <binFolder>/SetBBLevel.sh
+	cp "${propFile}".$BB_LEVEL "$propFile"
+}
+
+
 # Some constants
  WORKS_SOURCE_HOME=/Volumes/WebArchive
  DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
- BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/Run6Works
+ BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/SmallWorks
  BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
  #
  # HACK: Magic phrase. Depends on ./splitWorks.sh
@@ -61,6 +84,8 @@ if (( $# != 3)); then
 	Usage
 	exit 1;
 fi
+
+[ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set' ; usage ; exit 1; }
 
 [ -e "$1" ] || { echo "${ME}":error: worksList file \'"$1"\' must exist but does not. ; exit 2; }
 	# is the processing for this worksList underway?
@@ -94,12 +119,10 @@ x=${series#$(expr $WORKS_LIST_FN)}
 # Generate the batch path
 batchPath=${BATCH_OUTPUT_HOME}/${series}.$(date +%F.%H.%M)
 
-# Copy BatchBuilder code to a location for this instance.
-# $MAKEDRS will copy the batchbuilder log to the
-# batch output directory
-BB_HOME=$(mktemp -d)
-cp -rp $BB_SOURCE/* $BB_HOME
-rm -f $BB_HOME/logs/*
+
+#
+# Set up the Batch builder level
+prepBBHome
 
 # Invoke the build in the background
  ${DRS_CODE_HOME}/${MAKEDRS} \
