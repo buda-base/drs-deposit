@@ -4,3 +4,5 @@ __pycache__/
 output/~$RS3Archives2017-12-06.xlsx
 *.textClipping
 
+fits.log
+terminal.glue
