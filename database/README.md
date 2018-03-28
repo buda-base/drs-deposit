@@ -1,7 +1,7 @@
 # DRS Database
 ## Introduction
 The DRS database tracks the status of data entities which are sent to DRS. This
-document describes how to access the DRS database. The schema itself is located in the Batches.mwb MySql Workbench Model
+document describes how to access the DRS database. The schema itself is located in the Batches.mwb MySql Workbench Model.
 ##Prerequisites
 ### To run DRS transfer programs
 A system wishing to use the DRS Database as part of the DRS uploading system needs:
