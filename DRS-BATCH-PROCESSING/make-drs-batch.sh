@@ -68,6 +68,7 @@ function isBannedExt() {
 #
 # copy logs for this bath builder run,
 # and remove them
+
 function cleanUpLogs() {
 	  # jimk 21.I.18: copy batchbuilder log
 	  batchLogDir=$targetProjectDir/${1}"-"logs
@@ -78,8 +79,10 @@ function cleanUpLogs() {
         rm -rf $bbLogDir
         rm -rf $logPath
         # Summarize and extract
-        find $batchLogDir -name $(basename $logPath) -o -name batchbuilder.log -exec grep -H -n -i 'err\|warn\|except' {} \; \
-        > ${batchLogDir}/errorSummary.txt
+        # jsk: issue #44: wasn't finding errors correctly. 
+        # find ... -name -o xyz -o -name abc doesn't look for abc when it finds abc
+        find $batchLogDir -type f -not -name errorSummary.txt -exec grep -H -n -i 'err\|warn\|except' {} \; \
+        >> ${batchLogDir}/errorSummary.txt
 }
 
 #
@@ -330,7 +333,7 @@ while IFS=',' read -ra LINE; do
 
 		# jsk 11.dec.17. Dont rename here. Do it in ftp script
 		# if [ -f $targetProjectDir/$batchName/batch.xml ]; then
-		# 	mv $targetProjectDir/$batchName/batch.xml $targetProjectDir/$batchName/batch.xml.wait
+		# 	mv $targetProjectDirbatchName/batch.xml $targetProjectDir/$batchName/batch.xml.wait
 		# else
 		# 	echo BB failed for $batchName
 		# 	echo BB failed for $batchName >> $logPath 2>&1
