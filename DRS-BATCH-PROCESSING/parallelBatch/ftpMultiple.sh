@@ -33,11 +33,14 @@ ME=$(basename $0)
 #
 function usage() {
 	cat << USAGE
-		synopsis: $ME [ -u userFileName ] -w worksListPath -h
-		synopsis: $ME  wl1 wl2[=wl1] ]  -w worksListPath -h
+		synopsis: $ME -h  this message
+		synopsis: $ME [ -u userFileName ] -w worksListPath
+		synopsis: $ME  -U userName  -w worksListPrefix  wl1 [ wl2 =wl1] 
 				
-		run multiple lists of works in files '${'worksListPath}{1..n}.txt
+		run multiple lists of works in files '${worksListPath}{1..n}.txt'
 
+		There are two use cases
+		Mutiple paralllel logons of different users
 		-u userFileName [optional] is a list of users of the host.
 			This list controls a splitting of the works list into
 			one file for each user, to support multiple parallel transfers
@@ -60,10 +63,9 @@ function usage() {
 			worksListPath has no directory component. $ME sends the files
 			worksListPath{1..n}.txt to the makeOneFtp.sh
 
-		wl1, wl2: When the -u flag is not given, integers which define the range 
-			of workLists to be parallel streamed. wl2 (worksList defaults to the
-			value of wl1 if not given.wl2 can be less than wl1:
-			bash seq is the iterator
+			When the -u flag is not given, the sftp sending user is the last
+			argument.
+
 USAGE
 }
 
@@ -107,24 +109,32 @@ function splitWorks() {
 	wl2=${#sendingUsers[*]}
 
 	splitWorks.sh -f ${wl2} $worksFileName
-	ls 
-	read -p "what you see" glurm
 
 	popd
 }
 
+
+
 #
 # h   elp
-# u   serLost
+# u   serList
 # w   orksListPath
-while getopts hu:w: opt ; do
+while getopts hu:U:w: opt ; do
+	echo "in getopts" $opt $OPTARG
 	case $opt in
 		u)
 			userListPath=$OPTARG;
 			[ -f $userListPath ] || { die 2 "${ME}:error:List of users file \'$userListPath\' must exist but does not" ; }
+#			echo "$opt triggered, arg is $OPTARG aka $userListPath"
+			;;
+		U)
+			ftpUser=$OPTARG
+#			echo "$opt triggered, arg is $OPTARG aka $userListPath"
 			;;
 		w)
-			worksListPath=$OPTARG;
+
+			worksListPath=$OPTARG
+#			echo "$opt triggered, arg is $OPTARG aka $worksListPath"
 			;;
 		h)
 			usage
@@ -134,15 +144,18 @@ while getopts hu:w: opt ; do
 done
 shift $((OPTIND-1))
 
+
 # if no args, bail
 
 # if we dont have a user list, and we dont have any args,
 # we're toast, and we're outta here
 
+
 [ "${userListPath:-$NO_VALUE}"  == "$NO_VALUE" ] &&  [ "${1:-$NO_VALUE}"  == "$NO_VALUE" ] &&  { usage ; exit 1 ; }
 
 # worksListPath required
 worksListPath=${worksListPath:?${ME}:usage:worksListPath is empty, or -w flag not given}
+
 
 
 if [ "${userListPath:-${NO_VALUE}}" != "$NO_VALUE" ] ; then
@@ -161,6 +174,7 @@ else
 # Set default for wl2 if not given
 	wl1=$1
 	wl2=${2:-$wl1}
+
 fi
 
 # 
@@ -180,7 +194,10 @@ for x in $(seq $wl1 $wl2 ); do
 	# Run each iteration in the background
 	# jsk 21.I.18: shell scripts can be in ~/bin
 	# Har: the autoincrement doesnt work when executing in background.
-	aUser=${sendingUsers[$((ui++))]} 
-	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR  $aUser &
+
+	# set up user either from the list or command line
+	curFtpUser=${sendingUsers[$((ui++))]:-$ftpUser} 
+
+	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR  $curFtpUser &
  
 done

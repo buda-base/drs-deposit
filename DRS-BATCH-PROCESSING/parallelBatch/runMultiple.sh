@@ -22,7 +22,7 @@ WORKS_LIST_FN=worksList
 # Source of works
 WORKS_SRC=runSources
 # jsk Take 2 for parallel processing
-# WORKS_SRC=smallRuns
+WORKS_SRC=smallRuns
 # WORKS_SRC=issue34
 
 function usage() {
