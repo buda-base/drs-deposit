@@ -1,0 +1,25 @@
+Batch Summary:
+-----------------------------------------------------------------------------
+Batch Directory: /Users/jimk/drs-deposit/DRS-BATCH-PROCESSING/BB_tbrc/BB_tbrcOutPrintDocs/Documentation
+Batch Name: FHCL.COLL_Documentation_20180406_154808
+Batch Size: 21614 / 0.0206 megabytes
+Number of valid files: 1
+
+Number of valid files per format:
+	Portable Document Format: 1
+
+Files found to be invalid (total files:0)
+
+Files ignored (total files:0)
+
+Batch.xml written to: /Users/jimk/drs-deposit/DRS-BATCH-PROCESSING/BB_tbrc/BB_tbrcOutPrintDocs/Documentation/batch.xml
+
+Object Summary:
+-----------------------------------------------------------------------------
+Name: OutlineDoc
+	Content Model: document
+	Owner: FHCL.COLL
+	Size: 21614 bytes / 0.0206 megabytes
+	File Count: 1
+	Portable Document Format: 1
+

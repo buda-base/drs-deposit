@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="document">
+    <directory name="OutlineDoc">
+        <metadataCategory name="objectMetadata">
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="accessFlag" value="R"/>
+            <property name="adminCategory" value="Buddhist Digital Resource Center (id=78744)"/>
+            <property name="producer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            <property name="viewText" value="on"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="FHCL"/>
+        </metadataCategory>
+        <metadataCategory name="otherRightsMetadata">
+            <property name="license" value="rn-3:HUL.DRS.OBJECT:35013887"/>
+            <property name="license" value="rn-3:HUL.DRS.OBJECT:35013885"/>
+        </metadataCategory>
+        <metadataCategory name="documentObjectMetadata">
+            <property name="role" value="DOCUMENTATION"/>
+        </metadataCategory>
+        <directory name="document">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAdminCategory" value="Buddhist Digital Resource Center (id=78744)"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            </metadataCategory>
+            <metadataCategory name="otherRightsFileMetadata">
+                <property name="filelicense" value="urn-3:HUL.DRS.OBJECT:35013887"/>
+                <property name="filelicense" value="urn-3:HUL.DRS.OBJECT:35013885"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>

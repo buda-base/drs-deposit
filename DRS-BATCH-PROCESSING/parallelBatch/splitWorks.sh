@@ -93,8 +93,7 @@ esac
 
 #
 # This is BSD split. If we move to Ubuntu, look up GNU
-set -v
-set -x
+
 split -l $linesPerFile $sourceFile $worksFn # -a $suffixLen 
 
 rc=$(($!))

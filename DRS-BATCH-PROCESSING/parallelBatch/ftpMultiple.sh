@@ -109,8 +109,6 @@ function splitWorks() {
 	wl2=${#sendingUsers[*]}
 
 	splitWorks.sh -f ${wl2} $worksFileName
-	ls 
-	read -p "what you see" glurm
 
 	popd
 }
