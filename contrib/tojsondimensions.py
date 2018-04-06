@@ -53,12 +53,10 @@ def get_s3_key(dirname):
     lastdir = dirname.split('/')[-1]
     workid = lastdir.split('-')[0]
     md5 = hashlib.md5(workid.encode('utf-8')).hexdigest()[:2]
-    # return 'Works/'+md5+'/'+workid+'/images/'+lastdir+'/dimensions.json'
     return os.path.join('Works',md5,workid,'images',lastdir,'dimensions.json')
 
 def build_lists_from_dir(dirname, outputdirname, dryrun, s3bucket):
     for root, batchdirnames, fileNames in os.walk(dirname):
-#        if root.count(os.path.sep) == 2: # yeark
         if descriptorFileName in fileNames:
             key = get_s3_key(root)
             list = get_list_from_file(os.path.join(root, descriptorFileName))
