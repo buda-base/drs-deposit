@@ -14,8 +14,8 @@
             <property name="urnAuthorityPath" value="FHCL"/>
         </metadataCategory>
         <metadataCategory name="otherRightsMetadata">
-            <property name="license" value="rn-3:HUL.DRS.OBJECT:35013887"/>
-            <property name="license" value="rn-3:HUL.DRS.OBJECT:35013885"/>
+            <property name="license" value="urn-3:HUL.DRS.OBJECT:35013887"/>
+            <property name="license" value="urn-3:HUL.DRS.OBJECT:35013885"/>
         </metadataCategory>
         <metadataCategory name="documentObjectMetadata">
             <property name="role" value="DOCUMENTATION"/>
