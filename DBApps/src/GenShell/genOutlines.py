@@ -42,14 +42,18 @@ def main(args):
 def parseArgs(argNamespace):
     '''
     :param argNamespace. class which holds arg values
+    populates argNamespace with
+    .csv
+    .drsDbConfig
+    string properties
     '''
     _parser = argparse.ArgumentParser(
                                       description='Extracts outline from\
                                        TBRC wget formatted list of works',
-                                      usage='%(prog)s \n[-c CSV outputs csv\
-                                       format to file CSV.\n\t | -d \
-                                       --drsDbConfig: Use drs config file to \
-                                       connect to \[arg\] database.]')
+                                      usage='%(prog)s \n[-c --csv csvFileOutPath outputs csv\
+                                       format to output.\n\t | -d \
+                                       --drsDbConfig  section:cfgFileName  Use drs config file to \
+                                       connect to \'section\' section in \'cfgFile\' database.]')
 
     _parser.add_argument("sourceFile", help='XML formatted input. \
     Generated from TBRC query')
