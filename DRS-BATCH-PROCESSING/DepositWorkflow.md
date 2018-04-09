@@ -15,6 +15,9 @@ You will also need to link, or add to your path, the `parallelBatch` subdirector
 ### Temporary assumptions, to change as uploads continue
 Anything that's been built does not require links to it - that means (for now)
 no print masters or outlines. This is taken care of in the drs-deposit/output/NoPrintNoOutline.csv
+## Special circumstances
+Sometimes, you might need loads from a different day, that have not had their LOADREPORTS downloaded.
+It's possible, desirable even, to re-run deposit records from prior days.
 ## Preparation for today's deposits
 ### Fix up yesterdays deposits
 Correct and restart or reload any deposits you may have received. The most common problem is a duplicate upload, shown in the DRS Deposit error text:
@@ -50,6 +53,8 @@ Sometimes, you may have to go into the specific error message and rename the bat
 After you rename the file and disconnect the DRS deposit process automatically kicks in (between 0800 and 2000 EST Monday - Friday).
 
 ** IMPORTANT DO NOT POLL FOR RESULTS RIGHT AWAY ** This can interfere with the DRS process.
+#### When you need to delete a failed deposit.
+This is not bad. The build process below examines the list of available builds, and deletes any which have LOADREPORTS. So if a build fails, it can be restarted.
 
 ### Download yesterdays loadreports
 In the directory you made the prior day (see below), look for the file _sourceFileList_.UploadTrack.lst. It contains a separated list of users and the sources of the batches they deposited. A typical run is
@@ -61,19 +66,20 @@ drs2_tbrcftp3|20180405DepositList4.txt
 drs2_tbrcftp|20180405DepositList1.txt
 drs2_tbrcftp|20180405DepositList1.txt
 ```
-Each line decomposes into an argument list for pollDRS.sh. You will have to manually parse out the directories (possibly ftp1 ftp2 ftp3, or just use the user name)
+Each line decomposes into an argument list for pollDRS.sh. You will have to manually parse out the directories (possibly ftp1 ftp2 ftp3, or just use the user name).
+`sed -e 's/\|/ /' DepositList.UploadTrack.lst | awk '{print "pollDRS.sh", $2, $1, $1}'`
 
 ### Make a new directory
 `cd $DEPOSIT_ROOT`
 mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anything.
 ### Capture all the builds
-`$CODE/RemoveDuplicateBuilds.sh` to generate a canonical list of all builds
+`$CODE/RemoveDuplicateBuilds.sh` to generate a canonical list of all builds.
 (In a future, this will have deposits removed)
 gives you the file `BuildList.txt`
 ### Remove the deposits from the list
 let `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`
-this is embedded in `$CODE/RemoveDepositedBatches.sh`
-This gives you a `UnDepositedBuildPaths.txt`
+this is embedded in `$CODE/RemoveDepositedBatches.sh`, which you run.
+This gives you a `UnDepositedBuildPaths.txt` 
 ### Calculate how many of these you can deposit
 There's a script file, `~/drs-deposit/DRS-BATCH-PROCESSING/CountFilesInBatches.awk` which you can paste into a script, to calculate all the files in a list of batches. you can inline the script like this:
 ```
