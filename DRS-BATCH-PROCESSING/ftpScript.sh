@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 #######################################################################
 #
@@ -23,18 +23,15 @@ ME_DIR=$(dirname $0)
 #section I
 ME_PPK='/Users/jimk/ppk/DrsDropQa.ppk'
 export ME_PPK
-DRS_DROP_HOST=drs2drop-qa.hul.harvard.edu
+DRS_DROP_HOST=drs2drop.lib.harvard.edu
 export DRS_DROP_HOST
 
 # DRS_DROP_USER=drs2_tbrctest
 # export DRS_DROP_USER
 
-# If running in parallel, cant collide
-SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || exit 1 
-
 #section error logging. Requires trailing
 # Output is var ERR_LOG, ERR_TEXT, INFO_TEXT variables
-. ${ME_DIR}/setupErrorlog.sh "${ME}"
+. ${ME_DIR}/setupErrorLog.sh "${ME}"
 #endsection Set up logging
 
 usage() {
@@ -43,9 +40,13 @@ Usage: ${ME} listToUpload remoteUser  where
  	listToUpload	is the file list containing the upload paths.
  					Each line contains a directory to upload
  	remoteUser		is the user on the remote system
+
+ 	[dropbox ]		optional: DRS Dropbox address. Uses PROD as default
 USAGE
-exit 1;
 }
+
+# If running in parallel, cant collide
+SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || { echo ${ME}:error: Cant create command file ; exit 1 ; } 
 
 #
 # Build a script for remote ftp to execute
@@ -60,12 +61,11 @@ buildSFTPBatch() {
 	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
 	# the - prefix allows continuation on command failure.
 	# sftp rmdir builtin may fail if directory is not empty.
-	# The script should have removed the directory with ssh
     echo "-rmdir $_targetPath" >> ${SFTP_CMD_FILE}
 	# you have to make the directory, and then put stuff in it. here,
 	# $remoteTarget must be the last directory in the path $b 
 	echo "mkdir $_targetPath" >> ${SFTP_CMD_FILE}
-	echo "put -r $_sourcePath" >> ${SFTP_CMD_FILE}
+	echo "put -r -P $_sourcePath" >> ${SFTP_CMD_FILE}
 	# operations are relative to the directory in the command line ":incoming"
 	# jimk Probably not needed: ingestion waits for upload to disconnect
 	# echo "rename ${1}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML" >> ${SFTP_CMD_FILE}
@@ -85,34 +85,42 @@ targetList="$1"
 
 drsDropUser=${2?${ME}:error: remote user is not given}
 
+drsDropHost=${3:-$DRS_DROP_HOST}
+
+
 
 #endsection setup and arg parse
-	while read sourcePath ; do
-		targetPath=$(basename $sourcePath)
+while read sourcePath ; do
+	targetPath=$(basename $sourcePath)
 
-		buildSFTPBatch "$sourcePath" "$targetPath" 
+	buildSFTPBatch "$sourcePath" "$targetPath" 
 
-		# Clean up this batch only. If the dir exists, ftp wont be able to clean it up
-		# If this fails, the ftp wwont work, and the fail will be logged
-		# Were not force removing the file anymore. No context, since we moved the 
-		# processing loop into buildSftpBatch
-		# -n flag for use in read loop
-		# ssh -n -i $ME_PPK -l $DRS_DROP_USER $DRS_DROP_HOST  rm -rf incoming/${remoteTarget}
+	# Clean up this batch only. If the dir exists, ftp wont be able to clean it up
+	# If this fails, the ftp wwont work, and the fail will be logged
+	# Were not force removing the file anymore. No context, since we moved the 
+	# processing loop into buildSftpBatch
+	# -n flag for use in read loop
+	# ssh -n -i $ME_PPK -l $DRS_DROP_USER $drsDropHost  rm -rf incoming/${remoteTarget}
 
-		sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${DRS_DROP_HOST}:incoming/   2>> $ERR_LOG
+	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${drsDropHost}:incoming/   2>> $ERR_LOG
 
-		[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
 
-		rc=$?
-		# rm ${SFTP_CMD_FILE}
-		[ $rc == 0 ] || { 
-			errx=$(printf "${ME}:${ERROR_TXT}: sftp $DRS_DROP_HOST failed: code $rc") ;
-			echo $errx;
-			echo $errx >> $ERR_LOG;
-			exit $rc ; 
-		}
+	rc=$?
 
-	done < $targetList
+[ $rc == 0 ] && { echo "${ME}:${INFO_TEXT}: sftp $drsDropHost targetPath success" >> $ERR_LOG ; } 
+	# rm ${SFTP_CMD_FILE}
+	[ $rc == 0 ] || { 
+		errx=$(printf "${ME}:${ERROR_TXT}: sftp $drsDropHost $targetPath failed: code $rc") ;
+		echo $errx;
+		echo $errx >> $ERR_LOG;
+		# jsk 20180406: keep going. One failure is not catastrophic
+		# Usually just means an upload has occurred
+		# exit $rc ; 
+	}
+
+	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
+
+done < $targetList
 
 ##############################################
 #
