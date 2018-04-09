@@ -4,6 +4,7 @@ Created on Mar 6, 2018
 @author: jsk
 '''
 import codecs
+import os
 from OutlineWrite.listwriter import ListWriter
 
 
@@ -17,8 +18,8 @@ class CSVWriter(ListWriter):
     :param srcList: source list to write out
     '''
     def write_list(self, srcList):
-
-        with codecs.open(self.oConfig,  'w', encoding="utf-8") as out:
+        fullFilePath=os.path.expanduser(self.oConfig)
+        with codecs.open(fullFilePath,  'w', encoding="utf-8") as out:
             #        sigh. no unicode in csv
             #         wr = _csv.writer(out)
             #         wr.writerow(['workName','outlineText'])

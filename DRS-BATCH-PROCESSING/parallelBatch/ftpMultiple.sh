@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 #
 # launch and track a bunch of background tasks
 # 
@@ -197,7 +197,9 @@ for x in $(seq $wl1 $wl2 ); do
 
 	# set up user either from the list or command line
 	curFtpUser=${sendingUsers[$((ui++))]:-$ftpUser} 
-
+	
+	# Capture the user and the file they uploaded. We need this in reports
+	printf "%s|%s\n" $curFtpUser  ${worksListPath}${x}.txt >> ${worksListPath}.UploadTrack.lst
 	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR  $curFtpUser &
  
 done

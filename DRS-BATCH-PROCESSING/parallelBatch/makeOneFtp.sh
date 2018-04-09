@@ -1,5 +1,5 @@
 #! /bin/bash
-#   Make one DRS Launch, with tracking control
+#   Make one Ftp Launch, with tracking control
 #
 # arguments:
 
@@ -71,15 +71,16 @@ completionRoot=$3
 : ${4?${ME}:error: remote User Name not given}
 remoteUserName=$4
 
+
 # Invoke the upload in the background
+
 ${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName &
-# ${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName &
-#
+
 # Capture its pid and mark as underway
  thisRun=$!
 #
 # Mark as underway, with details
- printf "%d_%s" "$thisRun" $(date +%H:%M:%S) > $underFile
+ printf "%d_%s" "$thisRun" $(date +%H:%M:%S) >> $underFile
 
  #
 wait $thisRun
@@ -95,5 +96,11 @@ childRc=$?
 #	cat ${doneFile} | awk -v newFields=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")  '{printf "!%s_%s@\n", $0, $newFields }' #   >   ${resultsDir}/$doneFileName
 finishedArgs=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")
 #
-cat $underFile | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${srcListName}
+
+#
+# jimk: 2018-03-27: need to associate the drs user with the batch.
+
+echo 
+
+cat $underFile | awk -v newFields="${finishedArgs}|TRACK|${remoteUserName}_${srcListPath}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${srcListName}.$$
 rm $underFile

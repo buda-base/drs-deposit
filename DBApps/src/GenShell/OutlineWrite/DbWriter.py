@@ -7,14 +7,28 @@ Created on Mar 6, 2018
 from OutlineWrite.listwriter import ListWriter
 
 # Configuration reader
-from DBApp import config
+from DBApp import config 
 import pymysql
+import os
 
 
 class DbWriter(ListWriter):
     '''
     Writes to a db, connection string in the config file
     '''
+    
+    dbName = ''
+    dbConfigFile = ''
+    def __init__(self,configInfo):
+        super().__init__(configInfo)
+        '''Set up config'''
+        try:
+            args = self.oConfig.drsDbConfig.split(':')
+            self.dbName = args[0]
+            self.dbConfigFile = os.path.expanduser(args[1])
+        except IndexError:
+            raise IndexError('Invalid argument: Must be formatted as section:file ')
+        
 
     def write_list(self, srcList):
         '''
@@ -29,7 +43,10 @@ class DbWriter(ListWriter):
         hadBarf = False
         try:
             # Load the db configuration from the file given in
-            cfg = config.DBConfig('dev', self.oConfig.drsDbConfig)
+            #
+
+            cfg = config.DBConfig(self.dbName,self.dbConfigFile)
+            # cfg = config.DBConfig('dev', self.oConfig.drsDbConfig)
             dbConnection = self.start_connect(cfg)
 
             with dbConnection:
@@ -37,8 +54,7 @@ class DbWriter(ListWriter):
 
                 for aVal in srcList:
                     try:
-                        curs.callproc(self.oConfig.sproc, (aVal[0].strip(),
-                                                           aVal[1].strip()))
+                        curs.callproc(self.oConfig.sproc, (aVal[0].strip(),))
 
                     # Some outlines are not in unicode
                     except UnicodeEncodeError:
@@ -63,7 +79,7 @@ class DbWriter(ListWriter):
                 dbConnection.close()
         
     def test(self,cfg):
-            cfg = DbConfig('dev', self.oConfig.db)
+            cfg = config.DbConfig(self.dbName,self.dbConfigFile)
             dbConnection = self.start_connect(cfg)
         
     def start_connect(self, cfg):
