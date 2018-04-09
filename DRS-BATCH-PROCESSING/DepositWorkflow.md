@@ -12,6 +12,10 @@ let `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`
 ### Environment
 You don't need the entire drs-deposit project, just the folder DRS-BATCH-PROCESSING and its subdirectories. you might want to put those paths into your PATH, or to link them in a common dir on your path.
 You will also need to link, or add to your path, the `parallelBatch` subdirectory.
+#### Environment variables:
+**You need these set for anything to work**
+`export PR=/Volumes/DRS_Staging/DRS/prod`  This is the parent of all batch builds.
+`export CODE=<root of drs-deposit git repository>/DRS-BATCH-PROCESSING`
 ### Temporary assumptions, to change as uploads continue
 Anything that's been built does not require links to it - that means (for now)
 no print masters or outlines. This is taken care of in the drs-deposit/output/NoPrintNoOutline.csv
