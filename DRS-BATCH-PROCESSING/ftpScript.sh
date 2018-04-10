@@ -69,6 +69,9 @@ buildSFTPBatch() {
 	# operations are relative to the directory in the command line ":incoming"
 	# jimk Probably not needed: ingestion waits for upload to disconnect
 	# echo "rename ${1}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML" >> ${SFTP_CMD_FILE}
+	#
+	# jimk: See of this helps with JDBC connection errors, and fole missing files
+	echo "!sleep 2" >> ${SFTP_CMD_FILE}
 }
 
 
@@ -107,7 +110,7 @@ while read sourcePath ; do
 
 	rc=$?
 
-[ $rc == 0 ] && { echo "${ME}:${INFO_TEXT}: sftp $drsDropHost targetPath success" >> $ERR_LOG ; } 
+[ $rc == 0 ] && { echo "${ME}:${INFO_TEXT}: sftp $drsDropHost $targetPath success" >> $ERR_LOG ; } 
 	# rm ${SFTP_CMD_FILE}
 	[ $rc == 0 ] || { 
 		errx=$(printf "${ME}:${ERROR_TXT}: sftp $drsDropHost $targetPath failed: code $rc") ;
