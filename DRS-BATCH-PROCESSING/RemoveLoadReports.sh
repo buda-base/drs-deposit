@@ -1,16 +1,16 @@
 #!/bin/bash
 # jimk 2018 III 27
 #
-# poll a server for logs
-#
+# Remove load reports from a server
 # Variables and structure from ftpScript.sh
+#
 ME=$(basename $0)
 ME_DIR=$(dirname $0)
 
 
 #section error logging. Requires trailing
 # Output is var ERR_LOG, ERROR_TXT, INFO_TXT variables
-. ${ME_DIR}/setupErrorLog.sh "${ME}"
+. ~/drs-deposit/DRS-BATCH-PROCESSING/setupErrorLog.sh "${ME}"
 #endsection Set up logging
 
 #section I
@@ -30,11 +30,10 @@ export FAIL_FILE_NAME=${SUCCESS_FILE_NAME}.failed
 
 usage() {
 	cat <<  USAGE
-Usage: ${ME} directory remoteUser 
+Usage: ${ME} batchName remoteUser 
 where
- 	directory contains one or more batchWnnnn-n"$FAIL_FILE_NAME" files, which are
- 				under the sftp account of remoteUser.
- 	remoteUser		is the user on the remote system who owns the files.
+ 	batchList 		is a file containing batch names. 
+ 	remoteUser		is the SFTP logon user on the remote system 
 USAGE
 
 }
@@ -47,13 +46,6 @@ SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || { echo ${ME}:${ERROR_TXT}: Cant create 
 
 
 
-sourcePath=${1?$(usage)}
-# Does the input exist?
-[ -d "$sourcePath" ] || { 
-	echo "${ME}:${ERROR_TXT}:directory ${targetList} not found." 2>&1 | tee -a $ERR_LOG ;  
-	exit 2 ;  
-}
-
 #
 # Build a script for remote ftp to execute
 #
@@ -64,10 +56,7 @@ sourcePath=${1?$(usage)}
 # $4: remote directory to work in
 # 
 buildSFTPBatch() {
-	_successPath=$1
-	_failPath=$2
-	_localPath=$3
-	_remotePath=$4
+	_remotePath=$1
 
 	# the - prefix in the sftp commands allows continuation 
 	# on command failure.
@@ -77,29 +66,23 @@ buildSFTPBatch() {
 	# in the remote frp directory
 	# failure case: all files are named batch.xml.failed
 	cat << EFTP > ${SFTP_CMD_FILE}
-		lcd $_localPath
-		cd $_remotePath
-		-rename ${_failPath} ${_successPath}
-		! touch LOADING
-		put LOADING
-		# Take out per Vitaly, this messes up MD5 checksum on descriptor.xml
-		# chmod 775 $_remotePath
+
+		rm $_remotePath/*LOAD*
+		rmdir $_remotePath
 EFTP
 }
 
-mkdir $sourcePath/recovery
 
-export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. $(${0}) }
+export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. args: "$@" }
+
+export batchList=${1?${ME}:${ERROR_TXT}:list of batches is not given. args: "$@" }
+
+
+while read remoteBatchPath ; do
 
 # Loop over all the batch.xml.failed in this directory
-find $sourcePath -name \*$FAIL_FILE_NAME\* | while read failedBatchFile ; do
 
-	ff=$(basename $failedBatchFile)
-
-	# pollDRS renames a fail file BatchWxxxxx-1_batch.xml.failed.
-	targetDir=${ff%_$FAIL_FILE_NAME}
-
-	buildSFTPBatch "$SUCCESS_FILE_NAME" "$FAIL_FILE_NAME" $sourcePath $targetDir
+	buildSFTPBatch  $remoteBatchPath 
 	
 	# cat $SFTP_CMD_FILE
 	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${DRS_DROP_HOST}:${BASE_REMOTE_DIR}  | tee -a $ERR_LOG ;  
@@ -108,13 +91,12 @@ find $sourcePath -name \*$FAIL_FILE_NAME\* | while read failedBatchFile ; do
 
 
 	[ $rc == 0 ] && { 
-		echo "${ME}:${INFO_TXT}: sftp $DRS_DROP_HOST $sourcePath to $targetDir success" 2>&1 | tee -a $ERR_LOG ; 
+		echo "${ME}:${INFO_TXT}: sftp $DRS_DROP_HOST ${drsDropUser} $remoteBatchPath  success" 2>&1 | tee -a $ERR_LOG ; 
 		# Remove the failed file from the list - if the deposit fails, we'll get it again
-		mv $failedBatchFile $sourcePath/recovery
 	} 
 
 	[ $rc == 0 ] || { 
-		errx=$(printf "${ME}:${ERROR_TXT}: sftp $DRS_DROP_HOST $sourcePath to $targetDir failed: code $rc") ;
+		errx=$(printf "${ME}:${ERROR_TXT}: sftp $DRS_DROP_HOST ${drsDropUser} $remoteBatchPath  failed: code $rc") ;
 		echo $errx  | tee -a $ERR_LOG ;  
 		# jsk 20180406: keep going. One failure is not catastrophic
 		# Usually just means an upload has occurred
@@ -122,7 +104,7 @@ find $sourcePath -name \*$FAIL_FILE_NAME\* | while read failedBatchFile ; do
 	}
 
 	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
-done
+done < $batchList
 
 
 

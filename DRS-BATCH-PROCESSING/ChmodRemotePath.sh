@@ -77,13 +77,7 @@ buildSFTPBatch() {
 	# in the remote frp directory
 	# failure case: all files are named batch.xml.failed
 	cat << EFTP > ${SFTP_CMD_FILE}
-		lcd $_localPath
-		cd $_remotePath
-		-rename ${_failPath} ${_successPath}
-		! touch LOADING
-		put LOADING
-		# Take out per Vitaly, this messes up MD5 checksum on descriptor.xml
-		# chmod 775 $_remotePath
+		chmod 775 $_remotePath
 EFTP
 }
 
@@ -92,13 +86,10 @@ mkdir $sourcePath/recovery
 export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. $(${0}) }
 
 # Loop over all the batch.xml.failed in this directory
-find $sourcePath -name \*$FAIL_FILE_NAME\* | while read failedBatchFile ; do
-
-	ff=$(basename $failedBatchFile)
+find $sourcePath -name \* | while read targetDir ; do
 
 	# pollDRS renames a fail file BatchWxxxxx-1_batch.xml.failed.
-	targetDir=${ff%_$FAIL_FILE_NAME}
-
+	targetDir=$(basename $targetDir)
 	buildSFTPBatch "$SUCCESS_FILE_NAME" "$FAIL_FILE_NAME" $sourcePath $targetDir
 	
 	# cat $SFTP_CMD_FILE
@@ -106,11 +97,9 @@ find $sourcePath -name \*$FAIL_FILE_NAME\* | while read failedBatchFile ; do
 
 	rc=$?
 
-
+cat ${SFTP_CMD_FILE}
 	[ $rc == 0 ] && { 
 		echo "${ME}:${INFO_TXT}: sftp $DRS_DROP_HOST $sourcePath to $targetDir success" 2>&1 | tee -a $ERR_LOG ; 
-		# Remove the failed file from the list - if the deposit fails, we'll get it again
-		mv $failedBatchFile $sourcePath/recovery
 	} 
 
 	[ $rc == 0 ] || { 
