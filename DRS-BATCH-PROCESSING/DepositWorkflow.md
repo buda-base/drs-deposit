@@ -100,13 +100,18 @@ Then you can just stream that out to your source file, taking out the count meta
 `sed -n '1,/242505/p' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
 and take it out of the original list
 `sed -n '/242505/,$p' CumList.txt | cut -f1 -d'|' > AfterFirstTranchePaths.txt`
-(note we've stripped out the counts out of AfterFirstTranchePaths.txt)
-And then run the same process on `AfterFirstTranchePaths.txt`
+Generally, I don't re-use this index, I rebuild it every day, to allow for possible new builds
+and new downloads.
 ### Prepare a list for ftpMultiple.sh
-read DoThisNow.txt, and transform each line with basename
+`DoThisNow.txt`has the full path to batch.xml files, and`ftpMultiple.sh`
+only uses the batch.xml containing folder. You can either 
+* read DoThisNow.txt, and transform each line with basename
 `while read dd ; do dirname $dd ; done <tmptmp > DoTheseNow.txt`
+* Just strip out the batch.xml when you build DoThisNow.txt
+`sed -n `-e '1,/242505/p' -e 's/\/batch.xml//' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
 ### Run ftpMultiple.sh
 You won't get notifications of success, only failure.
+** DONT PEEK ** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
 
 
 
