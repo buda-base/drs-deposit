@@ -1,11 +1,9 @@
-# Deposit workflow:
-We do this daily before depositing.
-let CODE=drs-deposit/DRS-BATCH-PROCESSING in Github
-let `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`
+# Deposit workflow
+
 ## Executive Summary
 * Clean up (recover) prior deposit run errors
 * download results from prior deposit run errors
-* Generate list of all available batches 
+* Generate list of all available batches
 * Filter out all uploaded batches (using downloaded results)
 * Extract todays deposit file limit from batches including recovery batch file counts.
 ## Assumptions:
@@ -17,51 +15,25 @@ You will also need to link, or add to your path, the `parallelBatch` subdirector
 `export PR=/Volumes/DRS_Staging/DRS/prod`  This is the parent of all batch builds.
 `export CODE=<root of drs-deposit git repository>/DRS-BATCH-PROCESSING`
 ### Temporary assumptions, to change as uploads continue
-Anything that's been built does not require links to it - that means (for now)
+Any work to deposit does not require links to it - that means (for now)
 no print masters or outlines. This is taken care of in the drs-deposit/output/NoPrintNoOutline.csv
 ## Special circumstances
 Sometimes, you might need loads from a different day, that have not had their LOADREPORTS downloaded.
 It's possible, desirable even, to re-run deposit records from prior days.
 ## Preparation for today's deposits
-### Fix up yesterdays deposits
-Correct and restart or reload any deposits you may have received. The most common problem is a duplicate upload, shown in the DRS Deposit error text:
-"Object owner supplied name 'W00CHZ0103345-I1CZ43' already exists for owner code FHCL.COLL" This simply means 'W00CHZ0103345' has already been deposited.
-#### Duplicate uploads
-Most common problem, it means you have not downloaded a LOADREPORT of a successful batch.
-This can be a little tedious, because you have to search through each user.
-pollDRS.sh can help with this, as it can take batch names. It means you'll have to do a full outer join of users and batches. For example, yesterday's deposits found duplicate objects in these batches:
-```
-W00EGS1017555
-W00EGS1017422
-W00EGS1017419
-W00EGS1017357
-W00EGS1017352
-W00EGS1017349
-W00EGS1017345
-W00EGS1017337
-W00EGS1017341
-W00CHZ0103345
-```
-Instead of using a UI to search each user, you can loop over `pollDRS.sh` to try the list against all users. You'll have to translate the Works into the relative batches. You can do this best by using at as a search file (`frgrep -f ...`) into the list of sources. A sample `dupScript.sh`is shown here:
-```
-pollDRS.sh dupBatches drs2_tbrcftp drs2_tbrcftp
-pollDRS.sh dupBatches drs2_tbrcftp1 drs2_tbrcftp1
-pollDRS.sh dupBatches drs2_tbrcftp2 drs2_tbrcftp2
-pollDRS.sh dupBatches drs2_tbrcftp3 drs2_tbrcftp3
-```
-#### Why?
-Because the next upload build depends on having LOADREPORTS for prior builds. (In the future, we'll use a database to drive the daily builds, not file processing.)
 
-#### Take care of any other errors
-Sometimes, you may have to go into the specific error message and rename the batch.xml.failed to batch.xml. That may help the issue go away. If it doesn't, you will have to retry the build.
-After you rename the file and disconnect the DRS deposit process automatically kicks in (between 0800 and 2000 EST Monday - Friday).
+### Get Yesterdays results from DRS WebAdmin
+An earlier version of the workflow used the existence of LOADREPORTS on disk to determine which works had been uploaded. This workflow uses the output of a DRS WebAdmin search. Details to follow.
+** IMPORTANT ** When you do the search, be sure to add the column "Batch Directory" to the output columns.
+![Select show/hide columns](../images/2018/04/91142cc5-2986-41f8-baaf-5133fc3e2184.png)
+![Select](../images/2018/04/edd87ba9-9c7e-4159-9c76-490038b61567.png)
+_Getting the 'Deposited in Batch with Name' might be helpful, but is not required_
+** Current workflow downloads everything **
 
-** IMPORTANT DO NOT POLL FOR RESULTS RIGHT AWAY ** This can interfere with the DRS process.
-#### When you need to delete a failed deposit.
-This is not bad. The build process below examines the list of available builds, and deletes any which have LOADREPORTS. So if a build fails, it can be restarted.
 
-### Download yesterdays loadreports
-In the directory you made the prior day (see below), look for the file _sourceFileList_.UploadTrack.lst. It contains a separated list of users and the sources of the batches they deposited. A typical run is
+
+#### Download yesterdays loadreports
+In the directory you made the on the last day you uploaded,  look for the file _sourceFileList_.UploadTrack.lst. It contains a separated list of users and the sources of the batches they deposited. A typical run is
 ```
 drs2_tbrcftp|20180405DepositList1.txt
 drs2_tbrcftp1|20180405DepositList2.txt
@@ -70,9 +42,97 @@ drs2_tbrcftp3|20180405DepositList4.txt
 drs2_tbrcftp|20180405DepositList1.txt
 drs2_tbrcftp|20180405DepositList1.txt
 ```
-Each line decomposes into an argument list for pollDRS.sh. You will have to manually parse out the directories (possibly ftp1 ftp2 ftp3, or just use the user name).
-`sed -e 's/\|/ /' DepositList.UploadTrack.lst | awk '{print "pollDRS.sh", $2, $1, $1}'`
+Each line decomposes into an argument list for pollDRS.sh. Use `ProcessTrackFile.sh` to turn this into a download script using `pollDRS.sh`
 
+
+#### pollDRS.sh
+```
+Usage: pollDRS.sh uploadedBatchList remoteUser reportDir where
+        uploadedBatchList       is the file list containing the list of directories.
+                                        This file can be the same as the upload list (/path/to/batches/batchnnn-1)
+                                        or it can be just a list of batches (BatchW.....-1)
+        remoteUser              is the user on the remote system
+        reportDir               is the directory which will receive the remote logs
+
+```
+It's most common use is to download the results of batches which were uploaded, and were defined in the `uploadedBatchList` parameter.
+### Fix up yesterdays deposits
+Correct and restart or reload any deposits you may have received.
+You can use the existence of a downloaded `batch.xml.failed` to infer a deposit error, but it is by no means certain (a deposit directory can have both LOADREPORT and `batch.xml.failed` files). As well, the downloaded files do not tell you the error. You have to examine your emails for that. (I find it usedful just to dump the previous )
+I collect and parse the emails on the build machine. It's best to make several passes, one for each kind of error.
+
+In your mail app, select messages with each specific text.[^88fae8cf] For example,
+* 'Object owner supplied name' - this means the object exists.
+* 'JDBCException' - is a temporary resource failure
+* 'MD5 checksum' error. - this requires recovery: what's happened is that the DRS ingest failed, and the retry failed as well. See below for cause and remediation.
+*  '/drs/drsfs/descriptor/.... (Permission denied)' - this is also a transient error.
+* ' Could not create PROCESSING .. because directory is unwritable' - this is a more serious error with its own workflow.
+#### Error classification
+There are three distinct workflows for errors
+
+[^88fae8cf]: My exoerience has been that this is best done on a MacOS mail client. On Windows, doing this and ftp'ing it has \n side effects.
+
+Error Type|Error Text|Fix type
+----|-----|------
+Duplicate deposit|'Object Owner supplied name exists'|[workflow]('Object Owner supplied name exists')
+DRS permissions failure  |'Could not create PROCESSING'|Inhibit further PROCESSING
+Everything else|varies|recover the batch using workflow ???? below
+  |   |  
+
+
+
+### Error resolution workflows
+#### Workflow 'Object Owner supplied name exists'
+Fix these first. When you download batch results, you don't want these in your downloads. These occur because of absences in the deposit records. Go to WebAdmin and refresh the deposit batches. (TODO: Document the procedure)
+The fix is to go into an SFTP UI (FileZilla or  BitVise), and delete the directory in the UI. This is a very tedious and slow procedure.
+
+Steps:
+1. Search emails for 'Object Owner supplied name exists' Save into a text file.
+2. grep the text file for `\(Batch Directory\|Dropbox User\)`
+You should get a sequence of
+```
+Dropbox User: drs2drs2_tbrcftp
+Batch Directory:batchWnnnnn-m
+```
+3. For each user, open an SFTP ui and delete `/incoming/batchWnnnnn-m`
+
+**Note: the directory could have both a batch.xml.failed and a LOADREPORT. If it has a LOADREPORT, just delete the batch.xml.failed and the other directory (Wnnnnn-Immmmmm)**
+#### Workflow Inhibit further PROCESSING
+The first two steps are the same as the above workflow.
+1. Search emails for 'Object Owner supplied name exists' Save into a text file.
+2. grep the text file for `\(Batch Directory\|Dropbox User\)`
+3. Next ** VERY IMPORTANT ** Email drs-support with the grep output. They will address the underlying problem and will let you know when these directories can be reset to build.
+3. Group these into files of batches, one file for each user.
+4. Process these through ` FixUnwritableRemotePath.sh`
+```
+Usage: FixUnwritableRemotePath.sh remoteUser
+where
+        remoteUser  is the user on the remote system who owns the files.
+        list of remote directories is read from input
+```
+Since this process responds to a fire, it immediately runs `sftp` to change each directory's `batch.xml` to `batch.xml.wait` This prevents DRS from ingesting them. Once DRS has done this, you run `ResetUnwritableDirectories.sh` to set them ready to be ingested.
+#### Have any errors been resolved?
+1. Determine what's been published. `~/drs-deposit/output/WebAdminDepList.csv` keeps a running total of what we've deposited. `cut -f10 -d, | sort -u` to get the list of batches (you need the unique because a work can span deposits) (Nerd note: although the batch directory name is heading 9, one of the data fields has a , in it.)
+2. Derive the errored batches `grep 'Batch Directory' ` _all your error files_
+This gives the batch ids of the failures. `sort -u` to filter out duplicates.
+From the repository, get all the batch ids of what's deposited
+#### JDBC Exception
+This is a transient exception caused by DRS ingest. The fix is to use
+`BuildRecoveryList.awk`
+```
+Usage:  BuildRecoveryList -v ARG_OUTDIR=outDirName -v ARG_PREFIX=argPrefix -V ARG_SRCS=filePattern dataFile
+where
+	ARG_OUTDIR = destination directory for sets of sftp scripts
+    ARG_PREFIX is the prefix for sftp scripts
+    ARG_SRCS is the filespec for a set of files which are parsed for batch names to recover - metacharacters must be quoted. such as *   ARG_SRCS='frelm*' to search in all files whose name begins with frelm
+    dataFile is a list of batch NAMES (batchWnnnn-m). Can be free form, but you have to modify the main loop to pass in the batch name.
+```
+`BuildRecoveryList.awk` creates a directory (ARG_OUTDIR) of sftp scripts whose names are prefixed with ARG_PREFIX. These batch scripts recover a failed build correctly by uploading all the "descriptor.xml" files in the batch, and then, finally, the batch.xml file. This awkward (sorry) process is needed because the DRS process modifies descriptor files during the ingestion process. When it fails, if you only rename or upload batch.xml, you get the MD5 checksum error (batch.xml contains checksums for its descriptor.xml files, and the checksums won't match after DRS has changed the descriptor files).
+
+
+** IMPORTANT DO NOT POLL FOR RESULTS RIGHT AWAY ** This can interfere with the DRS process.
+## Todays uploads
+After the recovered batches are built, go into WebAdmin and download a csv of the results. TODO: process them for downloads
 ### Make a new directory
 `cd $DEPOSIT_ROOT`
 mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anything.
@@ -83,7 +143,7 @@ gives you the file `BuildList.txt`
 ### Remove the deposits from the list
 let `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`
 this is embedded in `$CODE/RemoveDepositedBatches.sh`, which you run.
-This gives you a `UnDepositedBuildPaths.txt` 
+This gives you a `UnDepositedBuildPaths.txt`
 ### Calculate how many of these you can deposit
 There's a script file, `~/drs-deposit/DRS-BATCH-PROCESSING/CountFilesInBatches.awk` which you can paste into a script, to calculate all the files in a list of batches. you can inline the script like this:
 ```
@@ -104,7 +164,7 @@ Generally, I don't re-use this index, I rebuild it every day, to allow for possi
 and new downloads.
 ### Prepare a list for ftpMultiple.sh
 `DoThisNow.txt`has the full path to batch.xml files, and`ftpMultiple.sh`
-only uses the batch.xml containing folder. You can either 
+only uses the batch.xml containing folder. You can either
 * read DoThisNow.txt, and transform each line with basename
 `while read dd ; do dirname $dd ; done <tmptmp > DoTheseNow.txt`
 * Just strip out the batch.xml when you build DoThisNow.txt
@@ -112,7 +172,3 @@ only uses the batch.xml containing folder. You can either
 ### Run ftpMultiple.sh
 You won't get notifications of success, only failure.
 ** DONT PEEK ** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
-
-
-
-
