@@ -32,40 +32,46 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 {  
 	# print $13,$14,$15 ; 
 #	print filePath,batchNum,fileWhoseParentsWeFetch, SRCS
+#	return;
 	# SRCS is a file of batch directories, one per line
 	cmd = " grep -h "batchNum " " SRCS ; 
 	cmd | getline srcDir ;
 	close(cmd);
+	# print "cmd :" cmd ": srcDir :" srcDir ":"
 
-#	print "cmd :" cmd ": srcDir :" srcDir ":"
+	if (srcDir) {
+	    print "cd /incoming/" batchNum > filePath;
 
-	print "cd /incoming/" batchNum > filePath;
-
-	# Get all the descriptors.xml in this patch and replace them
-	# Find the parents of descriptor.xml
-	getAllDesc = "find " srcDir " -type d -maxdepth 1 -mindepth 1";
-  print "getAllDesc :" getAllDesc ;
-	while ( ( getAllDesc | getline volume) > 0){
+	    # Get all the descriptors.xml in this patch and replace them
+	    # Find the parents of descriptor.xml
+	    getAllDesc = "find " srcDir " -type d -maxdepth 1 -mindepth 1";
+#  print "getAllDesc :" getAllDesc ;
+	    while ( ( getAllDesc | getline volume) > 0){
 		volDir=volume
 		gsub(".*/","",volDir)
 		ftpRmDesc = sprintf("rm %s/%s",  volDir,fileWhoseParentsWeFetch );
+#		print ftpRmDesc ;
 		print ftpRmDesc  >>  filePath;
 		ftpPutDescriptor = sprintf("put -P %s/%s %s/%s", volume, fileWhoseParentsWeFetch, volDir,fileWhoseParentsWeFetch );
-#		print "volume :" volume " ftpPutDescriptor :" ftpPutDescriptor ":" ; #  >> filePath;
+#		print "volume :" volume " ftpPutDescriptor :" ftpPutDescriptor ":" ;
 		print ftpPutDescriptor  >> filePath;
+	    }
+	    close(getAllDesc)
+
+	    # Finally, bring up a new batch.xml
+	    ftpRmCmd = sprintf("rm %s", BATCH_XML_FAIL);
+	    print ftpRmCmd >> filePath;
+
+	    ftpUpCmd = sprintf("put %s/%s", srcDir,BATCH_XML);
+
+	    print  ftpUpCmd >> filePath;
+	    print "quit" >> filePath;
+
+	    close(filePath);
 	}
-	close(getAllDesc)
-
-	# Finally, bring up a new batch.xml
-	ftpRmCmd = sprintf("rm %s", BATCH_XML_FAIL);
-	print ftpRmCmd >> filePath;
-
-	ftpUpCmd = sprintf("put %s/%s", srcDir,BATCH_XML);
-
-	print  ftpUpCmd >> filePath;
-	print "quit" >> filePath;
-
-	close(filePath);
+	else {
+	    print "Can't find",batchNum,"in",SRCS
+	}
 }
 
 BEGIN { 
@@ -100,8 +106,11 @@ BEGIN {
 	 	 # BuildSftpBatch(fn, $13, $15)
 	 	 #
 	 	 # this is just a list of failed batches.
-	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
 
+	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
 	 	fileCount++;
 	 }
+	else {
+	    print NR;
+	}
 }

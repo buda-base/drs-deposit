@@ -30,7 +30,7 @@ export DRS_DROP_HOST
 # export DRS_DROP_USER
 
 #section error logging. Requires trailing
-# Output is var ERR_LOG, ERR_TEXT, INFO_TEXT variables
+# Output is var ERR_LOG, ERROR_TXT, INFO_TEXT variables
 . ${ME_DIR}/setupErrorLog.sh "${ME}"
 #endsection Set up logging
 
@@ -48,6 +48,9 @@ USAGE
 # If running in parallel, cant collide
 SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || { echo ${ME}:error: Cant create command file ; exit 1 ; } 
 
+export BATCH_XML=batch.xml
+export BATCH_XML_WAIT=${BATCH_XML}.wait
+
 #
 # Build a script for remote ftp to execute
 #
@@ -58,20 +61,29 @@ SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || { echo ${ME}:error: Cant create command
 buildSFTPBatch() {
 	_sourcePath=$1
 	_targetPath=$2
-	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
 	# the - prefix allows continuation on command failure.
-	# sftp rmdir builtin may fail if directory is not empty.
-    echo "-rmdir $_targetPath" >> ${SFTP_CMD_FILE}
+	# sftp rmdir builtin may fail if directory is not empty.	
 	# you have to make the directory, and then put stuff in it. here,
+	#
+	# if the mkdir fails, we must bail. The diretory already exists.
+
 	# $remoteTarget must be the last directory in the path $b 
-	echo "mkdir $_targetPath" >> ${SFTP_CMD_FILE}
-	echo "put -r -P $_sourcePath" >> ${SFTP_CMD_FILE}
+	# And sourcePath's last node must be targetPath
 	# operations are relative to the directory in the command line ":incoming"
-	# jimk Probably not needed: ingestion waits for upload to disconnect
-	# echo "rename ${1}/${BATCH_XML}${WAIT_SUFFIX} ${bTarget}/$BATCH_XML" >> ${SFTP_CMD_FILE}
 	#
 	# jimk: See of this helps with JDBC connection errors, and fole missing files
-	echo "!sleep 2" >> ${SFTP_CMD_FILE}
+	# jimk 2018 04 16: this might help with missing files
+	# by inhibiting ingestion until every file is found.
+	# Note the caller is responsible forcreating and removing the wait file
+	cat << EFTP > $SFTP_CMD_FILE
+	-rmdir $_targetPath
+	mkdir $_targetPath
+	put -r -P $_sourcePath
+	!sleep 2
+	cd $_targetPath
+	rename ${BATCH_XML_WAIT} ${BATCH_XML}
+	quit 
+EFTP
 }
 
 
@@ -105,23 +117,30 @@ while read sourcePath ; do
 	# -n flag for use in read loop
 	# ssh -n -i $ME_PPK -l $DRS_DROP_USER $drsDropHost  rm -rf incoming/${remoteTarget}
 
+	# jimk 2018 IV 16: maybe help missing files
+	# Inhibit batch ingestion until all files are loaded
+
+
+	mv $sourcePath/$BATCH_XML $sourcePath/$BATCH_XML_WAIT
 	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${drsDropHost}:incoming/   2>> $ERR_LOG
 
-
 	rc=$?
+	
+	# On source, replace the batch.xml
+	mv $sourcePath/$BATCH_XML_WAIT $sourcePath/$BATCH_XML
 
-[ $rc == 0 ] && { echo "${ME}:${INFO_TEXT}: sftp $drsDropHost $targetPath success" >> $ERR_LOG ; } 
-	# rm ${SFTP_CMD_FILE}
+	errx=" sftp $drsDropHost $drsDropUser $targetPath "
+	
+	[ $rc == 0 ] && { 
+		echo $(logDate) "${ME}:${INFO_TXT}:  $errx success"  | tee -a $ERR_LOG ; 
+	} 
 	[ $rc == 0 ] || { 
-		errx=$(printf "${ME}:${ERROR_TXT}: sftp $drsDropHost $targetPath failed: code $rc") ;
-		echo $errx;
-		echo $errx >> $ERR_LOG;
+		
+		echo $(logDate) "${ME}:${ERROR_TXT}:  $errx fail $rc "  | tee -a $ERR_LOG ; 
 		# jsk 20180406: keep going. One failure is not catastrophic
 		# Usually just means an upload has occurred
 		# exit $rc ; 
 	}
-
-	[ -e $SFTP_CMD_FILE ] && rm -f $SFTP_CMD_FILE
 
 done < $targetList
 

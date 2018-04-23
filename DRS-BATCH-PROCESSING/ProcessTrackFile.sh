@@ -10,8 +10,7 @@ function usage() {
 	trackFile.
 
 	see makeOneFtp.sh for trackFile syntax. Here it is
-	ftpUserName.sourceFileName, where the makeOneFtp.sh writer
-	stupidly used . as a separator.
+	ftpUserName|sourceFileName
 USAGE
 }
  

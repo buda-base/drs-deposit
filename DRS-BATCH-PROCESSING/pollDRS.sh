@@ -31,8 +31,8 @@ export FAIL_PATH=batch.xml.failed
 
 usage() {
 	cat <<  USAGE
-Usage: ${ME} listToUpload remoteUser reportDir where
- 	listToUpload	is the file list containing the list of directories.
+Usage: ${ME} uploadedBatchList remoteUser reportDir where
+ 	uploadedBatchList	is the file list containing the list of directories.
  					This file can be the same as the upload list (/path/to/batches/batchnnn-1)
  					or it can be just a list of batches (BatchW.....-1)
  	remoteUser		is the user on the remote system
@@ -82,18 +82,23 @@ buildSFTPBatch() {
 		cd $_remotePath
         -mget -P ${_successPath}* ${_remotePath}_${_successPath}
         -get -P $_failPath ${_remotePath}_${_failPath}
+	quit
 EFTP
 }
 
-export drsDropUser=${2?${ME}:error: remote user is not given. $(${0}) }
+export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. $(usage) }
 
-export reportDir=${3?${ME}:error: report directory not given. $(usage)}
+export reportDir=${3?${ME}:${ERROR_TXT}: report directory not given. $(usage)}
 
 # make report dir if not exists
-[ ! -d $reportDir ] && { echo "${ME}:${INFO_TEXT}: $reportDir not found. Creating." ; mkdir -p $reportDir ; }
+[ ! -d $reportDir ] && { echo  $(logDate) "${ME}:${INFO_TXT}: $reportDir not found. Creating." ; mkdir -p $reportDir ; }
 
-while read targetSearch ; do
-	buildSFTPBatch "$SUCCESS_PATH" "$FAIL_PATH" $reportDir $(basename $targetSearch)
-	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${DRS_DROP_HOST}:${BASE_REMOTE_DIR}  2>> $ERR_LOG
+while read targetSearch ; 
+do
+    batchName=$(basename $targetSearch)
+    buildSFTPBatch "$SUCCESS_PATH" "$FAIL_PATH" $reportDir $batchName
+    sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${DRS_DROP_HOST}:${BASE_REMOTE_DIR}  2>&1 | tee -a  $ERR_LOG
+    rc=${PIPESTATUS[0]}
+    echo $(logDate) "${ME}:${INFO_TXT}:sftp ${drsDropUser}@${DRS_DROP_HOST} $batchName rc = $rc "  | tee -a  $ERR_LOG
 done < $targetList
 
