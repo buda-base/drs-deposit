@@ -132,7 +132,7 @@ where
 
 ** IMPORTANT DO NOT POLL FOR RESULTS RIGHT AWAY ** This can interfere with the DRS process.
 ## Todays uploads
-After the recovered batches are built, go into WebAdmin and download a csv of the results. TODO: process them for downloads
+After the recovered batches are built, go into WebAdmin and download a csv of the results. `RemoveDepositedBatchPaths.sh` knows how to parse this for batch directory names.
 ### Make a new directory
 `cd $DEPOSIT_ROOT`
 mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anything.
@@ -142,8 +142,12 @@ mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anythi
 gives you the file `BuildList.txt`
 ### Remove the deposits from the list
 let `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`
-this is embedded in `$CODE/RemoveDepositedBatches.sh`, which you run.
-This gives you a `UnDepositedBuildPaths.txt`
+this is embedded in `$CODE/RemoveDepositedBatchPaths.sh`, which you run.
+This gives you a `UnDepositedBuildPaths.txt` and a `DictUnDepositedBuildPaths.txt`
+
+These files are:
+* `UnDepositedBuildPaths.txt`: the set of deposited batches as calculated by all the LOADREPORTS found in the prod (by running `pollDRS.sh` in every daily run directory. **This method is on probation. The WebAdmin dctionary is the provisional authority **
+* `DictUnDepositedBuildPaths.txt`: the set of deposited batches as calculated by the DRS WebAdmin dictionary
 ### Calculate how many of these you can deposit
 There's a script file, `~/drs-deposit/DRS-BATCH-PROCESSING/CountFilesInBatches.awk` which you can paste into a script, to calculate all the files in a list of batches. you can inline the script like this:
 ```
@@ -151,13 +155,13 @@ while read gg ; do awk ' { cmd = "find $(dirname " $1 ") -type f | wc -l"
 cmd | getline thisCount
 close(cmd)
 sumCount += thisCount
-print $1 "|" thisCount "|" sumCount }' ; done < UnDepositedBuildPaths.txt
+print $1 "|" thisCount "|" sumCount }' ; done < DictUnDepositedBuildPaths.txt
 ```
-Save that to a file, and then find the number that's before 250000
+Save that to a file, and then find the number that's before 250000 (less any repair builds you've set up earlier)
 For example
 `/Volumes/DRS_Staging/DRS/prod/20180402/worksList6.15.03/batchW18579-1/batch.xml|     480|242505`
-Then you can just stream that out to your source file, taking out the count metadata
-`sed -n '1,/242505/p' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
+Then you can just stream that out to your source file
+`sed -n -e '1,/242505/p'   CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
 and take it out of the original list
 `sed -n '/242505/,$p' CumList.txt | cut -f1 -d'|' > AfterFirstTranchePaths.txt`
 Generally, I don't re-use this index, I rebuild it every day, to allow for possible new builds
@@ -170,5 +174,6 @@ only uses the batch.xml containing folder. You can either
 * Just strip out the batch.xml when you build DoThisNow.txt
 `sed -n `-e '1,/242505/p' -e 's/\/batch.xml//' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
 ### Run ftpMultiple.sh
-You won't get notifications of success, only failure.
+** Helpful to run this in a tmux window, so you can peek the status remotely. **
+You won't get email notifications of success, only failure.
 ** DONT PEEK ** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
