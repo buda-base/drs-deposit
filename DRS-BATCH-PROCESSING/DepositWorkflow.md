@@ -181,8 +181,8 @@ only uses the batch.xml containing folder. You can either
 * read DoThisNow.txt, and transform each line with basename
 `while read dd ; do dirname $dd ; done <tmptmp > DoTheseNow.txt`
 * Just strip out the batch.xml when you build DoThisNow.txt
-`sed -n `-e '1,/242505/p' -e 's/\/batch.xml//' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
+`sed -n -e '1,/242505/p' -e 's/\/batch.xml//' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
 ### Run ftpMultiple.sh
-** Helpful to run this in a tmux window, so you can peek the status remotely. **
+**Helpful to run this in a tmux window, so you can peek the status remotely.**
 You won't get email notifications of success, only failure.
-** DONT PEEK ** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
+**DONT PEEK** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
