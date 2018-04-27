@@ -44,26 +44,6 @@
 # The approach is to copy the projectMaster to make a new project that will contain a batch for
 # for each Work to be deposited.
 #
-# For each batch / Work need to run saxon to prepare the project.conf file
-# with the Hollis ID for the Work - this is in lieu of generating a really
-# long command line. The saxon needs to be run like:
-#
-#    java -jar saxonhe-9.4.0.7.jar the-project.conf make-proj-conf.xsl hId=the-hollis-id
-#
-# 
-
-function toLower() {
-	echo $1 | tr '[:upper:]' '[:lower:]'
-}
-#
-# return true (0) if an extension is banned
-function isBannedExt() {
-	testExt=$(toLower "$1")
-	for anExt in ${BANNED_EXT[@]} ; do
-		[ "$testExt" == "$(toLower $anExt)"  ] && return 0;
-    done
-	return 1 
-}
 
 #
 # Calculate the full path to an outline.The algorithm is
@@ -74,7 +54,7 @@ function isBannedExt() {
 function calcArchivePath() {
 	_archive=$1
 	_workId=$2
-	_bucket=$(echo -n _workId | md5 )
+	_bucket=$(echo -n $_workId | md5 )
 	_bucket=${_bucket:0:2}
 	echo ${_archive}/${_bucket}/${_workId}.ttl
 } 
@@ -118,12 +98,17 @@ masterProjConf=$projectMaster/project.conf
 # jsk: Target project might be absolute
 targetProjectDir=${3?${ME}:${ERROR_TXT}:targetProjectDir is required}
 
-archiveRoot=${4?${ERROR_TXT}:archiveRoot is required}
+set -v
+set -x
+archiveRoot=${4?${ME}:${ERROR_TXT}:archiveRoot is required}
 echo Archive Directory: $archiveRoot | tee -a $LOG_FILE
 if [ ! -d $archiveRoot ]; then
 	echo "${ME}: archiveRoot \'${4}\' does not exist or is not a directory"
 	exit 2
 fi
+set +v
+set +x
+
 bbDir=$5
 bb=batchbuildercli.sh
 
@@ -155,7 +140,7 @@ echo Target Project Directory: $targetProjectDir
 
 if [ -e $targetProjectDir ]; then
 	echo "$(logDate):${ME}:${FATAL_TXT}:targetProjectDir ${targetProjectDir} already exists. Remove it or use a different name" | tee -a $logPath
-	# exit 2
+	exit 2
 fi
 
 # jimk: 24.IV.2018: dont care if directory exists
@@ -191,14 +176,16 @@ while IFS=',' read -ra LINE; do
 
 	echo TBRC $RID at HOLLIS $HID | tee -a  $logPath
 
-	batchNameBase="$RID"
-	echo Batch Name base: $batchNameBase | tee -a  $logPath
+	batchName=outline"$RID"
+	echo Batch Name: $batchName | tee -a  $logPath
 
 	java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" $masterProjConf ${MEPATH}/make-proj-conf.xsl hId=$HID > $targetConf
+	rc=$?
 
-	ls -l $targetConf
+	[ $rc == 0 ] || { echo ${ME}:${FATAL_TXT}:Could not transform config file  $masterProjConf  rc= $rc ; break ; }
 
 	outlineSourcePath=$(calcArchivePath $archiveRoot $RID)
+
 	echo Outlines source path: $outlineSourcePath | tee -a  $logPath
 
 	# Make the OSN
@@ -206,9 +193,11 @@ while IFS=',' read -ra LINE; do
 	ext="${outlineBaseName##*.}"
 	fnm="${outlineBaseName%.$ext}"
 
-    destNm=${fnm}--${fnm}.${ext}
+    destNm=${fnm}--outline.${ext}
 
-	echo cp -v $outlineSourcePath $templateDir/$destNm	2>&1 | tee -a $logPath
+	java -jar ${MEPATH}/drsttl-0.1.0.jar -i $outlineSourcePath > $templateDir/$destNm
+	rc=$?
+	[ $rc == 0 ] || { echo ${ME}:${FATAL_TXT}:Could not transform TTL file $outlineSourcePath rc= $rc ; break; }
 
     echo $bb -a buildtemplate -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
     $bb -a buildtemplate -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
