@@ -57,6 +57,8 @@ for sftpBatch in ${sourcePath}/* ; do
 	errx=$(printf "sftp $DRS_DROP_HOST $drsDropUser to $sftpBatch ") ;
 	[ $rc == 0 ] && { 
 		echo "${ME}:${INFO_TXT}: $errx" 2>&1 | tee -a $ERR_LOG ; 
+		# jimk 2018.4.26 - try to get batches to work better
+		sleep 60;
 	} 
 
 	[ $rc == 0 ] || { 

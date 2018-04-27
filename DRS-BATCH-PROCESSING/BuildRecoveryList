@@ -1,0 +1,61 @@
+#!/bin/bash
+NO_VALUE='$@@<<no_value>>@@'
+#end constants
+#
+
+ME=$(basename $0)
+#
+. ~/bin/setupErrorLog.sh
+#
+# friendly wrapper for BuildRecoveryList.awk
+#----------------------------------------------------------------------
+# Usage
+#
+function usage() {
+	cat << USAGE
+	synopsis: $ME -h  this message
+	synopsis: $ME  -o outdir -p prefix -s srcs datafile
+			
+	where:
+		-o 	is the destination directory for sets of sftp scripts
+	  	-p 	is the prefix for sftp scripts
+	 	-s 	ARG_SRCS is the filespec for a set of files which is parsed to locate Built 
+	 		batches. Metachats must be quoted
+	 	dataFile is a list of batch names, one per line.
+
+USAGE
+}
+
+#----------    Get options. ------------------
+
+#
+while getopts ho:p:s: opt ; do
+	case $opt in
+		o)
+			argOutDir=$OPTARG;		
+			;;
+		p)
+			argPrefix=$OPTARG
+#			echo "$opt triggered, arg is $OPTARG aka $userListPath"
+			;;
+		s)
+			argSrcs=$OPTARG
+#			echo "$opt triggered, arg is $OPTARG aka $worksListPath"
+			;;
+		h)
+			usage
+			exit 0
+			;;
+	esac
+done
+shift $((OPTIND-1))
+
+# Test args
+outDir=${argOutDir?${ME}:${ERROR_TXT}:no output directory. See ${ME} -h}
+prefix=${argPrefix?$(logDate)${ME}:${ERROR_TXT}:no prefix given. See ${ME} -h}
+srcs=${argSrcs?${ME}:${ERROR_TXT}:no sources given. See ${ME} -h}
+dataFile=${1?${ME}:${ERROR_TXT}:no dataFile given. See ${ME} -h}
+
+[ -f $dataFile ] || { echo ${ME}:${ERROR_TXT}:data file not found ; exit 1 ;}
+
+BuildRecoveryList.awk -v ARG_OUTDIR="$outDir" -v ARG_PREFIX="$prefix" -v ARG_SRCS="$srcs" "$dataFile"

@@ -74,7 +74,7 @@ remoteUserName=$4
 
 # Invoke the upload in the background
 
-${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName &
+${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName  &
 
 # Capture its pid and mark as underway
  thisRun=$!
