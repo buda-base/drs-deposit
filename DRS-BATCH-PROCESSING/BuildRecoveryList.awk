@@ -31,8 +31,8 @@ function Usage() {
 function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 {  
 	# print $13,$14,$15 ; 
-#	print filePath,batchNum,fileWhoseParentsWeFetch, SRCS
-#	return;
+# 	print filePath,batchNum,fileWhoseParentsWeFetch, SRCS
+# 	return;
 	# SRCS is a file of batch directories, one per line
 	cmd = " grep -h "batchNum " " SRCS ; 
 	cmd | getline srcDir ;
@@ -82,7 +82,7 @@ BEGIN {
 		Usage()
 		exit 1
 	}
-	FS = "[/ ,]";
+	FS = "[/ ,|]";
 	# SRCS = "../TodaysUploads*.txt ";
 	SRCS = ARG_SRCS ;
 	BATCH_XML = "batch.xml";
@@ -107,7 +107,9 @@ BEGIN {
 	 	 #
 	 	 # this is just a list of failed batches.
 
-	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
+#	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
+# jimk. Build from piped addresses ( output of processMail.awk | cut -f3,4)
+	 	 BuildSftpBatch( fn, $2, "descriptor.xml" )
 	 	fileCount++;
 	 }
 	else {

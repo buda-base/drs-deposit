@@ -150,13 +150,12 @@ mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anythi
 (In a future, this will have deposits removed)
 gives you the file `BuildList.txt`
 ### Remove the deposits from the list
-let `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`
-this is embedded in `$CODE/RemoveDepositedBatchPaths.sh`, which you run.
-This gives you a `UnDepositedBuildPaths.txt` and a `DictUnDepositedBuildPaths.txt`
+Check `$CODE/RemoveDepositedBatchPaths.sh` for the correct setting  `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`. Run it, and you get `UnDepositedBuildPaths.txt` and `DictUnDepositedBuildPaths.txt`
 
 These files are:
-* `UnDepositedBuildPaths.txt`: the set of deposited batches as calculated by all the LOADREPORTS found in the prod (by running `pollDRS.sh` in every daily run directory. **This method is on probation. The WebAdmin dctionary is the provisional authority **
-* `DictUnDepositedBuildPaths.txt`: the set of deposited batches as calculated by the DRS WebAdmin dictionary
+
++ `UnDepositedBuildPaths.txt`: the set of deposited batches as calculated by all the LOADREPORTS found in the prod (by running `pollDRS.sh` in every daily run directory. **This method is on probation. The WebAdmin dctionary is the provisional authority **
++ `DictUnDepositedBuildPaths.txt`: the set of deposited batches as calculated by the DRS WebAdmin dictionary
 ### Calculate how many of these you can deposit
 There's a script file, `~/drs-deposit/DRS-BATCH-PROCESSING/CountFilesInBatches.awk` which you can paste into a script, to calculate all the files in a list of batches. you can inline the script like this:
 ```
