@@ -113,6 +113,6 @@ BEGIN {
 	 	fileCount++;
 	 }
 	else {
-	    print "Un parseable line #", NR, ":"$0":"
+	    print NR;
 	}
 }
