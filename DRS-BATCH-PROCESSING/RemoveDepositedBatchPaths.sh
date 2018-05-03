@@ -1,5 +1,26 @@
 #!/bin/bash
 #
+# Searches for deposited batches in two sources:
+# - all downloaded loadreports
+# - the downloaded cumulatie dictionary (from WebAdmin - ! must have been downloaded with
+# optional added column 'batch Directory'
+#
+# --------     Reads files: ---------------
+# DICT (see below) - cumultaive dictionary
+#
+# BUILD_ROOT - parent of all LOADREPORT files
+# 
+# BuildList:  	output of RemoveDuplicateBatches.sh - this is the pool of batches
+#				which is ready for deposit.
+#
+# -------------- Writes files -----------------
+# 
+# curDeposits: extracted from LOADREPORTW
+#
+# DictFields: from dictionary, batch directories
+#
+# UnDepositedBuildPaths.txt: Set difference between curDeposits  
+#
 # Take 2: use the dictionary
 export DICT=~/drs-deposit/output/BDRCCumulativeProdDeposits.csv
 #
@@ -20,7 +41,7 @@ echo $result
 #
 # Could use grep, bu I want the field separation syntax to be the same,
 # sometimes there are commas in quoted fields
-awk -F',' '{print $11}' $DICT | sort -u > DictFields
+awk -F',' -v batchField=$idx '{print $batchField }' $DICT | sort -u > DictFields
 
 #
 # Given a list of deposited batches (batchWxxxxxx-1)
