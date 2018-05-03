@@ -24,7 +24,7 @@
 #
 #		targetProjectDir	is the name of the project that will contain the generated batches
 #
-#		archiveRoot		is the path to the outline archive from which this script retrieves
+#		outlineSrcRoot	is the path to the outline archive from which this script retrieves
 #						the outlines. This archive is only folders, named after first two characters
 #						of the MD5 has of the works they contain
 #
@@ -47,9 +47,9 @@
 
 #
 # Calculate the full path to an outline.The algorithm is
-# archiveRoot/substring(md5( $RID))
+# outlineSrcRoot/substring(md5( $RID))
 #
-# Arguments: 	archiveRoot:	parent of the buckets which contain the TTL files
+# Arguments: 	outlineSrcRoot:	parent of the buckets which contain the TTL files
 # 				RID:  		work Id
 function calcArchivePath() {
 	_archive=$1
@@ -71,7 +71,7 @@ ME_DIR=$(dirname $0)
 
 if [ "$#" -ne 5 ]; then
 	echo "${ME}: Needs 5 parameters"
-	echo "Usage: make-drs-outline worksList projectMaster targetProjectDir archiveDir bbDir"
+	echo "Usage: make-drs-outline worksList projectMasterDir targetProjectDir outlineParentDir bbDir"
 	exit 1
 fi
 
@@ -98,16 +98,12 @@ masterProjConf=$projectMaster/project.conf
 # jsk: Target project might be absolute
 targetProjectDir=${3?${ME}:${ERROR_TXT}:targetProjectDir is required}
 
-set -v
-set -x
-archiveRoot=${4?${ME}:${ERROR_TXT}:archiveRoot is required}
-echo Archive Directory: $archiveRoot | tee -a $LOG_FILE
-if [ ! -d $archiveRoot ]; then
-	echo "${ME}: archiveRoot \'${4}\' does not exist or is not a directory"
+outlineSrcRoot=${4?${ME}:${ERROR_TXT}:outlineSrcRoot is required}
+echo Archive Directory: $outlineSrcRoot | tee -a $LOG_FILE
+if [ ! -d $outlineSrcRoot ]; then
+	echo "${ME}: outlineSrcRoot \'${4}\' does not exist or is not a directory"
 	exit 2
 fi
-set +v
-set +x
 
 bbDir=$5
 bb=batchbuildercli.sh
@@ -166,7 +162,7 @@ echo Template Image Directory: $templateDir
 echo Works List File: $worksList | tee -a  $logPath
 echo BB Project Directory: $projectMaster | tee -a  $logPath
 echo Target Project Name: $targetProjectDir | tee -a  $logPath
-echo Archive Directory: $archiveRoot | tee -a $logPath
+echo Outline parent Directory: $outlineSrcRoot | tee -a $logPath
 echo Template Image Directory: $templateDir | tee -a  $logPath
 echo Target Conf: $targetConf
 
@@ -184,9 +180,7 @@ while IFS=',' read -ra LINE; do
 
 	[ $rc == 0 ] || { echo ${ME}:${FATAL_TXT}:Could not transform config file  $masterProjConf  rc= $rc ; break ; }
 
-	outlineSourcePath=$(calcArchivePath $archiveRoot $RID)
-
-	echo Outlines source path: $outlineSourcePath | tee -a  $logPath
+	outlineSourcePath=$(calcArchivePath $outlineSrcRoot $RID)
 
 	# Make the OSN
 	outlineBaseName=$(basename $outlineSourcePath)
