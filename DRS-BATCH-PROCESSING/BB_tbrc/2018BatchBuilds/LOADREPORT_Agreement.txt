@@ -1,0 +1,24 @@
+Batch Summary:
+-------------------------------------------------------------------------
+Batch directory name: Agreement
+Batch name: FHCL.COLL_Agreement_20180110_170054
+Depositor: Katz, James
+Batch id: 723004
+Owner(s): FHCL.COLL
+Batch drop off time: Wed Jan 10 17:16:51 EST 2018
+Time waiting to start load: 0 hours, 0 minutes, 9 seconds
+Loading start time: Wed Jan 10 17:17:00 EST 2018
+Loading end time: Wed Jan 10 17:17:04 EST 2018
+Total load time: 0 hours, 0 minutes, 3 seconds
+Number of objects deposited: 1
+Number of files deposited: 2
+Batch size: 48,613 bytes / 47.474 kilobytes / 0.046 megabytes
+Number of objects per object type:
+	DOCUMENT: 1
+Number of files per format:
+	Portable Document Format: 1
+	Extensible Markup Language: 1
+-------------------------------------------------------------------------
+OBJ-ID	OBJ-DELIV-URN	OBJ-URN	DEPOSITOR	OBJ-OSN	BILLING	OWNER	OBJ-TYPE	OBJ-ROLES	FILE-ID	FILE-URN	FILE-FORMAT	FILE-SIZE	FILE-OSN	FILE-ORIGPATH	
+401876700		urn-3:HUL.DRS.OBJECT:679522	Katz, James	Agreement	FHCL.COLL.TBRC_0001	FHCL.COLL	DOCUMENT	DOCUMENTATION;DONOR_AGREEMENT;LICENSE	401876702	urn-3:FHCL:679523	Portable Document Format	36099	Agreement-of-Deposit-sample	documentTBRC_docObj/TBRC_Agreement--Agreement-of-Deposit-sample.pdf
+401876700		urn-3:HUL.DRS.OBJECT:679522	Katz, James	Agreement	FHCL.COLL.TBRC_0001	FHCL.COLL	DOCUMENT	DOCUMENTATION;DONOR_AGREEMENT;LICENSE	401876701		Extensible Markup Language	12514	null	descriptor.xml

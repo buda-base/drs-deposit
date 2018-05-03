@@ -1,0 +1,12 @@
+When you have this in the batch.xml:
+  <directory name="OBJECT TEMPLATE">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+			
+You get this in the descriptor.xml
+
+
+Error on line 38 of descriptor.xml
+.608Z">FHCL.COLL.TBRC_0001"</h
+<hulDrsAdmin:billingCode status="current" creatingAgent="http://id.lib.harvard.edu/wordshack/person/160177" createDate="2018-01-09T21:12:58.608Z">FHCL.COLL.TBRC_0001"</hulDrsAdmin:billingCode>

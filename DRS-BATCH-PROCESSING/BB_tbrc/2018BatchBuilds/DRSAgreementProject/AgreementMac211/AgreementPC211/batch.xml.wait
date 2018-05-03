@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.11" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_AgreementPC211_20180116_111708</name>
+    <date>2018-01-16T11:17:08.557-05:00</date>
+    <depositAgent>10684323</depositAgent>
+    <depositAgentUri>http://idtest.lib.harvard.edu:9020/wordshack/person/78504</depositAgentUri>
+    <contactInfo>
+        <successEmail>jimk@tbrc.org</successEmail>
+        <failureEmail>jimk@tbrc.org</failureEmail>
+        <successMethod>all</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="a3a13194ee4ccd23185c655ef4f743b6">AgreementPC211/descriptor.xml</object>
+    </add>
+</batch>
