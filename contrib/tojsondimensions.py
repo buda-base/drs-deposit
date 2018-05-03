@@ -38,9 +38,14 @@ def get_list_from_file(filename):
         if (len(characteristics_nodes) < 1):
             continue
         characteristics_node = characteristics_nodes[0]
-        width=int(characteristics_node.findall('mix:imageWidth', ns)[0].text)
-        height=int(characteristics_node.findall('mix:imageHeight', ns)[0].text)
+        try:
+            width=int(characteristics_node.findall('mix:imageWidth', ns)[0].text)
+            height=int(characteristics_node.findall('mix:imageHeight', ns)[0].text)
+        except IndexError as i:
+            print('Cannot find imageHeight or Width in premis:objectCharacteristics node for file ' + filename)
+            continue
         add_info_to_struct(path, width, height, struct)
+
     return struct
 
 def get_outfile_name(dirname, outputdirname):
