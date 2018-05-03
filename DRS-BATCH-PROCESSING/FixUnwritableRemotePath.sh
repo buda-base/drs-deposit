@@ -42,10 +42,10 @@ USAGE
 SFTP_CMD_FILE=$( mktemp .sftpXXXXXX ) || { echo ${ME}:${ERROR_TXT}: Cant create command file ; exit 1 ; } 
 
 
-[ "$1" == "-h" ] && { usage ; exit 1;}
-
 # do we have what we need?
-drsDropUser=${1?${ME}:${ERROR_TXT}:Remote user not given.}
+
+
+
 
 #
 # Build a script for remote ftp to execute
@@ -61,14 +61,22 @@ buildSFTPBatch() {
 	_failPath=$2
 	_remotePath=$3
 
+	# the - prefix in the sftp commands allows continuation 
+	# on command failure.
+	# The renames are because
+	# success case: we can't guarantee the LOADREPORT has a known file name
+	# Fortunately, this works only when there's only 1 LOADREPORT
+	# in the remote frp directory
+	# failure case: all files are named batch.xml.failed
 	cat << EFTP > ${SFTP_CMD_FILE}
 		cd  $_remotePath
 		rename $_successPath $failPath
 EFTP
 }
 
+mkdir $sourcePath/recovery
 
-export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. $(${0} -h) }
+export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. $(${0}) }
 
  while read targetDir ; do
 
@@ -79,9 +87,8 @@ export drsDropUser=${2?${ME}:${ERROR_TXT}: remote user is not given. $(${0} -h) 
 	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${DRS_DROP_HOST}:${BASE_REMOTE_DIR}  2>&1 | tee -a $ERR_LOG ;  
 
 	rc=$?
-	
-	errx ="$(logDate) ${ME}:${INFO_TXT}: sftp $drsDropUser  $DRS_DROP_HOST to $targetDir ";
-	
+err
+		errx ="$(logDate) ${ME}:${INFO_TXT}: sftp $drsDropUser  $DRS_DROP_HOST to $targetDir ";
 	[ $rc == 0 ] && { 
 		echo $errx success | tee -a $ERR_LOG ; 
 	} 
