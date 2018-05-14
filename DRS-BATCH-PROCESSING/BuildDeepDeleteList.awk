@@ -31,8 +31,8 @@ function Usage() {
 function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 {  
 	# print $13,$14,$15 ; 
-# 	print filePath,batchNum,fileWhoseParentsWeFetch, SRCS
-# 	return;
+#  	print filePath,batchNum,fileWhoseParentsWeFetch, SRCS
+#  	return;
 	# SRCS is a file of batch directories, one per line
 	cmd = " grep -h "batchNum " " SRCS ; 
 	cmd | getline srcDir ;
@@ -54,17 +54,18 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 		# Remove each volume's image
 		xx = sprintf("cd %s",volDir);
 		print xx >> filePath;
-		print "ls image/*" >> filePath;
-		print "ls image" >> filePath;
-		print "ls descriptor.xml" >> filePath;
+		print "rm image/*" >> filePath;
+		print "rmdir image" >> filePath;
+		print "rm descriptor.xml" >> filePath;
 		print "cd .." >> filePath;
-
-		ftpRmDesc = sprintf("ls  %s",  volDir);
-
+		print "rmdir "volDir >> filePath;
 	    }
 	    close(getAllDesc)
 
-	    print " ls *" >> filePath;
+	    print "rm batch.xml.failed" >> filePath;
+	    print "cd .." >> filePath;
+	    print "rmdir "batchNum >> filePath;
+
 	    print "quit" >> filePath;
 
 	    close(filePath);
@@ -107,9 +108,9 @@ BEGIN {
 	 	 #
 	 	 # this is just a list of failed batches.
 
-#	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
+	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
 # jimk. Build from piped addresses ( output of processMail.awk | cut -f3,4)
-	 	 BuildSftpBatch( fn, $2, "descriptor.xml" )
+#	 	 BuildSftpBatch( fn, $2, "descriptor.xml" )
 	 	fileCount++;
 	 }
 	else {
