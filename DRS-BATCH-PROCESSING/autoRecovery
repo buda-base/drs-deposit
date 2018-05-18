@@ -10,6 +10,18 @@ export ME_DIR=$(dirname $0)
 . ~/bin/setupErrorLog.sh
 
 
+while getopts D opt ; do
+	# echo "in getopts" $opt $OPTARG
+	case $opt in
+		D)
+			dFlag=1 ;
+			read -p "You are going to delete uploaded batches. Are you sure? (y|n, default is n)" dAns
+			dAns=$(echo $dAns | tr a-z A-Z)
+			[ $dAns != "Y" ] && { exit 0; }
+			;;
+	esac
+	shift $OPTIND
+done
 MAIL_TXT=mailerrs.txt
 MAIL_DAT=mailerrs.dat
 BUILD_LIST_SPEC='buildList*.txt'
@@ -39,6 +51,11 @@ for drsUser in ${uu[@]} ; do
     [ -d $recoScriptDir ]  &&  rm -rf $recoScriptDir
     mkdir $recoScriptDir
 
-    BuildRecoveryList.sh -o $recoScriptDir -p r -s "$BUILD_LIST_SPEC" $rb
+    if [ $dFlag == 1 ] ; then 
+	cmd=BuildDeepDeleteList.sh 
+    else
+	cmd=BuildRecoveryList.sh
+    fi
+    eval  $cmd -o $recoScriptDir -p r -s \'$BUILD_LIST_SPEC\' $rb
     RunSerialFtp.sh $recoScriptDir $drsUser
 done

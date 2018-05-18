@@ -1,0 +1,18 @@
+#!/bin/bash -vx
+#
+# Build scripts to monitor ingestion process
+#
+# Assumes errBatches, a file of drsUser|batch dir commands
+
+ERR_BATCHES=errbatches.dat
+
+uu=($(cut -f1 -d'|' $ERR_BATCHES  | sort -u))
+
+# 
+# send each users batches to their own script
+for drsUser in ${uu[@]} ; do 
+    scanCmds=${drsUser}cmds
+    grep -w $drsUser $ERR_BATCHES | cut -f2 -d'|' | sed -e 's:^:-ls /incoming/:' > $scanCmds
+
+    sftp -i ~/ppk/DrsDropQa.ppk -b $scanCmds ${drsUser}@drs2drop.lib.harvard.edu 
+done
