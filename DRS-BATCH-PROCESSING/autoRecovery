@@ -1,0 +1,44 @@
+#!/bin/bash -vx
+#
+# Recovery mode
+#
+# Assume a mailerrs.txt
+# Assume these files exist
+
+export ME=$(basename $0)
+export ME_DIR=$(dirname $0)
+. ~/bin/setupErrorLog.sh
+
+
+MAIL_TXT=mailerrs.txt
+MAIL_DAT=mailerrs.dat
+BUILD_LIST_SPEC='buildList*.txt'
+ERR_BATCHES=errbatches.dat
+
+cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
+#
+# get the user and the batch
+cut -f3,4 -d'|' $MAIL_DAT | sort -k1 -t'|' > $ERR_BATCHES
+# Get the unique users
+declare -a uu
+
+
+#############  Fail 1
+# while read dd ; echo $dd ;  do uu+=($dd) ; done < $(cut -f1 -d'|' errbatches.dat | sort -u)
+#############
+#or (thank you stackOverflow
+uu=($(cut -f1 -d'|' $ERR_BATCHES  | sort -u))
+
+# 
+# send each users batches to their own script
+for drsUser in ${uu[@]} ; do 
+    rb=${drsUser}recovBatches
+    grep -w $drsUser $ERR_BATCHES | cut -f2 -d'|' > $rb
+
+    recoScriptDir="recoScript${drsUser}"$(date +%H.%M)
+    [ -d $recoScriptDir ]  &&  rm -rf $recoScriptDir
+    mkdir $recoScriptDir
+
+    BuildRecoveryList.sh -o $recoScriptDir -p r -s "$BUILD_LIST_SPEC" $rb
+    RunSerialFtp.sh $recoScriptDir $drsUser
+done

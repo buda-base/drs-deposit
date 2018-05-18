@@ -24,7 +24,12 @@ find $PR -name batch.xml -maxdepth 4 > allBuilds
 # Cut some fields and build a path:
 # we want just worksList1.10.46/batchW00CHZ0103335-1
  cat allBuilds | sort -k8 -t/ | tr '/' ' ' | uniq -c -f 6 | grep '^ *2' | tr  ' ' '/' | cut -f 11,12 -d / > dupBatchPaths
- grep -v -f dupBatchPaths allBuilds > BuildList.txt
+
+if [ ! -s dupBatchPaths ] ; then 
+    cp allBuilds BuildList.txt
+else
+    grep -v -f dupBatchPaths allBuilds > BuildList.txt
+fi
 # #
 # And make this into a field selector for grep
 # jimk@Khyung:getAllBuilds$ wc allBuilds
