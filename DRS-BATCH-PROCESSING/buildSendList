@@ -1,0 +1,7 @@
+#!/bin/bash -v
+#
+# Do the steps to getting files ready
+RemoveDuplicateBuilds.sh
+RemoveDepositedBatchPaths.sh
+ GetCumBuiltFileCounts.sh > testFile
+awk  -F'[|]' '{ if ( $3 < 200000) print $1 }' testFile > ../buildList.txt  

@@ -107,9 +107,10 @@ BEGIN {
 	 	 #
 	 	 # this is just a list of failed batches.
 
-#	 	 BuildSftpBatch( fn, $1, "descriptor.xml" )
+		# jsk 0517 - just use the last field, whichever it is.
+	 	 BuildSftpBatch( fn, $NF, "descriptor.xml" )
 # jimk. Build from piped addresses ( output of processMail.awk | cut -f3,4)
-	 	 BuildSftpBatch( fn, $2, "descriptor.xml" )
+#	 	 BuildSftpBatch( fn, $2, "descriptor.xml" )
 	 	fileCount++;
 	 }
 	else {

@@ -62,6 +62,7 @@ select distinct w.WorkName, w.HOLLIS from  Works w
 
 -- Hmm, I wonder if 0 in the vd column means the entire work is uploaded
 -- This statement definitively shows works with uploads missing
+-- GET WORKS WITH MISSING UPLOADS
 select workName, HOLLIS
   -- , (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
   -- (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
@@ -77,6 +78,28 @@ from Works w
     (select count(1) from Volumes v where v.workId = w.WorkId)
           -- = here means everything uploaded if its not 0
           <>
+     (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
+ --  and WorkName like '%art%'
+-- where   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
+group by workName;
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++    */
+/* 			GET WORKS WITH NO MISSING UPLOADS                   */
+select workName, HOLLIS
+  -- , (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
+  -- (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
+from Works w
+  -- get rid of works with outlines and print masters
+    left outer join drs.Outlines o using (workId) left outer join drs.PrintMasters p using (workId)
+    inner join Volumes v using (workId)
+
+    where w.HOLLIS is not null
+          and p.PrintMasterId is  null
+          and o.outLineId is  null
+    and
+    (select count(1) from Volumes v where v.workId = w.WorkId)
+          -- = here means everything uploaded if its not 0
+          =
      (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
  --  and WorkName like '%art%'
 -- where   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
