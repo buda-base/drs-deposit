@@ -2,6 +2,12 @@
 #
 # Parse a series of email messages for error texts
 # Each message boundary is defined to be on the email 'Date' header
+#
+# Output format is pipe ( | ) delimited fields
+# containing
+# Report Date | ReportID (DRS generated) | depositing User | batch directory | error text
+#
+# Batch directory locates the batch on the source tree
 
 #
 # Begin an error text capture cycle
