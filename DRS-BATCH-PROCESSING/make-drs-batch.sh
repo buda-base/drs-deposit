@@ -237,7 +237,9 @@ $bb -a templatedirs -p $targetProjectDir>> $logPath 2>&1
 
 targetConf="$targetProjectDir/project.conf"
 
-volsPerBatch=30
+# 30 is about 18 - 20000 files, which is too
+# many for poor old DRS.
+volsPerBatch=20
 echo Volumes per Batch: $volsPerBatch
 
 echo Template Image Directory: $templateDir
@@ -328,8 +330,6 @@ while IFS=',' read -ra LINE; do
         
         # { time $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
         $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
-        
-       cleanUpLogs $batchName
 
 		# jsk 11.dec.17. Dont rename here. Do it in ftp script
 		# if [ -f $targetProjectDir/$batchName/batch.xml ]; then
@@ -346,6 +346,10 @@ while IFS=',' read -ra LINE; do
 			# We could decide to continue 
 			# exit 1;
 		}
+
+        # jimk 2018-V-18: this used to be above the last fail,
+       cleanUpLogs $batchName
+
 		
 		start=$[start + volsPerBatch]
 	done

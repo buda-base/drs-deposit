@@ -4,17 +4,15 @@ Created on Mar 8, 2018
 @author: jsk
 '''
 
-import sys
 import argparse
 import fileinput
-
-from OutlineWrite import DbWriter, CSVWriter
+import sys
 
 
 class getArgs:
-    '''
+    """
     Holds command line arguments
-    '''
+    """
     pass
 
 
@@ -54,8 +52,8 @@ def parseArgs(argNamespace):
     '''
     _parser = argparse.ArgumentParser(description='Replicates work HOLLIS\
      pair file', usage='%(prog)s \n[-c CSV outputs csv format to file CSV.\n\t\
-     | -d DBApp outputs to db whose parameters are given in config file \
-     DBApp ]')
+     | -d DBAppSection:DbAppFile outputs to db whose parameters are given in \n\t\
+     config file \'DbAppFile\' which contains section \'DbAppSection\'')
 
     _parser.add_argument("sourceFile", help='CSV file containing Work, \
     HOLLIS tuples (no heading)')

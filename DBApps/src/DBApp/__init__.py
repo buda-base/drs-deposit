@@ -1,1 +1,1 @@
-__all__ = ["config", "DbBase"]
+__all__ = ["config"]
