@@ -76,3 +76,9 @@ class TestWebAdminResults(TestCase):
         """
         w = WebAdminResults.results(",", [("s1", "p1"), ("s2", "p45")])
         self.assertRaises(ValueError, w.find_columns, "object_id_num_object_huldrsadmin_ownerSuppliedName_string") # , 'Should have thrown')
+
+    def test_extract(self):
+        w = WebAdminResults.results(",", [("s1", "p1"), ("s2", "p45")])
+        w.find_columns("s6,s1,s7,s2")
+        cmd_bead = w.extract_data("heemalator, ImanS1, freemalator, ImanS2")
+        print(cmd_bead)

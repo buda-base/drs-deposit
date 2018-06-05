@@ -5,71 +5,42 @@
     The required columns must be present: this class
     returns the vector of their orders
      """
-from typing import Dict, Any
+from typing import Dict
+import csv
 
 
 class results:
-    required_columns: Dict[Any, int]
-    column_parameters: Dict[Any, object]
-    NO_VALUE = -1
 
-    def __init__(self, separator, required_column_list: list):
-        self.sep = separator
-        # required_column_list must not be empty
-        if len(required_column_list) == 0:
-            raise ValueError("required column list must have values.")
 
-        self.required_columns = {}
-        self.column_parameters = {}
+    def __init__(self, column_dict: dict):
+        self.column_dict = column_dict
 
-        for s in required_column_list:
-            if len(s[0]) == 0:
-                raise ValueError("All values in required columns must have length")
-            self.required_columns[s[0]] = self.NO_VALUE
 
-            # Save the parameter name into a dictionary
-            self.column_parameters[s[0]] = s[1]
-
-    def find_columns(self: object, header_line: object) -> object:
+    def extract_data(self, text_line: str) -> object:
         """
-        Populates class variable _required_columns
-
-        Scans the csv input line 0-based column index of each required field
-        :type self: object
-        :param self:
-        :type header_line: string
-        :param header_line: header of a CSV report
-        :return: throws exception if any _required_columns is not found
-        """
-        headers = header_line.split(self.sep)
-        i_list = 0
-        for s in headers:
-            if s in self.required_columns:
-                self.required_columns[s] = i_list
-            i_list += 1
-
-        # Sanity
-        missing_headers = []
-        for k, v in self.required_columns.items():
-            if v == self.NO_VALUE:
-                missing_headers.append(k)
-
-        if len(missing_headers) > 0:
-            raise ValueError("Required headers missing: " + ' '.join(missing_headers) +  "\n")
-
-    def process_line(self, text_line):
-        """
-        Creates a parameter dictionary of key:parameter_name, value=parameter_value
+        Creates a parameter dictionary of key:parameter_name, value:parameter_value
+        :type text_line: str
         :param text_line:
         :return:
         """
-
+        text_line  = text_line.rstrip('\n')
         line_beads = text_line.split(self.sep)
         if len(line_beads) < len(self.required_columns):
             raise ValueError("not enough data: " + text_line)
 
-        # otherwse, lets go
+        # otherwise, lets go
+        # Note we dont care if there are as many values in the lines as there are in the headers -
+        # we only want the values at the indexes
         rc = {}
-        for k, v in self.column_parameters:
-            rc[v] = text_line[self.required_columns[v]]
+        for k, v in self.column_parameters.items():
+            rc[v] = line_beads[self.required_columns[k]]
         return rc
+
+    def csv_to_dict(self, file_name: str) -> Dict[str, str]:
+        db_parms = []
+        with open(file_name, newline='') as csvfile:
+            rdr = csv.DictReader(csvfile)
+            for row in rdr:
+                # build a list of parms
+                {db_parms.append(v, row[k]) for k,v in self.column_dict}
+        return db_parms
