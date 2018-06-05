@@ -25,7 +25,7 @@ class TestWebAdminResults(TestCase):
     def test_WebAdminResults_empty_list_value(self):
         hadbarf = False
         try:
-            elist = [""]
+            elist = [("")]
             w = WebAdminResults.results("", elist)
         except:
             hadbarf = True
@@ -36,7 +36,7 @@ class TestWebAdminResults(TestCase):
         Expect success when there is one entry, which matches the input
         :return:
         """
-        w = WebAdminResults.results("_", ["s1"])
+        w = WebAdminResults.results("_", [("s1")])
         hadbarf = False
         try:
             w.find_columns("")
@@ -49,9 +49,9 @@ class TestWebAdminResults(TestCase):
         Expect exception when one entry doesnt match
         :return:
         """
-        ss = ["s1"]
+        ss = [("s1","p1")]
         w = WebAdminResults.results("_", ss)
-        self.assertRaises(ValueError, w.find_columns, "s2") # , "Expected to throw when s1 not found.")
+        self.assertRaises(ValueError, w.find_columns, "s2")
 
     def test_find_columns_some(self):
         """
@@ -59,14 +59,14 @@ class TestWebAdminResults(TestCase):
         :return:
         """
         w = WebAdminResults.results("_", ["s1"])
-        self.assertRaises(ValueError, w.find_columns,"s2") # "Expected to throw when s1 not found.")
+        self.assertRaises(ValueError, w.find_columns, "s2")
 
     def test_find_columns_all(self):
         """
         Expect success when there all entries match, which matches the input
         :return:
         """
-        w = WebAdminResults.results("_", ["s1", "s2", "s3"])
+        w = WebAdminResults.results("_", [("s1", "p1"), ("s2", "p2"), ("s3", "p3")])
         w.find_columns("s2_s1_s3")
 
     def test_find_columns_ColsNoCommas(self):
@@ -74,5 +74,5 @@ class TestWebAdminResults(TestCase):
         Should fail test of Some columns, no commas
         :return:
         """
-        w = WebAdminResults.results(",", ["s1", "s2"])
+        w = WebAdminResults.results(",", [("s1", "p1"), ("s2", "p45")])
         self.assertRaises(ValueError, w.find_columns, "object_id_num_object_huldrsadmin_ownerSuppliedName_string") # , 'Should have thrown')
