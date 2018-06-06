@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="583bea66-a0df-45de-8a60-736964273ac7" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-batch.sh" beforeDir="false" afterPath="$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-batch.sh" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="scratch.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="make-drs-outline.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-outline.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="105" column="2" selection-start-line="105" selection-start-column="2" selection-end-line="105" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ftpMultiple.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/ftpMultiple.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="makeOneFtp.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/makeOneFtp.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ftpScript.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/ftpScript.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="25" column="34" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tojsondimensions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/contrib/tojsondimensions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="68" column="29" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
+              <folding>
+                <element signature="e#24#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="00_W20481_W20481-I1PD36349_dimensions.json" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/mets/bigMets/00_W20481_W20481-I1PD36349_dimensions.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-16">
+              <caret column="27836" selection-start-column="27836" selection-end-column="27836" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="autoRecovery" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/autoRecovery">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="8" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="exceptions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2018.1/python_stubs/348993582/exceptions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="364" column="16" selection-start-line="364" selection-start-column="6" selection-end-line="364" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>archive</find>
+      <find>LOG_FILE</find>
+      <find>logPath</find>
+      <find>HOLLIS</find>
+      <find>archiveDir</find>
+      <find>need full</find>
+      <find>MEPATH</find>
+      <find>$3</find>
+      <find>needs</find>
+      <find>TTL</find>
+      <find>java</find>
+      <find>vols</find>
+      <find>projectmas</find>
+      <find>batchName</find>
+      <find>imagesDir</find>
+      <find>archiveRoot</find>
+      <find>set</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>archiveRoot</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="/Volumes/DRS_Staging/DRS/prod/20180413/worksList20.14.40/batchW1KG1665-1/W1KG1665-I1KG1842/descriptor.xml" />
+        <option value="$PROJECT_DIR$/DRS-BATCH-PROCESSING/tmp.sh" />
+        <option value="$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-batch.sh" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.sh" />
+        <option value="$USER_HOME$/.bash_profile.khyung" />
+        <option value="$USER_HOME$/.bash_profile" />
+        <option value="$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-outline.sh" />
+        <option value="$PROJECT_DIR$/contrib/tojsondimensions.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="158" />
+    <option name="y" value="68" />
+    <option name="width" value="2133" />
+    <option name="height" value="1247" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="drs-deposit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="drs-deposit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="drs-deposit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="drs-deposit" type="462c0819:PsiDirectoryNode" />
+              <item name="contrib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="drs-deposit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="drs-deposit" type="462c0819:PsiDirectoryNode" />
+              <item name="DRS-BATCH-PROCESSING" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="drs-deposit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="drs-deposit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value=" IndexE&#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Bash.make-drs-outline.sh">
+    <configuration name="scratch.sh" type="BashConfigurationType" factoryName="Bash" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="bash" />
+      <option name="INTERPRETER_PATH" value="/usr/bin/env" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.sh" />
+      <option name="PARAMETERS" value="" />
+      <module name="" />
+    </configuration>
+    <list>
+      <item itemvalue="Bash.make-drs-outline.sh" />
+      <item itemvalue="Bash.scratch.sh" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Bash.scratch.sh" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="583bea66-a0df-45de-8a60-736964273ac7" name="Default" comment="" />
+      <created>1524594260970</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1524594260970</updated>
+    </task>
+    <task id="LOCAL-00001" summary="WIP for outline">
+      <created>1524690873983</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1524690873983</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Final">
+      <created>1524690938885</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1524690938885</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Support JetBrains pycharm">
+      <created>1524690956443</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1524690956443</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Relocate for clarity">
+      <created>1524840438348</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1524840438348</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Outline support">
+      <created>1524840648174</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1524840648174</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="158" y="68" width="2133" height="1247" extended-state="0" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.50050455" side_tool="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="4" weight="0.42347828" />
+      <window_info anchor="bottom" id="Python Console" order="5" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49949545" weight="0.28285715" />
+      <window_info anchor="right" x="309" y="745" width="1982" height="305" id="Terminal" order="3" visible="true" weight="0.27833572" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1492109" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="SciView" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Messages" order="0" />
+      <window_info anchor="bottom" id="Message" order="6" />
+      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="7" weight="0.32956523" />
+    </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.18041237" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.49949545" visible="true" weight="0.32890365" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="right" x="309" y="745" width="1982" height="305" id="Terminal" order="3" visible="true" weight="0.32886598" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.50050455" side_tool="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Version Control" order="2" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Messages" order="0" />
+      <window_info anchor="bottom" id="Python Console" order="3" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="WIP for outline" />
+    <MESSAGE value="Final" />
+    <MESSAGE value="Support JetBrains pycharm" />
+    <MESSAGE value="Relocate for clarity" />
+    <MESSAGE value="Outline support" />
+    <option name="LAST_COMMIT_MESSAGE" value="Outline support" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-outline.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1575">
+          <caret line="105" column="2" selection-start-line="105" selection-start-column="2" selection-end-line="105" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/ftpMultiple.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/makeOneFtp.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/ftpScript.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="34" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/contrib/tojsondimensions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="68" column="29" lean-forward="true" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
+          <folding>
+            <element signature="e#24#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2018.1/python_stubs/348993582/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5460">
+          <caret line="364" column="16" selection-start-line="364" selection-start-column="6" selection-end-line="364" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/mets/bigMets/00_W20481_W20481-I1PD36349_dimensions.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret column="27836" lean-forward="true" selection-start-column="27836" selection-end-column="27836" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-outline.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1575">
+          <caret line="105" column="2" selection-start-line="105" selection-start-column="2" selection-end-line="105" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/ftpMultiple.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/makeOneFtp.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/ftpScript.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="34" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="11" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-batch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4965">
+          <caret line="331" column="29" selection-start-line="331" selection-start-column="29" selection-end-line="331" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-outline.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2430">
+          <caret line="162" lean-forward="true" selection-start-line="162" selection-end-line="162" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Volumes/DRS_Staging/DRS/prod/20180413/worksList20.14.40/batchW1KG1665-1/W1KG1665-I1KG1842/descriptor.xml" />
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/setupErrorLog.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/tmp.sh" />
+    <entry file="file://$USER_HOME$/outlines/workBatches/bb-console.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="2124" lean-forward="true" selection-start-line="2124" selection-end-line="2124" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/outlines/workBatches/project.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="60" selection-start-line="22" selection-start-column="60" selection-end-line="22" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.bash_profile.khyung">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="64" lean-forward="true" selection-start-line="41" selection-end-line="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-batch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="331" column="29" selection-start-line="331" selection-start-column="29" selection-end-line="331" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/make-drs-outline.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="105" column="2" selection-start-line="105" selection-start-column="2" selection-end-line="105" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/ftpMultiple.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/parallelBatch/makeOneFtp.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/ftpScript.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="25" column="34" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2018.1/python_stubs/348993582/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="364" column="16" selection-start-line="364" selection-start-column="6" selection-end-line="364" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/contrib/tojsondimensions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="68" column="29" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
+          <folding>
+            <element signature="e#24#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/mets/bigMets/00_W20481_W20481-I1PD36349_dimensions.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-16">
+          <caret column="27836" selection-start-column="27836" selection-end-column="27836" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRS-BATCH-PROCESSING/autoRecovery">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="8" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
