@@ -1,14 +1,14 @@
-'''
+"""
 Created on Mar 6, 2018
 
 @author: jsk
-'''
+"""
 import sys
 import argparse
 
-from TBRCSrc import readOutlineXml as xr
+from GenShell.TBRCSrc import readOutlineXml as xr
 from lxml import etree
-from OutlineWrite import DbWriter, CSVWriter
+from GenShell.Writers import DbWriter, CSVWriter
 
 
 class getArgs:
@@ -26,8 +26,14 @@ def main(args):
     @todo: Allow redirect from URI query
     '''
 
-    outlines = get_attr_text_from_file(myArgs.sourceFile,
-                                       'work', '/outlines/outline')
+   # take 2: just use a list outlines = get_attr_text_from_file(myArgs.sourceFile,
+   #                                    'work', '/outlines/outline')
+    outlines = []
+    with open(myArgs.sourceFile,'r') as wks:
+        for wk in wks:
+            outlines.append(wk.rstrip('\n'))
+
+
 
     writer = None
     if myArgs.csv is None:
@@ -72,6 +78,7 @@ def get_attr_text_from_file(inFilePath, attrName, path):
     return xrr.get_attr_text(doc, attrName, path)
 
 #
+
 # ----------------        MAIN     ------------------------------------
 
 

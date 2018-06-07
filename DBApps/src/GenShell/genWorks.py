@@ -5,8 +5,10 @@ Created on Mar 8, 2018
 '''
 
 import argparse
-import fileinput
+import csv
 import sys
+from GenShell.Writers.CSVWriter import CSVWriter
+from GenShell.Writers.DbWriter import DbWriter
 
 
 class getArgs:
@@ -25,26 +27,25 @@ def main(args):
     @todo: Allow redirect from URI query
     '''
 
-    outlines = []
-    with fileinput.input(files=(myArgs.sourceFile)) as f:
-        [outlines.append(process(someLine)) for someLine in f]
-
+    outlines = csv_to_list(myArgs.sourceFile)
     writer = None
     if myArgs.csv is None:
         myArgs.sproc = 'AddWork'
-        writer = DbWriter.DbWriter(myArgs)
-    if myArgs.db is None:
-        writer = CSVWriter.CSVWriter(myArgs.csv)
+        writer = DbWriter(myArgs)
+    if myArgs.drsDbConfig is None:
+        writer = CSVWriter(myArgs.csv)
 
     writer.write_list(outlines)
 
 
-def listFromFile(inFilePath):
-    '''
-    @summary: Creates a list object from a csv file with two columns
-    @param inFilePath: source file
-    '''
+def csv_to_list( file_name: str) -> list:
 
+    rc = []
+    with open(file_name, newline='\n', encoding='utf-8') as csvfile:
+        rdr = csv.DictReader(csvfile, dialect='unix')
+        for row in rdr:
+            rc.append((row['RID'], row['HOLLIS']))
+    return rc
 
 def parseArgs(argNamespace):
     '''
@@ -56,10 +57,10 @@ def parseArgs(argNamespace):
      config file \'DbAppFile\' which contains section \'DbAppSection\'')
 
     _parser.add_argument("sourceFile", help='CSV file containing Work, \
-    HOLLIS tuples (no heading)')
+    HOLLIS tuples with headings \'RID\' and \'HOLLIS\'')
     group = _parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-c', '--csv')
-    group.add_argument('-d', '--db')
+    group.add_argument('-d', '--drsDbConfig')
 
     _parser.parse_args(namespace=argNamespace)
 

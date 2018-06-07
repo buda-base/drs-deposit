@@ -10,6 +10,7 @@ from GenShell.Writers.listwriter import ListWriter
 from DBApp import config
 import pymysql
 import os
+import time
 
 
 class DbWriter(ListWriter):
@@ -19,6 +20,8 @@ class DbWriter(ListWriter):
     
     dbName = ''
     dbConfigFile = ''
+    monitor_interval = 50
+
     def __init__(self,configInfo):
         super().__init__(configInfo)
         '''Set up config'''
@@ -41,43 +44,54 @@ class DbWriter(ListWriter):
         dbConnection = None
         curs = None
         hadBarf = False
-        try:
-            # Load the db configuration from the file given in
-            #
+        # Load the db configuration from the file given in
+        #
 
-            cfg = config.DBConfig(self.dbName,self.dbConfigFile)
-            # cfg = config.DBConfig('dev', self.oConfig.drsDbConfig)
-            dbConnection = self.start_connect(cfg)
+        cfg = config.DBConfig(self.dbName,self.dbConfigFile)
+        # cfg = config.DBConfig('dev', self.oConfig.drsDbConfig)
+        dbConnection = self.start_connect(cfg)
 
-            with dbConnection:
-                curs = dbConnection.cursor()
-
+        with dbConnection:
+            curs = dbConnection.cursor()
+            total = len(srcList)
+            calls = 0
+            etnow = time.perf_counter()
+            try:
                 for aVal in srcList:
                     try:
-                        curs.callproc(self.oConfig.sproc, (aVal[0].strip(),))
+                        aval_type = type(aVal)
+                        # hack to handle strings and other data types separately
+                        if aval_type is str:
+                            curs.callproc(self.oConfig.sproc, (aVal.strip(),))
+                        if aval_type is dict or aval_type is list:
+                            curs.callproc(self.oConfig.sproc, tuple(aVal))
+                        if aval_type is tuple:
+                            curs.callproc(self.oConfig.sproc, aVal)
+
+                        calls += 1
+                        if calls % self.monitor_interval == 0:
+                            y = time.perf_counter()
+                            print(" %d calls ( %3.2f %%).  Rate: %5.2f /sec"
+                                  % (calls, 100*calls/total, self.monitor_interval/(y - etnow)))
+                            etnow = y
 
                     # Some outlines are not in unicode
                     except UnicodeEncodeError:
                         print(':{0}::{1}:'.format(aVal[0].strip(),
                                                   aVal[1].strip()))
                         pass
-                curs.close()
-                curs = None
+                    except Exception:
+                        hadBarf = True
+                        if dbConnection is not None:
+                            dbConnection.rollback()
+                        raise
 
-        except Exception:
-            hadBarf = True
-            if dbConnection is not None:
-                dbConnection.rollback()
-            raise
-                    
-        finally:
-            if not hadBarf:
-                dbConnection.commit()
-            if curs is not None:
-                curs.close()
-            if dbConnection is not None:
-                dbConnection.close()
-        
+            finally:
+                if not hadBarf:
+                    dbConnection.commit()
+                if curs is not None:
+                    curs.close()
+
     def test(self,cfg):
             cfg = config.DbConfig(self.dbName,self.dbConfigFile)
             dbConnection = self.start_connect(cfg)
