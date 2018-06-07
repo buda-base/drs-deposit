@@ -36,7 +36,7 @@ class DBConfig:
         
         """
         if dbName is not None:
-            self.db_alias = dbName;
+            self.db_alias = dbName
         if configFileName is not None:
             self.config_file_name = configFileName
 
@@ -70,9 +70,9 @@ class DBConfig:
         """Set the name of the DbAppConfig file"""
         cfgPath = Path(value)
         if cfgPath.is_file():
-            _configFQPath = str(cfgPath)
+            self._configFQPath = str(cfgPath)
             # Rebuild the _parser
-            _configParser = self._parser(_configFQPath)
+            self._parser(self._configFQPath)
         else:
             # On error, keep existing value
             raise FileNotFoundError(str(cfgPath))

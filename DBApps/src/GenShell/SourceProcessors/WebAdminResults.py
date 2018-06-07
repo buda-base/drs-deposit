@@ -37,10 +37,16 @@ class results:
         return rc
 
     def csv_to_dict(self, file_name: str) -> Dict[str, str]:
-        db_parms = []
-        with open(file_name, newline='') as csvfile:
-            rdr = csv.DictReader(csvfile)
+
+        rc = []
+        with open(file_name, newline='\n', encoding='utf-8') as csvfile:
+            rdr = csv.DictReader(csvfile, dialect='unix')
             for row in rdr:
-                # build a list of parms
-                {db_parms.append(v, row[k]) for k,v in self.column_dict}
-        return db_parms
+                db_parms = {}       # build a list of parms
+                # visualize
+                # for k, v in self.column_dict.items():
+                #     print("k:%s:\t v:%s: r[k]:%s:" % (k,v,row[k]))
+                for k, v in self.column_dict.items():
+                    db_parms[v] = row[k]
+                rc.append(db_parms)
+        return rc

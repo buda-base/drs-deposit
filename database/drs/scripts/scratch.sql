@@ -67,7 +67,8 @@ select workName, HOLLIS
   -- , (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
   -- (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
 from Works w
-  -- get rid of works with outlines and print masters
+  -- get rid of works with outlines and print mastersCALL `drs`.`AddDRS`(<{IngestDate datetime}>, <{objectid varchar(45)}>, <{objectUrn varchar(45)}>, <{DRSdir varchar(45)}>, <{filesCount int(11)}>, <{size bigint(20)}>, <{OSN varchar(45)}>);
+
     left outer join drs.Outlines o using (workId) left outer join drs.PrintMasters p using (workId)
     inner join Volumes v using (workId)
 
@@ -104,3 +105,40 @@ from Works w
  --  and WorkName like '%art%'
 -- where   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
 group by workName;
+
+
+/*------------------ how many works were created when volumes were updated? -----*/
+select v.volumeId, v.create_time, w.create_time, v.label, w.workName from Works w inner join Volumes v using (workId) 
+where w.create_time < '2018-05-18'  
+order by v.create_time desc;
+
+select * from Works where create_time > '2018-05-16' order by create_time asc;
+
+select * from Works where create_time > '2018-05-16' order by workId asc;
+select * from Volumes v inner join Works w using (workId) where w.create_time > '2018-05-16' order by w.workId desc, w.create_time desc ; 
+
+select * from Outlines where create_time > '2018-05-14' order by create_time asc;
+delete from Works where workId > 13774 ; -- order by Works.create_time asc;
+/* -----------------   get all the duplicate works   ------------------------------- */
+
+select w0.workId, w0.workName, w0.HOLLIS from Works w0 inner join 
+(
+select workId, workName, HOLLIS 
+from Works 
+group by workName  
+having count(workName) > 1) dw
+on w0.WorkName = dw.workName 
+order by w0.workId asc,w0.WorkName asc ;
+select * from Volumes where workId = 7351; 
+
+
+/* -----------------   get all the duplicate volumes ------------------------------- */
+select * from Works where create_time > '2018-06-05' and HOLLIS is NULL order by workName asc;
+select v0.workId, v0.volumeId, v0.label from Volumes v0 inner join 
+(
+select volumeId, workId, label
+from drs.Volumes 
+group by label
+having count(label) > 1) v1
+on v0.label = v1.label
+order by v0.volumeId asc,v0.label asc ;

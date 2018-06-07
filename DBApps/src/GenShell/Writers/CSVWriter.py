@@ -5,10 +5,10 @@ Created on Mar 6, 2018
 '''
 import codecs
 import os
-from OutlineWrite.listwriter import ListWriter
+from GenShell.Writers import listwriter
 
 
-class CSVWriter(ListWriter):
+class CSVWriter(listwriter.ListWriter):
     '''
     Writes a list formatted as a CSV file
     '''
