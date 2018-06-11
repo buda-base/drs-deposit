@@ -8,13 +8,12 @@ from distutils.sysconfig import _config_vars
 
 
 class ListWriter(metaclass=ABCMeta):
-    '''
+    """
     Base class for writing lists
-    '''
-    '''
+    
     :summary: holds opaque object defining the configuration.
     subclass dependent
-    '''
+    """
     @property
     def oConfig(self):
         return self._config

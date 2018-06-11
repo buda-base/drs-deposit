@@ -1,6 +1,6 @@
 set  @AllWorksCount = ( select count(*) from drs.Works);
 
-select@WorksPrintOROutline = (select count(*) from drs.Works w left outer join drs.Outlines o using (workId) ) ; -- left outer join drs.PrintMasters p using (workId) where p.PrintMasterId is  null); --  or  o.outLineId is not null);
+set @WorksPrintOROutline = (select count(*) from drs.Works w left outer join drs.Outlines o using (workId) left outer join drs.PrintMasters p using (workId) where p.PrintMasterId is  not null or  o.outLineId is not null);
 
 set @WorksNoOutlineNoPrint = (select count(*) from drs.Works w left outer join drs.Outlines o using (workId) left outer join drs.PrintMasters p using (workId) where p.PrintMasterId is  null and o.outLineId is null);
 
@@ -17,3 +17,5 @@ set @WorksBothPrintOutlineIJ   =(select count(*) from drs.Works w inner join drs
 
 
 select @AllWorksCount,@WorksPrintOROutline , @WorksNoOutlineNoPrint, @WorksNoOutline,@WorksWithOutlineIJ,@WorksNoPrintLO,@WorksPrintIJ,@WorksBothPrintOutlineIJ;
+
+select WorkName, HOLLIS from drs.Works left outer join Outlines using (workId) left outer join PrintMasters using (workId) where outLineId is null and printMasterId is null;
