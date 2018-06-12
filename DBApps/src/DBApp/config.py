@@ -19,6 +19,7 @@ Abstracts the databases into aliases, e.g. [dev] [qa], [prod]
 Properties:
 '''
 import configparser
+import os
 from pathlib import Path
 from builtins import property
 
@@ -38,7 +39,7 @@ class DBConfig:
         if dbName is not None:
             self.db_alias = dbName
         if configFileName is not None:
-            self.config_file_name = configFileName
+            self.config_file_name = os.path.expanduser(configFileName)
 
     '''
     Server - read only

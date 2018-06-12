@@ -1,6 +1,6 @@
 import argparse
 import sys
-from DBApp import config
+from DBApp.config import *
 import pymysql
 import pathlib
 import os
@@ -14,7 +14,7 @@ class getArgs:
     pass
 
 
-def setupConfig(drsDBConfig):
+def setup_config(drsDbConfig:object) -> DBConfig:
     """
     gets config values for setup
     :param drsDBConfig: in section:file format
@@ -25,11 +25,12 @@ def setupConfig(drsDBConfig):
         dbName = args[0]
         dbConfigFile = os.path.expanduser(args[1])
     except IndexError:
-        raise IndexError('Invalid argument %s: Must be formatted as section:file ' % drsDBConfig)
+        raise IndexError('Invalid argument %s: Must be formatted as section:file ' % drsDbConfig)
 
-    return  config.DBConfig(dbName, dbConfigFile)
+    return DBConfig(dbName, dbConfigFile)
 
-def getResults(dbConfig, outputDir):
+
+def getResults(dbConfig, outputDir, maxRows):
     """
     Get results and write to directory.
     :param dbConfig:
@@ -40,27 +41,32 @@ def getResults(dbConfig, outputDir):
 
     # First, get the list of works for volumes which need uploading
     with dbConnection:
-        work_cursor : pymysql.cursors = dbConnection.cursor()
+        workCursor : pymysql.cursors = dbConnection.cursor()
         workIds : object
 
-        work_cursor.execute("select distinct workId from ReadyWorksNeedsBuilding;")
-        # expected [ {'workId' : nnnn },....]
-        workIdResults: list  = work_cursor.fetchall()
-        workIdList: list
-        [workIdList.append(item['workId']) for item in workIdResults]
-        for workId in workIdList:
-            work_cursor.callproc('GetReadyVolumesByWorkId')
-            work_volume_results : list = work_cursor.fetchall()
+        workCursor.execute("select distinct workId from ReadyWorksNeedsBuilding limit %d ;" % (maxRows,))
+        # if we use dbConnection.cursor(pymysql.cursors.DictCursor) expect[ {'workId' : nnnn },....]
+        # expected [ (workId,),....]
+        workIdResults: list = workCursor.fetchall()
+        #when we open a dict cursor, use this syntax
+        # [workIdList.append(item['workId']) for item in workIdResults]
+        #
+        workCursor.close()
+        workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
+        for workTuple in workIdResults:
+            workCursor.callproc('GetReadyVolumesByWorkId', workTuple)
+            workVolumeResults: list = workCursor.fetchall()
 
             # All the rows should have the same WorkName
-            outFile : pathlib.Path = outputDir / "%s_%s" % work_volume_results[0]['WorkName'], datetime.datetime.now().strftime("%y%m%e%H%M%S")
+            # @TODO: rethink serializing by time?
+            # fileName = "%s_%s" % (workVolumeResults[0]['WorkName'],  datetime.datetime.now().strftime("%y%m%e%H%M%S"))
+            outfile: pathlib.Path = pathlib.Path(outputDir) / workVolumeResults[0]['WorkName']
 
             # wr.writelines jams them all on same lines
-            with outFile.open("w") as fw:
-                fw.write('\n'.join([item['Volume'] for item in work_volume_results]))
-
-
-
+            with outfile.open("w") as fw:
+                fw.write('\n'.join([item['Volume'] for item in workVolumeResults]))
+                # Unglaubische dumm
+                fw.write('\n')
 
 
 def start_connect(cfg):
@@ -80,15 +86,15 @@ def main(args):
 
     myArgs = getArgs()
     parseArgs(myArgs)
-    dbConfig = setupConfig(myArgs.drsDbConfig)
+    dbConfig = setup_config(myArgs.drsDbConfig)
     #
-    outRoot : object = pathlib.Path(myArgs.resultsRoot)
+    outRoot: str = os.path.expanduser(myArgs.resultsRoot)
 
     # defult create mode is 777
-    if not os.exists(outRoot):
+    if not os.path.exists(outRoot):
         os.mkdir(outRoot)
 
-    getResults(dbConfig, outRoot)
+    getResults(dbConfig, outRoot, myArgs.numWorks)
 
 
 # ----------------        MAIN     --------------------
@@ -96,10 +102,13 @@ def parseArgs(argNamespace):
     """
     :param argNamespace. class which holds arg values
     """
-    _parser = argparse.ArgumentParser(description='Downloads ready works to folder, creating files related to folder name', usage='%(prog)s | -d DBAppSection:DbAppFile outputs to db whose parameters are given in config file')
-
+    _parser = argparse.ArgumentParser(description='Downloads ready works to folder, creating files related to folder '
+                                                  'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
+                                                                "[ -n n How many works to download. ] resultsRoot"
+                                      )
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName')
+    _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10)
     _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
 
     _parser.parse_args(namespace=argNamespace)
