@@ -338,19 +338,23 @@ while IFS=',' read -ra LINE; do
 		# 	echo BB failed for $batchName
 		# 	echo BB failed for $batchName >> $logPath 2>&1
 		# fi
-		[ -f $targetProjectDir/$batchName/batch.xml ] || { 
+		if [ -f $targetProjectDir/$batchName/batch.xml ] ; then
 
 			echo ${ME}:ERROR:BB failed for $batchName ;
 			echo ${ME}:ERROR:BB failed for $batchName >> $logPath 2>&1 ; 
 
 			# We could decide to continue 
 			# exit 1;
-		}
+		else
+		    # set up mets
+		    td=$(mktemp -d)
+		    tojsondimensions.py -i $targetProjectDir/$batchName -o $td 2>&1 | tee -a $logPath
+		    rm $td  2>&1 | tee -a ${logPath}
+		fi
 
-        # jimk 2018-V-18: this used to be above the last fail,
+        # jimk 2018-V-18: this used to be above the last fail.
        cleanUpLogs $batchName
 
-		
 		start=$[start + volsPerBatch]
 	done
 done < $worksList
