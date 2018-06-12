@@ -59,14 +59,14 @@ function prepBBHome {
 	[ -f $propFile ] && { rm -f $propFile ; }
 	#
 	# See <binFolder>/SetBBLevel.sh
-	cp "${propFile}".$BB_LEVEL "$propFile"
+	cp "${propFile}".${BB_LEVEL} "$propFile"
 }
 
 
 # Some constants
- WORKS_SOURCE_HOME=/Volumes/WebArchive
+ WORKS_SOURCE_HOME=/Volumes/Archive
  DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
- BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/SmallWorks
+ BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/prod/$(date +%Y%m%d)
  BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
  #
  # HACK: Magic phrase. Depends on ./splitWorks.sh
@@ -85,7 +85,7 @@ if (( $# != 3)); then
 	exit 1;
 fi
 
-[ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set' ; usage ; exit 1; }
+[ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set' ; Usage ; exit 1; }
 
 [ -e "$1" ] || { echo "${ME}":error: worksList file \'"$1"\' must exist but does not. ; exit 2; }
 	# is the processing for this worksList underway?
@@ -117,7 +117,9 @@ x=${series#$(expr $WORKS_LIST_FN)}
 
 #
 # Generate the batch path
-batchPath=${BATCH_OUTPUT_HOME}/${series}.$(date +%F.%H.%M)
+[ ! -d  "${BATCH_OUTPUT_HOME}" ] && { mkdir -p ${BATCH_OUTPUT_HOME} ; }
+
+batchPath=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
 
 
 #
@@ -133,7 +135,8 @@ prepBBHome
  thisRun=$!
 #
 # Mark as underway, with details
- printf "%d_%s" $thisRun $(date +%H:%M:%S) > ${statusRoot}/${WORKS_LIST_FN}${x}
+underFile=${statusRoot}/${WORKS_LIST_FN}${x}
+ printf "%d_%s" $thisRun $(date +%H:%M:%S) > $underFile
 
  #
 wait $thisRun
@@ -149,7 +152,7 @@ childRc=$?
 #	cat ${doneFile} | awk -v newFields=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")  '{printf "!%s_%s@\n", $0, $newFields }' #   >   ${resultsDir}/$doneFileName
 finishedArgs=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")
 #
-cat ${statusRoot}/${WORKS_LIST_FN}${x} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${WORKS_LIST_FN}${x}
-rm ${statusRoot}/${WORKS_LIST_FN}${x}
+cat ${underFile} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${WORKS_LIST_FN}${x}.$$
+rm ${underFile}
 
 rm -rf $BB_HOME

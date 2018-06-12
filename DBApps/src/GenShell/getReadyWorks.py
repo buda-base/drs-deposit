@@ -1,5 +1,5 @@
 import argparse
-import sys
+import csv
 from DBApp.config import *
 import pymysql
 import pathlib
@@ -14,14 +14,14 @@ class getArgs:
     pass
 
 
-def setup_config(drsDbConfig:object) -> DBConfig:
+def setup_config(drsDbConfig: str) -> DBConfig:
     """
     gets config values for setup
-    :param drsDBConfig: in section:file format
+    :param drsDbConfig: in section:file format
     :return:
     """
     try:
-        args: object = drsDbConfig.split(':')
+        args: list = drsDbConfig.split(':')
         dbName = args[0]
         dbConfigFile = os.path.expanduser(args[1])
     except IndexError:
@@ -32,7 +32,36 @@ def setup_config(drsDbConfig:object) -> DBConfig:
 
 def getResults(dbConfig, outputDir, maxRows):
     """
+
+    :param dbConfig:
+    :param outputDir:
+    :param maxRows:
+    :return:
+    """
+    dbConnection = start_connect(dbConfig)
+
+    # First, get the list of works for volumes which need uploading
+    with dbConnection:
+        workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
+        workCursor.execute(f'select * from ReadyWorksNeedsBuilding limit {maxRows:d} ;')
+        workVolumeResults: list = workCursor.fetchall()
+
+        outfile: pathlib.Path = pathlib.Path(outputDir) \
+                                / f'ReadyWorks{datetime.datetime.now().strftime("%y%m%e%H%M%S"):s}'
+
+        with outfile.open("w", newline='') as fw:
+            fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
+            csvwr = csv.DictWriter(fw, fieldNames)
+            csvwr.writeheader()
+            for resultRow in workVolumeResults:
+                downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
+                csvwr.writerow(downRow)
+
+
+def getResultsTake1(dbConfig, outputDir, maxRows):
+    """
     Get results and write to directory.
+    :param maxRows:
     :param dbConfig:
     :param outputDir:
     :return:
@@ -41,14 +70,14 @@ def getResults(dbConfig, outputDir, maxRows):
 
     # First, get the list of works for volumes which need uploading
     with dbConnection:
-        workCursor : pymysql.cursors = dbConnection.cursor()
-        workIds : object
+        workCursor: pymysql.cursors = dbConnection.cursor()
 
-        workCursor.execute("select distinct workId from ReadyWorksNeedsBuilding limit %d ;" % (maxRows,))
+        workCursor.execute(
+            "select distinct workId from ReadyWorksNeedsBuilding order by workName asc limit %d ;" % (maxRows,))
         # if we use dbConnection.cursor(pymysql.cursors.DictCursor) expect[ {'workId' : nnnn },....]
         # expected [ (workId,),....]
         workIdResults: list = workCursor.fetchall()
-        #when we open a dict cursor, use this syntax
+        # when we open a dict cursor, use this syntax
         # [workIdList.append(item['workId']) for item in workIdResults]
         #
         workCursor.close()
@@ -62,11 +91,53 @@ def getResults(dbConfig, outputDir, maxRows):
             # fileName = "%s_%s" % (workVolumeResults[0]['WorkName'],  datetime.datetime.now().strftime("%y%m%e%H%M%S"))
             outfile: pathlib.Path = pathlib.Path(outputDir) / workVolumeResults[0]['WorkName']
 
-            # wr.writelines jams them all on same lines
-            with outfile.open("w") as fw:
-                fw.write('\n'.join([item['Volume'] for item in workVolumeResults]))
-                # Unglaubische dumm
-                fw.write('\n')
+            with outfile.open("w", newline='') as fw:
+                fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
+                csvwr = csv.DictWriter(fw, fieldNames)
+                csvwr.writeheader()
+                for resultRow in workVolumeResults:
+                    downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
+                    csvwr.writerow(downRow)
+
+
+def getResultsTake2(dbConfig, outputDir, maxRows):
+    """
+    Get results and write to directory.
+    :param maxRows:
+    :param dbConfig:
+    :param outputDir:
+    :return:
+    """
+    dbConnection = start_connect(dbConfig)
+
+    # First, get the list of works for volumes which need uploading
+    with dbConnection:
+        workCursor: pymysql.cursors = dbConnection.cursor()
+
+        workCursor.execute(f'select distinct workId from ReadyWorksNeedsBuilding \
+        order by workName asc limit {maxRows:d} ;')
+
+        workIdResults: list = workCursor.fetchall()
+
+        workCursor.close()
+        workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
+
+        # Build the output path
+        outfile: pathlib.Path = pathlib.Path(outputDir) / datetime.datetime.now().strftime("%y%m%e%H%M%S")
+        with outfile.open("w", newline='') as fw:
+            # Create the CSV writer. NOTE: multiple headers are written to the
+            # one output file
+            fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
+            csvwr = csv.DictWriter(fw, fieldNames)
+
+            for workTuple in workIdResults:
+                workCursor.callproc('GetReadyVolumesByWorkId', workTuple)
+                workVolumeResults: list = workCursor.fetchall()
+
+                csvwr.writeheader()
+                for resultRow in workVolumeResults:
+                    downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
+                    csvwr.writerow(downRow)
 
 
 def start_connect(cfg):
@@ -82,19 +153,18 @@ def start_connect(cfg):
 
 #
 # ----------------        MAIN     --------------------
-def main(args):
-
+def main():
     myArgs = getArgs()
     parseArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     #
     outRoot: str = os.path.expanduser(myArgs.resultsRoot)
 
-    # defult create mode is 777
+    # default create mode is 777
     if not os.path.exists(outRoot):
         os.mkdir(outRoot)
 
-    getResults(dbConfig, outRoot, myArgs.numWorks)
+    getResultsTake2(dbConfig, outRoot, myArgs.numWorks)
 
 
 # ----------------        MAIN     --------------------
@@ -114,6 +184,5 @@ def parseArgs(argNamespace):
     _parser.parse_args(namespace=argNamespace)
 
 
-
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()

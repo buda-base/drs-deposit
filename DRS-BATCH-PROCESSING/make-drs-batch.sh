@@ -5,11 +5,12 @@
 #
 # this script is called as follows:
 #
-#     make-drs-batch.sh worksList projectMaster targetProject archiveDir bbDir
+#     make-drs-batch.sh workVolumes projectMaster targetProject archiveDir bbDir
 #
 # the arguments are:
 #
-#		worksList		is a text file each line of which is a pair of TBRC RID,Hollis ID
+#		workList		is the path to a text file each line of which is a tuple of
+#                                TBRC RID, Hollis ID, Volume, OutlineOSN, and PrintMasterOSN
 #						the Hollis ID is retrieved from the ingest of the TBRC Work records
 #						via the MARC service. The Hollis ID is used to retrieve the MODS
 #						metadata for each Volume (PDS object) of the Work given by the RID
@@ -31,6 +32,15 @@
 #
 #							http://hul.harvard.edu/ois/systems/drs/drs2-software.html
 #
+# Processing:
+# After some setup of source and targets, this script's main processing loop:
+#   - Reads each line of the input file, and parses it into
+#   -   Work
+#   -   HOLLIS
+#   -   Volume
+#   -   PrintMasterOSN
+#   -   OutlineOSN
+# It is assumed that the Work, Volume, PrintMasterOSN, and OutlineOSN
 # This script copies and renames the images in each imagegroup of each Work listed in the
 # worksList. The images are copied into the project/template/image directory.
 #
