@@ -3,8 +3,7 @@
 # launch and track a bunch of background tasks
 # 
 # Arguments:
-#	1:  beginning worksList number
-#   2.  Ending worksList number
+#	List of files
 # Dependencies:
 #
 # splitWorks.sh: runMultiple expects that splitWorks has created 
@@ -16,20 +15,31 @@
 #
 # Some constants
 #
-# HACK: Magic number: makeOneDrs.sh depends on this
-WORKS_LIST_FN=worksList
+# Dont export
+ME=$(basename $0)
 #
-# Source of works, relative to caller
-WORKS_SRC=prod
 
 function usage() {
 	cat << USAGE
-		synopsis: runMultiple wl1 wl2[=wl1]
-		run multiple lists of works in files ${WORKS_SRC}/worksList\$wl1 ... \$wl2.txt
-		wl2 defaults to wl1 if not given.
-		wl2 can be less than wl1 - bash seq is the iterator
+		synopsis: $ME [-h] file1,file2,...
+		-h: shows this message
+		run multiple lists of works given in 'files'
+		in parallel execution, One process per file
+
 USAGE
 }
+
+
+
+while getopts h opt ; do
+	# echo "in getopts" $opt $OPTARG
+	case $opt in
+		h)
+			usage
+			exit 0
+			;;
+	esac
+done
 
 underwayDir=timing/underway
 [ -d  $underwayDir ] || mkdir -p $underwayDir
@@ -40,12 +50,7 @@ resultsDir=timing/finishedRuns
 # if no args, bail
 [ x"$1" == "x" ] && { usage ; exit 1 ; }
 
-wl1=$1
-wl2=$2
-
-[ x"$wl2" == "x" ] && { usage ; printf '\n** running one ** %s\n' $wl1 ; wl2=$wl1 ; }
-
-for x in $(seq $wl1 $wl2 ); do
+for x in $* ; do
 	#
 	# do_real_work
 	#
@@ -53,6 +58,6 @@ for x in $(seq $wl1 $wl2 ); do
 	# Run each iteration in the background
 	# jsk 21.I.18: shell scripts can be in ~/bin
         
-	makeOneDrs.sh ${WORKS_SRC}/${WORKS_LIST_FN}${x}.txt $underwayDir $resultsDir &
+	makeOneDrs.sh $x $underwayDir $resultsDir &
  
 done

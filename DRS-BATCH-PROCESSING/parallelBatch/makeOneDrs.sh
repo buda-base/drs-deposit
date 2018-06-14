@@ -4,15 +4,17 @@
 # arguments:
 
 #
+
+# Dont export
+ME=$(basename $0)
+
 function Usage {
 cat << ENDUSAGE
 synopsis:
-	makeOneDrs  workListFileName statusRoot completionRoot
+	${ME}  workListFileName statusRoot completionRoot
 
-	worksListFileName: 	Path to a file containing lines of
-						comma separated Work,HOLLIS tuples.
-						HACK ALERT: filename must have the format
-						worksList[0-9]+.txt
+	worksListFileName: 	input source file
+
 
 	statusRoot: 		a directory to hold the tracking file for underway jobs.
 
@@ -69,8 +71,6 @@ function prepBBHome {
  BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/prod/$(date +%Y%m%d)
  BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
  #
- # HACK: Magic phrase. Depends on ./splitWorks.sh
- WORKS_LIST_FN='worksList'
  #
  MAKEDRS='make-drs-batch.sh'
 # for testing
@@ -87,56 +87,50 @@ fi
 
 [ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set' ; Usage ; exit 1; }
 
-[ -e "$1" ] || { echo "${ME}":error: worksList file \'"$1"\' must exist but does not. ; exit 2; }
-	# is the processing for this worksList underway?
-     underFile=underway/${WORKS_LIST_FN}${x}
-	[ -e $underFile ]  && { echo "${WORKS_LIST_FN}${x} already underway."; continue; }
+[ -e "$1" ] || { echo "${ME}":error: data file \'"$1"\' must exist but does not. ; exit 2; }
 
 statusRoot=$2
-[ -d "$2" ] &&  { echo "${ME}":info: creating status directory  \'"$2"\'
+[ -d "$2" ] ||  { echo "${ME}":info: creating status directory  \'"$2"\'
 				mkdir $2;
 			 }
 completionRoot=$3
-[ -d "$3" ] &&  { echo "${ME}":info: creating completion directory  \'"$3"\'
+[ -d "$3" ] ||  { echo "${ME}":info: creating completion directory  \'"$3"\'
 				mkdir $3;
 			 }
 
-# build the output path
+# build the status output path
 series=$(basename $1)
-#
-# Strip the extension
-series="${series%.*}"
-#
-# get the number
-x=${series#$(expr $WORKS_LIST_FN)}
+
+# is the processing for this worksList underway?
+underFile=${statusRoot}/${series}
+[ -e $underFile ]  && { echo "${series} already underway."; continue; }
+
 # echo 'series:' $series
 # echo 'x:' $x
 # echo 'statusRoot:' $statusRoot
 # echo 'completionRoot:' $completionRoot
-# read
 
+# read
 #
 # Generate the batch path
 [ ! -d  "${BATCH_OUTPUT_HOME}" ] && { mkdir -p ${BATCH_OUTPUT_HOME} ; }
 
-batchPath=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
-
+batchRoot=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
 
 #
 # Set up the Batch builder level
 prepBBHome
 
 # Invoke the build in the background
- ${DRS_CODE_HOME}/${MAKEDRS} \
-	"$1" ${DRS_CODE_HOME}/BB_tbrc/BB_tbrc2drs $batchPath \
-	$WORKS_SOURCE_HOME ${BB_HOME} &
+  ${DRS_CODE_HOME}/${MAKEDRS} \
+	"$1" ${DRS_CODE_HOME}/BB_tbrc/BB_tbrc2drs $batchRoot \
+	$WORKS_SOURCE_HOME ${BB_HOME}  &
 #
 # Capture its pid and mark as underway
- thisRun=$!
+thisRun=$!
 #
 # Mark as underway, with details
-underFile=${statusRoot}/${WORKS_LIST_FN}${x}
- printf "%d_%s" $thisRun $(date +%H:%M:%S) > $underFile
+printf "%d_%s" $thisRun $(date +%H:%M:%S) > $underFile
 
  #
 wait $thisRun
@@ -146,13 +140,9 @@ wait $thisRun
 # in the subdir
 childRc=$?
 
-# Write the status to the file
-# cat ${doneFile} | awk \{ printf "%s_%d_%s" $0 $childRc  $(date +%H:%M:%S) \} #   >   ${resultsDir}/$doneFileName
-#	set -x
-#	cat ${doneFile} | awk -v newFields=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")  '{printf "!%s_%s@\n", $0, $newFields }' #   >   ${resultsDir}/$doneFileName
 finishedArgs=$(printf "%d_%s" ${childRc} "$(date +%H:%M:%S)")
 #
-cat ${underFile} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${WORKS_LIST_FN}${x}.$$
+cat ${underFile} | awk -v newFields="${finishedArgs}"  '{printf "%s_%s\n", $0, newFields }'   >   ${completionRoot}/${series}.$$
 rm ${underFile}
 
 rm -rf $BB_HOME

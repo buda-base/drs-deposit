@@ -9,11 +9,8 @@
 #
 # the arguments are:
 #
-#		workList		is the path to a text file each line of which is a tuple of
-#                                TBRC RID, Hollis ID, Volume, OutlineOSN, and PrintMasterOSN
-#						the Hollis ID is retrieved from the ingest of the TBRC Work records
-#						via the MARC service. The Hollis ID is used to retrieve the MODS
-#						metadata for each Volume (PDS object) of the Work given by the RID
+#		workList		is the path to a text file each whose format is given in
+#                       drs-deposit/DRS-BATCH-PROCESSING/BatchBuilding.md
 #
 #		projectMaster	is the path to a BatchBuilder project that has been initialized via
 #						the BathBuilder GUI. This should include the project level defaults
@@ -34,13 +31,12 @@
 #
 # Processing:
 # After some setup of source and targets, this script's main processing loop:
-#   - Reads each line of the input file, and parses it into
-#   -   Work
-#   -   HOLLIS
-#   -   Volume
-#   -   PrintMasterOSN
-#   -   OutlineOSN
-# It is assumed that the Work, Volume, PrintMasterOSN, and OutlineOSN
+#   - Reads each line of the input file
+#   - It's either a header line, which creates a new batch project, or it's
+#       a data line, which gives the volume which will be added as an object in the
+#       current batch project.
+#
+# Adding to an existing batch:
 # This script copies and renames the images in each imagegroup of each Work listed in the
 # worksList. The images are copied into the project/template/image directory.
 #
@@ -71,7 +67,7 @@ function toLower() {
 function isBannedExt() {
 	testExt=$(toLower "$1")
 	for anExt in ${BANNED_EXT[@]} ; do
-		[ "$testExt" == "$(toLower $anExt)"  ] && return 0;
+		[ "$testExt" == "$(toLower ${anExt})"  ] && return 0;
     done
 	return 1 
 }
@@ -81,17 +77,17 @@ function isBannedExt() {
 
 function cleanUpLogs() {
 	  # jimk 21.I.18: copy batchbuilder log
-	  batchLogDir=$targetProjectDir/${1}"-"logs
-        mkdir $batchLogDir
+	  batchLogDir=${targetProjectsRoot}/${1}"-"logs
+        mkdir ${batchLogDir}
         # Keep al the logs for reference, but extract into a summary
-        cp -R $bbLogDir $batchLogDir
-        cp $logPath $batchLogDir
-        rm -rf $bbLogDir
-        rm -rf $logPath
+        cp -R ${bbLogDir} ${batchLogDir}
+        cp ${logPath} ${batchLogDir}
+        rm -rf ${bbLogDir}
+        rm -rf ${logPath}
         # Summarize and extract
         # jsk: issue #44: wasn't finding errors correctly. 
         # find ... -name -o xyz -o -name abc doesn't look for abc when it finds abc
-        find $batchLogDir -type f -not -name errorSummary.txt -exec grep -H -n -i 'err\|warn\|except' {} \; \
+        find ${batchLogDir} -type f -not -name errorSummary.txt -exec grep -H -n -i 'err\|warn\|except' {} \; \
         >> ${batchLogDir}/errorSummary.txt
 }
 
@@ -111,10 +107,10 @@ function cleanUpLogs() {
 function trailingNums() {
 	# the arg length
 	wordsInArgs=$(($#-1))
-	array=${@:1:$wordsInArgs}
+	array=${@:1:${wordsInArgs}}
 
 	for s in ${array} ; do
-		testString=$(printf " %s %s" $testString $s)
+		testString=$(printf " %s %s" ${testString} ${s})
 	done
 	#Strip trailing
 	testString=${testString%${testString##*[![:space:]]}}
@@ -127,13 +123,13 @@ function trailingNums() {
 	# // strips out all the numerics, -n tests the remainder for anything left
 	# if there was anything, it's not a sequence of digits
 	[ -z "${maxLength//[0-9]}" ] && [ -n "$maxLength" ] || return
-	[ $maxLength -le 0 ] && return
+	[ ${maxLength} -le 0 ] && return
 
 	# invert maxlength, to get end of string
 	result=""
-	maxLength=-$maxLength
+	maxLength=-${maxLength}
 
-	while [ -z "$result" -a $maxLength -lt 0 ] ; do
+	while [ -z "$result" -a ${maxLength} -lt 0 ] ; do
 		testNum=${testString: maxLength}
 		#
 		# See above
@@ -141,13 +137,70 @@ function trailingNums() {
 			d=$((maxLength++))
 			continue
 		}
-	echo $testNum
+	echo ${testNum}
 	return
 done
 return
 }
 
+#
+# Argument is the first token in a line. Tests for it to be a magic header
+function isNewHeaderLine {
 
+    seekTok=WorkName
+
+    declare -a argA=("${!1}")
+    if [ "${argA[0]}" = "${seekTok}" ] ; then
+        return 0 ;
+    else
+        return 1 ;
+    fi
+}
+#
+# Argument is the first token in a line. Tests for it to be a magic header
+function isNewHeaderLine2 {
+
+    seekTok=WorkName
+
+    declare -a argA=("${!1}")
+    if [ "${argA[0]}" = "${seekTok}" ] ; then
+    echo Found "${argA[0]}" = "${seekTok}"
+        return 0 ;
+    else
+        echo Not Found "${argA[0]}" = "${seekTok}"
+        return 1 ;
+    fi
+}
+
+function doBatch {
+        echo ${bb} -a buildtemplate -p ${targetProjectsRoot} -b ${batchName} | tee -a ${logPath}
+        ${bb} -a buildtemplate -p ${targetProjectsRoot} -b ${batchName} >> ${logPath} 2>&1
+
+        # build results into batch
+
+
+        # { time $bb -a build -p $targetProjectsRoot -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
+        #  DO REAL WORK
+        # Note I'm deliberately redirecting all output to log file - this is a noisy process.
+		echo ${bb} -a build -p ${targetProjectsRoot} -b ${batchName}   | tee -a ${logPath}
+        $bb -a build -p $targetProjectsRoot -b $batchName >> $logPath 2>&1
+
+
+		if [ ! -f ${targetProjectsRoot}/${batchName}/batch.xml ] ; then
+			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
+
+			# We could decide to continue
+			# exit 1;
+		else
+		    # set up mets
+		    td=$(mktemp -d)
+		    tojsondimensions.py -i ${targetProjectsRoot}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
+		    rm -rf ${td}  2>&1 | tee -a ${logPath}
+		fi
+        # jimk 2018-V-18: this used to be above the last fail.
+       cleanUpLogs ${batchName}
+
+}
 TIMING_LOG_FILE=timeBuildBatch.log
 # bash builtin time format
 TIMEFORMAT=$'%R\t%U\t%S\t%P'
@@ -158,7 +211,7 @@ ME=`basename ${0}`
 
 if [ "$#" -ne 5 ]; then
 	echo "${ME}: Needs 5 parameters"
-	echo "Usage: make-drs-batch worksList projectMaster targetProjectDir archiveDir bbDir"
+	echo "Usage: make-drs-batch worksList projectMaster targetProjectsRoot archiveDir bbDir"
 	exit 1
 fi
 
@@ -166,23 +219,23 @@ fi
  MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 worksList=$1
-echo Works List File: $worksList
-if [ ! -f $worksList ]; then
+echo Works List File: ${worksList}
+if [ ! -f ${worksList} ]; then
 	echo "${ME}: worksList \'${1}\' does not exist or is not a directory"
 	exit 2
 fi
 
 projectMaster=$2
-echo BB Project Directory: $projectMaster
-if [ ! -d $projectMaster ]; then
+echo BB Project Directory: ${projectMaster}
+if [ ! -d ${projectMaster} ]; then
 	echo "${ME}: projectMaster \'${2}\' does not exist or is not a directory"
 	exit 2
 fi
-masterProjConf=$projectMaster/project.conf
+masterProjConf=${projectMaster}/project.conf
 
 archiveDir=$4
-echo Archive Directory: $archiveDir
-if [ ! -d $archiveDir ]; then
+echo Archive Directory: ${archiveDir}
+if [ ! -d ${archiveDir} ]; then
 	echo "${ME}: archiveDir \'${4}\' does not exist or is not a directory"
 	exit 2
 fi
@@ -190,181 +243,154 @@ fi
 bbDir=$5
 bb=batchbuildercli.sh
 
-echo BB: $bbDir $bb
-if [ ! -d $bbDir ]; then
+echo BB: ${bbDir} ${bb}
+if [ ! -d ${bbDir} ]; then
 	echo "${ME}: BatchBuilder directory  \'${5}\' does not exist or is not a directory"
 	exit 2
 fi
-if [ ! -f $bbDir/$bb ]; then
+if [ ! -f ${bbDir}/${bb} ]; then
 	echo "${ME}: batchbuildercli.sh does not exist in $bbDir"
 	exit 2
 fi
-bb=${bbDir}/$bb
+bb=${bbDir}/${bb}
 # jimk 24.1.18: copy  batchbuilder logs, including failed files
 bbLogDir=${bbDir}/logs
 
 
 # jsk: Target project might be absolute
-targetProjectDir=$3
+targetProjectsRoot=$3
 
-# template dir path suffix (template/image) is defined in the project conf. If changed there,
-# must be changed here.
-templateDir=$targetProjectDir/template/image
+logPath=${targetProjectsRoot}/bb-console.txt
 
-logPath=$targetProjectDir/bb-console.txt
+echo Target Project Directory: ${targetProjectsRoot}
 
-echo Target Project Directory: $targetProjectDir
-
-if [ -e $targetProjectDir ]; then
-	echo "${ME}: targetProjectDir ${targetProjectDir} already exists. Remove it or use a different name"
+if [ -e ${targetProjectsRoot} ]; then
+	echo "${ME}: targetProjectsRoot ${targetProjectsRoot} already exists. Remove it or use a different name"
 	exit 2
 fi
-mkdir "$targetProjectDir"
+mkdir "$targetProjectsRoot"
 
-echo targetProjectDir: $targetProjectDir  >> $logPath 2>&1
-# 
+echo targetProjectDir: ${targetProjectsRoot}  >> ${logPath} 2>&1
+#
 # Start timing log
 
 # create a BB project to hold the batches that will be created
 # jsk 11/7/17: create this structure
 # bb has to be defined before this works
 #
-# jsk 12/5/17: don't need to create this anymore. The folders 
-# are created in the templatedirs BB action, and the 
+# jsk 12/5/17: don't need to create this anymore. The folders
+# are created in the templatedirs BB action, and the
 # project.conf is written by doing an xsl transform on the master
 #
-# echo Create target dir cp -R $projectMaster $targetProjectDir
-# echo cp -R $projectMaster/* $targetProjectDir  >> $logPath 2>&1
-# cp -Rp $projectMaster/* $targetProjectDir  >> $logPath 2>&1
+# echo Create target dir cp -R $projectMaster $targetProjectsRoot
+# echo cp -R $projectMaster/* $targetProjectsRoot  >> $logPath 2>&1
+# cp -Rp $projectMaster/* $targetProjectsRoot  >> $logPath 2>&1
 # You do nees to copy something
-cp $masterProjConf $targetProjectDir >> $logPath 2>&1
+cp ${masterProjConf} ${targetProjectsRoot} >> ${logPath} 2>&1
 
-# Fill in the template
+# Fill in the template. Do this once per root. Not needed
+# once per batch
 
-echo $bb -a templatedirs -p $targetProjectDir
-echo $bb -a templatedirs -p $targetProjectDir  >> $logPath 2>&1
-$bb -a templatedirs -p $targetProjectDir>> $logPath 2>&1
+echo ${bb} -a templatedirs -p ${targetProjectsRoot}
+echo ${bb} -a templatedirs -p ${targetProjectsRoot}  >> ${logPath} 2>&1
+${bb} -a templatedirs -p ${targetProjectsRoot}>> ${logPath} 2>&1
 
-targetConf="$targetProjectDir/project.conf"
+targetConf="$targetProjectsRoot/project.conf"
+
+
+# template dir path suffix (template/image) is defined in the project conf. If changed there,
+# must be changed here.
+templateDir=${targetProjectsRoot}/template/image
+
 
 # 30 is about 18 - 20000 files, which is too
 # many for poor old DRS.
-volsPerBatch=20
-echo Volumes per Batch: $volsPerBatch
+declare -i volsPerBatch=2
+echo Volumes per Batch: ${volsPerBatch}
 
-echo Template Image Directory: $templateDir
+echo Template Image Directory: ${templateDir}
 
-echo Works List File: $worksList >> $logPath 2>&1
-echo BB Project Directory: $projectMaster >> $logPath 2>&1
-echo Target Project Name: $targetProjectDir >> $logPath 2>&1
-echo Archive Directory: $archiveDir >> $logPath 2>&1
-echo Template Image Directory: $templateDir >> $logPath 2>&1
-echo Volumes per Batch: $volsPerBatch >> $logPath 2>&1
+echo Works List File: ${worksList} >> ${logPath} 2>&1
+echo BB Project Directory: ${projectMaster} >> ${logPath} 2>&1
+echo Target Project Root: ${targetProjectsRoot} >> ${logPath} 2>&1
+echo Archive Directory: ${archiveDir} >> ${logPath} 2>&1
+echo Template Image Directory: ${templateDir} >> ${logPath} 2>&1
+echo Volumes per Batch: ${volsPerBatch} >> ${logPath} 2>&1
 
-while IFS=',' read -ra LINE; do
-	RID=${LINE[0]}
-	HID=${LINE[1]}
-	echo TBRC $RID at HOLLIS $HID
-	echo TBRC $RID at HOLLIS $HID >> $logPath 2>&1
-	#
-	# jsk Pos indep 12/7/17
-	# cd $workingDir
-	# make a custom project.conf for the current work.
-	# jsk 12/5/17: Sketchy, because it writes
-	# project.conf with the HOLLIS number after every build.
-	# Look into using property arguments to bb
-	java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" $masterProjConf ${MEPATH}/make-proj-conf.xsl hId=$HID > $targetConf
+#Declare here, loop fills in
+batchName=
+declare -i thisBatchVolCount=0
+declare firstLine=
+declare -i batchesThisWork=1
 
+while IFS=, read -ra LINE ; do
+    # skip the first line
+    [ -z ${firstLine} ] &&  {
+            firstLine=1;
+            continue;
+    }
 
-	imagesDir=$archiveDir/$RID/images
-	batchNameBase="batch$RID"
-	echo Batch Name base: $batchName
-	echo Images Directory: $imagesDir
-	echo Images Directory: $imagesDir >> $logPath 2>&1
-	
-	declare -a volNms=($imagesDir/*)
-	numVols=${#volNms[@]}
-	numBatches=$(((numVols + volsPerBatch - 1) / volsPerBatch))
-	
-	start=0
-	for part in $(seq 1 ${numBatches%.*}) ; do
-		# create a batch for the current slice of the array of volumes
-		for v in ${volNms[@]:start:volsPerBatch} ; do
-			# for each volume in the slice cp and rename the images
-			echo ImageGroup Directory: $v
-			echo ImageGroup Directory: $v >> $logPath 2>&1
-			pdsName=$(basename $v)
-			
-			
-			for f in $v/* ; do
-			# cp and rename each image
-				fullNm=$(basename $f)
-				ext="${fullNm##*.}"
+    if   (($thisBatchVolCount == $volsPerBatch )) ||  $(isNewHeaderLine LINE[@]) ; then
+      doBatch
+      if (($thisBatchVolCount == $volsPerBatch ))  ; then
+        batchesThisWork+=1
+      else
+        batchesThisWork=1
+      fi
+       thisBatchVolCount=0
+    else
 
-				# jsk: 12.21.17: Issue #14
-				 if $(isBannedExt ${ext} ) ; then continue ; fi
-				fnm="${fullNm%.$ext}"
+        echo DATA LINE ${LINE[@]}
+    	RID=${LINE[0]}
+	    HID=${LINE[1]}
+	    VID=${LINE[2]}
+	    OutlineOSN=${LINE[3]}
+	    PrintMasterOSN=${LINE[4]}
 
-				# jsk 01Feb18: Issue #33. Note this requires the filename to end in 4 digits
-				# dont use page seq - suffix=$(printf %04d $pageSeq)
-				#
-				# TrailingNums returns a string of numerics, not a real integer
-				suffix=$(trailingNums ${fnm} 4)
+        # Are we starting a new batch?
+        if (($thisBatchVolCount == 0)) ; then
+            echo TBRC ${RID} at HOLLIS ${HID} | tee -a  ${logPath}
+            java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl hId=${HID} > ${targetConf}
 
-				[ "$suffix" == "0" -o -z "$suffix" ] && { 
-						echo ${ME}:ERROR: Invalid sequence in file $fnm
-						echo ${ME}:ERROR: Invalid sequence in file $fnm >> $logPath 2>&1
-					continue
-				}
+            imagesDir=${archiveDir}/${RID}/images/${VID}
+            batchName=$(printf "%s-%d" "batch$RID" ${batchesThisWork})
+            echo Batch Name: ${batchName} | tee -a  ${logPath}
+        fi
+        echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
+        pdsName=${VID}
 
-				# This transform makes the file name comply with PDS sequencing
-				destNm="$pdsName--${fnm}__${suffix}.$ext"			
-				cp $f $templateDir/$destNm			
-			done
-		done
+        for f in ${imagesDir}/* ; do
+        # cp and rename each image
+            fullNm=$(basename ${f})
+            ext="${fullNm##*.}"
 
-		batchName="$batchNameBase-$part"
-	# jsk: already prepended bb with the bb path.
-		# cd $bbDir
+            # jsk: 12.21.17: Issue #14
+             if $(isBannedExt ${ext} ) ; then continue ; fi
+            fnm="${fullNm%.$ext}"
 
-		echo $bb -a buildtemplate -p $targetProjectDir -b $batchName
-		echo $bb -a buildtemplate -p $targetProjectDir -b $batchName >> $logPath 2>&1
-	    $bb -a buildtemplate -p $targetProjectDir -b $batchName >> $logPath 2>&1
+            # jsk 01Feb18: Issue #33. Note this requires the filename to end in 4 digits
+            # dont use page seq - suffix=$(printf %04d $pageSeq)
+            #
+            # TrailingNums returns a string of numerics, not a real integer
+            suffix=$(trailingNums ${fnm} 4)
 
-		# Count files in batch
-		# nFiles=`find $targetProjectDir -type f | wc -l`
-		# echo -n ${batchName} nFiles  $nFiles ' ' >> $TIMING_LOG_FILE
-		
-		echo $bb -a build -p $targetProjectDir -b $batchName
-		echo $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
-        
-        # { time $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
-        $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1
+            [ "$suffix" == "0" -o -z "$suffix" ] && {
+                    echo ${ME}:ERROR: Invalid sequence in file ${fnm} | tee -a ${logPath}
+                continue
+            }
 
-		# jsk 11.dec.17. Dont rename here. Do it in ftp script
-		# if [ -f $targetProjectDir/$batchName/batch.xml ]; then
-		# 	mv $targetProjectDirbatchName/batch.xml $targetProjectDir/$batchName/batch.xml.wait
-		# else
-		# 	echo BB failed for $batchName
-		# 	echo BB failed for $batchName >> $logPath 2>&1
-		# fi
-		if [ -f $targetProjectDir/$batchName/batch.xml ] ; then
+            # This transform makes the file name comply with PDS sequencing
+            destNm="$pdsName--${fnm}__${suffix}.$ext"
+            cp ${f} ${templateDir}/${destNm} 2>&1 | tee -a ${logPath}
 
-			echo ${ME}:ERROR:BB failed for $batchName ;
-			echo ${ME}:ERROR:BB failed for $batchName >> $logPath 2>&1 ; 
+            declare -i rc=$?
+            if ((${rc} != 0 )); then
+                echo cp ${f} ${templateDir}/${destNm}	failed rc: ${rc} | tee -a ${logPath}
+                exit ${rc}       # Just fail here
+            fi
+        done
+        thisBatchVolCount+=1
 
-			# We could decide to continue 
-			# exit 1;
-		else
-		    # set up mets
-		    td=$(mktemp -d)
-		    tojsondimensions.py -i $targetProjectDir/$batchName -o $td 2>&1 | tee -a $logPath
-		    rm $td  2>&1 | tee -a ${logPath}
-		fi
-
-        # jimk 2018-V-18: this used to be above the last fail.
-       cleanUpLogs $batchName
-
-		start=$[start + volsPerBatch]
-	done
-done < $worksList
+    fi
+done < ${worksList}
+doBatch
