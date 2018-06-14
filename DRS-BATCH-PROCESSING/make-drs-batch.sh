@@ -305,7 +305,7 @@ templateDir=${targetProjectsRoot}/template/image
 
 # 30 is about 18 - 20000 files, which is too
 # many for poor old DRS.
-declare -i volsPerBatch=2
+declare -i volsPerBatch=20
 echo Volumes per Batch: ${volsPerBatch}
 
 echo Template Image Directory: ${templateDir}
