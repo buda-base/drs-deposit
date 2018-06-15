@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import csv
 from DBApp.config import *
@@ -100,7 +101,7 @@ def getResultsTake1(dbConfig, outputDir, maxRows):
                     csvwr.writerow(downRow)
 
 
-def getResultsTake2(dbConfig, outputDir, maxRows):
+def getResultsTake2(dbConfig, outputDir, maxRows:int):
     """
     Get results and write to directory.
     :param maxRows:
@@ -178,7 +179,7 @@ def parseArgs(argNamespace):
                                       )
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName')
-    _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10)
+    _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
     _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
 
     _parser.parse_args(namespace=argNamespace)
