@@ -7,8 +7,54 @@
 * `ReadyWorksNeedsBuilding`: subset of `AllReadyWorks` which have not been deposited
 Tehcnically, these return collections of __Volumes__ which have not been deposited.
 
+### Workflow
+#### Prerequisites to these steps:
+1. Make sure you have updated the DRS db with the latest results from WebAdmin.
+See Technical Reference, ????
+
+#### Build a list of items to batch build
+You need to do this every time you start, to make sure you are not building anything that has been built or deposited.
+
+**Run**: `~/drs-deposit/DBApps/src/GenShell/getReadyWorks.py `_n_
+Where _n_ the total number of works you want to batch build.
+
+__WARNING__ This process is slow - approximately 1 minute per 10 works.
+
+**Results**:a file named `Readyworksyymmddhhmmss`
+
+####Split the ready works
+**Run:** `~/drs-deposit/DBApps/src/splitWorks.py fileName -n` where -n is the number of instances you want to run. For `fileName` use the output of `getReadyWorks.py`
+**Results**: fileName1....fileNameN
+####Build the batches
+Entry point is `runMultiple.sh` which processes the files.
+Typically you'd run it against the splitworks, by using file globbing:
+`./runMultiple.sh filename[1-n]` where the list is the output of the file you listed
+**NOTE:** Don't include the master source file in your argument list. The platform won't know that you're asking it to batch build the same works twice.
+
+Usage:
+```
+$ ./runMultiple.sh -h
+                synopsis: runMultiple.sh [-h] file1,file2,...
+                -h: shows this message
+                run multiple lists of works given in 'files'
+                in parallel execution, One process per file
+```
+
++ Grab a cuppa (or 10) while your batch building proceeds.
+
+#### Test for done
+The process writes statuses in `timing/underway` and `timing/finishedRuns`
+When `timing/underway` has no more files in it, and `timing/finishedRuns` has one file for each input file to `runMultiple.sh` the process is complete.
+You can run `topStats.sh` in the meantime. If you see java processes somewhere in the list, things are proceeding ok. Make multiple observations.
+
+#### Contents of timing files
+In Underway, the file contains the process id of the batch build for the file, and the start time.
+eg `24004_14:40:36`
+In finishedRuns, the underway is suffixed with the result and the finish time:
+eg: `24004_14:40:36_0_19:27:01` The 0 means the batch building process succeeded, and finished at 19:27. **The process succeeding does not mean every batch build succeeded.** Batch builds fail all the time, but the process continues.
+## Technical reference
 ### Python routines
-####`drs-deposit/DBApps/src` contains:
+#### `drs-deposit/DBApps/src` contains:
 `getReadyWorks.py` which collects all the works which need to be built (in rev. 1, these are just works which have not been deposited), and downloads them into a csv file whose bnf looks like:
 ```
 {
@@ -43,7 +89,7 @@ W00KG0544,15325090,W00KG0544-I1KG23076,,
 ```
 
 #### `splitWorks.py`
-Breaks the file above into `n` files where each file contains roughly the same number of 
+Breaks the file above into `n` files where each file contains roughly the same number of
 ``` {
         {headerline}
         {dataLine}+
@@ -62,9 +108,3 @@ somefile2.txt
 somefile3.txt
 somefile4.txt
 ```
-
-
-### Shell scripts
-Entry point is `runMultiple.sh` which processes the files.
-
-Usage: 
