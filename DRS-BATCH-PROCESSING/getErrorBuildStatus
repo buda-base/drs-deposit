@@ -1,10 +1,12 @@
-#!/bin/bash -vx
+#! /bin/bash
 #
 # Build scripts to monitor ingestion process
 #
 # Assumes errBatches, a file of drsUser|batch dir commands
 
 ERR_BATCHES=errbatches.dat
+
+[ ! -f $ERR_BATCHES ] && { echo "$ERR_BATCHES not found." ; exit 1; }
 
 uu=($(cut -f1 -d'|' $ERR_BATCHES  | sort -u))
 

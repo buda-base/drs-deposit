@@ -1,0 +1,67 @@
+#!/usr/bin/env bash -vx
+#
+# Core of recovery works
+#or (thank you stackOverflow
+
+export ME=$(basename $0)
+export ME_DIR=$(dirname $0)
+. ~/bin/setupErrorLog.sh
+
+function Usage() {
+cat << USAGE
+    Synopsis: $ME  [-D] errPairs buildListSpec
+    where:
+            - D  Runs Deep delete against remote source
+            errPairs: pipe delimited file of user|batch directory pairs
+            buildListSpec: file specifications containing distinct paths to
+                            each batch build
+USAGE
+}
+
+# Get the unique users
+declare -a uu
+
+while getopts Dh opt ; do
+	# echo "in getopts" $opt $OPTARG
+	case $opt in
+		D)
+			dArg=1 ;
+			read -p "You are going to delete uploaded batches. Are you sure? (y|n, default is n)" dAns
+			dAns=$(echo $dAns | tr a-z A-Z)
+			[ $dAns != "Y" ] && { exit 0; }
+			;;
+		h)
+		    Usage ;
+		    exit 1 ;;
+	esac
+
+done
+
+shift $((OPTIND-1))
+
+dFlag=${dArg:-0}
+errPairs=${1?${ME}:${FATAL_TXT}:error pair file not given.}
+buildListSpec=${2?${ME}:${FATAL_TXT}:build list spec file not given.}
+
+[ ! -f ${errPairs} ] && { echo ${ME}:${FATAL_TXT}:Error pair file not found ; exit 1 ; }
+
+uu=($(cut -f1 -d'|' ${errPairs}  | sort -u))
+
+#
+# send each users batches to their own script
+for drsUser in ${uu[@]} ; do
+    rb=${drsUser}recovBatches
+    grep -w $drsUser $errPairs | cut -f2 -d'|' > $rb
+
+    recoScriptDir="recoScript${drsUser}"$(date +%H.%M)
+    [ -d $recoScriptDir ]  &&  rm -rf $recoScriptDir
+    mkdir $recoScriptDir
+
+    if [ $dFlag == 1 ] ; then
+	    cmd=BuildDeepDeleteList.sh
+    else
+	    cmd=BuildRecoveryList.sh
+    fi
+    eval  $cmd -o $recoScriptDir -p r -s "$buildListSpec" $rb
+    RunSerialFtp.sh $recoScriptDir $drsUser
+done

@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#! /usr/bin/env bash -vx
 #
 # Recovery mode
 #
@@ -9,19 +9,10 @@ export ME=$(basename $0)
 export ME_DIR=$(dirname $0)
 . ~/bin/setupErrorLog.sh
 
+## HACK ALERT: This var is the same as in deleteAlreadyDepositedSFTP.sh
+targetErrRE="Object owner supplied name" #  .* already exists for owner code"
 
-while getopts D opt ; do
-	# echo "in getopts" $opt $OPTARG
-	case $opt in
-		D)
-			dFlag=1 ;
-			read -p "You are going to delete uploaded batches. Are you sure? (y|n, default is n)" dAns
-			dAns=$(echo $dAns | tr a-z A-Z)
-			[ $dAns != "Y" ] && { exit 0; }
-			;;
-	esac
-	shift $OPTIND
-done
+
 MAIL_TXT=mailerrs.txt
 MAIL_DAT=mailerrs.dat
 BUILD_LIST_SPEC='buildList*.txt'
@@ -30,32 +21,8 @@ ERR_BATCHES=errbatches.dat
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
 #
 # get the user and the batch
-cut -f3,4 -d'|' $MAIL_DAT | sort -k1 -t'|' > $ERR_BATCHES
-# Get the unique users
-declare -a uu
+grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $ERR_BATCHES
 
 
-#############  Fail 1
-# while read dd ; echo $dd ;  do uu+=($dd) ; done < $(cut -f1 -d'|' errbatches.dat | sort -u)
-#############
-#or (thank you stackOverflow
-uu=($(cut -f1 -d'|' $ERR_BATCHES  | sort -u))
-
-# 
-# send each users batches to their own script
-for drsUser in ${uu[@]} ; do 
-    rb=${drsUser}recovBatches
-    grep -w $drsUser $ERR_BATCHES | cut -f2 -d'|' > $rb
-
-    recoScriptDir="recoScript${drsUser}"$(date +%H.%M)
-    [ -d $recoScriptDir ]  &&  rm -rf $recoScriptDir
-    mkdir $recoScriptDir
-
-    if [ $dFlag == 1 ] ; then 
-	cmd=BuildDeepDeleteList.sh 
-    else
-	cmd=BuildRecoveryList.sh
-    fi
-    eval  $cmd -o $recoScriptDir -p r -s \'$BUILD_LIST_SPEC\' $rb
-    RunSerialFtp.sh $recoScriptDir $drsUser
-done
+## Danger_ assumes BUILD_LIST_SPEC is quoted. The unglobbed version needs to be passed.
+autoRecoveryCore $1 $ERR_BATCHES \'$BUILD_LIST_SPEC\'

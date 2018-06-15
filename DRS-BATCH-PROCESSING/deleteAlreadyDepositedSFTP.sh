@@ -36,7 +36,14 @@ awk -F'|' -v batList=${batList} /"${targetErrRE}"/'{
 # Now that we have files, per user, of batch directories, build the batch remote commands
 for bu in *${batList} ; do
     user=${bu%.*}
-    BuildDeepDeleteList.sh -o ${user}DelList -p ddl -s $buildList $bu
+    udl=${user}DelList
+    BuildDeepDeleteList.sh -o ${udl}  -p ddl -s $buildList $bu
+#    cat ${udl}/*
+#   read -p "contents of ${udl}" glurm
+
+    RunSerialFtp.sh  ${udl} ${user} &
+    userProc=$!
+    printf "delete directory %s pid %s\n" $udl $userProc >> underway
 done
 
 

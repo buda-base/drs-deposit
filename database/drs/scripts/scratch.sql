@@ -27,14 +27,14 @@ select  w.WorkName, w.HOLLIS , v.volumeId, v.label, (select count(volumeId) from
        having (select count(volumeId) from DRS d where d.volumeId = v.volumeId);
 
 
-
+/*********     TEST SECTION  **************/
 select (select count(1) from Volumes v where label like 'WP1%') = (select count(1) from Volumes v where label like 'WP42%') ;
 
 -- try counting first
 select count(volumeId) from Volumes where label like 'WP%';
-select count(d.volumeId) from DRS d, Volumes v where v.label like 'WP%' and d.volumeId = v.volumeId
+select count(d.volumeId) from DRS d, Volumes v where v.label like 'WP%' and d.volumeId = v.volumeId ;
 
--- group by?
+/*********     END TEST SECTION  **************/
 select count(workId) from Works w inner join Volumes v using (workId) left join DRS d using (volumeId) where  exists  (select volumeId from DRS d where d.volumeId = v.volumeId);
 
 
@@ -64,8 +64,8 @@ select distinct w.WorkName, w.HOLLIS from  Works w
 -- This statement definitively shows works with uploads missing
 -- GET WORKS WITH MISSING UPLOADS
 select workName, HOLLIS
-  -- , (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
-  -- (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
+, (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
+ (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
 from Works w
   -- get rid of works with outlines and print mastersCALL `drs`.`AddDRS`(<{IngestDate datetime}>, <{objectid varchar(45)}>, <{objectUrn varchar(45)}>, <{DRSdir varchar(45)}>, <{filesCount int(11)}>, <{size bigint(20)}>, <{OSN varchar(45)}>);
 
@@ -81,12 +81,62 @@ from Works w
           <>
      (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
  --  and WorkName like '%art%'
--- where   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
+and
+-- where
+          (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
 group by workName;
 
+
+-- un uploaded volumes: 24558
+
+-- How many works in the catalog
+select count(distinct WorkName)  from Works ;
+
+-- How many of those have HOLLIS?
+select count(distinct WorkName)  from Works   where HOLLIS is not null ;
+
+-- How many works in the Volumes collection?
+select works, worksNoHollis, worksInVolumes - pdw as `works without printmasters`, worksInVolumes - odw as `works without outlines`,works + worksNoHollis, r.worksInVolumes, worksWithoutVolumes + r.worksWithVolumes from  (select
+
+     (select count(distinct WorkName)
+      from Works
+      where HOLLIS is not null)   works,
+     (select count(distinct WorkName)
+      from Works
+      where HOLLIS is null)         worksNoHollis,
+     (select count(distinct workId)
+      from Volumes)                 worksInVolumes,
+     (select count(distinct W.workId, W.WorkName, W.HOLLIS)
+      from Works W
+        left join Volumes V using (workId)
+      where V.volumeId is NULL)     worksWithoutVolumes,
+
+     (select count(distinct W.workId, W.WorkName, W.HOLLIS)
+      from Works W
+        left join Volumes V using (workId)
+      where V.volumeId is NOT NULL) worksWithVolumes,
+  (select count(distinct workId) from PrintMasters) as pdw,
+  (select count(workId) from PrintMasters) as pw,
+  (select count(distinct workId) from Outlines) as odw,
+  (select count(workId) from Outlines) as ow
+) as r
+;
+
+-- worksWithVolumes should = worksInVolumes
+select 13547 + 13739, 26230 + 198, 12683 + 13547;
+
+
+-- from Volumes V  inner join Works W on v.workId = W.workId
+  left join Outlines O on W.workId = O.workId
+  left join PrintMasters P on P.workId = W.workId
+  left join DRS D on v.volumeId = D.volumeId
+
+; -- where D.DRSid is null and O.outlineId is null and P.PrintMasterId is null;
+
+select count(distinct W.WorkName, W.HOLLIS) from Works;
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++    */
 /* 			GET WORKS WITH NO MISSING UPLOADS                   */
-select workName, HOLLIS
+select count(workName) -- ,  HOLLIS
   -- , (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
   -- (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
 from Works w
@@ -104,7 +154,7 @@ from Works w
      (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
  --  and WorkName like '%art%'
 -- where   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
-group by workName;
+; -- group by workName;
 
 
 /*------------------ how many works were created when volumes were updated? -----*/
@@ -142,3 +192,50 @@ group by label
 having count(label) > 1) v1
 on v0.label = v1.label
 order by v0.volumeId asc,v0.label asc ;
+
+-- Old AllReadyWorks
+create view AllReadyWorks as
+  select distinct
+    `w`.`workId`   AS `workId`,
+    `w`.`WorkName` AS `WorkName`,
+    `w`.`HOLLIS`   AS `HOLLIS`
+  from ((`drs`.`Works` `w` left join `drs`.`Outlines` `o` on ((`w`.`workId` = `o`.`workId`))) left join
+    `drs`.`PrintMasters` `p` on ((`w`.`workId` = `p`.`workId`)))
+  where ((`w`.`HOLLIS` is not null) and isnull(`p`.`PrintMasterId`) and isnull(`o`.`outlineId`));
+-- new AllReadyWorks sends up all PrintMasters and OutlineIds
+
+/*
+alter view AllReadyWorks as
+  select distinct
+    `w`.`workId`   AS `workId`,
+    `w`.`WorkName` AS `WorkName`,
+    `w`.`HOLLIS`   AS `HOLLIS`,
+    `o`.OSN AS OutlineOSN,
+    p.OSN as PrintMasterOSN
+  from ((`drs`.`Works` `w` left join `drs`.`Outlines` `o` on ((`w`.`workId` = `o`.`workId`))) left join
+    `drs`.`PrintMasters` `p` on ((`w`.`workId` = `p`.`workId`)))
+  where (`w`.`HOLLIS` is not null);
+  */
+
+ select distinct
+    v.label as 'Volume',
+    `w`.`WorkName` AS `WorkName`,
+    `w`.`HOLLIS`   AS `HOLLIS`,
+    `o`.OSN AS OutlineOSN,
+    p.OSN as PrintMasterOSN
+  from ((`drs`.`Works` `w` left join `drs`.`Outlines` `o` on ((`w`.`workId` = `o`.`workId`))) left join
+    `drs`.`PrintMasters` `p` on ((`w`.`workId` = `p`.`workId`)))
+  left join PrintMasters prn on ( prn.workId = w.workId)
+ left join Outlines outs on (outs.workId = w.workId)
+    left join Volumes v on (v.workId = w.workId)
+where
+(p.PrintMasterId is null and o.outlineId is null and v.volumeId is not null)
+and  (`w`.`HOLLIS` is not null)
+order by WorkName asc ;
+
+
+select (select count( distinct workName ) from AllReadyWorks) arw, (select count(distinct workName) from ReadyWorksNeedsBuilding)  rwnb;
+
+
+select count(distinct WorkName)  from AllReadyWorks;
+
