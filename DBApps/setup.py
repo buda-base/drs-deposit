@@ -2,13 +2,12 @@ from setuptools import setup
 
 setup(
     name='DBApps',
-    version='0.42',
-    packages=['', 'DBApp', 'DBApp.Tests', 'GenShell', 'GenShell.Writers', 'GenShell.GenShellTests',
-              'GenShell.SourceProcessors'],
-    package_dir={'': 'src'},
+    version='042.1',
+    packages=['lib', 'lib.DBApp', 'lib.DBApp.Tests', 'lib.GenShell.TBRCSrc', 'lib.GenShell.Writers',
+              'lib.GenShell.GenShellTests', 'lib.GenShell.SourceProcessors', 'src'],
     url='',
-    license='ToKill',
+    license='ToBurn',
     author='jimk',
-    author_email='jimk@tbrc.org',
-    description='Utilities for DB Access'
+    author_email='',
+    description='DBApplications'
 )
