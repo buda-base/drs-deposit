@@ -2,12 +2,12 @@ from setuptools import setup
 
 setup(
     name='DBApps',
-    version='042.1',
+    version='0.42.2',
     packages=['lib', 'lib.DBApp', 'lib.DBApp.Tests', 'lib.GenShell.TBRCSrc', 'lib.GenShell.Writers',
-              'lib.GenShell.GenShellTests', 'lib.GenShell.SourceProcessors', 'src'],
+              'lib.GenShell.GenShellTests', 'lib.GenShell.SourceProcessors'],
     url='',
-    license='ToBurn',
+    license='toRun',
     author='jimk',
     author_email='',
-    description='DBApplications'
+    description='harfang truong lives'
 )
