@@ -2,12 +2,12 @@ from setuptools import setup
 
 setup(
     name='DBApps',
-    version='0.42.2',
-    packages=['lib', 'lib.DBApp', 'lib.DBApp.Tests', 'lib.GenShell.TBRCSrc', 'lib.GenShell.Writers',
-              'lib.GenShell.GenShellTests', 'lib.GenShell.SourceProcessors'],
+    version='0.1',
+    packages=['', 'DBApp', 'DBApp.Tests', 'GenShell', 'GenShell.TBRCSrc',
+              'GenShell.Writers', 'GenShell.GenShellTests', 'GenShell.SourceProcessors'],
     url='',
-    license='toRun',
+    license='',
     author='jimk',
-    author_email='',
-    description='harfang truong lives'
+    author_email='jimk@tbrc.org',
+    description='libraries supporting BDRC DRS db on AWS'
 )
