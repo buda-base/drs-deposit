@@ -80,7 +80,7 @@ class DBConfig:
 
     # --------------------------------------------------------------------------
     #
-    # Public property db_alias: which DBApp config name you want
+    # Public property db_alias: which config config name you want
     @property
     def db_alias(self):
         '''The _parser config file's server section'''

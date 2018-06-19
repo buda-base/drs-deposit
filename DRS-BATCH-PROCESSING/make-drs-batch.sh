@@ -173,6 +173,8 @@ function isNewHeaderLine2 {
 }
 
 function doBatch {
+        [ -z "${batchName}" ] && return
+
         echo ${bb} -a buildtemplate -p ${targetProjectsRoot} -b ${batchName} | tee -a ${logPath}
         ${bb} -a buildtemplate -p ${targetProjectsRoot} -b ${batchName} >> ${logPath} 2>&1
 
@@ -196,15 +198,23 @@ function doBatch {
 		    td=$(mktemp -d)
 		    tojsondimensions.py -i ${targetProjectsRoot}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
 		    rm -rf ${td}  2>&1 | tee -a ${logPath}
+		    #
+		    # jimk 2018-VI-17
+		    mv  ${targetProjectsRoot}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
 		fi
         # jimk 2018-V-18: this used to be above the last fail.
        cleanUpLogs ${batchName}
 
 }
+
+#------------------          CONSTANTS   ------------------
+
 TIMING_LOG_FILE=timeBuildBatch.log
 # bash builtin time format
 TIMEFORMAT=$'%R\t%U\t%S\t%P'
 export TIMEFORMAT
+
+OUTPUTHOME=/Volumes/DRS_Staging/DRS/prod/batchBuilds
 
 # Who's running?
 ME=`basename ${0}`
@@ -330,6 +340,19 @@ while IFS=, read -ra LINE ; do
             continue;
     }
 
+    RID=${LINE[0]}
+	HID=${LINE[1]}
+    VID=${LINE[2]}
+    OutlineOSN=${LINE[3]}
+    PrintMasterOSN=${LINE[4]}
+
+    # Sanity check - have we built this volume somewhere else?
+    thisVolBuildPath=$(find ${OUTPUTHOME} -maxdepth 2 -mindepth 2 -type d  -name ${VID} )
+    [ ! -z ${thisVolBuildPath} ] && {
+        echo "Skipping: $thisVolBuildPath already built" | tee -a ${logPath}
+    continue
+    }
+
     if   (($thisBatchVolCount == $volsPerBatch )) ||  $(isNewHeaderLine LINE[@]) ; then
       doBatch
       if (($thisBatchVolCount == $volsPerBatch ))  ; then
@@ -340,20 +363,15 @@ while IFS=, read -ra LINE ; do
        thisBatchVolCount=0
     else
 
-        echo DATA LINE ${LINE[@]}
-    	RID=${LINE[0]}
-	    HID=${LINE[1]}
-	    VID=${LINE[2]}
-	    OutlineOSN=${LINE[3]}
-	    PrintMasterOSN=${LINE[4]}
-
         # Are we starting a new batch?
         if (($thisBatchVolCount == 0)) ; then
             echo TBRC ${RID} at HOLLIS ${HID} | tee -a  ${logPath}
             java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl hId=${HID} > ${targetConf}
 
             imagesDir=${archiveDir}/${RID}/images/${VID}
-            batchName=$(printf "%s-%d" "batch$RID" ${batchesThisWork})
+
+            # jimk 2018-VI-18: Append new with n.
+            batchName=$(printf "%s-%dn" "batch$RID" ${batchesThisWork})
             echo Batch Name: ${batchName} | tee -a  ${logPath}
         fi
         echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
@@ -375,7 +393,7 @@ while IFS=, read -ra LINE ; do
             suffix=$(trailingNums ${fnm} 4)
 
             [ "$suffix" == "0" -o -z "$suffix" ] && {
-                    echo ${ME}:ERROR: Invalid sequence in file ${fnm} | tee -a ${logPath}
+                    echo ${ME}:WARNING: Skipping invalid sequence in work ${RID} volume ${pdsName} ${fnm} | tee -a ${logPath}
                 continue
             }
 

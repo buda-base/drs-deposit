@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+"""
+Useful test class - gets a specific list of works
+"""
 import argparse
 import csv
-from DBApp.config import *
+from config.config import *
 import pymysql
 import pathlib
 import os
@@ -86,9 +89,9 @@ def start_connect(cfg):
 
 #
 # ----------------        MAIN     --------------------
-def main():
+def getNamedWorks():
     myArgs = getArgs()
-    parseArgs(myArgs)
+    parseByNameArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     #
     outRoot: str = os.path.expanduser(myArgs.resultsRoot)
@@ -101,7 +104,7 @@ def main():
 
 
 # ----------------        MAIN     --------------------
-def parseArgs(argNamespace):
+def parseByNameArgs(argNamespace):
     """
     :param argNamespace. class which holds arg values
     """
@@ -118,4 +121,4 @@ def parseArgs(argNamespace):
 
 
 if __name__ == '__main__':
-    main()
+    getNamedWorks()

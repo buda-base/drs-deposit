@@ -7,11 +7,11 @@ and start a connection to its db.
 '''
 from pathlib import Path
 import sys
-from DBApp import config
+from config import config
 import pymysql
 
 
-def main(args):
+def getworkstest(args):
     '''
     Read the remote database from a config and  connect to it
     '''
@@ -19,7 +19,7 @@ def main(args):
     # Read the path. This library's client programs pass this in as a parm:
     # --d dev:drsBatch
     # which is a shorthand for ../../../conf/drsBatch.config.
-    # See DBApp.DbConfig
+    # See config.DbConfig
     cfgPath = Path(__file__).parent.parent.parent / 'conf' / 'drsBatch.config'
     if cfgPath.is_file():
         print('yes')
@@ -38,4 +38,4 @@ def main(args):
             print(res)
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    getworkstest(sys.argv[1:])

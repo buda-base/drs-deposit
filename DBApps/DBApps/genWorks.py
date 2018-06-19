@@ -7,8 +7,8 @@ Created on Mar 8, 2018
 import argparse
 import csv
 import sys
-from GenShell.Writers.CSVWriter import CSVWriter
-from GenShell.Writers.DbWriter import DbWriter
+from DBApps.Writers.CSVWriter import CSVWriter
+from DBApps.Writers.DbWriter import DbWriter
 
 
 class getArgs:
@@ -18,7 +18,7 @@ class getArgs:
     pass
 
 
-def main(args):
+def genWorks(args):
 
     myArgs = getArgs()
     parseArgs(myArgs)
@@ -79,4 +79,4 @@ def process(textLine):
 
 
 if __name__ == '__main__':
-        main(sys.argv[1:])
+        genWorks(sys.argv[1:])

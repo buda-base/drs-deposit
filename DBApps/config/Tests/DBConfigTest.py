@@ -7,7 +7,7 @@ import unittest
 
 import os
 
-from DBApp import config
+from config import config
 from distutils.file_util import _copy_file_contents
 
 class TestHappyPath(unittest.TestCase):

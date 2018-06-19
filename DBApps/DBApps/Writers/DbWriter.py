@@ -4,10 +4,10 @@ Created on Mar 6, 2018
 @author: jsk
 """
 # base class
-from GenShell.Writers.listwriter import ListWriter
+from DBApps.Writers.listwriter import ListWriter
 
 # Configuration reader
-from DBApp import config
+from config import config
 import pymysql
 import os
 import time

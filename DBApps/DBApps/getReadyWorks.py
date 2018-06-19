@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import csv
-from DBApp.config import *
+from config.config import *
 import pymysql
 import pathlib
 import os
@@ -31,7 +31,7 @@ def setup_config(drsDbConfig: str) -> DBConfig:
     return DBConfig(dbName, dbConfigFile)
 
 
-def getResults(dbConfig, outputDir, maxRows):
+def getRawReadyWorks(dbConfig, outputDir, maxRows):
     """
 
     :param dbConfig:
@@ -58,13 +58,12 @@ def getResults(dbConfig, outputDir, maxRows):
                 downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
                 csvwr.writerow(downRow)
 
-
-def getResultsTake1(dbConfig, outputDir, maxRows):
+def getResultsByName(dbConfig, outputDir, maxRows):
     """
-    Get results and write to directory.
-    :param maxRows:
+
     :param dbConfig:
     :param outputDir:
+    :param maxRows:
     :return:
     """
     dbConnection = start_connect(dbConfig)
@@ -73,35 +72,35 @@ def getResultsTake1(dbConfig, outputDir, maxRows):
     with dbConnection:
         workCursor: pymysql.cursors = dbConnection.cursor()
 
-        workCursor.execute(
-            "select distinct workId from ReadyWorksNeedsBuilding order by workName asc limit %d ;" % (maxRows,))
-        # if we use dbConnection.cursor(pymysql.cursors.DictCursor) expect[ {'workId' : nnnn },....]
-        # expected [ (workId,),....]
+        workCursor.execute(f'select distinct workId from Works where WorkName in (  \
+                           \'W00EGS1017042\', \'W00EGS1017169\', \'W00KG03797\', \'W00KG09824\', \'W12171\', \'W12362\', \'W17209\', \'W19993\', \'W1KG2855\', \'W1KG3460\', \'W1KG4215\', \'W1KG4228\', \'W1KG4313\', \'W1KG4313\', \'W1KG5256\', \'W1KG5258\', \'W1KG5478\', \'W1KG5488\', \'W1KG5945\', \'W1KG6007\', \'W1KG6058\', \'W1KG6152\', \'W1KG6160\', \'W1KG6288\', \'W1KG8579\', \'W1KG8724\', \'W1KG8837\', \'W1KG8855\', \'W1KG8896\', \'W1KG8934\', \'W1KG9090\', \'W1KG9121\', \'W1KG9561\', \'W1KG9563\', \'W1PD105801\', \'W1PD105849\', \'W1PD105855\', \'W1PD105864\', \'W1PD105899\', \'W1CZ1293\', \'W1CZ2403\', \'W1CZ674\', \'W1KG11708\', \'W1KG14505\', \'W1KG15407\', \'W1KG1610\', \'W1KG1616\', \'W1KG16696\', \'W1KG2230\') \
+                            ;')
+
         workIdResults: list = workCursor.fetchall()
-        # when we open a dict cursor, use this syntax
-        # [workIdList.append(item['workId']) for item in workIdResults]
-        #
+
         workCursor.close()
         workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
-        for workTuple in workIdResults:
-            workCursor.callproc('GetReadyVolumesByWorkId', workTuple)
-            workVolumeResults: list = workCursor.fetchall()
 
-            # All the rows should have the same WorkName
-            # @TODO: rethink serializing by time?
-            # fileName = "%s_%s" % (workVolumeResults[0]['WorkName'],  datetime.datetime.now().strftime("%y%m%e%H%M%S"))
-            outfile: pathlib.Path = pathlib.Path(outputDir) / workVolumeResults[0]['WorkName']
+        # Build the output path
+        outfile: pathlib.Path = pathlib.Path(outputDir) / datetime.datetime.now().strftime("%y%m%e%H%M%S")
+        with outfile.open("w", newline='') as fw:
+            # Create the CSV writer. NOTE: multiple headers are written to the
+            # one output file
+            fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
+            csvwr = csv.DictWriter(fw, fieldNames)
 
-            with outfile.open("w", newline='') as fw:
-                fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
-                csvwr = csv.DictWriter(fw, fieldNames)
+            for workTuple in workIdResults:
+                print(workTuple)
+                workCursor.callproc('GetReadyVolumesByWorkId', workTuple)
+                workVolumeResults: list = workCursor.fetchall()
+
                 csvwr.writeheader()
                 for resultRow in workVolumeResults:
                     downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
                     csvwr.writerow(downRow)
 
 
-def getResultsTake2(dbConfig, outputDir, maxRows:int):
+def getResultsById(dbConfig, outputDir, maxRows:int):
     """
     Get results and write to directory.
     :param maxRows:
@@ -154,9 +153,9 @@ def start_connect(cfg):
 
 #
 # ----------------        MAIN     --------------------
-def main():
+def getReadyWorks():
     myArgs = getArgs()
-    parseArgs(myArgs)
+    parseByDBArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     #
     outRoot: str = os.path.expanduser(myArgs.resultsRoot)
@@ -165,11 +164,22 @@ def main():
     if not os.path.exists(outRoot):
         os.mkdir(outRoot)
 
-    getResultsTake2(dbConfig, outRoot, myArgs.numWorks)
+    getResultsById(dbConfig, outRoot, myArgs.numWorks)
 
+def getNamedWorks():
+    myArgs = getArgs()
+    parseByNameArgs(myArgs)
+    dbConfig = setup_config(myArgs.drsDbConfig)
+    #
+    outRoot: str = os.path.expanduser(myArgs.resultsRoot)
 
-# ----------------        MAIN     --------------------
-def parseArgs(argNamespace):
+    # default create mode is 777
+    if not os.path.exists(outRoot):
+        os.mkdir(outRoot)
+
+    getResultsByName(dbConfig, outRoot, myArgs.numWorks)
+# ----------------        Argument parsers     --------------------
+def parseByDBArgs(argNamespace):
     """
     :param argNamespace. class which holds arg values
     """
@@ -184,6 +194,18 @@ def parseArgs(argNamespace):
 
     _parser.parse_args(namespace=argNamespace)
 
+def parseByNameArgs(argNamespace):
+    """
+    :param argNamespace. class which holds arg values
+    """
+    _parser = argparse.ArgumentParser(description='Downloads ready works to folder, creating files related to folder '
+                                                  'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
+                                                                "[ -n n How many works to download. ] resultsRoot"
+                                      )
+    _parser.add_argument('-d', '--drsDbConfig',
+                         help='specify section:configFileName')
+    _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
+    _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
 
-if __name__ == '__main__':
-    main()
+    _parser.parse_args(namespace=argNamespace)
+

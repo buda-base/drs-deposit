@@ -14,7 +14,7 @@ class getArgs:
     pass
 
 
-def main():
+def splitWorks():
     myArgs = getArgs()
     parseArgs(myArgs)
     testArgs(myArgs)
@@ -66,7 +66,11 @@ def do_split(args):
                             currentOutFile.close()
                         currentFileNumber += 1
                         worksThisFile = 1
-                        currentOutFile = open(buildOutPath(outPath, baseName, currentFileNumber, ext), "w")
+                        # Works on win, not on mac
+                        # currentOutFile = open(buildOutPath(outPath, baseName, currentFileNumber, ext), "w")
+                        # TODO: See if this works on win. Works on MAC
+                        currentOutFile = buildOutPath(outPath, baseName, currentFileNumber, ext).open("w")
+
             currentOutFile.write(srcLine)
 
 
@@ -113,4 +117,4 @@ def testArgs(args):
 
 
 if __name__ == '__main__':
-    main()
+    splitWorks()

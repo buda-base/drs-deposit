@@ -1,5 +1,5 @@
 from unittest import TestCase
-from GenShell.SourceProcessors import WebAdminResults
+from DBApps.SourceProcessors import WebAdminResults
 
 
 class TestWebAdminResults(TestCase):

@@ -5,7 +5,7 @@ Created on Mar 6, 2018
 '''
 import codecs
 import os
-from GenShell.Writers import listwriter
+from DBApps.Writers import listwriter
 
 
 class CSVWriter(listwriter.ListWriter):
