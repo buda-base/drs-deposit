@@ -74,7 +74,7 @@ def DRSUpdate(args):
     writer = DbWriter(myArgs)
 
     param_list = dict_to_add_DRS_param_list(param_dict_list)
- #   writer.write_list(param_list)
+    writer.write_list(param_list)
 
 
 def parse_args(arg_namespace: object) -> object:
