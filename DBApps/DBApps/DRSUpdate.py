@@ -58,7 +58,7 @@ def dict_to_add_DRS_param_list(dict_list: dict) -> list :
         [a_list.append(a_dict[s]) for s in add_drs_params_ordered]
         rc.append(a_list)
     return rc
-def DRSUpdate(args):
+def DRSUpdate():
     web_results: WebAdminResults
     myArgs = getArgs()
 
@@ -93,4 +93,4 @@ def parse_args(arg_namespace: object) -> object:
 
 
 if __name__ == '__main__':
-    DRSUpdate(sys.argv[1:])
+    DRSUpdate()

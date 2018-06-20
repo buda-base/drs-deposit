@@ -1,2 +1,2 @@
-__all__ = ['DRSUpdate', 'genOutlines', 'genWorks', 'getReadyWorksSpecificWorks', 'getReadyWorks',
+__all__ = ['DRSUpdate', 'genOutlines', 'genWorks', 'getReadyWorks',
             'getworkstest', 'splitWorks']

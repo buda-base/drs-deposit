@@ -18,7 +18,7 @@ class getArgs:
     pass
 
 
-def genOutlines(args):
+def genOutlines():
     myArgs = getArgs()
     parseArgs(myArgs)
 
@@ -84,4 +84,4 @@ def get_attr_text_from_file(inFilePath, attrName, path):
 
 
 if __name__ == '__main__':
-        genOutlines(sys.argv[1:])
+        genOutlines()

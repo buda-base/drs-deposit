@@ -11,7 +11,7 @@ from config import config
 import pymysql
 
 
-def getworkstest(args):
+def getworkstest():
     '''
     Read the remote database from a config and  connect to it
     '''
@@ -38,4 +38,4 @@ def getworkstest(args):
             print(res)
 
 if __name__ == '__main__':
-    getworkstest(sys.argv[1:])
+    getworkstest()

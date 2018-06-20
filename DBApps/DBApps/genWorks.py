@@ -18,7 +18,7 @@ class getArgs:
     pass
 
 
-def genWorks(args):
+def genWorks():
 
     myArgs = getArgs()
     parseArgs(myArgs)
@@ -79,4 +79,4 @@ def process(textLine):
 
 
 if __name__ == '__main__':
-        genWorks(sys.argv[1:])
+        genWorks()

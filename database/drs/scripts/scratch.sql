@@ -78,7 +78,7 @@ from Works w
     and
     (select count(1) from Volumes v where v.workId = w.WorkId)
           -- = here means everything uploaded if its not 0
-          <>
+		<>
      (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
  --  and WorkName like '%art%'
 and
@@ -136,7 +136,7 @@ select 13547 + 13739, 26230 + 198, 12683 + 13547;
 select count(distinct W.WorkName, W.HOLLIS) from Works;
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++    */
 /* 			GET WORKS WITH NO MISSING UPLOADS                   */
-select count(workName) -- ,  HOLLIS
+select count(distinct workName) -- ,  HOLLIS
   -- , (select count(1) from Volumes v where v.workId = w.WorkId) vpw,
   -- (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) vd
 from Works w
@@ -153,7 +153,9 @@ from Works w
           =
      (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
  --  and WorkName like '%art%'
--- where   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is null and v.workId = w.workId) <> 0
+-- whereCALL `drs`.`WeeklyStatus`();
+
+-- and   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) <> 0
 ; -- group by workName;
 
 
