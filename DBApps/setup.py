@@ -26,7 +26,7 @@ setup(
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',
             'outlines = DBApps.genOutlines:genOutlines',
             'works = DBApps.genWorks:genWorks',
-            'getReadies = DBApps.getReadyWorks:getReadyWorks',
+            'getReadies = DBApps.getReadyWorks:getByCount',
             'getNamedWorks = DBApps.getReadyWorks:getNamedWorks'
         ]
     }

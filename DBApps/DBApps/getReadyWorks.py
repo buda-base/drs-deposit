@@ -139,6 +139,37 @@ def getResultsById(dbConfig, outputDir, maxRows:int):
                     downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
                     csvwr.writerow(downRow)
 
+def getResultsByCount(dbConfig,outputDir, maxWorks: int):
+    """
+    Get results and write to directory.
+    :param maxRows:
+    :param dbConfig:
+    :param outputDir:
+    :return:
+    """
+    dbConnection = start_connect(dbConfig)
+    workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
+
+    with dbConnection:
+        # Build the output path
+        outfile: pathlib.Path = pathlib.Path(outputDir) / datetime.datetime.now().strftime("%y%m%e%H%M%S")
+        with outfile.open("w", newline='') as fw:
+            # Create the CSV writer. NOTE: multiple headers are written to the
+            # one output file
+            fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
+            csvwr = csv.DictWriter(fw, fieldNames)
+            workCursor.callproc('TestReadyVolumes', (maxWorks,))
+
+            # TestReadyVolumes can return multiple sets
+            hasNext: bool = True
+            while hasNext:
+                workVolumes = workCursor.fetchall()
+                if len(workVolumes) > 0:
+                    csvwr.writeheader()
+                    for resultRow in workVolumes:
+                        down_row = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
+                        csvwr.writerow(down_row)
+                hasNext = workCursor.nextset()
 
 def start_connect(cfg):
     """
@@ -178,6 +209,20 @@ def getNamedWorks():
         os.mkdir(outRoot)
 
     getResultsByName(dbConfig, outRoot, myArgs.numWorks)
+
+
+def getByCount():
+    myArgs = getArgs()
+    parseByDBArgs(myArgs)
+    dbConfig = setup_config(myArgs.drsDbConfig)
+    #
+    outRoot: str = os.path.expanduser(myArgs.resultsRoot)
+
+    # default create mode is 777
+    if not os.path.exists(outRoot):
+        os.mkdir(outRoot)
+
+    getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 # ----------------        Argument parsers     --------------------
 def parseByDBArgs(argNamespace):
     """
@@ -209,3 +254,6 @@ def parseByNameArgs(argNamespace):
 
     _parser.parse_args(namespace=argNamespace)
 
+
+if __name__ == '__main__':
+    getByCount()
