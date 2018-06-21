@@ -158,7 +158,7 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
             # one output file
             fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
             csvwr = csv.DictWriter(fw, fieldNames)
-            workCursor.callproc('TestReadyVolumes', (maxWorks,))
+            workCursor.callproc('GetReadyVolumes', (maxWorks,))
 
             # TestReadyVolumes can return multiple sets
             hasNext: bool = True
@@ -223,21 +223,59 @@ def getByCount():
         os.mkdir(outRoot)
 
     getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
+
+def updateBuildStatus():
+    """
+    Updates the build status of a work
+    :return:
+    """
+    myArgs = getArgs()
+    parseByUpdateArgs(myArgs)
+    dbConfig = setup_config(myArgs.drsDbConfig)
+    #
+    outRoot: str = os.path.expanduser(myArgs.resultsRoot)
+
+    # default create mode is 777
+    if not os.path.exists(outRoot):
+        os.mkdir(outRoot)
+
+    getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 # ----------------        Argument parsers     --------------------
-def parseByDBArgs(argNamespace):
+
+
+def parseByUpdateArgs(argNamespace):
     """
     :param argNamespace. class which holds arg values
     """
-    _parser = argparse.ArgumentParser(description='Downloads ready works to folder, creating files related to folder '
+    _parser = argparse.ArgumentParser(description='Updates the build status of a work with its build path and build date '
                                                   'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
-                                                                "[ -n n How many works to download. ] resultsRoot"
+                                                                "workName buildPath buildDate"
                                       )
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName')
     _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
-    _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
+    _parser.add_argument("workName", help='Name of work (not batchW....)')
+    _parser.add_argument("buildPath", help='Folder containing batch.xml and objects')
+    _parser.add_argument("buildDate", help='build date. Defaults to time this call was made.',
+                         default=datetime.time, type=datetime.datetime)
 
     _parser.parse_args(namespace=argNamespace)
+
+    def parseByDBArgs(argNamespace):
+        """
+        :param argNamespace. class which holds arg values
+        """
+        _parser = argparse.ArgumentParser(
+            description='Downloads ready works to folder, creating files related to folder '
+                        'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
+                                      "[ -n n How many works to download. ] resultsRoot"
+            )
+        _parser.add_argument('-d', '--drsDbConfig',
+                             help='specify section:configFileName')
+        _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
+        _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
+
+        _parser.parse_args(namespace=argNamespace)
 
 def parseByNameArgs(argNamespace):
     """
@@ -256,4 +294,4 @@ def parseByNameArgs(argNamespace):
 
 
 if __name__ == '__main__':
-    getByCount()
+    updateBuildStatus()
