@@ -1,7 +1,10 @@
 #!/bin/bash -v
 #
 # Do the steps to getting files ready
-RemoveDuplicateVolumes.sh > BuildList.txt
-RemoveDepositedVolumePaths.sh BuildList.txt  UndepositedVolumes
+# 2018 VI.17 - batches are moved to $RP/batchbuilds on success, and only if no duplicates
+# RemoveDuplicateVolumes.sh > BuildList.txt
+# ls $PR/batchBuilds
+find $PR/batchBuilds -maxdepth 2 -type d -mindepth 2 > volList.txt
+RemoveDepositedVolumePaths.sh volList.txt  UndepositedVolumes
  GetCumBuiltFileCounts.sh UndepositedVolumes > testFile
-awk  -F'[|]' '{ if ( $3 < 200000) print $1 }' testFile | xargs -n 1 dirname | sort -u >  ../buildList.txt  
+awk  -F'[|]' '{ if ( $3 < 250000) print $1 }' testFile | xargs -n 1 dirname | sort -u >  ../buildList.txt  
