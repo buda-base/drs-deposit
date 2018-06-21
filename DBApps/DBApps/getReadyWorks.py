@@ -256,26 +256,26 @@ def parseByUpdateArgs(argNamespace):
     _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
     _parser.add_argument("workName", help='Name of work (not batchW....)')
     _parser.add_argument("buildPath", help='Folder containing batch.xml and objects')
-    _parser.add_argument("buildDate", help='build date. Defaults to time this call was made.',
-                         default=datetime.time, type=datetime.datetime)
+    _parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',
+                         default=datetime.datetime.now(), type=datetime.datetime)
 
     _parser.parse_args(namespace=argNamespace)
 
-    def parseByDBArgs(argNamespace):
-        """
-        :param argNamespace. class which holds arg values
-        """
-        _parser = argparse.ArgumentParser(
-            description='Downloads ready works to folder, creating files related to folder '
-                        'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
-                                      "[ -n n How many works to download. ] resultsRoot"
-            )
-        _parser.add_argument('-d', '--drsDbConfig',
-                             help='specify section:configFileName')
-        _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
-        _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
+def parseByDBArgs(argNamespace):
+    """
+    :param argNamespace. class which holds arg values
+    """
+    _parser = argparse.ArgumentParser(
+        description='Downloads ready works to folder, creating files related to folder '
+                    'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
+                                  "[ -n n How many works to download. ] resultsRoot"
+        )
+    _parser.add_argument('-d', '--drsDbConfig',
+                         help='specify section:configFileName')
+    _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
+    _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
 
-        _parser.parse_args(namespace=argNamespace)
+    _parser.parse_args(namespace=argNamespace)
 
 def parseByNameArgs(argNamespace):
     """
