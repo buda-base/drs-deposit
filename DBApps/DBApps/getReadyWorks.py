@@ -271,7 +271,7 @@ def parseByDBArgs(argNamespace):
                                   "[ -n n How many works to download. ] resultsRoot"
         )
     _parser.add_argument('-d', '--drsDbConfig',
-                         help='specify section:configFileName')
+                         help='specify section:configFileName', required=True)
     _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
     _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
 
