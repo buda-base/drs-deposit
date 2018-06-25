@@ -28,7 +28,8 @@ setup(
             'works = DBApps.genWorks:genWorks',
             'getReadies = DBApps.getReadyWorks:getByCount',
             'getNamedWorks = DBApps.getReadyWorks:getNamedWorks',
-            'splitWorks = DBApps.splitWorks:splitWorks'
+            'splitWorks = DBApps.splitWorks:splitWorks',
+            'updateBuildStatus = DBApps.getReadyWorks:updateBuildStatus'
         ]
     }
 )

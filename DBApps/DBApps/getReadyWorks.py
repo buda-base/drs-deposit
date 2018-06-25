@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import csv
+
 from config.config import *
 import pymysql
 import pathlib
@@ -218,30 +219,63 @@ def getByCount():
     #
     outRoot: str = os.path.expanduser(myArgs.resultsRoot)
 
-    # default create mode is 777
     if not os.path.exists(outRoot):
+    # default create mode is 777
         os.mkdir(outRoot)
 
     getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 
 def updateBuildStatus():
     """
-    Updates the build status of a work
+    Updates the build status of a work with its date and build directory
     :return:
     """
     myArgs = getArgs()
     parseByUpdateArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
+    dbConnection = start_connect(dbConfig)
+    uCursor = dbConnection.cursor()
+    hadBarf=False
+
+    try:
+        for volDir in volumesForBatch(myArgs.buildPath):
+            uCursor.callproc('UpdateBatchBuild', (volDir, myArgs.buildPath, myArgs.buildDate, myArgs.result))
+    except:
+        dbConnection.rollback()
+        hadBarf = True
+    finally:
+        uCursor.close()
+        if not hadBarf:
+            dbConnection.commit()
+        dbConnection.close()
+    # dbConnection = start_connect(dbConfig)
+    # workCursor = dbConnection.cursor()
     #
-    outRoot: str = os.path.expanduser(myArgs.resultsRoot)
+    # workCursor.callproc('UpdateBatchBuild', (myArgs.batchName,batchVolume,myArgs.buildPath,myArgs.buildDate))
+    # dbConnection.close()
+    # What to do with rc
 
-    # default create mode is 777
-    if not os.path.exists(outRoot):
-        os.mkdir(outRoot)
+def volumesForBatch( batchFolder : str) -> str:
+    """
+    Returns a JSON array of the folders in a batch build project.
+    These folders are one per volume, named for the volume,
+    so this returns a list of volumes in a specific batch.
+    :param batchFolder:
+    :return:
+    """
+    for root, dirs, folders in os.walk(batchFolder):
+        return dirs
 
-    getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 # ----------------        Argument parsers     --------------------
 
+def mustExistDirectory(path : str):
+    if not os.path.isdir(path):
+        raise argparse.ArgumentTypeError
+    for root, dirs, files in os.walk(path, True):
+        if len(dirs) == 0:
+            raise argparse.ArgumentTypeError
+        else:
+            return path
 
 def parseByUpdateArgs(argNamespace):
     """
@@ -252,10 +286,10 @@ def parseByUpdateArgs(argNamespace):
                                                                 "workName buildPath buildDate"
                                       )
     _parser.add_argument('-d', '--drsDbConfig',
-                         help='specify section:configFileName')
+                         help='specify section:configFileName',required=True)
     _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
-    _parser.add_argument("workName", help='Name of work (not batchW....)')
-    _parser.add_argument("buildPath", help='Folder containing batch.xml and objects')
+    _parser.add_argument("buildPath", help='Folder containing batch.xml and objects', type=mustExistDirectory)
+    _parser.add_argument("result", help='String representing the result')
     _parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',
                          default=datetime.datetime.now(), type=datetime.datetime)
 
