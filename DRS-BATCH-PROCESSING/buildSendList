@@ -4,6 +4,9 @@
 # 2018 VI.17 - batches are moved to $RP/batchbuilds on success, and only if no duplicates
 # RemoveDuplicateVolumes.sh > BuildList.txt
 # ls $PR/batchBuilds
+# 
+# BATCH_EXCLUDE_LIST depends on $ddc/AutoRecovery:
+# export ERR_BATCHES=dontBuildBatches.txt
 export BATCH_EXCLUDE_LIST=dontBuildBatches
 export BUILT=build.txt
 export VOLUMES=volList.txt
