@@ -1,10 +1,10 @@
-#!/usr/bin/env bash -vx
+#!/usr/bin/env bash
 #
 # Core of recovery works
-#or (thank you stackOverflow
 
 export ME=$(basename $0)
 export ME_DIR=$(dirname $0)
+
 . ~/bin/setupErrorLog.sh
 
 function Usage() {

@@ -1,0 +1,1 @@
+CALL `drs`.`WeeklyStatus`();

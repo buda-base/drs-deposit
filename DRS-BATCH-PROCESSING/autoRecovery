@@ -3,7 +3,7 @@
 # Recovery mode
 #
 # Assume a mailerrs.txt
-# Assume these files exist
+
 
 export ME=$(basename $0)
 export ME_DIR=$(dirname $0)
@@ -12,17 +12,23 @@ export ME_DIR=$(dirname $0)
 ## HACK ALERT: This var is the same as in deleteAlreadyDepositedSFTP.sh
 targetErrRE="Object owner supplied name" #  .* already exists for owner code"
 
-
+# Assume these files exist
 MAIL_TXT=mailerrs.txt
+#
+# ${ME} creates these files
 MAIL_DAT=mailerrs.dat
 BUILD_LIST_SPEC='buildList*.txt'
-ERR_BATCHES=errbatches.dat
+ERR_BATCH_USER_PAIRS=errbatchUsers.dat
+export ERR_BATCHES=dontBuildBatches.txt
+
 
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
 #
 # get the user and the batch
-grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $ERR_BATCHES
+grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $ERR_BATCH_USER_PAIRS
 
+# Save the batches only to a well known place
+cut -f2 -d'|' $ERR_BATCH_USER_PAIRS > $ERR_BATCHES
 
 ## Danger_ assumes BUILD_LIST_SPEC is quoted. The unglobbed version needs to be passed.
-autoRecoveryCore $1 $ERR_BATCHES \'$BUILD_LIST_SPEC\'
+autoRecoveryCore $1 $ERR_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
