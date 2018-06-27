@@ -50,8 +50,11 @@ def do_split(args):
     #Save the extension
     base, ext = os.path.splitext(args.source)
     outPath, baseName = os.path.split(base)
-    if ext:
-        ext = '.'.join(ext)
+    # What did this do, other than mess up
+    # an extension:
+    # it took allList.txt and made it allList1..t.x.t
+    #  if ext:
+    #     ext = '.' + ext
 
     # Writes into same directory
     currentOutFile: object = None
