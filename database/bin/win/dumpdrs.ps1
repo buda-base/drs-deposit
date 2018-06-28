@@ -2,7 +2,7 @@ $creds = $($args[0])
 $db = $($args[1])
 
 # DB
-$backFile = "Northgate\bdrc\drs-deposit\database\backup\" + $db + "." +  $(get-date -format "yyyy-mm-dd")
+$backFile = "Northgate\bdrc\drs-deposit\database\backup\" + $db
 $backupPath = Join-Path -Path $HOME -ChildPath $backFile
 # See https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html
 # Dump data separately from code

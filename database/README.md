@@ -31,3 +31,8 @@ To support these queries, the database provides these actions:
 2. Add a work
 3. Add a Batch to a volume (links a volume to a work)
 4. Update the batch with status (and date and time) and HUL identifier.
+
+## Database maintenance
+See [dumpdrs.ps1](bin/win/dumpdrs.ps1) for mysql commands to dump the data separately from the DDL
+`dumpdrs.ps1` assumes that you've used `mysql_config_editor` to create a `~/.mylogin.cnf` file.
+Its usage is `dumpdrs.ps1 <loginpath> <databasename>` Where `loginpath` is an argument to the `--login-path=<loginPath>` mySql credential.
