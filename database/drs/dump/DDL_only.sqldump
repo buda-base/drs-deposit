@@ -1,0 +1,141 @@
+-- MySQL dump 10.13  Distrib 5.7.21, for Win64 (x86_64)
+--
+-- Host: drsharvard.c5ewwyfxyijg.us-east-1.rds.amazonaws.com    Database: drs
+-- ------------------------------------------------------
+-- Server version	5.6.37-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Temporary table structure for view `AllReadyWorks`
+--
+
+DROP TABLE IF EXISTS `AllReadyWorks`;
+/*!50001 DROP VIEW IF EXISTS `AllReadyWorks`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `AllReadyWorks` AS SELECT 
+ 1 AS `workId`,
+ 1 AS `WorkName`,
+ 1 AS `HOLLIS`,
+ 1 AS `create_time`,
+ 1 AS `update_time`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `BatchBuilds`
+--
+
+DROP TABLE IF EXISTS `BatchBuilds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BatchBuilds` (
+  `idBatchBuilds` int(11) NOT NULL AUTO_INCREMENT,
+  `BuildDate` datetime DEFAULT NULL,
+  `Result` varchar(45) DEFAULT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `volumeId` int(11) NOT NULL,
+  `QueuedDate` datetime DEFAULT NULL COMMENT 'The date that the volume was requested to be built. Set in GetReadyVolumesByWorkId',
+  `buildPathId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idBatchBuilds`),
+  UNIQUE KEY `volumeId_UNIQUE` (`volumeId`),
+  KEY `batchVolume_idx` (`volumeId`),
+  KEY `batchBuildPath_idx` (`buildPathId`),
+  CONSTRAINT `batchBuildPath` FOREIGN KEY (`buildPathId`) REFERENCES `BuildPaths` (`buildPathId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `batchVolume` FOREIGN KEY (`volumeId`) REFERENCES `Volumes` (`volumeId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12373 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BuildPaths`
+--
+
+DROP TABLE IF EXISTS `BuildPaths`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BuildPaths` (
+  `buildPathId` int(11) NOT NULL AUTO_INCREMENT,
+  `BuildPath` varchar(255) NOT NULL,
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`buildPathId`),
+  UNIQUE KEY `BuildPaths_UNIQUE` (`BuildPath`)
+) ENGINE=InnoDB AUTO_INCREMENT=6503 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DRS`
+--
+
+DROP TABLE IF EXISTS `DRS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DRS` (
+  `DRSid` int(11) NOT NULL AUTO_INCREMENT,
+  `BuildDate` datetime DEFAULT NULL,
+  `BuildPath` varchar(255) DEFAULT NULL,
+  `IngestDate` datetime DEFAULT NULL,
+  `objectid` varchar(45) DEFAULT NULL COMMENT 'HUL Generated OBJ-ID',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DRSdir` varchar(45) DEFAULT NULL,
+  `objectUrn` varchar(45) DEFAULT NULL,
+  `filesCount` int(11) DEFAULT NULL,
+  `size` bigint(20) DEFAULT NULL,
+  `OSN` varchar(45) DEFAULT NULL,
+  `volumeId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`DRSid`),
+  UNIQUE KEY `DRS_DRSid_uindex` (`DRSid`),
+  KEY `DRSVolume_idx` (`volumeId`),
+  CONSTRAINT `DRSVolume` FOREIGN KEY (`volumeId`) REFERENCES `Volumes` (`volumeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12961526 DEFAULT CHARSET=latin1 COMMENT='Corresponds to our data structures and to output/BDRCCun';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Outlines`
+--
+
+DROP TABLE IF EXISTS `Outlines`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Outlines` (
+  `outlineId` int(11) NOT NULL AUTO_INCREMENT,
+  `workId` int(11) NOT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NULL DEFAULT NULL,
+  `outlineText` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `idBatchStatus` int(11) DEFAULT NULL,
+  PRIMARY KEY (`outlineId`),
+  KEY `OutlineToWork_idx` (`workId`),
+  CONSTRAINT `OutlineToWork` FOREIGN KEY (`workId`) REFERENCES `Works` (`workId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3407 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `PrintMasters`
+--
+
+DROP TABLE IF EXISTS `PrintMasters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PrintMasters` (
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NULL DEFAULT NULL,
+  `PrintMasterId` int(11) NOT NULL AUTO_INCREMENT,
+  `workId` varchar(45) DEFAULT NULL,
+  `Path` varchar(255) DEFAULT NULL,
+  `idBatchStatus` int(11) DEFAULT NULL,
+  PRIMARY KEY (`PrintMasterId`),
+  KEY `idBatchStatus_idx` (`idBatchStatus`)
+) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
