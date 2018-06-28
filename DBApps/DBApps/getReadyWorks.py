@@ -236,11 +236,16 @@ def updateBuildStatus():
     dbConnection = start_connect(dbConfig)
     uCursor = dbConnection.cursor()
     hadBarf=False
+    errVolPersist=""
 
     try:
         for volDir in volumesForBatch(myArgs.buildPath):
+            errVolPersist=volDir
             uCursor.callproc('UpdateBatchBuild', (volDir, myArgs.buildPath, myArgs.buildDate, myArgs.result))
     except:
+        import sys
+        exc = sys.exc_info()
+        print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file = sys.stderr)
         dbConnection.rollback()
         hadBarf = True
     finally:
@@ -248,12 +253,7 @@ def updateBuildStatus():
         if not hadBarf:
             dbConnection.commit()
         dbConnection.close()
-    # dbConnection = start_connect(dbConfig)
-    # workCursor = dbConnection.cursor()
-    #
-    # workCursor.callproc('UpdateBatchBuild', (myArgs.batchName,batchVolume,myArgs.buildPath,myArgs.buildDate))
-    # dbConnection.close()
-    # What to do with rc
+
 
 def volumesForBatch( batchFolder : str) -> str:
     """
@@ -287,7 +287,6 @@ def parseByUpdateArgs(argNamespace):
                                       )
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName',required=True)
-    _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
     _parser.add_argument("buildPath", help='Folder containing batch.xml and objects', type=mustExistDirectory)
     _parser.add_argument("result", help='String representing the result')
     _parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',

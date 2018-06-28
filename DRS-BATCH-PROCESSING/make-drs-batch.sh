@@ -190,9 +190,6 @@ function doBatch {
 		if [ ! -f ${targetProjectsRoot}/${batchName}/batch.xml ] ; then
 			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
 			updateBuildStatus $DbConnectionString "${targetProjectsRoot}/${batchName}" "FAIL"
-
-			# We could decide to continue
-			# exit 1;
 		else
 		    # set up mets
 		    td=$(mktemp -d)
@@ -202,8 +199,6 @@ function doBatch {
 		    # jimk 2018-VI-17
 		    mv  ${targetProjectsRoot}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
 		    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
-
-
 		fi
         # jimk 2018-V-18: this used to be above the last fail.
        cleanUpLogs ${batchName}
@@ -219,7 +214,7 @@ export TIMEFORMAT
 
 OUTPUTHOME=/Volumes/DRS_Staging/DRS/prod/batchBuilds
 
-DBConnectionString='-d prod:~/.drsBatch.config'
+DbConnectionString='-d prod:~/.drsBatch.config'
 
 # Who's running?
 ME=`basename ${0}`
