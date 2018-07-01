@@ -7,7 +7,7 @@ from setuptools import setup
 # ls -l $(dirname $(which getNamedWorks))
 # (py361) jimk@Druk:DBApps$ ls -l $(dirname $(which getNamedWorks))
 # total 312
-#...
+# ...
 # -rwxr-xr-x   1 jimk  staff   413 Jun 19 17:31 getNamedWorks
 # and this is an executable script which wrapps the entry points
 setup(

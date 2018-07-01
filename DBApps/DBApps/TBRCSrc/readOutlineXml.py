@@ -1,10 +1,10 @@
-'''
+"""
 Created on Feb 28, 2018
 
 @author: jsk
 
 @summary: Library to parse input xml
-'''
+"""
 
 from lxml import etree
 
@@ -30,7 +30,8 @@ class OutlineReader:
     #             # TODO: handle node without work. Print RID, text?
     #             pass
 
-    def get_value(self, node, attrName):
+    @staticmethod
+    def get_value(node, attrName):
         """
         @summary Extract the given attributes value and the node's text
         @param node: XML node containing attribute attrName
