@@ -277,6 +277,12 @@ def mustExistDirectory(path : str):
         else:
             return path
 
+def str2date(arg : str) -> datetime.datetime:
+    """
+    parses date given in yyyy-mm-dd
+    """
+    return datetime.datetime.strptime(arg,"%Y-%m-%d")
+
 def parseByUpdateArgs(argNamespace):
     """
     :param argNamespace. class which holds arg values
@@ -290,7 +296,7 @@ def parseByUpdateArgs(argNamespace):
     _parser.add_argument("buildPath", help='Folder containing batch.xml and objects', type=mustExistDirectory)
     _parser.add_argument("result", help='String representing the result')
     _parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',
-                         default=datetime.datetime.now(), type=datetime.datetime)
+                         default=datetime.datetime.now(), type=str2date)
 
     _parser.parse_args(namespace=argNamespace)
 
