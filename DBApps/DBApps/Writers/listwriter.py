@@ -1,10 +1,9 @@
-'''
+"""
 Created on Mar 6, 2018
 
 @author: jsk
-'''
+"""
 from abc import ABCMeta, abstractmethod
-from distutils.sysconfig import _config_vars
 
 
 class ListWriter(metaclass=ABCMeta):
@@ -26,7 +25,7 @@ class ListWriter(metaclass=ABCMeta):
     :param config: opaque configuration
     '''
     def __init__(self, configInfo):
-        self.oConfig = configInfo
+        self._config = configInfo
 
     '''
     :summary: Abstract method to write a list

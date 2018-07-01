@@ -1,1 +1,2 @@
-all = ['config']
+__all__ = ['DBConfigTest']
+
