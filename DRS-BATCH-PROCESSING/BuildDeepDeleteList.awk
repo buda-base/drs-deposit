@@ -10,7 +10,7 @@
 #
 # Renaming BATCH_XML_FAIL to BATCH_XML invokes the load process.
 function Usage() {
-	print "Usage:  BuildRecoveryList -v ARG_OUTDIR=outDirName -v ARG_PREFIX=argPrefix -V ARG_SRCS=filePattern dataFile";
+	print "Usage:  BuildDeepDeleteList -v ARG_OUTDIR=outDirName -v ARG_PREFIX=argPrefix -V ARG_SRCS=filePattern dataFile";
 	print "where ARG_OUTDIR = destination directory for sets of sftp scripts"
 	print "		 ARG_PREFIX is the prefix for sftp scripts"	
 	print "		 ARG_SRCS is the filespec for a set of files which are parsed for batch names to recover - metacharacters "
