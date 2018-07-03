@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 #
-# split the results of getReadyWorks into n files, along work boundaries
+# split the WebAdminResults of getReadyWorks into n files, along work boundaries
 #
 import argparse
 import os
 import pathlib
 
 
-class getArgs:
+class GetSplitWorksArgs:
     """
     Holds command line arguments
     """
@@ -15,7 +15,7 @@ class getArgs:
 
 
 def splitWorks():
-    myArgs = getArgs()
+    myArgs = GetSplitWorksArgs()
     parseArgs(myArgs)
     testArgs(myArgs)
     do_split(myArgs)
@@ -47,7 +47,7 @@ def do_split(args):
     worksThisFile = 0
     currentFileNumber = 0
 
-    #Save the extension
+    # Save the extension
     base, ext = os.path.splitext(args.source)
     outPath, baseName = os.path.split(base)
     # What did this do, other than mess up
@@ -77,8 +77,7 @@ def do_split(args):
             currentOutFile.write(srcLine)
 
 
-
-def buildOutPath(outPath, baseName,currentFileNumber,ext):
+def buildOutPath(outPath, baseName, currentFileNumber, ext):
     """
     Builds a path out of a set of values
     :param outPath:
@@ -96,17 +95,18 @@ def parseArgs(argNamespace):
     """
     _parser = argparse.ArgumentParser(description='Splits the output of getReadyWorks.py into separate files, named '
                                                   'inputfile01, 02, ....',
-                                                   usage="%(prog)s | -n n How many works split.",
+                                      usage="%(prog)s | -n n How many works split.",
                                       epilog='Contents not guaranteed to be equal lengths '
                                              'but they will contain an equal number of works, as much as '
                                              'possible. ** Warning ** first line of file is the header line which '
                                              'this program assumes is the text of the boundary between works.'
                                       )
     _parser.add_argument('-n', '--numFiles', help='how many output files to create', type=int,
-                         default=10,choices=range(1, 9999999))
+                         default=10, choices=range(1, 9999999))
     _parser.add_argument("source", help='Input source')
 
     _parser.parse_args(namespace=argNamespace)
+
 
 def testArgs(args):
     """

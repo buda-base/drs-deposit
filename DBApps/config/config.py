@@ -1,4 +1,4 @@
-'''
+"""
 Created on Mar 7, 2018
 
 Wrapper for a config file whose format is
@@ -17,7 +17,7 @@ Abstracts the databases into aliases, e.g. [dev] [qa], [prod]
 @author: jsk
 
 Properties:
-'''
+"""
 import configparser
 import os
 from pathlib import Path
@@ -47,22 +47,22 @@ class DBConfig:
 
     @property
     def db_host(self):
-        ''' De alias db_alias '''
-        self.test_init
+        """ De alias db_alias """
+        self.test_init()
         return self._configParser[self.db_alias][self.__serverKey]
 
         # --------------------------------------------------------------------------
 
     @property
     def db_cnf(self):
-        '''    MySQL ConfigFile - read only    '''
+        """    MySQL ConfigFile - read only    """
         self.test_init
         return self._configParser[self.__cnfFileSection][self.__cnfKey]
         # --------------------------------------------------------------------------
 
     @property
     def config_file_name(self):
-        '''Config file we are parsing'''
+        """Config file we are parsing"""
         return self._configFQPath
 
     # --------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class DBConfig:
     # Public property db_alias: which config config name you want
     @property
     def db_alias(self):
-        '''The _parser config file's server section'''
+        """The _parser config file's server section"""
         return self._serverSection
 
     @db_alias.setter
@@ -100,7 +100,7 @@ class DBConfig:
 
     # --------------------------------------------------------------------------
     def test_init(self):
-        '''Tests for variable setup before action'''
+        """Tests for variable setup before action"""
         if not self.db_alias \
                 or not self.__serverKey \
                 or not self.__cnfFileSection \

@@ -9,7 +9,7 @@ import os
 import datetime
 
 
-class getArgs:
+class GetReadyWorksArgs:
     """
     Holds command line arguments
     """
@@ -103,7 +103,7 @@ def getResultsByName(dbConfig, outputDir, maxRows):
 
 def getResultsById(dbConfig, outputDir, maxRows:int):
     """
-    Get results and write to directory.
+    Get WebAdminResults and write to directory.
     :param maxRows:
     :param dbConfig:
     :param outputDir:
@@ -142,8 +142,8 @@ def getResultsById(dbConfig, outputDir, maxRows:int):
 
 def getResultsByCount(dbConfig,outputDir, maxWorks: int):
     """
-    Get results and write to directory.
-    :param maxRows:
+    Get WebAdminResults and write to directory.
+    :param maxWorks:
     :param dbConfig:
     :param outputDir:
     :return:
@@ -186,7 +186,7 @@ def start_connect(cfg):
 #
 # ----------------        MAIN     --------------------
 def getReadyWorks():
-    myArgs = getArgs()
+    myArgs = GetReadyWorksArgs()
     parseByDBArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     #
@@ -199,7 +199,7 @@ def getReadyWorks():
     getResultsById(dbConfig, outRoot, myArgs.numWorks)
 
 def getNamedWorks():
-    myArgs = getArgs()
+    myArgs = GetReadyWorksArgs()
     parseByNameArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     #
@@ -213,7 +213,7 @@ def getNamedWorks():
 
 
 def getByCount():
-    myArgs = getArgs()
+    myArgs = GetReadyWorksArgs()
     parseByDBArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     #
@@ -225,12 +225,14 @@ def getByCount():
 
     getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 
+
+# noinspection PyBroadException
 def updateBuildStatus():
     """
     Updates the build status of a work with its date and build directory
     :return:
     """
-    myArgs = getArgs()
+    myArgs = GetReadyWorksArgs()
     parseByUpdateArgs(myArgs)
     dbConfig = setup_config(myArgs.drsDbConfig)
     dbConnection = start_connect(dbConfig)
@@ -306,7 +308,7 @@ def parseByDBArgs(argNamespace):
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName', required=True)
     _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
-    _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
+    _parser.add_argument("resultsRoot", help='Directory containing WebAdminResults. Overwrites existing contents')
 
     _parser.parse_args(namespace=argNamespace)
 
@@ -321,7 +323,7 @@ def parseByNameArgs(argNamespace):
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName')
     _parser.add_argument('-n', '--numWorks', help='how many works to fetch', default=10, type=int)
-    _parser.add_argument("resultsRoot", help='Directory containing results. Overwrites existing contents')
+    _parser.add_argument("resultsRoot", help='Directory containing WebAdminResults. Overwrites existing contents')
 
     _parser.parse_args(namespace=argNamespace)
 

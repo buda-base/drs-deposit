@@ -9,12 +9,10 @@ from typing import Dict
 import csv
 
 
-class results:
-
+class WebAdminResults:
 
     def __init__(self, column_dict: dict):
         self.column_dict = column_dict
-
 
     def extract_data(self, text_line: str) -> object:
         """
@@ -23,7 +21,7 @@ class results:
         :param text_line:
         :return:
         """
-        text_line  = text_line.rstrip('\n')
+        text_line = text_line.rstrip('\n')
         line_beads = text_line.split(self.sep)
         if len(line_beads) < len(self.required_columns):
             raise ValueError("not enough data: " + text_line)
@@ -41,8 +39,9 @@ class results:
         rc = []
         with open(file_name, newline='\n', encoding='utf-8') as csvfile:
             rdr = csv.DictReader(csvfile, dialect='unix')
+            # next(rdr,None)
             for row in rdr:
-                db_parms = {}       # build a list of parms
+                db_parms = {}  # build a list of parms
                 # visualize
                 # for k, v in self.column_dict.items():
                 #     print("k:%s:\t v:%s: r[k]:%s:" % (k,v,row[k]))

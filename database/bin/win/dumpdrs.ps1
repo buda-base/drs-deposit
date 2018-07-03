@@ -25,6 +25,6 @@ $DDLFile = $backupPath + "DDL_only.sqldump"
 #           Along the way, I noticed that the data file also referenced the tables before they were defined.
 #           That's mostly ok, but I took out --no-create-info in the DDL definition
 mysqldump  --login-path=$creds --hex-blob  --result-file=$dataFile $db
-mysqldump  --login-path=$creds --routines  --no-data --triggers --result-file=$DDLFile $db
+mysqldump  --login-path=$creds --routines --no-create-info --no-data --triggers --result-file=$DDLFile $db
 
 
