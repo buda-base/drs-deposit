@@ -14,6 +14,42 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`bdrc`@`%`*/ /*!50003 TRIGGER `drs`.`DRS_BEFORE_INSERT` BEFORE INSERT ON `DRS` FOR EACH ROW
+BEGIN
+	set NEW.volumeId = (select volumeId from Volumes where label = NEW.OSN);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`bdrc`@`%`*/ /*!50003 TRIGGER `drs`.`DRS_BEFORE_UPDATE` BEFORE UPDATE ON `DRS` FOR EACH ROW
+BEGIN
+	set NEW.volumeId = (select volumeId from Volumes where label = NEW.OSN);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Dumping routines for database 'drs'
@@ -31,7 +67,7 @@ DELIMITER ;;
 CREATE DEFINER=`bdrc`@`%` PROCEDURE `AddDRS`(
   IngestDate datetime
   ,  objectid varchar(45) 
-  , objectUrn varchar(45)
+  , objectUrn varchar(72)
   , DRSdir varchar(45) 
   , filesCount int(11) 
   , size bigint(20)
@@ -39,7 +75,7 @@ CREATE DEFINER=`bdrc`@`%` PROCEDURE `AddDRS`(
   )
 BEGIN
   
-INSERT INTO `drs`.`DRS`
+INSERT INTO `DRS`
 (
 `IngestDate`,
 `objectid`,
@@ -94,8 +130,6 @@ BEGIN
 	call AddWork(workName,NULL);
 END;
 END IF;
-
-select workName;
 
 insert into Outlines(workId) values
 ((select workId from Works w where w.workName = workName)) 
@@ -339,6 +373,47 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `PopulateWorkStatusCount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `PopulateWorkStatusCount`()
+BEGIN
+
+declare done boolean default 0;
+declare thisWork INTEGER(11);
+
+declare  wc cursor  for 
+select distinct workId from Works limit 1; 
+
+declare continue handler for SQLSTATE '02000' set done=1;
+
+
+open wc;
+
+read_loop: LOOP
+	fetch wc into thisWork;
+    if done = 1 then 
+		leave read_loop;
+	end if;
+    select * from workStatusCount where workId = thisWork;
+	call UpdateWorkStatus(thisWork);
+END LOOP;
+
+close wc;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `UpdateBatchBuild` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -432,6 +507,148 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateWorkStatus` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `UpdateWorkStatus`(workId INT(11))
+BEGIN
+INSERT INTO `drs`.`workStatusCount`
+(
+`workId`,
+`Volumes`,
+`NumberVolumesBatchQueued`,
+`NumberVolumesBatchBuilt`,
+`NumberVolumesUploadQueued`,
+`NumberVolumesUploaded`
+)
+VALUES
+(
+workId,
+
+-- Volumes
+(select count(1) from Volumes v where v.workId = workId),
+
+-- `NumberVolumesBatchQueued
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is null
+    and bb.TransferQueuedDate is null
+    and bb.TransferCompleteDate is null
+    and d.DRSId is null)
+,
+
+-- `NumberVolumesBatchBuilt`
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is not null
+    and bb.TransferQueuedDate is null
+    and bb.TransferCompleteDate is null
+    and d.DRSId is null)
+    ,
+    
+-- `NumberVolumesUploadQueued`,
+    
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is not null
+    and bb.TransferQueuedDate is not null
+    and bb.TransferCompleteDate is null
+    and d.DRSId is null)
+    ,
+
+
+-- `NumberVolumesUploaded`,
+
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is not null
+    and bb.TransferQueuedDate is not null
+    and bb.TransferCompleteDate is Not null
+    and d.DRSId is null)
+)
+on DUPLICATE KEY 
+UPDATE  
+Volumes = (select count(1) from Volumes v where v.workId = workId),
+
+`NumberVolumesBatchQueued` = (select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is null
+    and bb.TransferQueuedDate is null
+    and bb.TransferCompleteDate is null
+    and d.DRSId is null)
+,
+
+`NumberVolumesBatchBuilt` = 
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is not null
+    and bb.TransferQueuedDate is null
+    and bb.TransferCompleteDate is null
+    and d.DRSId is null)
+    ,
+    
+`NumberVolumesUploadQueued` =     
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is not null
+    and bb.TransferQueuedDate is not null
+    and bb.TransferCompleteDate is null
+    and d.DRSId is null)
+    ,
+
+`NumberVolumesUploaded` =
+(select count(1) from BatchBuilds bb 
+inner join Volumes v using(volumeId) 
+inner join Works w using(workId) 
+left join DRS d using(volumeId)
+	where w.workId = workId
+    and bb.QueuedDate is not null
+    and bb.BuildDate is not null
+    and bb.TransferQueuedDate is not null
+    and bb.TransferCompleteDate is Not null
+    and d.DRSId is null
+    );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `WeeklyStatus` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -511,4 +728,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-29 20:57:47
+-- Dump completed on 2018-07-01 17:13:00
