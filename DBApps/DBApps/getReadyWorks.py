@@ -226,6 +226,26 @@ def getByCount():
     getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 
 
+
+def get_tree_values(path: str) -> Union[int,int]:
+    """Return total size of files in given path and subdirs."""
+
+    total: int = 0
+    fileCount: int = 0
+    subTotal: int = 0
+    subCount: int = 0
+
+    for entry in os.scandir(path):
+        if entry.is_dir(follow_symlinks=False):
+            subTotal, subCount = get_tree_values(entry.path)
+        else:
+            subTotal = entry.stat(follow_symlinks=False).st_size
+            subCount = 1
+        total += subTotal
+        fileCount += subCount
+    return total, fileCount
+
+
 # noinspection PyBroadException
 def updateBuildStatus():
     """
@@ -242,8 +262,10 @@ def updateBuildStatus():
 
     try:
         for volDir in volumesForBatch(myArgs.buildPath):
+            volPath = Path(myArgs.buildPath, volDir)
+            volFiles, volSize = get_tree_values(volPath)
             errVolPersist=volDir
-            uCursor.callproc('UpdateBatchBuild', (volDir, myArgs.buildPath, myArgs.buildDate, myArgs.result))
+            uCursor.callproc('UpdateBatchBuild', (volDir, myArgs.buildPath, myArgs.buildDate, myArgs.result),volFiles,volSizes)
     except:
         import sys
         exc = sys.exc_info()
