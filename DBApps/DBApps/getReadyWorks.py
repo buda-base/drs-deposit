@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import csv
+from typing import Union
 
 from config.config import *
 import pymysql
@@ -226,7 +227,6 @@ def getByCount():
     getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 
 
-
 def get_tree_values(path: str) -> Union[int,int]:
     """Return total size of files in given path and subdirs."""
 
@@ -243,7 +243,7 @@ def get_tree_values(path: str) -> Union[int,int]:
             subCount = 1
         total += subTotal
         fileCount += subCount
-    return total, fileCount
+    return  fileCount, total
 
 
 # noinspection PyBroadException
@@ -262,10 +262,16 @@ def updateBuildStatus():
 
     try:
         for volDir in volumesForBatch(myArgs.buildPath):
-            volPath = Path(myArgs.buildPath, volDir)
+            buildPath = str(Path(myArgs.buildPath).resolve())
+            volPath = Path(buildPath, volDir)
             volFiles, volSize = get_tree_values(volPath)
             errVolPersist=volDir
-            uCursor.callproc('UpdateBatchBuild', (volDir, myArgs.buildPath, myArgs.buildDate, myArgs.result),volFiles,volSizes)
+            uCursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{buildPath}") ;')
+            dbConnection.commit()
+            uCursor.execute(f'update Volumes set builtFileCount = {volFiles}, builtFileSize={volSize} where label = "{volDir}";')
+            dbConnection.commit()
+            uCursor.callproc('UpdateBatchBuild', (volDir, buildPath, myArgs.buildDate, myArgs.result))
+
     except:
         import sys
         exc = sys.exc_info()
