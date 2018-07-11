@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -vx
 #
 # Searches for deposited volumes in the downloaded cumulatie dictionary (from WebAdmin - ! must have been downloaded with
 # optional added column 'volume Directory'
@@ -26,10 +26,14 @@ outFile=${2?"${ME}:Output file must be given."}
 # Take 2: use the dictionary
 export DICT=~/drs-deposit/output/BDRCCumulativeProdDeposits.csv
 
-# YOu can try a heuristic. Here's a known volume build:
+# You may ask: why not just look for a batch directory:
+# Because the batch directories may have different roots, or a 
+# volume may have been built in several batch directories.
+#
+# Heuristic. Here's a known volume build. find its column index
+# in the dictionary
 export PROBE=W00KG02536-I00KG03142
 #
-# Take 2: look for a volume OSN, and
 for idx in $(seq 1 25) ;
 do
     test=$(awk -F',' -v fNum=$idx -v searchTarget=$PROBE '{ if ($fNum == searchTarget) {print fNum}}' $DICT)
@@ -42,7 +46,11 @@ echo $result
 # sometimes there are commas in quoted fields
 awk -F',' -v volumeField=$idx '{print $volumeField }' $DICT | sort -u > DictFields
 
-#
-
-grep -w -v -f DictFields  $buildList | sort -u > $outFile
+# This line only removed the specific lines. It leaves in batches where the line appeared.
+# grep -w -v -f DictFields  $buildList | sort -u > $outFile
+# Change so that it gets all the batch directories which contain one or volumes which are in dict.
+ grep -w -f DictFields volList.txt | xargs -n 1 dirname | sort -u | xargs -n1 basename > batchesWithADeposit
+ # Now scan volList to remove those batches
+ grep -w -v -f batchesWithADeposit volList.txt > $outFile
+ #
 
