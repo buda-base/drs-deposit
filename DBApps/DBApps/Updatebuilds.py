@@ -6,6 +6,7 @@ import datetime
 import subprocess
 import os
 import sys
+import time
 from pathlib import Path
 
 from DBApps.getReadyWorks import updateBuildStatusWrapper
@@ -28,13 +29,12 @@ def doOneDir(batchDir: os.DirEntry):
         dStat = os.stat(batchDir.path)
         dirTime = datetime.datetime.fromtimestamp(dStat.st_ctime)
         print(f"Path {batchDir.path} time {dirTime}")
-        if os.path.exists(Path(batchDir.path,'batch.xml')):
-            updateBuildStatusWrapper('prod:~/.drsBatch.config', batchDir.path, dirTime, "success")
+        result =  "success"  if os.path.exists(Path(batchDir.path,'batch.xml')) else "FAIL"
+        updateBuildStatusWrapper('qa:~/.drsBatch.config', batchDir.path, dirTime, result)
     # subprocess.run(['updateBuildStatus', '-d', ])
 
 if __name__ == '__main__':
 
-    ic = 0
     # Do the newprod first
     # for anent in os.scandir(path='/Volumes/DRS_Staging/DRS/prod/batchBuilds'):
     #     doOneDir(anent)
@@ -42,11 +42,19 @@ if __name__ == '__main__':
     #     if ic == 3:
     #         break
 
-    ic = 0
+    calls = 0
+    monitor_interval = 15
+    etnow = time.perf_counter()
+
     for anent in os.scandir(path='/Volumes/DRS_Staging/DRS/oldprod/batchLinks'):
+
         doOneDir(anent)
-        ic += 1
-        if ic == 3:
-            break;
+
+        calls += 1
+        if calls % monitor_interval == 0:
+            y = time.perf_counter()
+            print(" %d calls   Rate: %5.2f /sec"
+                  % (calls,  monitor_interval / (y - etnow)))
+            etnow = y
 
 
