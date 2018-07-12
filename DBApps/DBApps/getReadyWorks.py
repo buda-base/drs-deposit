@@ -237,7 +237,7 @@ def get_tree_values(path: str) -> Union[int,int]:
 
     for entry in os.scandir(path):
         if entry.is_dir(follow_symlinks=False):
-            subTotal, subCount = get_tree_values(entry.path)
+            subCount, subTotal = get_tree_values(entry.path)
         else:
             subTotal = entry.stat(follow_symlinks=False).st_size
             subCount = 1
@@ -266,16 +266,19 @@ def updateBuildStatus():
             volPath = Path(buildPath, volDir)
             volFiles, volSize = get_tree_values(volPath)
             errVolPersist=volDir
-            uCursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{buildPath}") ;')
+            uCursor.execute(f'insert BuildPaths (BuildPath) VALUES ("{buildPath}") on duplicate key update BuildPath '
+                            f'= "{buildPath}" ;')
             dbConnection.commit()
             uCursor.execute(f'update Volumes set builtFileCount = {volFiles}, builtFileSize={volSize} where label = "{volDir}";')
             dbConnection.commit()
             uCursor.callproc('UpdateBatchBuild', (volDir, buildPath, myArgs.buildDate, myArgs.result))
+            for result in uCursor.fetchall():
+                print(result)
 
     except:
         import sys
         exc = sys.exc_info()
-        print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file = sys.stderr)
+        print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file= sys.stderr)
         dbConnection.rollback()
         hadBarf = True
     finally:
@@ -363,4 +366,4 @@ def parseByNameArgs(argNamespace):
 
 
 if __name__ == '__main__':
-    updateBuildStatus()
+    getReadyWorks()
