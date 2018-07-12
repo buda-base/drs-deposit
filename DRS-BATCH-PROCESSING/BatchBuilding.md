@@ -22,10 +22,10 @@ __WARNING__ This process is slow - approximately 1 minute per 10 works.
 
 **Results**:a file named `Readyworksyymmddhhmmss`
 
-####Split the ready works
+#### Split the ready works
 **Run:** `~/drs-deposit/DBApps/src/splitWorks.py fileName -n` where -n is the number of instances you want to run. For `fileName` use the output of `getReadyWorks.py`
 **Results**: fileName1....fileNameN
-####Build the batches
+#### Build the batches
 Entry point is `runMultiple.sh` which processes the files.
 Typically you'd run it against the splitworks, by using file globbing:
 `./runMultiple.sh filename[1-n]` where the list is the output of the file you listed
