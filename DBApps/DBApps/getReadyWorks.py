@@ -237,7 +237,7 @@ def get_tree_values(path: str) -> Union[int,int]:
 
     for entry in os.scandir(path):
         if entry.is_dir(follow_symlinks=False):
-            subTotal, subCount = get_tree_values(entry.path)
+            subCount, subTotal = get_tree_values(entry.path)
         else:
             subTotal = entry.stat(follow_symlinks=False).st_size
             subCount = 1
@@ -254,28 +254,29 @@ def updateBuildStatus():
     """
     myArgs = GetReadyWorksArgs()
     parseByUpdateArgs(myArgs)
-    dbConfig = setup_config(myArgs.drsDbConfig)
+    updateBuildStatusCore(myArgs.drsDbConfig, myArgs.buildPath,myArgs.buildDate,myArgs.result)
+
+
+def updateBuildStatusCore(config,buildPath,buildDate,result):
+    dbConfig = setup_config(config)
     dbConnection = start_connect(dbConfig)
     uCursor = dbConnection.cursor()
-    hadBarf=False
-    errVolPersist=""
-
+    hadBarf = False
+    errVolPersist = ""
     try:
-        for volDir in volumesForBatch(myArgs.buildPath):
-            buildPath = str(Path(myArgs.buildPath).resolve())
+        for volDir in volumesForBatch(buildPath):
+            buildPath = str(Path(buildPath).resolve())
             volPath = Path(buildPath, volDir)
             volFiles, volSize = get_tree_values(volPath)
-            errVolPersist=volDir
+            errVolPersist = volDir
             uCursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{buildPath}") ;')
             dbConnection.commit()
-            uCursor.execute(f'update Volumes set builtFileCount = {volFiles}, builtFileSize={volSize} where label = "{volDir}";')
-            dbConnection.commit()
-            uCursor.callproc('UpdateBatchBuild', (volDir, buildPath, myArgs.buildDate, myArgs.result))
+            uCursor.callproc('UpdateBatchBuild', (volDir, buildPath, buildDate, result, volFiles,volSize))
 
     except:
         import sys
         exc = sys.exc_info()
-        print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file = sys.stderr)
+        print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file=sys.stderr)
         dbConnection.rollback()
         hadBarf = True
     finally:
@@ -284,6 +285,13 @@ def updateBuildStatus():
             dbConnection.commit()
         dbConnection.close()
 
+
+def updateBuildStatusWrapper(configPath: str, buildPath:str,buildDate: datetime, result: str):
+    """
+    Mocks command line arguments
+    :return:
+    """
+    updateBuildStatusCore(configPath, buildPath,buildDate, result)
 
 def volumesForBatch( batchFolder : str) -> str:
     """
