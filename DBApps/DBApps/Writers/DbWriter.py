@@ -4,6 +4,8 @@ Created on Mar 6, 2018
 @author: jsk
 """
 # base class
+import sys
+
 from DBApps.Writers.listwriter import ListWriter
 
 # Configuration reader
@@ -79,6 +81,8 @@ class DbWriter(ListWriter):
                         pass
                     except Exception:
                         hadBarf = True
+                        exc_type, exc_obj, exc_tb = sys.exc_info()
+                        print(exc_type)
                         if dbConnection is not None:
                             dbConnection.rollback()
                         raise

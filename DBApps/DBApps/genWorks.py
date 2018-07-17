@@ -34,7 +34,17 @@ def genWorks():
     if myArgs.drsDbConfig is None:
         writer = CSVWriter(myArgs.csv)
 
-    writer.write_list(outlines)
+    try:
+        writer.write_list(outlines)
+    except:
+        tt, value, tb = sys.exc_info()
+
+        import traceback
+        print
+        {'exception_value': value,
+         'value': tt,
+         'tb': traceback.format_exception(tt, value, tb)}
+
 
 
 def csv_to_list(file_name: str) -> list:
@@ -77,6 +87,6 @@ def process(textLine):
     if len(beads) >= 2:
         return beads[0], beads[1]
 
-
+# RELM
 if __name__ == '__main__':
     genWorks()
