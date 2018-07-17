@@ -24,8 +24,9 @@ setup(
     entry_points={
         'console_scripts': [
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',
-            'outlines = DBApps.genOutlines:genOutlines',
-            'works = DBApps.genWorks:genWorks',
+            'genOutlines = DBApps.genOutlines:genOutlines',
+            'genWorks = DBApps.genWorks:genWorks',
+            'genVolumes = DBApps.genWorks:genVolumes',
             'getReadies = DBApps.getReadyWorks:getByCount',
             'getNamedWorks = DBApps.getReadyWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
