@@ -371,7 +371,10 @@ while IFS=, read -ra LINE ; do
             imagesDir=${archiveDir}/${RID}/images/${VID}
 
             # jimk 2018-VI-18: Append new with n.
-            batchName=$(printf "%s-%dn" "batch$RID" ${batchesThisWork})
+            # jimk 2018-VII-18: add short hashtag
+	    mdDate=$(date +%H%M%S | md5)
+	    mdDate=${mdDate:0:2}
+            batchName=$(printf "%s-%d-%s" "batch$RID" ${batchesThisWork} $mdDate)
             echo Batch Name: ${batchName} | tee -a  ${logPath}
         fi
         echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
