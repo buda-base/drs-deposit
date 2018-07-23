@@ -160,12 +160,15 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
             # one output file
             fieldNames = ['WorkName', 'HOLLIS', 'Volume', 'OutlineOSN', 'PrintMasterOSN']
             csvwr = csv.DictWriter(fw, fieldNames)
+            print (f'Calling GetReadyVolumes for n = {maxWorks} ')
             workCursor.callproc('GetReadyVolumes', (maxWorks,))
 
             # TestReadyVolumes can return multiple sets
             hasNext: bool = True
             while hasNext:
                 workVolumes = workCursor.fetchall()
+                nVols = len(workVolumes)
+                print('Received {nVols} volumes')
                 if len(workVolumes) > 0:
                     csvwr.writeheader()
                     for resultRow in workVolumes:
@@ -371,4 +374,5 @@ def parseByNameArgs(argNamespace):
 
 
 if __name__ == '__main__':
-    updateBuildStatus()
+   #  updateBuildStatus()
+   getByCount()
