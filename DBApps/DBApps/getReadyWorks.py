@@ -188,7 +188,7 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
             while hasNext:
                 workVolumes = workCursor.fetchall()
                 nVols = len(workVolumes)
-                print('Received {nVols} volumes')
+                print(f"Received {nVols} volumes")
                 if len(workVolumes) > 0:
                     csvwr.writeheader()
                     for resultRow in workVolumes:
