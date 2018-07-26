@@ -8,6 +8,7 @@ import pymysql
 import pathlib
 import os
 import datetime
+import DBApps.Writers.progressTimer
 
 
 class GetReadyWorksArgs:
@@ -110,19 +111,27 @@ def getResultsById(dbConfig, outputDir, maxRows:int):
     :param outputDir:
     :return:
     """
+
+    readyWorkCount = 0
+    fetchedSets = 0
+    readSets = 0
+
     dbConnection = start_connect(dbConfig)
 
     # First, get the list of works for volumes which need uploading
     with dbConnection:
         workCursor: pymysql.cursors = dbConnection.cursor()
 
-        workCursor.execute(f'select distinct workId from ReadyWorksNeedsBuilding \
-        order by workName asc limit {maxRows:d} ;')
+        workCursor.execute(f'select distinct workId from ReadyWorksNotDeposited \
+        order by workName asc ;')
 
         workIdResults: list = workCursor.fetchall()
 
+        readyWorkCount = len(workIdResults)
         workCursor.close()
         workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
+
+        ticker = DBApps.Writers.progressTimer.ProgressTimer(maxRows, 10)
 
         # Build the output path
         outfile: pathlib.Path = pathlib.Path(outputDir) / datetime.datetime.now().strftime("%y%m%e%H%M%S")
@@ -136,10 +145,21 @@ def getResultsById(dbConfig, outputDir, maxRows:int):
                 workCursor.callproc('GetReadyVolumesByWorkId', workTuple)
                 workVolumeResults: list = workCursor.fetchall()
 
+                readSets += 1
+                if len(workVolumeResults) <= 0:
+                    continue
+                # Only count results with fields back
+                fetchedSets += 1
+                assert isinstance(ticker, object)
+                ticker.tick()
+
                 csvwr.writeheader()
                 for resultRow in workVolumeResults:
                     downRow = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
                     csvwr.writerow(downRow)
+                if fetchedSets == maxRows:
+                    break
+    print(f"Total retrieved works: {readyWorkCount}. Read sets: {readSets}.  Fetched sets: {fetchedSets}")
 
 def getResultsByCount(dbConfig,outputDir, maxWorks: int):
     """
@@ -201,6 +221,8 @@ def getReadyWorks():
         os.mkdir(outRoot)
 
     getResultsById(dbConfig, outRoot, myArgs.numWorks)
+    # jimk: try to make a little more visible and less greedy
+    # getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 
 def getNamedWorks():
     myArgs = GetReadyWorksArgs()
@@ -375,4 +397,4 @@ def parseByNameArgs(argNamespace):
 
 if __name__ == '__main__':
    #  updateBuildStatus()
-   getByCount()
+   getReadyWorks()
