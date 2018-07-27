@@ -339,9 +339,8 @@ while IFS=, read -ra LINE ; do
             firstLine=1;
             continue;
     }
-
     RID=${LINE[0]}
-	HID=${LINE[1]}
+    HID=${LINE[1]}
     VID=${LINE[2]}
     OutlineOSN=${LINE[3]}
     PrintMasterOSN=${LINE[4]}
@@ -368,8 +367,6 @@ while IFS=, read -ra LINE ; do
             echo TBRC ${RID} at HOLLIS ${HID} | tee -a  ${logPath}
             java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl hId=${HID} > ${targetConf}
 
-            imagesDir=${archiveDir}/${RID}/images/${VID}
-
             # jimk 2018-VI-18: Append new with n.
             # jimk 2018-VII-18: add short hashtag
 	    mdDate=$(date +%H%M%S | md5)
@@ -377,9 +374,12 @@ while IFS=, read -ra LINE ; do
             batchName=$(printf "%s-%d-%s" "batch$RID" ${batchesThisWork} $mdDate)
             echo Batch Name: ${batchName} | tee -a  ${logPath}
         fi
+
+        imagesDir=${archiveDir}/${RID}/images/${VID}
         echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
         pdsName=${VID}
 
+set +vx
         for f in ${imagesDir}/* ; do
         # cp and rename each image
             fullNm=$(basename ${f})
