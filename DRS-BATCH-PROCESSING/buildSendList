@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#!/bin/bash
 #
 # Do the steps to getting files ready
 # 2018 VI.17 - batches are moved to $RP/batchbuilds on success, and only if no duplicates
@@ -14,10 +14,17 @@ export NODRS=UndepositedVolumes
 export FILESIZES=fileSizes.txt
 export TARGET=../buildList.txt
 
+echo -n "Get builds ...."
 find $PR/batchBuilds -maxdepth 2 -type d -mindepth 2 > $BUILT
+echo "Done"
 # filter before doing anything eser
 [ -f ${BATCH_EXCLUDE_LIST} ] && { grep -v -f ${BATCH_EXCLUDE_LIST} $BUILT >  $VOLUMES ; } || { mv $BUILT  $VOLUMES ;  }
+echo -n "Remove Deposited Paths...."
 RemoveDepositedVolumePaths.sh $VOLUMES  UndepositedVolumes
+echo "Done"
+echo -n "Get Cumulative built file counts...."
  GetCumBuiltFileCounts.sh $NODRS > $FILESIZES
-
+echo "Done"
+echo -n "Get first 250000....."
 awk  -F'[|]' '{ if ( $3 < 250000) print $1 }' $FILESIZES | xargs -n 1 dirname | sort -u >  $TARGET
+echo "Done"

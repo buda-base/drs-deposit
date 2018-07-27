@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#!/bin/bash
 #
 # Searches for deposited volumes in the downloaded cumulatie dictionary (from WebAdmin - ! must have been downloaded with
 # optional added column 'volume Directory'
