@@ -355,7 +355,7 @@ def parseByUpdateArgs(argNamespace):
     """
     _parser = argparse.ArgumentParser(description='Updates the build status of a work with its build path and build date '
                                                   'name', usage="%(prog)s | -d DBAppSection:DbAppFile "
-                                                                "workName buildPath buildDate"
+                                                                "buildPath result [buildDate]"
                                       )
     _parser.add_argument('-d', '--drsDbConfig',
                          help='specify section:configFileName',required=True)
