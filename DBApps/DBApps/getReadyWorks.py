@@ -122,8 +122,9 @@ def getResultsById(dbConfig, outputDir, maxRows:int):
     with dbConnection:
         workCursor: pymysql.cursors = dbConnection.cursor()
 
-        workCursor.execute(f'select distinct workId from ReadyWorksNotDeposited \
-        order by workName asc ;')
+        workCursor.execute(f'select distinct rwnd.workId from ReadyWorksNotDeposited rwnd \
+                            join Volumes v on (rwnd.Volume = v.label) \
+                            where not v.Queued order by workName asc limit {maxRows} ;')
 
         workIdResults: list = workCursor.fetchall()
 
@@ -159,7 +160,7 @@ def getResultsById(dbConfig, outputDir, maxRows:int):
                     csvwr.writerow(downRow)
                 if fetchedSets == maxRows:
                     break
-    print(f"Total retrieved works: {readyWorkCount}. Read sets: {readSets}.  Fetched sets: {fetchedSets}")
+    print(f"Total retrieved work Ids: {readyWorkCount}. Read sets: {readSets}.  Fetched sets: {fetchedSets}")
 
 def getResultsByCount(dbConfig,outputDir, maxWorks: int):
     """
@@ -182,6 +183,7 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
             csvwr = csv.DictWriter(fw, fieldNames)
             print (f'Calling GetReadyVolumes for n = {maxWorks} ')
             workCursor.callproc('GetReadyVolumes', (maxWorks,))
+            tt = DBApps.Writers.progressTimer.ProgressTimer(maxWorks, 5)
 
             # TestReadyVolumes can return multiple sets
             hasNext: bool = True
@@ -189,6 +191,7 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
                 workVolumes = workCursor.fetchall()
                 nVols = len(workVolumes)
                 print(f"Received {nVols} volumes")
+                tt.tick()
                 if len(workVolumes) > 0:
                     csvwr.writeheader()
                     for resultRow in workVolumes:
@@ -220,9 +223,9 @@ def getReadyWorks():
     if not os.path.exists(outRoot):
         os.mkdir(outRoot)
 
-    getResultsById(dbConfig, outRoot, myArgs.numWorks)
+    # getResultsById(dbConfig, outRoot, myArgs.numWorks)
     # jimk: try to make a little more visible and less greedy
-    # getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
+    getResultsByCount(dbConfig, outRoot, myArgs.numWorks)
 
 def getNamedWorks():
     myArgs = GetReadyWorksArgs()
