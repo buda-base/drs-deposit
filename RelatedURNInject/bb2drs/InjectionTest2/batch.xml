@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.13" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
+    <name>FHCL.COLL_InjectionTest2_20180727_163039</name>
+    <date>2018-07-27T16:30:39.232-04:00</date>
+    <depositAgent>10684323</depositAgent>
+    <depositAgentUri>http://id.lib.harvard.edu/wordshack/person/160177</depositAgentUri>
+    <contactInfo>
+        <successEmail>jimk@tbrc.org</successEmail>
+        <failureEmail>jimk@tbrc.org</failureEmail>
+        <successMethod>dropbox</successMethod>
+    </contactInfo>
+    <add>
+        <object md5="2bc81356b7047cf34a6a26b1f034f672">INjectionTestWithtemplateFiles/descriptor.xml</object>
+    </add>
+</batch>
