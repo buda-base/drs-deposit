@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creatingAppName="Batch Builder" creatingAppVersion="2.2.13" xsi:noNamespaceSchemaLocation="http://hul.harvard.edu/ois/xml/xsd/drs/drs_batch2.xsd">
-    <name>FHCL.COLL_InjectionTest1_20180727_133359</name>
-    <date>2018-07-27T13:33:59.880-04:00</date>
+    <name>FHCL.COLL_OutlineOnly_20180730_125814</name>
+    <date>2018-07-30T12:58:14.609-04:00</date>
     <depositAgent>10684323</depositAgent>
-    <depositAgentUri>http://id.lib.harvard.edu/wordshack/person/160177</depositAgentUri>
+    <depositAgentUri>http://idtest.lib.harvard.edu:9020/wordshack/person/78504</depositAgentUri>
     <contactInfo>
         <successEmail>jimk@tbrc.org</successEmail>
         <failureEmail>jimk@tbrc.org</failureEmail>
-        <successMethod>dropbox</successMethod>
+        <successMethod>all</successMethod>
     </contactInfo>
     <add>
-        <object md5="e3caf549a3e8447a76f9a139eb9e1957">buildAnObject/descriptor.xml</object>
+        <object md5="58597b9b2e402410de9d42faca57a724">Outline1/descriptor.xml</object>
     </add>
 </batch>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="pds document">
+    <directory name="Outline1">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="FHCL.COLL"/>
+            <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
+            <property name="accessFlag" value="R"/>
+            <property name="adminCategory" value="Tibetan Buddhist Resource Center (id=78744)"/>
+            <property name="producer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            <property name="relatedLinks" value="Relationship=Outline --- URI=urn-3:HUL.DRS.OBJECT:694028"/>
+            <property name="harvardMetadataLinks" value="Type=Aleph --- Identifier=hollis-id --- Label=HOLLIS-ID"/>
+            <property name="relatedLinks" value="Relationship=PrintMaster --- URI=PrintMasterURI"/>
+        </metadataCategory>
+        <metadataCategory name="nrsPDSMetadata">
+            <property name="objectResourceNamePattern" value="{n}"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="urnAuthorityPath" value="FHCL"/>
+            <property name="resourceNamePattern" value="{n}"/>
+        </metadataCategory>
+        <metadataCategory name="importMetadata">
+            <property name="alephID" value="14253172"/>
+        </metadataCategory>
+        <directory name="image">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="HIGHUSE"/>
+                <property name="fileAdminCategory" value="Tibetan Buddhist Resource Center (id=78744)"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=22344)"/>
+            </metadataCategory>
+            <metadataCategory name="pdsDocumentImageFileMetadata">
+                <property name="filerole" value="DELIVERABLE"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>
