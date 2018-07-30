@@ -39,6 +39,23 @@ where bp.buildPathId in (
 and DRSId is null ;
 ;
 
+select database();
+-- now get the deposit records for the same
+select count(distinct DRSDir) from DRS d
+join Volumes v using(volumeId) 
+join BatchBuilds b using(batchBuildId)
+where b.buildPathId in (
+	select buildPathId from (
+		SELECT  bb2.buildPathId, count(v3.label) as vols 
+		FROM drs.BatchBuilds bb2 
+		join BuildPaths bp2 using(buildPathId) 
+		join Volumes v3 using (batchBuildId)
+		where bb2.Result = "success"
+		and bp2.BuildPath like '%batchBuilds%'
+        group by bb2.BuildPathId) vv
+        where vv.vols > 1
+        ) ;
+
 -- NOW, Get me only the buildpath Ids. These are the 
 -- buildPaths which have not been deposited, and need to be wiped out.
 -- the volume ids of the above.
