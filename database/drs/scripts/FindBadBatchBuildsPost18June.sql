@@ -57,10 +57,10 @@ where b.buildPathId in (
         ) ;
 
 -- NOW, Get me only the buildpath Ids. These are the 
--- buildPaths which have not been deposited, and need to be wiped out.
--- the volume ids of the above.
--- and were built by the bogus program (like '%batchBuilds%')
--- AND have not been deposited.
+-- - buildPaths which have not been deposited, and need to be wiped out.
+-- - the volume ids of the above.
+-- - and were built by the bogus program (like '%batchBuilds%')
+-- - AND have not been deposited.
 SELECT distinct BuildPath --  , v.volumeId -- v.label, ,v.builtFileCount 
 FROM drs.BatchBuilds bb 
 join BuildPaths bp using(buildPathId) 
