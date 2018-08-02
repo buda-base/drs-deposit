@@ -1,0 +1,45 @@
+#! /bin/bash
+#
+# Build scripts to monitor ingestion process
+#
+# Assumes a track file, a file of drsUser|buildListFileName commands
+#
+# TODO: Change the sed argument to a parameter, e.g. to fetch the contents
+function pct() {
+    return $(awk -Vl=$1 -Vt=$2 'printf("%s %s", l, 100 * l / t}') 
+}
+
+function report () {
+    totalTries=$(cat $1 | wc -l)
+    loads=$(grep LOADREPORT $1 | wc -l)
+    proc=$(grep ING $1 | wc -l)
+    fails=$(grep xml.failed $1 | wc -l)
+    printf "Runs %d\nLoads:\t%s\nIn Process\t%s\nFails:\t %s\n" \
+	$((totalTries)) \
+	pct $loads  $totalTries \
+	pct $proc $totalTries \
+	pct $fails $totaltries
+}
+
+ERR_BATCHES=${1:-buildList.UploadTrack.lst}
+
+[ ! -f $ERR_BATCHES ] && { echo "$ERR_BATCHES not found." ; exit 1; }
+
+uu=($(cut -f1 -d'|' $ERR_BATCHES  | sort -u))
+
+results=DRSDep$(date +%H%M%S).log
+# 
+# send each users batches to their own script
+for drsUser in ${uu[@]} ; do 
+    scanCmds=${drsUser}cmds
+    # get the basename of all the paths in the 
+    buildList=$(grep -w $drsUser $ERR_BATCHES | cut -f2 -d'|')
+    while read ff ; do basename $ff ; done < $buildList   | sed -e 's:^:-ls /incoming/:' > $scanCmds
+
+echo -n "Fetching....$drsUser"
+sftp -i ~/ppk/DrsDropQa.ppk -b $scanCmds ${drsUser}@drs2drop.lib.harvard.edu > $results
+echo "Done"
+done
+
+report $results
+
