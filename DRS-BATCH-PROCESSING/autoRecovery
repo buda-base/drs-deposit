@@ -1,4 +1,4 @@
-#! /usr/bin/env bash -vx
+#! /usr/bin/env bash
 #
 # Recovery mode
 #
@@ -21,11 +21,15 @@ BUILD_LIST_SPEC='buildList*.txt'
 ERR_BATCH_USER_PAIRS=errbatchUsers.dat
 export ERR_BATCHES=dontBuildBatches.txt
 
+#
+# First get some stats before we try to repair
+$ddc/runningDepositStatus
+
 
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
-#
 # get the user and the batch
 grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $ERR_BATCH_USER_PAIRS
+
 
 # Save the batches only to a well known place
 cut -f2 -d'|' $ERR_BATCH_USER_PAIRS > $ERR_BATCHES
