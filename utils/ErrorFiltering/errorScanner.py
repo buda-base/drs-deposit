@@ -5,7 +5,6 @@ Created on Jan 1, 2018
 '''
 
 import fileinput
-import posixpath
 from ErrorFiltering import errorBead
 
 
