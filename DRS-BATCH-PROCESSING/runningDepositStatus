@@ -2,7 +2,9 @@
 #
 # Build scripts to monitor ingestion process
 #
-# Assumes a track file, a file of drsUser|buildListFileName commands
+# Requires: 
+#       Assumes a track file, a file of drsUser|buildListFileName commands
+#       the files that the build list represents
 #
 # TODO: Change the sed argument to a parameter, e.g. to fetch the contents
 
@@ -30,7 +32,7 @@ results=DRSDep$(date +%H%M%S).log
 # 
 # send each users batches to their own script
 for drsUser in ${uu[@]} ; do 
-    scanCmds=${drsUser}cmds
+    scanCmds=rDS${drsUser}cmds
     # get the basename of all the paths in the 
     buildList=$(grep -w $drsUser $ERR_BATCHES | cut -f2 -d'|')
     while read ff ; do 
@@ -42,4 +44,6 @@ for drsUser in ${uu[@]} ; do
 done
 
 report $results
+tar -c $results rDS*cmds > runDepTar
+rm -f $results rDS*cmds
 

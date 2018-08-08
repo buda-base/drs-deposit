@@ -23,7 +23,7 @@ export ERR_BATCHES=dontBuildBatches.txt
 
 #
 # First get some stats before we try to repair
-$ddc/runningDepositStatus
+$ddc/runningDepositStatus 2>&1 | tee -a statusLog
 
 
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
