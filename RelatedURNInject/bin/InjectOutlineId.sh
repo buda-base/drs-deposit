@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -vx
 # Arrange mock
 MEPATH=$dd/RelatedURNInject/bin
 export outPath=$dd/RelatedURNInject/output/
@@ -20,7 +20,11 @@ export BB_LEVEL=$QA_BB_LEVEL
 prodNRS=https://nrs.lib.harvard.edu/
 qaNRS=https://nrs-qa.lib.harvard.edu/
 
-export HUL_NRS_RESOLVER_URL=${BB_LEVEL}NRS
+
+levels=${BB_LEVEL}NRS
+export HUL_NRS_RESOLVER_URL=${!levels}
+
+
 ##################################################
 
 export iCt=0
@@ -28,15 +32,17 @@ export iCt=0
 while IFS=: read -ra lineArgs ; do
     printMasterURI=
     outlineURI=
-    [ ! -z "${lineArgs[0]}" ] && { outlineURI=${HUL_NRS_RESOLVER_URL}${lineArgs[0]} ; } ||
+    [ ! -z "${lineArgs[0]}" ] && { outlineURI=${HUL_NRS_RESOLVER_URL}${lineArgs[0]} ; }
     [ ! -z "${lineArgs[1]}" ] && { printMasterURI=${HUL_NRS_RESOLVER_URL}${lineArgs[1]} ; }
 
     ((iCt++))
     echo   ${outPath}${iCt}${targetConf}
     java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl outlineURI=${outlineURI}  printMasterURI=${printMasterURI} hId=${HID}  > ${outPath}${iCt}${targetConf}
 done << YOW
-outline1:pm1
-outlineOnly
 :pmOnly
+outlineOnly
+outline:pm
 
 YOW
+
+
