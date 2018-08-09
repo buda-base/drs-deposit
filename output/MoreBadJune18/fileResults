@@ -1,0 +1,9 @@
+jimk@hulwhwks1383098:MoreBadJune18$ comm -23 sResBatchName sAllBuildsFromWebAdmin  > wc
+jimk@hulwhwks1383098:MoreBadJune18$ rm wc
+jimk@hulwhwks1383098:MoreBadJune18$ comm -23 sResBatchName sAllBuildsFromWebAdmin  | wc
+     168     168    3108
+jimk@hulwhwks1383098:MoreBadJune18$ comm -12 sResBatchName sAllBuildsFromWebAdmin  | wc
+     301     301    5249
+jimk@hulwhwks1383098:MoreBadJune18$ comm -13 sResBatchName sAllBuildsFromWebAdmin  | wc
+    9407    9407  158274
+jimk@hulwhwks1383098:MoreBadJune18$
