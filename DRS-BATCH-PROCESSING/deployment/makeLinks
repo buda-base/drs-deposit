@@ -1,0 +1,26 @@
+#!/usr/bin/env bash -v
+while read alink ; do
+      echo rm -f ./$alink
+      [ -f ../$alink ] && { ln -s ../$alink . ; } || { ln -s ../parallelBatch/$alink . ; }
+done << YOW
+GetCumBuiltFileCounts.sh
+splitWorks.sh
+setupErrorLog.sh
+ftpMultiple.sh
+makeOneDrs.sh
+findNewerBatches.sh
+make-drs-outline.sh
+findBatchInWorksList.sh
+BuildDeepDeleteList.awk
+echoCat.sh
+countUnderwayJobs.sh
+countBatchesByTime.sh
+deleteAlreadyDepositedSFTP.sh
+fixOneBatch.sh
+topStats.sh
+buildSendList
+runMultiple.sh
+parseMail.awk
+tojsondimensions.py
+BuildDeepDeleteList.sh
+YOW

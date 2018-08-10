@@ -1,0 +1,1 @@
+../deleteAlreadyDepositedSFTP.sh
