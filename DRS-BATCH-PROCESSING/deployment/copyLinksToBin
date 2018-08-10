@@ -21,8 +21,8 @@ read -p "Press enter to deploy this branch, any other key to quit." okGo
 
 mybin=${1:-"~/bin"}
 
-ls -l | awk -F' ' -v mybin=${mybin} '{print "cp -v ", $NF, mybin}' > .tmp
-source .tmp
+find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -v ", $NF, mybin}' > .tmp
+source  .tmp
 rm .tmp
 #
 # Back, back, return from whence ye came

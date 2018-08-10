@@ -1,1 +1,1 @@
-../parallelBatch/tojsondimensions.py
+../tojsondimensions.py

@@ -1,1 +1,1 @@
-../makeOneFtp.sh
+../parallelBatch/makeOneFtp.sh
