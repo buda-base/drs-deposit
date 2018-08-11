@@ -1,0 +1,1 @@
+../parallelBatch/ftpMultiple.sh
