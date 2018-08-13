@@ -20,7 +20,7 @@ def getworkstest():
     # --d dev:drsBatch
     # which is a shorthand for ../../../conf/drsBatch.config.
     # See config.DbConfig
-    cfgPath = Path(__file__).parent.parent.parent / 'conf' / 'drsBatch.config'
+    cfgPath = Path(__file__).parent.parent / 'conf' / 'drsBatch.config'
     if cfgPath.is_file():
         print('yes')
     cfg = config.DBConfig('prod', str(cfgPath))
