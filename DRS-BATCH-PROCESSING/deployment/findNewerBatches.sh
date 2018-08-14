@@ -1,1 +1,1 @@
-../parallelBatch/findNewerBatches.sh
+../findNewerBatches.sh

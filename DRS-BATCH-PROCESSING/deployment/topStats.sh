@@ -1,1 +1,1 @@
-../parallelBatch/topStats.sh
+../topStats.sh

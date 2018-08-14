@@ -1,1 +1,1 @@
-../parallelBatch/runMultiple.sh
+../runMultiple.sh

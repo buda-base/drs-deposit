@@ -1,1 +1,0 @@
-../RunSerialFtp.sh

@@ -185,11 +185,11 @@ function doBatch {
         #  DO REAL WORK
         # Note I'm deliberately redirecting all output to log file - this is a noisy process.
 		echo ${bb} -a build -p ${targetProjectsRoot} -b ${batchName}   | tee -a ${logPath}
-        $bb -a build -p $targetProjectsRoot -b $batchName >> $logPath 2>&1
+        ${bb} -a build -p ${targetProjectsRoot} -b ${batchName} >> ${logPath} 2>&1
 
 		if [ ! -f ${targetProjectsRoot}/${batchName}/batch.xml ] ; then
 			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			updateBuildStatus $DbConnectionString "${targetProjectsRoot}/${batchName}" "FAIL"
+			updateBuildStatus ${DbConnectionString} "${targetProjectsRoot}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
 		    td=$(mktemp -d)
@@ -197,8 +197,8 @@ function doBatch {
 		    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
 		    # jimk 2018-VI-17
-		    mv  ${targetProjectsRoot}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
-		    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
+		    mv  ${targetProjectsRoot}/${batchName} ${OUTPUTHOME}  2>&1 | tee -a ${logPath}
+		    updateBuildStatus ${DbConnectionString} "${OUTPUTHOME}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
         # jimk 2018-V-18: this used to be above the last fail.
        cleanUpLogs ${batchName}
@@ -379,7 +379,6 @@ while IFS=, read -ra LINE ; do
         echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
         pdsName=${VID}
 
-set +vx
         for f in ${imagesDir}/* ; do
         # cp and rename each image
             fullNm=$(basename ${f})

@@ -1,1 +1,1 @@
-../parallelBatch/makeOneDrs.sh
+../makeOneDrs.sh

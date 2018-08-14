@@ -1,1 +1,1 @@
-../parallelBatch/countUnderwayJobs.sh
+../countUnderwayJobs.sh

@@ -1,1 +1,1 @@
-../parallelBatch/echoCat.sh
+../echoCat.sh

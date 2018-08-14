@@ -1,1 +1,1 @@
-../parallelBatch/findBatchInWorksList.sh
+../findBatchInWorksList.sh

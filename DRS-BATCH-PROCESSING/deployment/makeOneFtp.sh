@@ -1,1 +1,0 @@
-../parallelBatch/makeOneFtp.sh

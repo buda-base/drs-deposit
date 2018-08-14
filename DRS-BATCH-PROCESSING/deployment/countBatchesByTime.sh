@@ -1,1 +1,1 @@
-../parallelBatch/countBatchesByTime.sh
+../countBatchesByTime.sh

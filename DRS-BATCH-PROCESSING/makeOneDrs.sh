@@ -28,11 +28,6 @@ Before using:
 
 	WORKS_SOURCE_HOME	Where the works live. Parent of folders named W......
 
-	DRS_CODE_HOME		Where the DRS processing scripts live: typically,
-						the subdirectory DRS-BATCH-PROCESSING of your local
-						repository of
-						https://github.com/BuddhistDigitalResourceCenter/drs-deposit
-
 	BATCH_OUTPUT_HOME	Where completed batches go.
 						Under this folder are Batch Builder projects, each one
 						corresponding to one work list.
@@ -67,7 +62,6 @@ function prepBBHome {
 
 # Some constants
  WORKS_SOURCE_HOME=/Volumes/Archive
- DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
  BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/prod/$(date +%Y%m%d)
  BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
  #
@@ -79,6 +73,7 @@ function prepBBHome {
 
 
 ME=$(basename $0)
+MEDIR=$(dirname $0)
 
 if (( $# != 3)); then
 	Usage
@@ -122,8 +117,8 @@ batchRoot=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
 prepBBHome
 
 # Invoke the build in the background
-  ${DRS_CODE_HOME}/${MAKEDRS} \
-	"$1" ${DRS_CODE_HOME}/BB_tbrc/BB_tbrc2drs $batchRoot \
+  ${MAKEDRS} \
+	"$1" ${MEDIR}/BB_tbrc2drs $batchRoot \
 	$WORKS_SOURCE_HOME ${BB_HOME}  &
 #
 # Capture its pid and mark as underway

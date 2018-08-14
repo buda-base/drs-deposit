@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 #
-# Run this in a Druk:~jimk/bin/links.
-# That folder contains links to all the code you need 
-# to build batches. However, because I switch git branches,
-# I need to keep a stable set of binaries.
-# Formerly these were linked to ~jimk/bin, which was in my path.
+# copyLinksToBin
+# Arguments:
+# destFolder  (default ~/bin)
+# Requires:
+# * dd env var, pointing to the root of the local drs-deposit 
+# repository
 #
-#
-# Requirements:
-#
-# * define dd=root of your local git repository
-# * For me on Druk, that's ~/drs-deposit
-# * ~/bin/links. A folder of links to the code. See Druk:~jimk/bin/links
+# * $dd/DRS-BATCH-PROCESSING/deployment (which should be in the repository)
+# * the destination folder (~/bin default)
+
+mybin=${1:-~/bin}
+
+[ ! -d ${mybin} ] && { echo ${mybin} not found ; exit 1 ; }
+
+[ ! -w ${mybin} ] && { echo ${mybin} not writable ; exit 1 ; }
+
 
 pushd $dd/DRS-BATCH-PROCESSING/deployment
 git branch
@@ -19,9 +23,9 @@ read -p "Press enter to deploy this branch, any other key to quit." okGo
 
 [ ! -z "$okGo" ] && exit 1
 
-mybin=${1:-"~/bin"}
+pushd $dd/DRS-BATCH-PROCESSING/deployment
 
-find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -v ", $NF, mybin}' > .tmp
+find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -vrp ", $NF, mybin}' > .tmp
 source  .tmp
 rm .tmp
 #

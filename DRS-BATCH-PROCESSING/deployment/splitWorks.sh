@@ -1,1 +1,1 @@
-../parallelBatch/splitWorks.sh
+../splitWorks.sh
