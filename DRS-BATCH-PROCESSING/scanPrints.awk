@@ -1,81 +1,58 @@
 #!/usr/bin/awk -f
 #
-# Parse a series of email messages for error texts
-# Each message boundary is defined to be on the email 'Date' header
+# Usage scanPrints <input file>
+# Where Input file contains records, one per line
+# in the form <ParentDir>*/WorkName/<oneMoreFolder>
+# which represent an existing directory.
+# scanPrints.awk  saves the list of files in that directory
+# into an array 'printmasters'
+# and then reads the output of 'ls /Volumes/Archive/WorkName/images for
+# its folders
+# It then prints out
+# printmasters[i]
 #
-# Output format is pipe ( | ) delimited fields
-# containing
-# Report Date | ReportID (DRS generated) | depositing User | batch directory | error text
-#
-# Batch directory locates the batch on the source tree
+# Parse a series of directory listings to compare messages for error texts
 
-#
-# Begin an error text capture cycle
-function initCycle(){
-    thisDate = "";
-    thisUser = "";
-    thisBatchDir="";
-    thisError="";
-    thisReportId="";
-    return 1
-}
-#
-# Print pipe sep fields (text has colons)
-# print ReportId, date, user, batchDirectory,Message 
-function dumpCycle(inCycle) { 
-    if (inCycle) {
-	printf("%s|%s|%s|%s|%s|",
-	       thisDate ,
-	       thisReportId,
-	       thisUser ,
-	       thisBatchDir,
-	       thisError);
-	print outString;
+function push(A,B) { A[length(A)+1] = B }
+function min(a,b) { if (b > a) return a ; else return b}
+function max(a,b) { if (b < a) return a ; else return b}
+
+function saveLs(dir,saveTo)
+{
+   cmd = "ls " "'"dir"'"
+   while ( ( cmd | getline result ) > 0 ) {
+        push(saveTo,  result)
     }
-    return  0;
+    close(cmd)
 }
 
-# trim leading and trailing whitespace
-# Thank you Dr. Stack
-# https://stackoverflow.com/questions/20600982/trim-leading-and-trailing-spaces-from-a-string-in-awk
-function chop(inp){
-    gsub(/^[ \t]+|[ \t]+$/,"",inp);
-    return inp;
-}
 
-BEGIN {
-    FS=":";
-    userLabel = "^Drop Box";
-    batchLabel = "^Batch Directory";
-    errLabel = "^Message";
-    dateLabel= "^Date";
-    reportIdLabel = "^Report ID";
-
-# Init without setting state
-    initCycle();
-    cycle = 0;
-
+BEGIN{
+    # make sure we have an array
+    delete printmasters[0]
+    delete worksVolumes[0]
+    delete pmpaths[0]
 }
 {
 
-    if ($0 ~ dateLabel ) {
-	dumpCycle(cycle);
-	cycle = initCycle();
-	thisDate = chop(substr($0,length(dateLabel)+1));
-    }
-   
-    if ($0 ~ userLabel ) { thisUser = chop($2) ;}
-    if ($0 ~ batchLabel ) { thisBatchDir = chop($2) ; }
-    if ($0 ~ reportIdLabel ) { thisReportId = chop($2) ; }
-    if ($0 ~ errLabel) {getline ; thisError = chop($0) ;}
-
-#     if ($0 ~ userLabel ) { thisUser = $2 ;}
-# if ($0 ~ userLabel ) { thisUser = $2 ;}
-#     ($0 ~ batchLabel ) { print "Found a batch_"op"_ val="$2"_"};
-#     if ($0 ~ errLabel) {getline ; errMessage = $0 ;  print "Found an error _"op"_ val=" errMessage; };
+# For each
+    delete printmasters
+    delete worksVolumes
 
 
-}
-END {
-    dumpCycle(1);
+    saveLs($0,printmasters)
+
+    # Get the list of volumes
+    split($0,pmpaths,"/")
+    work = pmpaths[length(pmpaths)-1]
+    workPath = "/Volumes/Archive/"  work "/images"
+    # printf("length(pmpaths)=%d\twork Path = %s work=%s\n", length(pmpaths), workPath, work)
+    saveLs(workPath,worksVolumes)
+    # no such thing as array bounds exception
+    # print "pmlength =", length(printmasters) ,"wVlength = ", length(worksVolumes)
+    longest = max(length(printmasters),length(worksVolumes))
+    print $0,workPath
+    for (i=0;i<longest;i++){
+       printf("\t%s\t%s\n", printmasters[i],worksVolumes[i])
+        }
 }
