@@ -17,6 +17,8 @@ The builder of the DRS object can specify any number of related links in the bat
 DRS has no web service API for updating a built batch or deposited documents.
 ## Implementation
 ### Existing workflow
+#### Data flow
+
 See 'DRS Workflows' below for data flow.
 The existing workflow contains three separate, yet equally important, modules:
 * Batch Building Workflow
@@ -26,6 +28,14 @@ The existing workflow contains three separate, yet equally important, modules:
 
 The salient point in the existing workflow is that the URNs for a related file for a batch refer to DRS objects which have already been deposited. The DRS process creates those URNS, and the `DRSUpdate` module adds them to the database, which is the data source for `getReadies`
 
+#### Workflow sequence
+This diagram shows the DRS workflow for Works. The workflow for Outlines and print masters is identical - only some of the processes change:
+- getReadies
+- runMultiple.sh
+
+For Works with outlines and print masters, the last step, `DRSUpdate`, sends the URNs that the deposit process creates back to the database.
+The database maintains the relationship between an outline or print master and its work. That relationship is contained in the data which `getReadies` sends down in the `buildList`
+![DRS Sequence](images/2018/08/DRS Sequence.png)
 ### Changes to existing workflow
 
 Related files only changes the Batch Building Workflow. The other workflows, 'Record Deposit Status Workflow', and 'Deposit Workflow' already support related files (once a batch has been built, the deposit process is the same for all content models). Changes are required for:
@@ -40,8 +50,11 @@ The system creates a separate batch for each outline. The DRS content model will
 
 [^drsContent] See
     [HUL DRS Documentation: content models](https://wiki.harvard.edu/confluence/pages/viewpage.action?pageId=204385879&preview=/204385879/218248076/public_drs_content_guide.pdf)
+
+
 ##### Print Masters
-The structure of Print Masters in a work parallels the volumes in a work, as shown in this comparison of a print master folder (left) and the associated asset (right) 
+The structure of Print Masters in a work parallels the volumes in a work, as shown in this comparison of a print master folder (left) and the associated asset (right)
+
 ```text
 /Volumes/Assets/WMDL17/W1KG8321/prints /Volumes/Archive/W1KG8321/images
 
@@ -63,13 +76,17 @@ The structure of Print Masters in a work parallels the volumes in a work, as sho
         W1KG8321-I1KG8359-3up.pdf       W1KG8321-I1KG8359
         W1KG8321-I1KG8360-3up.pdf       W1KG8321-I1KG8360
 ```
-In the batch building process, each Volume (right) becomes an object, and the volumes are arbitrarily grouped into batches (each batch only contains Volumes from one Work).
+
+The DRS batch building process (for a work), packages each Volume (right) into an object, and the volumes are arbitrarily grouped into batches. Each batch only contains Volumes from one Work. One work can span several batches.
 The BDRC batch building process does not currently support creating a related link for each Volume to its print master [^tbd]. The plan is to create one DRS object per Work, containing all the Print Masters for that work. The DRS content model for this structure is DOCUMENT (See [^drsContent]).
 
-[^tbd] This can be investigated. There seems to be a workaround in the way an object is constructed.
-The system will create one Print Master batch for each work. The batch will contain Oneob
+The system will create one Print Master batch for each work. The batch will contain one DRS Object which contains all the PrintMaster PDF files (the left column above)
+
+The Print master batches
+
+[^tbd]: This can be investigated. There seems to be a workaround in the way an object is constructed.
 #### Low level build scripts
-For this reason, we'll have to add another low level batch building program will need creation. Ideally, it might support both Outlines and Print Masters, but that is an option, not a requirement - we could create separate routines for each content model. These routines will require:
+For this reason, we'll have to add another low level batch building program. Ideally, it would support both Outlines and Print Masters, but that is an option, not a requirement - we could create separate routines for each content model. These routines will require:
 * Options to `getReadies`: we need to build a separate batch building stream for related files, and for the files they relate to. `getReadies` needs to pass an argument to the database which restricts is domain of inquiry to either Works, or to Outlines or PrintMasters.
 * `project.conf` template (the source from which we create batch building projects)
 ### Changes to database
