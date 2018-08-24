@@ -366,6 +366,7 @@ def parseByUpdateArgs(argNamespace):
 
     _parser.parse_args(namespace=argNamespace)
 
+
 def parseByDBArgs(argNamespace):
     """
     :param argNamespace. class which holds arg values

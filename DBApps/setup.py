@@ -27,7 +27,8 @@ setup(
             'genOutlines = DBApps.genOutlines:genOutlines',
             'genWorks = DBApps.genWorks:genWorks',
             'genVolumes = DBApps.genWorks:genVolumes',
-            'getReadies = DBApps.getReadyWorks:getReadyWorks',
+            'getReadyRelated = DBApps.getReadyWorks:getReadyRelated',
+            'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
             'getNamedWorks = DBApps.getReadyWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
             'updateBuildStatus = DBApps.getReadyWorks:updateBuildStatus'
