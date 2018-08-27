@@ -20,14 +20,14 @@ class TestHappyPath(unittest.TestCase):
     __expectedMySqlConfigFile = "HibbityHabbityHoopstyfreen"
     __expectedSection1 = 'section1'
     __expectedSection1Value = 'somethingOrOther'
-    # These lifted from config.py
+    # These lifted from dbConfig.py
     __serverKey = 'server'
     __cnfFileSection = 'mysql'
     __cnfKey = 'mySqlCnfPath'
 
     def setUp(self):
         """
-        Create a conforming config file
+        Create a conforming dbConfig file
         """
 
         with open(self.__goodFile, "w") as cfg:

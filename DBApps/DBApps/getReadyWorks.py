@@ -20,7 +20,7 @@ class GetReadyWorksArgs:
 
 def setup_config(drsDbConfig: str) -> DBConfig:
     """
-    gets config values for setup
+    gets dbConfig values for setup
     :param drsDbConfig: in section:file format
     :return:
     """
@@ -171,6 +171,7 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
     :return:
     """
     dbConnection = start_connect(dbConfig)
+    # TODO: SSDictCursor? Each result set is small, but there are many of them
     workCursor = dbConnection.cursor(pymysql.cursors.DictCursor)
 
     with dbConnection:
@@ -185,7 +186,7 @@ def getResultsByCount(dbConfig,outputDir, maxWorks: int):
             workCursor.callproc('GetReadyVolumes', (maxWorks,))
             tt = DBApps.Writers.progressTimer.ProgressTimer(maxWorks, 5)
 
-            # TestReadyVolumes can return multiple sets
+            # ReadyVolumes can return multiple sets
             hasNext: bool = True
             while hasNext:
                 workVolumes = workCursor.fetchall()

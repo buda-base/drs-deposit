@@ -30,7 +30,7 @@ def doOneDir(batchDir: os.DirEntry):
         dirTime = datetime.datetime.fromtimestamp(dStat.st_ctime)
         print(f"Path {batchDir.path} time {dirTime}")
         result =  "success"  if os.path.exists(Path(batchDir.path,'batch.xml')) else "FAIL"
-        updateBuildStatusWrapper('qa:~/.drsBatch.config', batchDir.path, dirTime, result)
+        updateBuildStatusWrapper('qa:~/.drsBatch.dbConfig', batchDir.path, dirTime, result)
     # subprocess.run(['updateBuildStatus', '-d', ])
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 """
 Created on Mar 7, 2018
 
-Wrapper for a config file whose format is
+Wrapper for a dbConfig file whose format is
 [mysql]
-mySqlCnfPath = "a MySql conformant config file"
+mySqlCnfPath = "a MySql conformant dbConfig file"
 
 [dbName1]
 server = <section in the file specified in [mysql]['mySqlCnfPath']
@@ -80,10 +80,10 @@ class DBConfig:
 
     # --------------------------------------------------------------------------
     #
-    # Public property db_alias: which config config name you want
+    # Public property db_alias: which dbConfig dbConfig name you want
     @property
     def db_alias(self):
-        """The _parser config file's server section"""
+        """The _parser dbConfig file's server section"""
         return self._serverSection
 
     @db_alias.setter
@@ -93,7 +93,7 @@ class DBConfig:
     # --------------------------------------------------------------------------
     def _parser(self, fileName):
         """
-        Creates a config _parser from fileName
+        Creates a dbConfig _parser from fileName
         """
         self._configParser = configparser.ConfigParser()
         self._configParser.read(fileName)

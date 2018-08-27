@@ -71,7 +71,7 @@ def do_split(args):
                         worksThisFile = 1
                         # Works on win, not on mac
                         # currentOutFile = open(buildOutPath(outPath, baseName, currentFileNumber, ext), "w")
-                        # TODO: See if this works on win. Works on MAC
+                        # Done: See if this works on win. Works on MAC
                         currentOutFile = buildOutPath(outPath, baseName, currentFileNumber, ext).open("w")
 
             currentOutFile.write(srcLine)

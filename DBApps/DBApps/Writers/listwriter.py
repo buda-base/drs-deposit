@@ -22,7 +22,7 @@ class ListWriter(metaclass=ABCMeta):
         self._config = value
     '''
     Constructor
-    :param config: opaque configuration
+    :param dbConfig: opaque configuration
     '''
     def __init__(self, configInfo):
         self._config = configInfo

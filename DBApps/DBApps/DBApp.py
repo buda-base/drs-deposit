@@ -4,9 +4,10 @@ Created 2018-VIII-24
 """
 from config.config import *
 import pymysql as mysql
+from abc import ABCMeta, abstractmethod
 
 
-class DBApp:
+class DBApp(metaclass=ABCMeta):
     """
     Base class for database applications
     """
@@ -14,8 +15,9 @@ class DBApp:
     _cn: mysql.Connection
 
     def __init__(self):
-        self.config = None
+        self.dbConfig = None
         self.connection = None
+        self.ExpectedColumns = []
 
     def start_connect(self, cfg: DBConfig):
         """
@@ -27,17 +29,37 @@ class DBApp:
                                         read_default_group=cfg.db_host,
                                         charset='utf8')
 
+    _expectedColumns: list = None
+
     @property
-    def config(self) -> DBConfig:
+    def ExpectedColumns(self) -> list:
+        """
+        If a subclass returns a result set from a query, you may only want some of the query columns
+        If this list is empty, all the data set columns are returned
+        :return:
+        """
+        return self._expectedColumns
+
+    @ExpectedColumns.setter
+    def ExpectedColumns(self, value: list):
+        assert isinstance(value, list)
+        self._expectedColumns = value
+
+    @property
+    def dbConfig(self) -> DBConfig:
         return self._dbConfig
 
-    @config.setter
-    def config(self, drsDbConfig: str):
+    @dbConfig.setter
+    def dbConfig(self, drsDbConfig: str):
         """
-        gets config values for setup
+        gets dbConfig values for setup
         :param drsDbConfig: in section:file format
         :return:
         """
+        if drsDbConfig is None:
+            self._dbConfig = None
+            return
+
         try:
             args: list = drsDbConfig.split(':')
             dbName = args[0]
@@ -54,3 +76,11 @@ class DBApp:
     @connection.setter
     def connection(self, value):
         self._cn = value
+
+    @abstractmethod
+    def validateExpectedColumns(self, workCursor: mysql.cursors.Cursor) -> None:
+        """
+        :summary: Abstract method to validate the db query output against the class' requirements
+        returns or throws
+        """
+        pass

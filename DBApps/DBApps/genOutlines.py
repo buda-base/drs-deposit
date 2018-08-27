@@ -57,7 +57,7 @@ def parseArgs(argNamespace):
                                        TBRC wget formatted list of works',
         usage='%(prog)s \n[-c --csv csvFileOutPath outputs csv\
                                        format to output.\n\t | -d \
-                                       --drsDbConfig  section:cfgFileName  Use drs config file to \
+                                       --drsDbConfig  section:cfgFileName  Use drs dbConfig file to \
                                        connect to \'section\' section in \'cfgFile\' database.]')
 
     _parser.add_argument("sourceFile", help='XML formatted input. \

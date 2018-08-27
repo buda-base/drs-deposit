@@ -178,7 +178,7 @@ while IFS=',' read -ra LINE; do
 	java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" $masterProjConf ${MEPATH}/make-proj-conf.xsl hId=$HID > $targetConf
 	rc=$?
 
-	[ $rc == 0 ] || { echo ${ME}:${FATAL_TXT}:Could not transform config file  $masterProjConf  rc= $rc ; break ; }
+	[ $rc == 0 ] || { echo ${ME}:${FATAL_TXT}:Could not transform dbConfig file  $masterProjConf  rc= $rc ; break ; }
 
 	outlineSourcePath=$(calcArchivePath $outlineSrcRoot $RID)
 

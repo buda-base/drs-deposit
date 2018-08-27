@@ -1,6 +1,6 @@
 """
 Created on Mar 13, 2018
-This is a basic skeleton which shows how to locate a config file,
+This is a basic skeleton which shows how to locate a dbConfig file,
 and start a connection to its db.
 
 @author: jsk
@@ -13,14 +13,14 @@ import pymysql
 
 def getworkstest():
     """
-    Read the remote database from a config and  connect to it
+    Read the remote database from a dbConfig and  connect to it
     """
 
     # Read the path. This library's client programs pass this in as a parm:
     # --d dev:drsBatch
-    # which is a shorthand for ../../../conf/drsBatch.config.
-    # See config.DbConfig
-    cfgPath = Path(__file__).parent.parent / 'conf' / 'drsBatch.config'
+    # which is a shorthand for ../../../conf/drsBatch.dbConfig.
+    # See dbConfig.DbConfig
+    cfgPath = Path(__file__).parent.parent / 'conf' / 'drsBatch.dbConfig'
     if cfgPath.is_file():
         print('yes')
     cfg = config.DBConfig('prod', str(cfgPath))
