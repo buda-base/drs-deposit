@@ -23,5 +23,5 @@ if __name__ == "__main__":
     rrArgs = SetupParse()
     Urgylem = ReadyRelated(rrArgs)
     myrs = Urgylem.GetResults()
-    Urgylem.PutResults()
+    Urgylem.PutResults(rrArgs.results, myrs)
 

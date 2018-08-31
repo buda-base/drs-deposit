@@ -18,6 +18,12 @@ from DBApps.Writers import progressTimer
 class ReadyRelatedParser(DBAppArgs):
     """
     Parser for the Get Ready Related class
+    Returns a structure containing fields:
+    .drsDbConfig: str (from base class DBAppArgs
+    .outline: bool
+    .printmaster: bool
+    .numResults: int
+    .results: str (which will have to resolve to a pathlib.Path
     """
 
     def __init__(self, description: str, usage: str):
@@ -66,7 +72,7 @@ class ReadyRelated(DBApp, ABC):
         """
         super().__init__()
         self._options = options
-        self.ExpectedColumns = ['WorkName']
+        self.ExpectedColumns = ['WorkName', 'HOLLIS', 'Volume']
 
         try:
             self.dbConfig = self._options.drsDbConfig
@@ -91,15 +97,15 @@ class ReadyRelated(DBApp, ABC):
             self.validateExpectedColumns(workCursor.description)
 
             import DBApps
-            tt = DBApps.Writers.progressTimer.ProgressTimer(maxWorks, 5)
+            # tt = DBApps.Writers.progressTimer.ProgressTimer(maxWorks, 5)
 
             hasNext: bool = True
             while hasNext:
                 workVolumes = workCursor.fetchall_unbuffered()
-                nVols = len(workVolumes)
-                print(f"Received {nVols} items")
-                tt.tick()
-                assert isinstance(workVolumes, object)
+                # nVols = len(workVolumes)
+                # print(f"Received {nVols} items")
+                # tt.tick()
+                # assert isinstance(workVolumes, object)
                 rl.extend(workVolumes)
                 hasNext = workCursor.nextset()
         return rl
@@ -113,9 +119,12 @@ class ReadyRelated(DBApp, ABC):
         :param self:
         :return:
     """
-    # Build the output path
+    # Build the output path, resolving any ~ or .. references
+        import os
+        fPath = pathlib.Path(os.path.expanduser(fileName)).resolve()
+        fPath.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
 
-        _dumpToFile(pathlib.Path(fileName), results, self.ExpectedColumns)
+        _dumpToFile(fPath, results, self.ExpectedColumns)
 
 
     def validateExpectedColumns(self, cursorDescription: list) -> None:
@@ -135,8 +144,8 @@ class ReadyRelated(DBApp, ABC):
             # each expected column must be in the list
             if not found:
                 break;
-        if not Found:
-            throw new badArgError
+        if not found:
+            raise ValueError(f'SPROC did not return expected columns')
 
         # desc = queryCursor.description
         # hope something's here

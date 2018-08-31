@@ -13,8 +13,9 @@ class DbArgNamespace:
 
 class DBAppArgs:
     """
-    Base class for database arguments. Provides a dbConfig to access
-    dbconfigs
+    Base class for database arguments. When a subclass calls
+    argparse.parseArguments, this class returns a structure containing
+    a member drsDbConfig: str
     """
     _parser: argparse.ArgumentParser = None
 
