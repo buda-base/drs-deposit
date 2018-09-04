@@ -47,4 +47,5 @@ parseMail.awk
 tojsondimensions.py
 BuildDeepDeleteList.sh
 BB_tbrc/BB_tbrc2drs
+RemoveDepositedVolumePaths.sh
 YOW
