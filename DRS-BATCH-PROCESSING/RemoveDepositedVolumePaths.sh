@@ -25,6 +25,7 @@ outFile=${2?"${ME}:Output file must be given."}
 
 # Take 2: use the dictionary
 export DICT=~/drs-deposit/output/BDRCCumulativeProdDeposits.csv
+BATCHES_WITH_DEPOSIT=batchesWithADeposit
 
 # You may ask: why not just look for a batch directory:
 # Because the batch directories may have different roots, or a 
@@ -49,8 +50,9 @@ awk -F',' -v volumeField=$idx '{print $volumeField }' $DICT | sort -u > DictFiel
 # This line only removed the specific lines. It leaves in batches where the line appeared.
 # grep -w -v -f DictFields  $buildList | sort -u > $outFile
 # Change so that it gets all the batch directories which contain one or volumes which are in dict.
- grep -w -f DictFields volList.txt | xargs -n 1 dirname | sort -u | xargs -n1 basename > batchesWithADeposit
- # Now scan volList to remove those batches
- grep -w -v -f batchesWithADeposit volList.txt > $outFile
- #
-
+ grep -w -f DictFields volList.txt | xargs -n 1 dirname | sort -u | xargs -n1 basename > $BATCHES_WITH_DEPOSIT
+ # Now scan volList to remove those BATCHES_WITH_DEPOSIT
+# if there are no deposited batches, just copy the volume list
+# (because gre -v -f empty file produces no output
+[ ! -s $BATCHES_WITH_DEPOSIT ] && { cp volList.txt $outFile ; } \
+ || { grep -w -v -f $BATCHES_WITH_DEPOSIT volList.txt > $outFile ; }
