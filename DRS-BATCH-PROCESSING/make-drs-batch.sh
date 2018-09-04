@@ -54,10 +54,36 @@
 #    java -jar saxonhe-9.4.0.7.jar the-project.conf make-proj-conf.xsl hId=the-hollis-id
 #
 
+
+#------------------          CONSTANTS   ------------------
 # jsk 12.21.17 ##https://github.com/BuddhistDigitalResourceCenter/drs-deposit/issues/14
 # Filter out banned extensions
 declare -a BANNED_EXT=('tmp' 'png' 'pdf' 'db' 'DS_Store' )
 
+TIMING_LOG_FILE=timeBuildBatch.log
+# bash builtin time format
+TIMEFORMAT=$'%R\t%U\t%S\t%P'
+export TIMEFORMAT
+
+OUTPUTHOME=/Volumes/DRS_Staging/DRS/prod/batchBuilds
+
+DbConnectionString='-d prod:~/.drsBatch.config'
+
+# Who's running?
+ME=`basename ${0}`
+# jsk: need full path to script for components
+ MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+if [ "$#" -ne 5 ]; then
+	echo "${ME}: Needs 5 parameters"
+	echo "Usage: make-drs-batch worksList projectMaster targetProjectsRoot archiveDir bbDir"
+	exit 1
+fi
+
+
+#  ----------  functions   -------------
+
+source ${MEPATH}/commonUtils.sh
 
 function toLower() {
 	echo $1 | tr '[:upper:]' '[:lower:]'
@@ -70,25 +96,6 @@ function isBannedExt() {
 		[ "$testExt" == "$(toLower ${anExt})"  ] && return 0;
     done
 	return 1 
-}
-#
-# copy logs for this bath builder run,
-# and remove them
-
-function cleanUpLogs() {
-	  # jimk 21.I.18: copy batchbuilder log
-	  batchLogDir=${targetProjectsRoot}/${1}"-"logs
-        mkdir ${batchLogDir}
-        # Keep al the logs for reference, but extract into a summary
-        cp -R ${bbLogDir} ${batchLogDir}
-        cp ${logPath} ${batchLogDir}
-        rm -rf ${bbLogDir}
-        rm -rf ${logPath}
-        # Summarize and extract
-        # jsk: issue #44: wasn't finding errors correctly. 
-        # find ... -name -o xyz -o -name abc doesn't look for abc when it finds abc
-        find ${batchLogDir} -type f -not -name errorSummary.txt -exec grep -H -n -i 'err\|warn\|except' {} \; \
-        >> ${batchLogDir}/errorSummary.txt
 }
 
 #
@@ -143,35 +150,6 @@ done
 return
 }
 
-#
-# Argument is the first token in a line. Tests for it to be a magic header
-function isNewHeaderLine {
-
-    seekTok=WorkName
-
-    declare -a argA=("${!1}")
-    if [ "${argA[0]}" = "${seekTok}" ] ; then
-        return 0 ;
-    else
-        return 1 ;
-    fi
-}
-#
-# Argument is the first token in a line. Tests for it to be a magic header
-function isNewHeaderLine2 {
-
-    seekTok=WorkName
-
-    declare -a argA=("${!1}")
-    if [ "${argA[0]}" = "${seekTok}" ] ; then
-    echo Found "${argA[0]}" = "${seekTok}"
-        return 0 ;
-    else
-        echo Not Found "${argA[0]}" = "${seekTok}"
-        return 1 ;
-    fi
-}
-
 function doBatch {
         [ -z "${batchName}" ] && return
 
@@ -204,29 +182,6 @@ function doBatch {
        cleanUpLogs ${batchName}
 
 }
-
-#------------------          CONSTANTS   ------------------
-
-TIMING_LOG_FILE=timeBuildBatch.log
-# bash builtin time format
-TIMEFORMAT=$'%R\t%U\t%S\t%P'
-export TIMEFORMAT
-
-OUTPUTHOME=/Volumes/DRS_Staging/DRS/prod/batchBuilds
-
-DbConnectionString='-d prod:~/.drsBatch.config'
-
-# Who's running?
-ME=`basename ${0}`
-
-if [ "$#" -ne 5 ]; then
-	echo "${ME}: Needs 5 parameters"
-	echo "Usage: make-drs-batch worksList projectMaster targetProjectsRoot archiveDir bbDir"
-	exit 1
-fi
-
-# jsk: need full path to script for components
- MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 worksList=$1
 echo Works List File: ${worksList}
@@ -379,7 +334,6 @@ while IFS=, read -ra LINE ; do
         echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
         pdsName=${VID}
 
-set +vx
         for f in ${imagesDir}/* ; do
         # cp and rename each image
             fullNm=$(basename ${f})

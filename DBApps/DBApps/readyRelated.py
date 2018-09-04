@@ -159,10 +159,10 @@ def _dumpToFile(outPath: pathlib.Path, data: list, columnNames: list) -> None:
     :return:
     """
 
-    with outPath.open("w", newline='') as fw:
+    with outPath.open("w",newline=None) as fw:
         # Create the CSV writer. NOTE: multiple headers are written to the
         import csv
-        csvwr = csv.DictWriter(fw, columnNames)
+        csvwr = csv.DictWriter(fw, columnNames, lineterminator='\n')
 
         if len(data) > 0:
             csvwr.writeheader()
