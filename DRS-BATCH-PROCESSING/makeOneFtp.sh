@@ -33,14 +33,7 @@ ENDUSAGE
 
 
 # Some constants
-# Dont move ftpScript into path. Reference it where it is.
- DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
- #
- FTPSCRIPT='ftpScript.sh'
-# for testing
- # MAKEDRS='touch-drs.sh'
-# BATCH_OUTPUT_HOME=./testOut
-
+FTPSCRIPT='ftpScript.sh'
 
 ME=$(basename "$0" )
 
@@ -74,7 +67,7 @@ remoteUserName=$4
 
 # Invoke the upload in the background
 
-${DRS_CODE_HOME}/${FTPSCRIPT} $srcListPath $remoteUserName &
+${FTPSCRIPT} $srcListPath $remoteUserName &
 
 # Capture its pid and mark as underway
  thisRun=$!

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 export ME=$(basename $0)
 
@@ -9,8 +9,16 @@ inFile=${1?"${ME}:Input file required, not given"}
 # in take 2 we're just looking in the directories, because the input 
 # is now a directory itself
 # while read gg ; do awk ' { cmd = "find $(dirname " $1 ") -type f | wc -l"
-while read gg ; do awk  ' { cmd = "find  " $1 " -type f | wc -l"
+# while read gg ; do awk  ' { cmd = "find  " $1 " -type f | wc -l"
+# cmd | getline thisCount
+# close(cmd)
+# sumCount += thisCount
+# print $1 "|" thisCount "|" sumCount }' ; done < $inFile 
+
+
+awk  ' { cmd = "find  " $1 " -type f | wc -l"
 cmd | getline thisCount
 close(cmd)
 sumCount += thisCount
-print $1 "|" thisCount "|" sumCount }' ; done < $inFile 
+print $1 "|" thisCount "|" sumCount }'  < $inFile 
+

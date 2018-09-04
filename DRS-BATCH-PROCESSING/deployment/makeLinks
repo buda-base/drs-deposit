@@ -31,6 +31,7 @@ splitWorks.sh
 setupErrorLog.sh
 ftpMultiple.sh
 makeOneDrs.sh
+makeOneFtp.sh
 findNewerBatches.sh
 make-drs-outline.sh
 findBatchInWorksList.sh
@@ -48,4 +49,5 @@ tojsondimensions.py
 BuildDeepDeleteList.sh
 BB_tbrc/BB_tbrc2drs
 RemoveDepositedVolumePaths.sh
+ftpScript.sh
 YOW
