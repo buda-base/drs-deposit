@@ -7,12 +7,33 @@ import pathlib
 import sys
 from abc import ABC
 from typing import List, Any
-from argparse import FileType
+from argparse import ArgumentTypeError
 import pymysql as mysql
 # usr
 from DBApps.DBAppArgs import DBAppArgs, DbArgNamespace
 from DBApps.DBApp import DBApp
 from DBApps.Writers import progressTimer
+
+
+def writableExpandoFile(path : str):
+    """
+    Tests an input path for not being a directory, and
+    for its directory to be writable
+    :param path:
+    :return:
+    """
+    import os
+    osPath = os.path.expanduser(path)
+    p = pathlib.Path(osPath)
+    if os.path.isdir(osPath):
+        raise ArgumentTypeError(f"{osPath} is a directory. A file name is required.")
+
+    # Is the parent writable?
+    pDir = p.parent
+    if not os.access(str(pDir),os.W_OK):
+        raise ArgumentTypeError(f"{osPath} is in a readonly directory ")
+
+    return path
 
 
 class ReadyRelatedParser(DBAppArgs):
@@ -37,8 +58,9 @@ class ReadyRelatedParser(DBAppArgs):
         self._parser.add_argument('-n', '--numResults', help="maximum number to download",
                                   default=10, type=int)
 
-        self._parser.add_argument("results", help='Output path name. May overwrite existing contents')
-        # ,                         type=FileType('w'))
+        self._parser.add_argument("results",
+                                  help='Output path name. May overwrite existing contents',
+                                  type=writableExpandoFile)
 
 
 class ReadyRelated(DBApp, ABC):

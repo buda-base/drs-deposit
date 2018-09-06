@@ -15,7 +15,7 @@ def SetupParse() -> object:
     if none listed
     """
     p = ReadyRelatedParser(description="Fetch Works information which have outlines or print masters",
-                           usage=" -o --outline | -p --printmaster -n maxWorks (default = 200) resultsPath")
+                           usage=" [ -o --outline | -p --printmaster ] -n maxWorks (default = 200) resultsPath")
     return p.parsedArgs
 
 def GetReadyRelated():
