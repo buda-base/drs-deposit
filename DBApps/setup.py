@@ -9,7 +9,7 @@ from setuptools import setup
 # total 312
 # ...
 # -rwxr-xr-x   1 jimk  staff   413 Jun 19 17:31 getNamedWorks
-# and this is an executable script which wrapps the entry points
+# and this is an executable script which wraps the entry points
 setup(
     name='DBApps',
     version='0.42.3',
@@ -27,9 +27,9 @@ setup(
             'genOutlines = DBApps.genOutlines:genOutlines',
             'genWorks = DBApps.genWorks:genWorks',
             'genVolumes = DBApps.genWorks:genVolumes',
-            'getReadyRelated = DBApps.getReadyRelated:getReadyRelated',
+            'getReadyRelated = DBApps.getReadyRelated:GetReadyRelated',
             'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
-            'getNamedWorks = DBApps.getReadyWorks:getNamedWorks',
+            'getNamedWorks = DBApps.getNamedWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
             'updateBuildStatus = DBApps.getReadyWorks:updateBuildStatus'
         ]

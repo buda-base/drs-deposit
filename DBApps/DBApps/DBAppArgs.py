@@ -2,6 +2,7 @@
 
 """
 import argparse
+import pathlib
 
 
 class DbArgNamespace:
@@ -40,3 +41,23 @@ class DBAppArgs:
             # noinspection oyTypeChecker
             self._parser.parse_args(namespace=self._args)
         return self._args
+
+
+def writableExpandoFile(path: str):
+    """
+    argparse type for a file in a writable directory
+    :param path:
+    :return:
+    """
+    import os
+    osPath = os.path.expanduser(path)
+    p = pathlib.Path(osPath)
+    if os.path.isdir(osPath):
+        raise argparse.ArgumentTypeError(f"{osPath} is a directory. A file name is required.")
+
+    # Is the parent writable?
+    pDir = p.parent
+    if not os.access(str(pDir), os.W_OK):
+        raise argparse.ArgumentTypeError(f"{osPath} is in a readonly directory ")
+
+    return path

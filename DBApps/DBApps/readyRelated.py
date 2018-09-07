@@ -6,34 +6,15 @@ Get Ready Related works class
 import pathlib
 import sys
 from abc import ABC
-from typing import List, Any
+from typing import List
 from argparse import ArgumentTypeError
 import pymysql as mysql
 # usr
 from DBApps.DBAppArgs import DBAppArgs, DbArgNamespace
 from DBApps.DBApp import DBApp
-from DBApps.Writers import progressTimer
+from DBApps.Writers import CSVWriter
 
 
-def writableExpandoFile(path : str):
-    """
-    Tests an input path for not being a directory, and
-    for its directory to be writable
-    :param path:
-    :return:
-    """
-    import os
-    osPath = os.path.expanduser(path)
-    p = pathlib.Path(osPath)
-    if os.path.isdir(osPath):
-        raise ArgumentTypeError(f"{osPath} is a directory. A file name is required.")
-
-    # Is the parent writable?
-    pDir = p.parent
-    if not os.access(str(pDir),os.W_OK):
-        raise ArgumentTypeError(f"{osPath} is in a readonly directory ")
-
-    return path
 
 
 class ReadyRelatedParser(DBAppArgs):
@@ -60,7 +41,7 @@ class ReadyRelatedParser(DBAppArgs):
 
         self._parser.add_argument("results",
                                   help='Output path name. May overwrite existing contents',
-                                  type=writableExpandoFile)
+                                  type=DBAppArgs.writableExpandoFile)
 
 
 class ReadyRelated(DBApp, ABC):
@@ -68,7 +49,6 @@ class ReadyRelated(DBApp, ABC):
     Gets related works
     """
     _options: DbArgNamespace
-    _dbConnection: mysql.Connection
 
     @property
     def TypeString(self) -> str:
@@ -89,11 +69,11 @@ class ReadyRelated(DBApp, ABC):
     def __init__(self, options: DbArgNamespace) -> None:
         """
         :param: self
-        :param: options
+        :param: options.
         :rtype: object
         """
-        super().__init__()
-        self._options = options
+        # drsDbConfig is a required
+        super().__init__(options.drsDbConfig)
         self.ExpectedColumns = ['WorkName', 'HOLLIS', 'Volume']
 
         try:
@@ -118,20 +98,12 @@ class ReadyRelated(DBApp, ABC):
             workCursor.callproc(f'GetReady{self.TypeString}', (maxWorks,))
             self.validateExpectedColumns(workCursor.description)
 
-            import DBApps
-            # tt = DBApps.Writers.progressTimer.ProgressTimer(maxWorks, 5)
-
             hasNext: bool = True
             while hasNext:
                 workVolumes = workCursor.fetchall_unbuffered()
-                # nVols = len(workVolumes)
-                # print(f"Received {nVols} items")
-                # tt.tick()
-                # assert isinstance(workVolumes, object)
                 rl.extend(workVolumes)
                 hasNext = workCursor.nextset()
         return rl
-
 
     def PutResults(self, fileName: str, results: list) -> None:
         """
@@ -140,48 +112,31 @@ class ReadyRelated(DBApp, ABC):
         :param results: Data to output
         :param self:
         :return:
-    """
-    # Build the output path, resolving any ~ or .. references
+        """
+
+        # Build the output path, resolving any ~ or .. references
         import os
         fPath = pathlib.Path(os.path.expanduser(fileName)).resolve()
         fPath.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
 
-        _dumpToFile(fPath, results, self.ExpectedColumns)
+        # and write
+        CSVWriter(fileName).write_dict(results, self.ExpectedColumns)
+        myCsv = CSVWriter(fileName)
+        myCsv.write_dict(results, self.ExpectedColumns)
 
 
-    def validateExpectedColumns(self, cursorDescription: list) -> None:
-        """
-        implements pure virtual base class. In this
-        :param self:
-        :param queryCursor: cursor description: tuple of tuples
-        :return:
-        """
-        found = False
-        for expectedColumn in self.ExpectedColumns:
-            found = False;
-            for tuple in cursorDescription:
-                if tuple[0] == expectedColumn:
-                    found = True
-                    break
-            # each expected column must be in the list
-            if not found:
-                break;
-        if not found:
-            raise ValueError(f'SPROC did not return expected columns')
-
-        # desc = queryCursor.description
-        # hope something's here
 
 
 def _dumpToFile(outPath: pathlib.Path, data: list, columnNames: list) -> None:
     """
-    Writes a dictionary to a csv.
+    Writes a list of dictionary to a csv.
     :param outPath: file destination for output
+    :param data: list of dictionaries
     :param columnNames: list of columns to write (independent of result set)
     :return:
     """
 
-    with outPath.open("w",newline=None) as fw:
+    with outPath.open("w", newline=None) as fw:
         # Create the CSV writer. NOTE: multiple headers are written to the
         import csv
         csvwr = csv.DictWriter(fw, columnNames, lineterminator='\n')

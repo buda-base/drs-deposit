@@ -2,6 +2,7 @@
 Created 2018-VIII-24
 @author: jimk
 """
+from DBApps import DBAppArgs
 from config.config import *
 import pymysql as mysql
 from abc import ABCMeta, abstractmethod
@@ -13,9 +14,10 @@ class DBApp(metaclass=ABCMeta):
     """
     _dbConfig: DBConfig
     _cn: mysql.Connection
+    _dbConnection: mysql.Connection
 
-    def __init__(self):
-        self.dbConfig = None
+    def __init__(self, dbConfig: DBConfig):
+        self.dbConfig = dbConfig
         self.connection = None
         self.ExpectedColumns = []
 
@@ -77,10 +79,24 @@ class DBApp(metaclass=ABCMeta):
     def connection(self, value):
         self._cn = value
 
-    @abstractmethod
-    def validateExpectedColumns(self, workCursor: mysql.cursors.Cursor) -> None:
+    def validateExpectedColumns(self, cursorDescription: list) -> None:
         """
-        :summary: Abstract method to validate the db query output against the class' requirements
-        returns or throws
+        implements pure virtual base class. In this
+        :param cursorDescription: tuple of tuples
+        :return:
         """
-        pass
+        found = False
+        for expectedColumn in self.ExpectedColumns:
+            found = False
+            for cursorTuple in cursorDescription:
+                if cursorTuple[0] == expectedColumn:
+                    found = True
+                    break
+            # each expected column must be in the list
+            if not found:
+                break
+        if not found:
+            raise ValueError(f'SPROC did not return expected columns')
+
+        # desc = queryCursor.description
+        # hope something's here

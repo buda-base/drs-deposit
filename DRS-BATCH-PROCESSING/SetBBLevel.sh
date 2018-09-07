@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#   !/usr/bin/env bash
 # Bash source file to set Batchbuilder level
 # Usage . <wherever>/SetBBLevel.sh
 # These are the only two values.
@@ -10,8 +10,8 @@
 export PROD_BB_LEVEL=prod
 export QA_BB_LEVEL=qa
 
-
-export BB_LEVEL=$PROD_BB_LEVEL
+# jimk - apparently you can parse args to source
+export BB_LEVEL=${1-$PROD_BB_LEVEL}
 
 # Set up the nrs resolver for injecting into project.conf
 # See DRS-BATCH-PROCESSING/make-drs-batch.conf
