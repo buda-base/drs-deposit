@@ -32,6 +32,3 @@ class ListWriter(metaclass=ABCMeta):
     '''
     @abstractmethod
     def write_list(self, outData): pass
-
-
-

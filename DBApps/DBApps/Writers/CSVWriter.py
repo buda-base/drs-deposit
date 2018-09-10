@@ -32,15 +32,18 @@ class CSVWriter(listwriter.ListWriter):
             _ = [out.write('{0},"{1}"\n'.format(aVal[0], aVal[1].strip()))
                  for aVal in srcList]
 
-    def write_dict(self, data: dict, columnNames: list):
+    def write_dict(self, data: list, columnNames: list):
         """
         Writes slices of a list of dictionary items to a csv.
         Each list element must at least contain a dictionary
-        :param data: list of dictionaries
+        :param data: list of dictionaries, each entry is a row
         :param columnNames: list of columns to write (independent of result set)
         :return:
         """
+
         outPath = pathlib.Path(os.path.expanduser(self.oConfig))
+        self._makePathDir(str(outPath))
+
         with outPath.open("w", newline=None) as fw:
             # Create the CSV writer. NOTE: multiple headers are written to the
             csvwr = csv.DictWriter(fw, columnNames, lineterminator='\n')
@@ -50,3 +53,19 @@ class CSVWriter(listwriter.ListWriter):
                 for resultRow in data:
                     down_row = {fieldName: resultRow[fieldName] for fieldName in columnNames}
                     csvwr.writerow(down_row)
+
+    @staticmethod
+    def _makePathDir(path: str):
+        """
+        Creates path to input path if it doesn't exist.
+        Resolves any ~ or .. references
+        :param path: file specification, might contain path
+        :type path: str
+        """
+        #
+        import os
+        fPath = pathlib.Path(os.path.expanduser(path)).resolve()
+        fPath.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+
+    def __init__(self, fileName: str):
+        super().__init__(fileName)

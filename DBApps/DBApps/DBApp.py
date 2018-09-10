@@ -2,10 +2,10 @@
 Created 2018-VIII-24
 @author: jimk
 """
-from DBApps import DBAppArgs
+
 from config.config import *
 import pymysql as mysql
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 
 class DBApp(metaclass=ABCMeta):
@@ -15,6 +15,7 @@ class DBApp(metaclass=ABCMeta):
     _dbConfig: DBConfig
     _cn: mysql.Connection
     _dbConnection: mysql.Connection
+    _expectedColumns: list = None
 
     def __init__(self, dbConfig: DBConfig):
         self.dbConfig = dbConfig
@@ -24,14 +25,12 @@ class DBApp(metaclass=ABCMeta):
     def start_connect(self, cfg: DBConfig):
         """
         Opens a database connection using the DBConfig
-        :param cfg:
-        :return:
+        :param cfg: db configuration
+        :return: Nothing. Sets class connection property
         """
         self.connection = mysql.connect(read_default_file=cfg.db_cnf,
                                         read_default_group=cfg.db_host,
                                         charset='utf8')
-
-    _expectedColumns: list = None
 
     @property
     def ExpectedColumns(self) -> list:
@@ -81,9 +80,11 @@ class DBApp(metaclass=ABCMeta):
 
     def validateExpectedColumns(self, cursorDescription: list) -> None:
         """
-        implements pure virtual base class. In this
+        Validates the cursor after a call to the database. Checks for
+        the required columns (from member ExpectedColumns) in the output
+
         :param cursorDescription: tuple of tuples
-        :return:
+        :return: Throws ValueError on fail
         """
         found = False
         for expectedColumn in self.ExpectedColumns:
@@ -100,3 +101,30 @@ class DBApp(metaclass=ABCMeta):
 
         # desc = queryCursor.description
         # hope something's here
+
+    def GetSprocResults(self: object, sproc: str, maxWorks: int = 200) -> list:
+        """
+        call a sproc using the internal connection,
+        validate the result columns with the internal member.
+
+        :rtype: list of dictionary objects of results. Caller decodes format
+        :param sproc: routine to call
+        :param maxWorks: limit of return rows
+        :returns: a list of dictionary items, each item is a return row
+        """
+        self.start_connect(self.dbConfig)
+
+        rl: list[dict] = []
+
+        with self.connection:
+            workCursor: mysql.Connection.Cursor = self.connection.cursor(mysql.cursors.SSDictCursor)
+            print(f'Calling {sproc} for n = {maxWorks} ')
+            workCursor.callproc(f'{sproc}', (maxWorks,))
+            self.validateExpectedColumns(workCursor.description)
+
+            hasNext: bool = True
+            while hasNext:
+                resultRows = workCursor.fetchall_unbuffered()
+                rl.extend(resultRows)
+                hasNext = workCursor.nextset()
+        return rl

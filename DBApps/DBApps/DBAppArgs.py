@@ -38,7 +38,7 @@ class DBAppArgs:
         # Enforce once only
         if self._args is None:
             self._args = DbArgNamespace()
-            # noinspection oyTypeChecker
+            # noinspection PyTypeChecker
             self._parser.parse_args(namespace=self._args)
         return self._args
 

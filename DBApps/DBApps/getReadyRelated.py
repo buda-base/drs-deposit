@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+
 """
 Entry point for getting related files.
 """
 from DBApps.readyRelated import ReadyRelated, ReadyRelatedParser
+from DBApps.DBAppArgs import DbArgNamespace
+from DBApps.Writers.CSVWriter import CSVWriter
 
 
 def SetupParse() -> object:
@@ -18,15 +22,30 @@ def SetupParse() -> object:
                            usage=" [ -o --outline | -p --printmaster ] -n maxWorks (default = 200) resultsPath")
     return p.parsedArgs
 
+
+def PutResults(fileName: str, results: list, expectedColumns: list) -> None:
+    """
+    Write results to file
+    :param fileName: resulting path
+    :param results: Data to output
+    :param expectedColumns: subset of results columns to output
+    :return:
+    """
+    # and write
+    myCsv = CSVWriter(fileName)
+    myCsv.write_dict(results, expectedColumns)
+
+
 def GetReadyRelated():
     """
     Entry point for getting Related files, either outlines or printmasters
     :return:
     """
-    rrArgs = SetupParse()
+    rrArgs: DbArgNamespace = SetupParse()
     rr = ReadyRelated(rrArgs)
-    myrs = rr.GetResults()
-    rr.PutResults(rrArgs.results, myrs)
+    sproc = f'GetReady{rr.TypeString}'
+    myrs = rr.GetSprocResults(sproc, rrArgs.numResults)
+    PutResults(rrArgs.results, myrs, rr.ExpectedColumns)
 
 
 if __name__ == "__main__":
