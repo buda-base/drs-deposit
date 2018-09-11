@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -vx
+#!/usr/bin/env bash
 
 # script to collect transformed outlines into a batch for processing via BatchBuilder and
 # upload to Harvard Digital Repository Service
@@ -235,8 +235,9 @@ while IFS=',' read -ra LINE; do
 	ext="${outlineBaseName##*.}"
 	fnm="${outlineBaseName%.$ext}"
 
-    # this might not build if batch build requires OSN--name__something.ext
-    destNm=${VID}--${fnm}.${ext}
+    # Silly, but otherwise the file OSN is ${fnm}.${ext} which will have
+    # trouble disambiguating between Outlines and print masters
+    destNm=${VID}--${fnm}-Outline.${ext}
 
 	java -jar ${MEPATH}/drsttl-0.1.0.jar -i $outlineSourcePath > $templateDir/$destNm
 	rc=$?

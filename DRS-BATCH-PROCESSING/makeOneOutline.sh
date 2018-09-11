@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -vx
+#!/usr/bin/env bash
 #   Make one outline, with tracking control
 #
 # arguments:
@@ -69,12 +69,12 @@ fi
 
 statusRoot=$2
 [ -d "$2" ] ||  { echo "${ME}":info: creating status directory  \'"$2"\'
-				mkdir $2;
+				mkdir -p $2;
 			 }
 
 completionRoot=$3
 [ -d "$3" ] ||  { echo "${ME}":info: creating completion directory  \'"$3"\'
-				mkdir $3;
+				mkdir -p $3;
 			 }
 
 # build the status output path
@@ -96,7 +96,7 @@ batchRoot=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
 prepBBHome
 
 # Invoke the build in the background
-  ${DRS_CODE_HOME}/${MAKEDRS} \
+  ${MAKEDRS} \
 	"$1" $OUTLINE_PROJECT_HOME $batchRoot \
 	$WORKS_SOURCE_HOME ${BB_HOME}  &
 #

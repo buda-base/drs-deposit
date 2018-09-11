@@ -33,7 +33,8 @@ BATCHES_WITH_DEPOSIT=batchesWithADeposit
 #
 # Heuristic. Here's a known volume build. find its column index
 # in the dictionary
-export PROBE=W00KG02536-I00KG03142
+# This OSN is known to exist in both Prod and QA
+export PROBE=W1GS66344-I1GS66346
 #
 for idx in $(seq 1 25) ;
 do
@@ -51,8 +52,10 @@ awk -F',' -v volumeField=$idx '{print $volumeField }' $DICT | sort -u > DictFiel
 # grep -w -v -f DictFields  $buildList | sort -u > $outFile
 # Change so that it gets all the batch directories which contain one or volumes which are in dict.
  grep -w -f DictFields volList.txt | xargs -n 1 dirname | sort -u | xargs -n1 basename > $BATCHES_WITH_DEPOSIT
- # Now scan volList to remove those BATCHES_WITH_DEPOSIT
+ # Now scan volList to remove those batchesR_WITH_DEPOSIT
 # if there are no deposited batches, just copy the volume list
 # (because gre -v -f empty file produces no output
 [ ! -s $BATCHES_WITH_DEPOSIT ] && { cp volList.txt $outFile ; } \
  || { grep -w -v -f $BATCHES_WITH_DEPOSIT volList.txt > $outFile ; }
+ #
+
