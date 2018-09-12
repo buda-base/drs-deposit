@@ -9,27 +9,24 @@ import argparse
 from DBApps.Writers.DbWriter import DbWriter
 from DBApps.SourceProcessors import WebAdminResults
 
+
+
+# The key represents a column in the designated file
 required_headers = {
-    'object_id_num': 'objectid',
-    'object_huldrsadmin_ownerSuppliedName_string': 'OSN',
-    'object_urn_string_sort': 'objectUrn',
-    'batch_huldrsadmin_batchDirectoryName_string': 'DRSDir',
-    'batch_huldrsadmin_loadStartTime_date': 'IngestDate',
-    'object_fileCount_num': 'filesCount',
-    'object_objectSize_num': 'size'
-    # dontcare "object_huldrsadmin_adminCategory_text_sort",
-    # dontcare "object_huldrsadmin_ownerCode_string_sort",
-    # dontcare "object_huldrsadmin_billingCode_string",
-    # dontcare "object_mets_type_string",
-    # dontcare "object_huldrsadmin_role_string_sort",
-    # dontcare "object_mets_createDate_date",
-    # dontcare "batch_id_num",
-    # dontcare "batch_huldrsadmin_batchName_string",
-    # dontcare "object_huldrsadmin_adminFlagType_string_sort",
-    # dontcare "object_huldrsadmin_accessFlag_string",
-    # dontcare "object_mods_title_text_sort",
-    # dontcare "object_huldrsadmin_producer_string_sort"
+    dict(
+        PDS=dict(object_id_num='objectid', object_huldrsadmin_ownerSuppliedName_string='OSN',
+                object_urn_string_sort='objectUrn', batch_huldrsadmin_batchDirectoryName_string='DRSDir',
+                batch_huldrsadmin_loadStartTime_date='IngestDate', object_fileCount_num='filesCount',
+                object_objectSize_num='size'),
+        Related=dict(file_id_num='objectid', file_huldrsadmin_ownerSuppliedName_string='OSN',
+                     file_huldrsadmin_uri_string_sort='objectUrn', batch_huldrsadmin_batchDirectoryName_string='DRSDir',
+                     batch_huldrsadmin_loadStartTime_date='IngestDate', file_premis_size_num='size'))
 }
+# The value is one of the elements of 'add_drs_params_ordered
+
+
+
+
 
 add_drs_params_ordered = (
     'IngestDate',
@@ -38,7 +35,7 @@ add_drs_params_ordered = (
     'DRSDir',
     'filesCount',
     'size',
-    'OSN'
+    'OSN' # Muy importante!  OSN corresponds to Volume, and is used as the FK from DRS to Volume
 )
 
 
@@ -63,7 +60,6 @@ def dict_to_add_DRS_param_list(dict_list: dict) -> list:
 
 
 def DRSUpdate():
-    web_results: WebAdminResults
     myArgs = GetArgs()
 
     parse_args(myArgs)
@@ -93,6 +89,7 @@ def parse_args(arg_namespace: object) -> object:
 
     _parser.add_argument("sourceFile", help="CSV file containing search WebAdminResults.")
     _parser.add_argument("-d", "--drsDbConfig")
+    _parser.add_argument("-r", "--relatedFile", action='store_true',nargs='?')
     _parser.parse_args(namespace=arg_namespace)
 
 
