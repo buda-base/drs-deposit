@@ -6,37 +6,36 @@ sproc 'AddDRS'
 import fileinput
 import sys
 import argparse
+from typing import Dict, Any
+
 from DBApps.Writers.DbWriter import DbWriter
 from DBApps.SourceProcessors import WebAdminResults
 
 
 
 # The key represents a column in the designated file
-required_headers = {
-    dict(
-        PDS=dict(object_id_num='objectid', object_huldrsadmin_ownerSuppliedName_string='OSN',
-                object_urn_string_sort='objectUrn', batch_huldrsadmin_batchDirectoryName_string='DRSDir',
-                batch_huldrsadmin_loadStartTime_date='IngestDate', object_fileCount_num='filesCount',
-                object_objectSize_num='size'),
-        Related=dict(file_id_num='objectid', file_huldrsadmin_ownerSuppliedName_string='OSN',
-                     file_huldrsadmin_uri_string_sort='objectUrn', batch_huldrsadmin_batchDirectoryName_string='DRSDir',
-                     batch_huldrsadmin_loadStartTime_date='IngestDate', file_premis_size_num='size'))
-}
-# The value is one of the elements of 'add_drs_params_ordered
+PDSHeaders: Dict[Any, str] =  dict(object_id_num='objectid',
+                object_huldrsadmin_ownerSuppliedName_string='OSN',
+                object_urn_string_sort='objectUrn',
+                batch_huldrsadmin_batchDirectoryName_string='DRSDir',
+                batch_huldrsadmin_loadStartTime_date='IngestDate',
+                object_fileCount_num='filesCount',
+                object_objectSize_num='size')
+RelatedHeaders: Dict[Any, str] = dict(file_id_num='objectid',
+                      file_huldrsadmin_ownerSuppliedName_string='OSN',
+                      file_huldrsadmin_uri_string_sort='objectUrn',
+                      batch_huldrsadmin_batchDirectoryName_string='DRSDir',
+                      batch_huldrsadmin_loadStartTime_date='IngestDate',
+                      file_premis_size_num='size')
 
-
-
-
-
-add_drs_params_ordered = (
+drs_params_ordered = (
     'IngestDate',
     'objectid',
     'objectUrn',
     'DRSDir',
     'filesCount',
     'size',
-    'OSN' # Muy importante!  OSN corresponds to Volume, and is used as the FK from DRS to Volume
-)
+    'OSN') # Muy importante!  OSN corresponds to Volume, and is used as the FK from DRS to Volume
 
 
 class GetArgs:
@@ -49,12 +48,16 @@ class GetArgs:
 def dict_to_add_DRS_param_list(dict_list: dict) -> list:
     """
     Transforms a named dictionary into a list of parameters for DRS.AddDRS
+    Fills NULL for missing columns
+    :return:
+    :param dict_list:input file columns
     """
 
     rc = []
     for a_dict in dict_list:
         a_list = []
-        [a_list.append(a_dict[s]) for s in add_drs_params_ordered]
+        # dict.get() returns null, to handle missing arguments
+        [a_list.append(a_dict.get(s)) for s in drs_params_ordered]
         rc.append(a_list)
     return rc
 
@@ -63,7 +66,13 @@ def DRSUpdate():
     myArgs = GetArgs()
 
     parse_args(myArgs)
-    admin_results = WebAdminResults.WebAdminResults(required_headers)
+
+    if myArgs.relatedFile:
+        fileColumnDict = RelatedHeaders
+    else:
+        fileColumnDict = PDSHeaders
+
+    admin_results = WebAdminResults.WebAdminResults(fileColumnDict)
     param_dict_list = admin_results.csv_to_dict(myArgs.sourceFile)
     # if web_results is None:
     #     web_results = WebAdminResults.WebAdminResults(",", required_headers)
@@ -89,7 +98,7 @@ def parse_args(arg_namespace: object) -> object:
 
     _parser.add_argument("sourceFile", help="CSV file containing search WebAdminResults.")
     _parser.add_argument("-d", "--drsDbConfig")
-    _parser.add_argument("-r", "--relatedFile", action='store_true',nargs='?')
+    _parser.add_argument("-r", "--relatedFile",  action='store_true', default=False )
     _parser.parse_args(namespace=arg_namespace)
 
 
