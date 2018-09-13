@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# makeLinks: 
+# args: none
+# synopsis: reads a list of file names. If they exist in the parent directory
+# or the sibling directory 'parallelBatch' make a link to them here.
+#
+# This prepares the list of files which 'copyLinks' will deploy
+while read aLink ; do
+
+      # Support comments
+      aLink=${aLink/\#*/}
+
+      [ -z ${aLink} ] && continue
+
+      # jimk: add directories to linkables
+      #
+      # Some datas have a directory
+      #
+      linkBase=$(basename ${aLink})
+      rm ${linkBase}
+      # use the input as the source path
+      [ -f ../$aLink ] || [ -d ../$aLink ] && { ln -s ../$aLink . ; } || { echo $aLink not found. ; }
+done << YOW
+make-drs-batch.sh
+# You can enter a comment here
+saxonhe-9.4.0.7.jar
+make-proj-conf.xsl   # You can enter a comment here , too
+GetCumBuiltFileCounts.sh
+splitWorks.sh
+setupErrorLog.sh
+ftpMultiple.sh
+makeOneDrs.sh
+findNewerBatches.sh
+make-drs-outline.sh
+findBatchInWorksList.sh
+BuildDeepDeleteList.awk
+echoCat.sh
+countUnderwayJobs.sh
+countBatchesByTime.sh
+deleteAlreadyDepositedSFTP.sh
+fixOneBatch.sh
+topStats.sh
+buildSendList
+runMultiple.sh
+parseMail.awk
+tojsondimensions.py
+BuildDeepDeleteList.sh
+BB_tbrc/BB_tbrc2drs
+YOW

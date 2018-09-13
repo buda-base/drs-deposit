@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#
+# copyLinksToBin
+# Arguments:
+# destFolder  (default ~/bin)
+# Requires:
+# * dd env var, pointing to the root of the local drs-deposit 
+# repository
+#
+# * $dd/DRS-BATCH-PROCESSING/deployment (which should be in the repository)
+# * the destination folder (~/bin default)
+
+mybin=${1:-~/bin}
+
+[ ! -d ${mybin} ] && { echo ${mybin} not found ; exit 1 ; }
+
+[ ! -w ${mybin} ] && { echo ${mybin} not writable ; exit 1 ; }
+
+
+pushd $dd/DRS-BATCH-PROCESSING/deployment
+git branch
+read -p "Press enter to deploy this branch, any other key to quit." okGo
+
+[ ! -z "$okGo" ] && exit 1
+
+pushd $dd/DRS-BATCH-PROCESSING/deployment
+
+find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -vrp ", $NF, mybin}' > .tmp
+source  .tmp
+rm .tmp
+#
+# Back, back, return from whence ye came
+popd
