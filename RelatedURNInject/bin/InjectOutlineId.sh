@@ -30,14 +30,14 @@ export HUL_NRS_RESOLVER_URL=${!levels}
 export iCt=0
 
 while IFS=: read -ra lineArgs ; do
-    printMasterURI=
-    outlineURI=
-    [ ! -z "${lineArgs[0]}" ] && { outlineURI=${HUL_NRS_RESOLVER_URL}${lineArgs[0]} ; }
-    [ ! -z "${lineArgs[1]}" ] && { printMasterURI=${HUL_NRS_RESOLVER_URL}${lineArgs[1]} ; }
+    printMasterUrn=
+    outlineUrn=
+    [ ! -z "${lineArgs[0]}" ] && { outlineUrn=${HUL_NRS_RESOLVER_URL}${lineArgs[0]} ; }
+    [ ! -z "${lineArgs[1]}" ] && { printMasterUrn=${HUL_NRS_RESOLVER_URL}${lineArgs[1]} ; }
 
     ((iCt++))
     echo   ${outPath}${iCt}${targetConf}
-    java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl outlineURI=${outlineURI}  printMasterURI=${printMasterURI} hId=${HID}  > ${outPath}${iCt}${targetConf}
+    java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl outlineUrn=${outlineUrn}  printMasterUrn=${printMasterUrn} hId=${HID}  > ${outPath}${iCt}${targetConf}
 done << YOW
 :pmOnly
 outlineOnly

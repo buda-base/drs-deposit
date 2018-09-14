@@ -25,7 +25,6 @@
     </xsl:template>
     <xsl:template match="metadataCategory[@name='objectMetadata']">
         <xsl:copy>
-            <xsl:copy-of select="@*|node()"/>
             <xsl:if test="$printMasterUrn != '' ">
                 <!--<xsl:message>-->
                   <!--pm: <xsl:value-of select="$printMasterUrn"/>-->
@@ -39,6 +38,7 @@
                 <property name="relatedLinks" value="Relationship=Outline --- URI={$outlineUrn}"/>
             </xsl:if>
         </xsl:copy>
+        <xsl:apply-templates/>
     </xsl:template>
     <xsl:template match="@*|node()">
         <xsl:copy>
