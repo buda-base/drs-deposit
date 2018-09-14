@@ -3,8 +3,6 @@ Read a csv of DRS deposit log entries, extract fields for call to DRS db
 sproc 'AddDRS'
 
 """
-import fileinput
-import sys
 import argparse
 from typing import Dict, Any
 

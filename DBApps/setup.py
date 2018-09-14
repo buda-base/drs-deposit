@@ -13,8 +13,7 @@ from setuptools import setup
 setup(
     name='DBApps',
     version='0.42.3',
-    packages=['config', 'config.Tests',
-              'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
+    packages=['conf','DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
               'DBApps.SourceProcessors'],
     url='',
     license='',
@@ -31,7 +30,7 @@ setup(
             'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
             'getNamedWorks = DBApps.getNamedWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
-            'updateBuildStatus = DBApps.getReadyWorks:updateBuildStatus'
+            'updateBuildStatus = DBApps.updateBuildStatus:updateBuildStatus'
         ]
     }
 )

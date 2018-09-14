@@ -1,11 +1,10 @@
 import argparse
 import os
-from typing import Union, Tuple
+from typing import Union, Tuple, Any
+from DBApps.DBAppArgs import DBAppArgs
 
-from DBApps.DBApp import DBApp
 
-
-class GetUpdateArgs(DBApp):
+class GetUpdateArgs(DBAppArgs):
     """
     Namespace for arg parser
     """
@@ -28,8 +27,6 @@ def get_tree_values(path: str) -> Tuple[Union[int, Any], Union[int, Any]]:
 
     total: int = 0
     fileCount: int = 0
-    subTotal: int = 0
-    subCount: int = 0
 
     for entry in os.scandir(path):
         if entry.is_dir(follow_symlinks=False):
