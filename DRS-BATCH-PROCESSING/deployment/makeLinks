@@ -22,29 +22,49 @@ while read aLink ; do
       # use the input as the source path
       [ -f ../$aLink ] || [ -d ../$aLink ] && { ln -s ../$aLink . ; } || { echo $aLink not found. ; }
 done << YOW
-make-drs-batch.sh
-# You can enter a comment here
-saxonhe-9.4.0.7.jar
-make-proj-conf.xsl   # You can enter a comment here , too
-GetCumBuiltFileCounts.sh
-splitWorks.sh
-setupErrorLog.sh
-ftpMultiple.sh
-makeOneDrs.sh
-findNewerBatches.sh
-make-drs-outline.sh
-findBatchInWorksList.sh
-BuildDeepDeleteList.awk
-echoCat.sh
-countUnderwayJobs.sh
-countBatchesByTime.sh
-deleteAlreadyDepositedSFTP.sh
-fixOneBatch.sh
-topStats.sh
+# full line comments are supported
+BB_tbrc/BB_tbrc2drs    # Comment out tail of line
+BB_tbrc/BB_tbrcOutline
+autoRecovery
+autoRecoveryCore
 buildSendList
-runMultiple.sh
-parseMail.awk
-tojsondimensions.py
+commonUtils.sh
+# diag  countBatchesByTime.sh
+BuildDeepDeleteList.awk
 BuildDeepDeleteList.sh
-BB_tbrc/BB_tbrc2drs
+BuildRecoveryList.awk
+BuildRecoveryList.sh
+CountFilesInBatches.awk
+CreateOutlineText
+GetCumBuiltFileCounts.sh
+deleteAlreadyDepositedSFTP.sh
+drsttl-0.1.0.jar
+echoCat.sh
+findBatchInWorksList.sh
+findNewerBatches.sh
+fixOneBatch.sh
+ftpMultiple.sh
+getErrorBuildStatus
+getLinkedCode
+ftpScript.sh
+killJava.sh
+make-drs-batch.sh
+make-drs-outline.sh
+make-proj-conf.xsl
+makeOneDrs.sh
+makeOneFtp.sh
+makeOneOutline.sh
+parseMail.awk
+ProcessTrackFile.sh
+RemoveDepositedVolumePaths.sh
+RemoveDuplicateVolumes.sh
+RunSerialFtp.sh
+SetBBLevel.sh
+runningDepositStatus
+runMultiple.sh
+saxonhe-9.4.0.7.jar
+setupErrorLog.sh
+splitWorks.sh
+tojsondimensions.py
+topStats.sh
 YOW

@@ -254,7 +254,7 @@ while IFS=',' read -ra LINE; do
     $bb -a build -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
 	if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
 		echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-		updateBuildStatus $DbConnectionString "${$targetProjectDir}/${batchName}" "FAIL"
+		updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
 	else
 
 	    mv  ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}

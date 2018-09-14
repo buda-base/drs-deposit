@@ -17,17 +17,17 @@ mybin=${1:-~/bin}
 [ ! -w ${mybin} ] && { echo ${mybin} not writable ; exit 1 ; }
 
 
-pushd $dd/DRS-BATCH-PROCESSING/deployment
+# pushd is noisy
+pushd $dd/DRS-BATCH-PROCESSING/deployment > /dev/null
+
 git branch
 read -p "Press enter to deploy this branch, any other key to quit." okGo
 
 [ ! -z "$okGo" ] && exit 1
-
-pushd $dd/DRS-BATCH-PROCESSING/deployment
 
 find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -vrp ", $NF, mybin}' > .tmp
 source  .tmp
 rm .tmp
 #
 # Back, back, return from whence ye came
-popd
+popd > /dev/null

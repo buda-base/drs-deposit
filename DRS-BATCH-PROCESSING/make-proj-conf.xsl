@@ -5,8 +5,8 @@
                 version="2.0">
     <xsl:output indent="yes"/>
     <xsl:param name="hId" as="xs:string" required="yes"/>
-    <xsl:param name="outlineUrn" as="xs:string" required="no"/>
-    <xsl:param name="printMasterUrn" as="xs:string" required="no"/>
+    <xsl:param name="outlineUrn" as="xs:string" required="no" select="''"/>
+    <xsl:param name="printMasterUrn" as="xs:string" required="no" select="''"/>
     <xsl:template match="property[@name='alephID']">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
@@ -25,7 +25,7 @@
     </xsl:template>
     <xsl:template match="metadataCategory[@name='objectMetadata']">
         <xsl:copy>
-            <xsl:copy-of select="@*|node()"/>
+            <xsl:apply-templates select="@*|node()"/>
             <xsl:if test="$printMasterUrn != '' ">
                 <!--<xsl:message>-->
                   <!--pm: <xsl:value-of select="$printMasterUrn"/>-->
