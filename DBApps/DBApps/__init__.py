@@ -1,2 +1,2 @@
-__all__ = ['DRSUpdate', 'genOutlines', 'genWorks', 'getReadyWorks',
-           'getworkstest', 'splitWorks', 'DbApp.py', 'DBAppArgs.py']
+__all__: object = ['DRSUpdate', 'genOutlines', 'genWorks', 'getReadyWorks',
+           'getworkstest', 'splitWorks', 'DbApp', 'DbAppParser']

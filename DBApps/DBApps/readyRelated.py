@@ -74,4 +74,3 @@ class ReadyRelated(DbApp, ABC):
 
         self._options = options
         self.ExpectedColumns = ['WorkName', 'HOLLIS', 'Volume']
-
