@@ -12,7 +12,7 @@ class DbArgNamespace:
     pass
 
 
-class DBAppArgs:
+class DbAppParser:
     """
     Base class for database arguments. When a subclass calls
     argparse.parseArguments, this class returns a structure containing

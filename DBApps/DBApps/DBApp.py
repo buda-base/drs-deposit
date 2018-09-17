@@ -8,7 +8,7 @@ import pymysql as mysql
 from abc import ABCMeta
 
 
-class DBApp(metaclass=ABCMeta):
+class DbApp(metaclass=ABCMeta):
     """
     Base class for database applications
     """

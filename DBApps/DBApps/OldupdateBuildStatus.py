@@ -1,14 +1,7 @@
 import argparse
 import os
 from typing import Union, Tuple, Any
-from DBApps.DBAppArgs import DBAppArgs
-
-
-class GetUpdateArgs(DBAppArgs):
-    """
-    Namespace for arg parser
-    """
-    pass
+from DBApps.DbAppParser import DbAppParser, DbArgNamespace
 
 
 # noinspection PyBroadException

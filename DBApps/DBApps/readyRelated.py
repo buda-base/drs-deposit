@@ -6,11 +6,11 @@ Get Ready Related works class
 import sys
 from abc import ABC
 # usr
-from DBApps.DBAppArgs import DBAppArgs, DbArgNamespace, writableExpandoFile
-from DBApps.DBApp import DBApp
+from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
+from DBApps.DbApp import DbApp
 
 
-class ReadyRelatedParser(DBAppArgs):
+class ReadyRelatedParser(DbAppParser):
     """
     Parser for the Get Ready Related class
     Returns a structure containing fields:
@@ -37,7 +37,7 @@ class ReadyRelatedParser(DBAppArgs):
                                   type=writableExpandoFile)
 
 
-class ReadyRelated(DBApp, ABC):
+class ReadyRelated(DbApp, ABC):
     """
     Gets related works
     """

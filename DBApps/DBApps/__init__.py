@@ -1,2 +1,2 @@
 __all__ = ['DRSUpdate', 'genOutlines', 'genWorks', 'getReadyWorks',
-           'getworkstest', 'splitWorks', 'DBApp', 'DBAppArgs.py']
+           'getworkstest', 'splitWorks', 'DbApp.py', 'DBAppArgs.py']
