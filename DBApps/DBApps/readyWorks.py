@@ -5,7 +5,7 @@ DBApp class to get ready works
 import sys
 
 from DBApps.DBApp import DBApp
-from DBApps.DBAppArgs import DBAppArgs, DbArgNamespace, writableExpandoFile
+from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
 
 
 class GetReadyWorksParser(DBAppArgs):
