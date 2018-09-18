@@ -123,7 +123,7 @@ class DbApp:
 
             hasNext: bool = True
             while hasNext:
-                resultRows = workCursor.fetchall_unbuffered()
-                rl.extend(resultRows)
+                resultRows = workCursor.fetchall()
+                rl.append(resultRows)
                 hasNext = workCursor.nextset()
         return rl

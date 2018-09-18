@@ -4,7 +4,7 @@
 Entry point for getting related files.
 """
 from DBApps.readyRelated import ReadyRelated, ReadyRelatedParser
-from DBApps.DBAppArgs import DbArgNamespace
+from DBApps.DbAppParser import DbArgNamespace
 from DBApps.Writers.CSVWriter import CSVWriter
 
 
