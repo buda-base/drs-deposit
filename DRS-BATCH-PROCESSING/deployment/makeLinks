@@ -39,7 +39,6 @@ CountFilesInBatches.awk
 GetCumBuiltFileCounts.sh
 deleteAlreadyDepositedSFTP.sh
 drsttl-0.1.0.jar
-
 ftpMultiple.sh
 getErrorBuildStatus
 ftpMultiple.sh
