@@ -2,10 +2,11 @@
 #
 # makeLinks: 
 # args: none
-# synopsis: reads a list of file names. If they exist in the parent directory
-# or the sibling directory 'parallelBatch' make a link to them here.
+# synopsis: reads a list of file names. If they exist in the parent directory,
+# make a link to them here.
 #
-# This prepares the list of files which 'copyLinks' will deploy
+# This prepares the list of files which 'copyLinksToBin' will deploy
+
 while read aLink ; do
 
       # Support comments
@@ -46,8 +47,10 @@ fixOneBatch.sh
 ftpMultiple.sh
 getErrorBuildStatus
 getLinkedCode
+ftpMultiple.sh
 ftpScript.sh
 killJava.sh
+makeOneDrs.sh
 make-drs-batch.sh
 make-drs-outline.sh
 make-proj-conf.xsl
@@ -58,8 +61,10 @@ parseMail.awk
 ProcessTrackFile.sh
 RemoveDepositedVolumePaths.sh
 RemoveDuplicateVolumes.sh
+runMultiple.sh
 RunSerialFtp.sh
 SetBBLevel.sh
+splitWorks.sh
 runningDepositStatus
 runMultiple.sh
 saxonhe-9.4.0.7.jar

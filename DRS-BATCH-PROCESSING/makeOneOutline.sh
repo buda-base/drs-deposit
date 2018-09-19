@@ -48,14 +48,13 @@ source ${MEPATH}/commonUtils.sh
 
 # Some constants
 WORKS_SOURCE_HOME=/Volumes/DRS_Staging/DRS/outlines
-DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
 BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/$(date +%Y%m%d)
 BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
 
-OUTLINE_PROJECT_HOME=${DRS_CODE_HOME}/BB_tbrc/BB_tbrcOutline
+OUTLINE_PROJECT_HOME=${MEPATH}/BB_tbrcOutline
 #
 #
-MAKEDRS='make-drs-outline.sh'
+MAKEDRS=${MEPATH}"/make-drs-outline.sh"
 
 
 if (( $# != 3)); then
