@@ -63,7 +63,7 @@ function prepBBHome {
 # Some constants
  WORKS_SOURCE_HOME=/Volumes/Archive
  BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/prod/$(date +%Y%m%d)
- BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
+ BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.19
  #
  #
  MAKEDRS='make-drs-batch.sh'
