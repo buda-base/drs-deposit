@@ -56,7 +56,7 @@ class ReadyRelated(DbApp, ABC):
         if self._options.outline:
             rs = "Outlines"
         if self._options.printmaster:
-            rs = "printMasters"
+            rs = "PrintMasters"
         return rs
 
     def __init__(self, options: DbArgNamespace) -> None:

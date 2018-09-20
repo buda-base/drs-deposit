@@ -124,6 +124,6 @@ class DbApp:
             hasNext: bool = True
             while hasNext:
                 resultRows = workCursor.fetchall()
-                rl.append(resultRows)
+                rl.extend(resultRows)
                 hasNext = workCursor.nextset()
         return rl
