@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 #   Make one DRS Launch, with tracking control
 #
 # arguments:
