@@ -13,7 +13,7 @@ These scripts use nothing from the environment. Input and output folder location
 
 ## Step 1: Setup
 The setup process is summarized in this image (This is a static image of [Batching Part 1 gdrawing][2f8f924c])
-![Batching part 1](../../images/2018/01/Parallel Batching 1.png)
+![Batching part 1](../images/2018/01/Parallel%20Batching%201.png)
 
   [2f8f924c]: https://drive.google.com/open?id=1v21PO7yinmvW4j298s_xsSJ1HYi2K5BQcWs-5JRdMUQ "Batching Part 1"
 
@@ -36,7 +36,7 @@ Along the way, it initializes the directories for tracking progress, passing the
 Note that the parallelism happens here. `runMultiple.sh` spawns one child thread for each work list.
 
 ## Step 3: Batching
-The batching process is described in [Parallel Batching 2 gdrawing][8d428e13], and is shown in ![Batching 2 flowchart](../../images/2018/01/Parallel Batching 2.png)
+The batching process is described in [Parallel Batching 2 gdrawing][8d428e13], and is shown in ![Batching 2 flowchart](../images/2018/01/Parallel%20Batching%202.png)
 
 Note in the `makeOneDrs.sh` processing, that it invokes `make-drs-batch.sh` in the background, so that it can capture its pid for logging purposes. After it launches `make-drs-batch.sh` it sits and waits for it to exit.
 

@@ -9,31 +9,19 @@ from typing import Dict, Any
 from DBApps.Writers.DbWriter import DbWriter
 from DBApps.SourceProcessors import WebAdminResults
 
-
-
 # The key represents a column in the designated file
-PDSHeaders: Dict[Any, str] =  dict(object_id_num='objectid',
-                object_huldrsadmin_ownerSuppliedName_string='OSN',
-                object_urn_string_sort='objectUrn',
-                batch_huldrsadmin_batchDirectoryName_string='DRSDir',
-                batch_huldrsadmin_loadStartTime_date='IngestDate',
-                object_fileCount_num='filesCount',
-                object_objectSize_num='size')
-RelatedHeaders: Dict[Any, str] = dict(file_id_num='objectid',
-                      file_huldrsadmin_ownerSuppliedName_string='OSN',
-                      file_huldrsadmin_uri_string_sort='objectUrn',
-                      batch_huldrsadmin_batchDirectoryName_string='DRSDir',
-                      batch_huldrsadmin_loadStartTime_date='IngestDate',
-                      file_premis_size_num='size')
+PDSHeaders: Dict[Any, str] = dict(object_id_num='objectid', object_huldrsadmin_ownerSuppliedName_string='OSN',
+                                  object_urn_string_sort='objectUrn',
+                                  batch_huldrsadmin_batchDirectoryName_string='DRSDir',
+                                  batch_huldrsadmin_loadStartTime_date='IngestDate', object_fileCount_num='filesCount',
+                                  object_objectSize_num='size')
+RelatedHeaders: Dict[Any, str] = dict(file_id_num='objectid', file_huldrsadmin_ownerSuppliedName_string='OSN',
+                                      file_huldrsadmin_uri_string_sort='objectUrn',
+                                      batch_huldrsadmin_batchDirectoryName_string='DRSDir',
+                                      batch_huldrsadmin_loadStartTime_date='IngestDate', file_premis_size_num='size')
 
-drs_params_ordered = (
-    'IngestDate',
-    'objectid',
-    'objectUrn',
-    'DRSDir',
-    'filesCount',
-    'size',
-    'OSN') # Muy importante!  OSN corresponds to Volume, and is used as the FK from DRS to Volume
+drs_params_ordered = ('IngestDate', 'objectid', 'objectUrn', 'DRSDir', 'filesCount', 'size',
+                      'OSN')  # Muy importante!  OSN corresponds to Volume, and is used as the FK from DRS to Volume
 
 
 class GetArgs:
@@ -84,19 +72,19 @@ def DRSUpdate():
     writer.write_list(param_list)
 
 
-def parse_args(arg_namespace: object) -> object:
+def parse_args(arg_namespace: object) -> None:
     """
     :rtype: object
     :param arg_namespace. class which holds arg values
     """
-    _parser = argparse.ArgumentParser \
-        (description="Reads  a raw CSV file which holds output of a HUL DRS \
+    _parser = argparse.ArgumentParser(description="Reads  a raw CSV file which holds output of a HUL DRS \
                      WebAdmin search", usage="%(prog)s -d section:configFile sourcefile \
                      where 'section' is a section in a python dbConfig file 'configFile' ")
 
     _parser.add_argument("sourceFile", help="CSV file containing search WebAdminResults.")
     _parser.add_argument("-d", "--drsDbConfig")
-    _parser.add_argument("-r", "--relatedFile",  action='store_true', default=False )
+    _parser.add_argument("-r", "--relatedFile", action='store_true', default=False)
+    # noinspection PyTypeChecker
     _parser.parse_args(namespace=arg_namespace)
 
 

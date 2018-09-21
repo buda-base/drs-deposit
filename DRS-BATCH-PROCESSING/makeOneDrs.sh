@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 #   Make one DRS Launch, with tracking control
 #
 # arguments:
@@ -28,11 +28,6 @@ Before using:
 
 	WORKS_SOURCE_HOME	Where the works live. Parent of folders named W......
 
-	DRS_CODE_HOME		Where the DRS processing scripts live: typically,
-						the subdirectory DRS-BATCH-PROCESSING of your local
-						repository of
-						https://github.com/BuddhistDigitalResourceCenter/drs-deposit
-
 	BATCH_OUTPUT_HOME	Where completed batches go.
 						Under this folder are Batch Builder projects, each one
 						corresponding to one work list.
@@ -47,7 +42,10 @@ ENDUSAGE
 
 
 ME=$(basename $0)
-# 
+# jsk: need full path to script for components
+MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+#
 # Set up Batch builder home
 #
 function prepBBHome {
@@ -69,11 +67,14 @@ function prepBBHome {
 # Some constants
  WORKS_SOURCE_HOME=/Volumes/Archive
  DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
- BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/prod/$(date +%Y%m%d)
- BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
+ BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/$(date +%Y%m%d)
+ BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.19
  #
  #
- MAKEDRS='make-drs-batch.sh'
+ MAKEDRS=${MEPATH}"/make-drs-batch.sh"
+
+ MASTER_PROJECT_HOME=${MEPATH}/BB_tbrc2drs
+
 # for testing
  # MAKEDRS='touch-drs.sh'
 # BATCH_OUTPUT_HOME=./testOut
@@ -105,13 +106,6 @@ series=$(basename $1)
 underFile=${statusRoot}/${series}
 [ -e $underFile ]  && { echo "${series} already underway."; continue; }
 
-# echo 'series:' $series
-# echo 'x:' $x
-# echo 'statusRoot:' $statusRoot
-# echo 'completionRoot:' $completionRoot
-
-# read
-#
 # Generate the batch path
 [ ! -d  "${BATCH_OUTPUT_HOME}" ] && { mkdir -p ${BATCH_OUTPUT_HOME} ; }
 
@@ -122,8 +116,8 @@ batchRoot=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
 prepBBHome
 
 # Invoke the build in the background
-  ${DRS_CODE_HOME}/${MAKEDRS} \
-	"$1" ${DRS_CODE_HOME}/BB_tbrc/BB_tbrc2drs $batchRoot \
+  ${MAKEDRS} \
+	"$1" ${MASTER_PROJECT_HOME} $batchRoot \
 	$WORKS_SOURCE_HOME ${BB_HOME}  &
 #
 # Capture its pid and mark as underway

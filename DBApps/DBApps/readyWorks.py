@@ -1,14 +1,14 @@
 """
-DBApp class to get ready works
+DbApp class to get ready works
 
 """
 import sys
 
-from DBApps.DBApp import DBApp
+from DBApps.DbApp import DbApp
 from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
 
 
-class GetReadyWorksParser(DBAppArgs):
+class GetReadyWorksParser(DbAppParser):
     """
     Specifies arguments for get ready works
     """
@@ -23,7 +23,7 @@ class GetReadyWorksParser(DBAppArgs):
                                   type=writableExpandoFile)
 
 
-class GetReadyWorks(DBApp):
+class GetReadyWorks(DbApp):
     """
     Fetch all ready works
     """

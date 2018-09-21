@@ -2,10 +2,11 @@
 #
 # makeLinks: 
 # args: none
-# synopsis: reads a list of file names. If they exist in the parent directory
-# or the sibling directory 'parallelBatch' make a link to them here.
+# synopsis: reads a list of file names. If they exist in the parent directory,
+# make a link to them here.
 #
-# This prepares the list of files which 'copyLinks' will deploy
+# This prepares the list of files which 'copyLinksToBin' will deploy
+
 while read aLink ; do
 
       # Support comments
@@ -29,25 +30,20 @@ autoRecovery
 autoRecoveryCore
 buildSendList
 commonUtils.sh
-# diag  countBatchesByTime.sh
+
 BuildDeepDeleteList.awk
 BuildDeepDeleteList.sh
 BuildRecoveryList.awk
 BuildRecoveryList.sh
 CountFilesInBatches.awk
-CreateOutlineText
 GetCumBuiltFileCounts.sh
 deleteAlreadyDepositedSFTP.sh
 drsttl-0.1.0.jar
-echoCat.sh
-findBatchInWorksList.sh
-findNewerBatches.sh
-fixOneBatch.sh
 ftpMultiple.sh
 getErrorBuildStatus
-getLinkedCode
+ftpMultiple.sh
 ftpScript.sh
-killJava.sh
+makeOneDrs.sh
 make-drs-batch.sh
 make-drs-outline.sh
 make-proj-conf.xsl
@@ -58,13 +54,24 @@ parseMail.awk
 ProcessTrackFile.sh
 RemoveDepositedVolumePaths.sh
 RemoveDuplicateVolumes.sh
+runMultiple.sh
 RunSerialFtp.sh
 SetBBLevel.sh
-runningDepositStatus
+splitWorks.sh
 runMultiple.sh
 saxonhe-9.4.0.7.jar
 setupErrorLog.sh
 splitWorks.sh
 tojsondimensions.py
-topStats.sh
 YOW
+# Unused files.
+# diag  countBatchesByTime.sh
+# diag findNewerBatches.sh
+# diag fixOneBatch.sh
+# diag CreateOutlineText
+# diag getLinkedCode
+# diag killJava.sh
+# diag runningDepositStatus
+# diag topStats.sh
+# diag echoCat.sh
+# diag findBatchInWorksList.sh

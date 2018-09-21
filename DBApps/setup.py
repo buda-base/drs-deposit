@@ -13,7 +13,7 @@ from setuptools import setup
 setup(
     name='DBApps',
     version='0.42.3',
-    packages=['conf','DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
+    packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
               'DBApps.SourceProcessors'],
     url='',
     license='',

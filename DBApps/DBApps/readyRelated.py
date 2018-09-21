@@ -7,10 +7,10 @@ import sys
 from abc import ABC
 # usr
 from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
-from DBApps.DBApp import DBApp
+from DBApps.DbApp import DbApp
 
 
-class ReadyRelatedParser(DBAppParser):
+class ReadyRelatedParser(DbAppParser):
     """
     Parser for the Get Ready Related class
     Returns a structure containing fields:
@@ -37,7 +37,7 @@ class ReadyRelatedParser(DBAppParser):
                                   type=writableExpandoFile)
 
 
-class ReadyRelated(DBApp, ABC):
+class ReadyRelated(DbApp, ABC):
     """
     Gets related works
     """
@@ -56,7 +56,7 @@ class ReadyRelated(DBApp, ABC):
         if self._options.outline:
             rs = "Outlines"
         if self._options.printmaster:
-            rs = "printMasters"
+            rs = "PrintMasters"
         return rs
 
     def __init__(self, options: DbArgNamespace) -> None:
@@ -74,4 +74,3 @@ class ReadyRelated(DBApp, ABC):
 
         self._options = options
         self.ExpectedColumns = ['WorkName', 'HOLLIS', 'Volume']
-

@@ -25,7 +25,8 @@ read -p "Press enter to deploy this branch, any other key to quit." okGo
 
 [ ! -z "$okGo" ] && exit 1
 
-find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -vrp ", $NF, mybin}' > .tmp
+
+find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -vHrp ", $NF, mybin}' > .tmp
 source  .tmp
 rm .tmp
 #

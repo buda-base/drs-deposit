@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    Has URNS and ids for QA system
 jimk 25-I-18: URNs for 
     has_methodology: urn-3:HUL.DRS.OBJECT:679559 
                 Object URN                      File-URN
@@ -24,7 +23,7 @@ For example: http://nrstest.harvard.edu:9031/urn-3:fhcl:679558
         <property name="batchName" value="{owner}_{batchDir}_{yyyy}{mo}{dd}_{hh24}{mm}{ss}"/>
         <property name="successMethod" value="all"/>
         <property name="projectName" value="tbrc2drs"/>
-        <property name="projectDescription" value="QA BatchBuilder for depositing TBRC archive"/>
+        <property name="projectDescription" value="BatchBuilder for depositing TBRC archive"/>
         <property name="depositAgent" value="10684323"/>
         <property name="depositAgentEmail" value="jimk@tbrc.org"/>
         <property name="successEmail" value="jimk@tbrc.org"/>
@@ -36,14 +35,13 @@ For example: http://nrstest.harvard.edu:9031/urn-3:fhcl:679558
             <property name="billingCode" value="FHCL.COLL.TBRC_0001"/>
             <property name="accessFlag" value="R"/>
             <property name="processingLevel" value="minimal"/>
-            <property name="has_methodology" value="urn-3:HUL.DRS.OBJECT:679559"/>
+            <property name="has_methodology" value=""/>
 
             <!-- Label added per Vitaly 11/15/2017 note 3 values <sp> dash dash dash <sp> e.g. namespace of value like "HOLLIS"  any literal, blanks & punct and symbols ok, except commas, ; -->
 
             <property name="harvardMetadataLinks" value="Type=Aleph --- Identifier=hollis-id --- Label=HOLLIS-ID"/>
-            <property name="has_documentation" value="urn-3:HUL.DRS.OBJECT:679553"/>
+            <property name="has_documentation" value=""/>
 
-<!-- Producer 826 is the production producer -->
             <!-- <property name="producer" value="Wallman, Jeffrey (id=826)"/> -->
 <!-- This id, 22764 is on the QA site -->
             <property name="producer" value="Wallman, Jeffrey (id=22764)"/>
@@ -57,7 +55,7 @@ For example: http://nrstest.harvard.edu:9031/urn-3:fhcl:679558
             <property name="idsDeliverableURNs" value="yes"/>
         </metadataCategory>
         <metadataCategory name="otherRightsMetadata">
-            <property name="license" value="urn-3:HUL.DRS.OBJECT:679555"/>
+            <property name="license" value=""/>
          
         </metadataCategory>
         <metadataCategory name="importMetadata">
@@ -71,7 +69,7 @@ For example: http://nrstest.harvard.edu:9031/urn-3:fhcl:679558
                 <property name="isFirstGenerationInDrs" value="yes"/>
                 <property name="usageClass" value="HIGHUSE"/>
                 <!-- Prod id = 826, QA == 22764 -->
-                <!-- Can also use Tibetan Buddhist Resource Center (isd=????) See Qa enviro -->
+                <!-- Can also use Tibetan Buddhist Resource Center (id=????) See Qa enviro -->
                 <property name="producer" value="Wallman, Jeffrey (id=22764)"/>
             </metadataCategory>
             <metadataCategory name="pdsDocumentImageFileMetadata">

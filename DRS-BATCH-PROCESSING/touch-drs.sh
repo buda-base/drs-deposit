@@ -143,18 +143,9 @@ echo targetProjectDir: $targetProjectDir  >> $logPath 2>&1
 # Start timing log
 
 # create a BB project to hold the batches that will be created
-# jsk 11/7/17: create this structure
-# bb has to be defined before this works
 #
-# jsk 12/5/17: don't need to create this anymore. The folders 
-# are created in the templatedirs BB action, and the 
-# project.conf is written by doing an xsl transform on the master
-#
-# echo Create target dir cp -R $projectMaster $targetProjectDir
-# echo cp -R $projectMaster/* $targetProjectDir  >> $logPath 2>&1
-# cp -Rp $projectMaster/* $targetProjectDir  >> $logPath 2>&1
-# You do nees to copy something
-cp $masterProjConf $targetProjectDir >> $logPath 2>&1
+
+cp  -v $masterProjConf $targetProjectDir 2>&1 |tee -a  $logPath
 
 
 while IFS=',' read -ra LINE; do

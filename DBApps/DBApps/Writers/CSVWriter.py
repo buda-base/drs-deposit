@@ -21,8 +21,7 @@ class CSVWriter(listwriter.ListWriter):
     '''
 
     def write_list(self, srcList):
-        fullFilePath = os.path.expanduser(self.oConfig)
-        with codecs.open(fullFilePath, 'w', encoding="utf-8") as out:
+        with codecs.open(self.oConfig, 'w', encoding="utf-8") as out:
             #        sigh. no unicode in csv
             #         wr = _csv.writer(out)
             #         wr.writerow(['workName','outlineText'])
@@ -32,6 +31,7 @@ class CSVWriter(listwriter.ListWriter):
             _ = [out.write('{0},"{1}"\n'.format(aVal[0], aVal[1].strip()))
                  for aVal in srcList]
 
+    # TODO: Make a Dictionary CSVWriter class which takes expected column names as arg
     def write_dict(self, data: list, columnNames: list):
         """
         Writes slices of a list of dictionary items to a csv.
@@ -40,11 +40,7 @@ class CSVWriter(listwriter.ListWriter):
         :param columnNames: list of columns to write (independent of result set)
         :return:
         """
-
-        outPath = pathlib.Path(os.path.expanduser(self.oConfig))
-        self._makePathDir(str(outPath))
-
-        with outPath.open("w", newline=None) as fw:
+        with self.osPath.open("w", newline=None) as fw:
             # Create the CSV writer. NOTE: multiple headers are written to the
             csvwr = csv.DictWriter(fw, columnNames, lineterminator='\n')
 
@@ -54,18 +50,57 @@ class CSVWriter(listwriter.ListWriter):
                     down_row = {fieldName: resultRow[fieldName] for fieldName in columnNames}
                     csvwr.writerow(down_row)
 
+    # osPath. pathlib representation of file
+    _osPath: pathlib.Path
+
+    @property
+    def osPath(self):
+        return self._osPath
+
+    @osPath.setter
+    def osPath(self, value):
+        self._osPath = value
+
     @staticmethod
-    def _makePathDir(path: str):
+    def MakePathDir(filePath: pathlib.Path) -> None:
         """
         Creates path to input path if it doesn't exist.
         Resolves any ~ or .. references
-        :param path: file specification, might contain path
-        :type path: str
+        :param filePath: file specification, might contain path
+        :type filePath: str
         """
         #
         import os
-        fPath = pathlib.Path(os.path.expanduser(path)).resolve()
+        fPath = pathlib.Path(os.path.expanduser(str(filePath))).resolve()
         fPath.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
 
+    def PutResultSets(self, results: list, fieldNames: list) -> None:
+        """
+        Write multiple result sets to file
+        :param results: list of list of dicts. represents 0..* result sets
+        :param fieldNames: subset of results columns to output
+        :return:
+        """
+        # and write
+
+        # Build the output path
+
+        with self.osPath.open("w", newline='') as fw:
+            # Create the CSV writer. NOTE: multiple headers are written to the
+            # one output file
+            csvwr = csv.DictWriter(fw, fieldNames, lineterminator='\n')
+            for resultSet in results:
+                if len(resultSet) > 0:
+                    csvwr.writeheader()
+                    for resultRow in resultSet:
+                        down_row = {fieldName: resultRow[fieldName] for fieldName in fieldNames}
+                        csvwr.writerow(down_row)
+
     def __init__(self, fileName: str):
+        """
+
+        :rtype: object
+        """
         super().__init__(fileName)
+        self.osPath = pathlib.Path(os.path.expanduser(self.oConfig))
+        self.MakePathDir(self.osPath)
