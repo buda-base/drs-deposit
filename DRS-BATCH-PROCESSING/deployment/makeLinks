@@ -50,4 +50,5 @@ BuildDeepDeleteList.sh
 BB_tbrc/BB_tbrc2drs
 RemoveDepositedVolumePaths.sh
 ftpScript.sh
+SetBBLevel.sh
 YOW
