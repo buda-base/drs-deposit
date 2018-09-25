@@ -50,6 +50,7 @@
 	<!-- the fits home is used by the MediaInfo tool to load the jna api libs  -->
 	<!-- in most cases you won't need to change -->
 	<!-- example for BB will be /fits -->
-	<fits_home>fits/</fits_home>	
+	<!-- jimk: BB 2.2.1.9 has changed this from fits/ -->
+	<fits_home>.</fits_home>
 		
 </fits_configuration>
