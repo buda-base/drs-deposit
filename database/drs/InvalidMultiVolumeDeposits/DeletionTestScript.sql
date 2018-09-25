@@ -57,36 +57,33 @@
 # Bad objects volume Queued volume = false
 # update Volumes set Queued =False
 
-select * from
-#  update
+-- select * from
+update
 Volumes
-#  set Queued = False
-where volumeId in (select volumeId from DRS where objectid in (select oid from objdel7233 ));
+set Queued = False
+where volumeId in (select volumeId from DRS where objectid in (select oid from badObjectsWithDates ));
 
 # find and delete build paths
 # modify this query to delete instead of select *
 # select BuildPaths.*
-delete
-from BuildPaths where buildPathId in
-                                     (
-    select buildPathId from BatchBuilds
+
+delete from BuildPaths where buildPathid in (
+select distinct buildPathId from BatchBuilds 
 join Volumes using(batchBuildId)
-join DRS using (volumeId)
-where objectid in (select oid from objdel7233) );
+join DRS d using (volumeId) 
+join badObjectsWithDates b on d.objectid = b.oid) ;
 
 # validate buildPathId is null in this query after above delete run
 # modify this query to delete instead of select *
 # select *
 delete
 from BatchBuilds     where batchBuildId in ( select batchBuildId from  Volumes v  join DRS using (volumeId)
-                                                         where objectid in (select oid from objdel7233)
+                                                         where objectid in (select oid from badObjectsWithDates)
                                                          );
-
-
 # and last
 # select *
 delete
-from DRS where objectid in (select oid from objdel7233);
+from DRS where objectid in (select oid from badObjectsWithDates);
 
 
 # drop view objdel2296;
