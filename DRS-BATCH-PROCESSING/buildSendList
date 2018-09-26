@@ -15,7 +15,7 @@ export FILESIZES=fileSizes.txt
 export TARGET=../buildList.txt
 
 echo -n "Get builds ...."
-find $PR/batchBuilds -maxdepth 2 -type d -mindepth 2 > $BUILT
+find $PR/batchBuilds -maxdepth 2 -mindepth 2 -type d > $BUILT
 echo "Done"
 # filter before doing anything eser
 [ -f ${BATCH_EXCLUDE_LIST} ] && { grep -v -f ${BATCH_EXCLUDE_LIST} $BUILT >  $VOLUMES ; } || { mv $BUILT  $VOLUMES ;  }
