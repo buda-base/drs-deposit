@@ -127,3 +127,21 @@ class DbApp:
                 rl.append(resultRows)
                 hasNext = workCursor.nextset()
         return rl
+
+    def CallAnySproc(self, sproc: str, *args):
+        """
+        Calls a routine without analyzing the result
+        :param sproc: routine name
+        :param args: arguments
+        :return: true if there are any results, throws exception otherwise.
+        Caller handles
+        """
+        self.start_connect()
+
+        rl: list[dict] = []
+
+        with self.connection:
+            workCursor: mysql.Connection.Cursor = self.connection.cursor()
+            print(f'Calling {sproc} for n = {maxWorks} ')
+            workCursor.callproc(f'{sproc}', tuple(arg for arg in args))
+            workCursor.fetchall()  # wgaf
