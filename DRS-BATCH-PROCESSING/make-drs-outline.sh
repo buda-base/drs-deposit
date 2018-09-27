@@ -53,6 +53,7 @@ ME=$(basename $0)
 # jsk: need full path to script for components
 MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
+# This is the final output home, where successful batch builds go
 OUTPUTHOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/batchBuilds
 
 DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
