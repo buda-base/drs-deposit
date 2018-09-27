@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.7.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.12, for macos10.13 (x86_64)
 --
 -- Host: drsharvard.c5ewwyfxyijg.us-east-1.rds.amazonaws.com    Database: drs
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8mb4 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -385,14 +385,14 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`bdrc`@`%` PROCEDURE `PopulateWorkStatusCount`()
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `PopulateWorkStatusCount`(llim integer, ulim integer)
 BEGIN
 
 declare done boolean default 0;
 declare thisWork INTEGER(11);
 
 declare  wc cursor  for 
-select distinct workId from Works order by workId asc limit 6000,9000 ; 
+select distinct workId from Works order by workId asc limit llim,ulim ; 
 
 declare continue handler for SQLSTATE '02000' set done=1;
 
@@ -463,6 +463,7 @@ VALUES
 ,`Result` = result
 ;
 
+-- we set Queued to True if it was built, regardless of its prior setting
 update Volumes set
 	batchBuildId = (select batchBuildId from BatchBuilds where buildPathId = @bp),
     builtFileSize = volFilesSize,
@@ -539,6 +540,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`bdrc`@`%` PROCEDURE `UpdateWorkStatus`(workId INT(11))
+    COMMENT 'Deprecated. The authoritative version is WeeklyStatus Routine'
 BEGIN
 INSERT INTO `drs`.`workStatusCount`
 (
@@ -707,6 +709,19 @@ BEGIN
 set @objects = (SELECT count(1) FROM drs.DRS);
 set @batches = (select count(distinct DRSDir) from drs.DRS);
 
+set @unStartedUploads = (select count(*) from DepositedWorksFacts where workVolumes <> 0 and DRSVolumes = 0);
+set @partialUploads = (select count(*) from DepositedWorksFacts where 
+	workVolumes > 0 
+    and DRSVolumes > 0
+    and DRSVolumes <> workVolumes);
+set @completeUploads = (select count(*) from DepositedWorksFacts where 
+	workVolumes > 0 
+    and DRSVolumes > 0
+    and DRSVolumes = workVolumes);
+
+
+-- jimk: rewrote to use new view of volume and DRS counts
+/*-----------------------------------------
 set @partialUploads = (select count(*) 
 from workStatusCount wsc
 where wsc.Volumes <> wsc.NumberVolumesDeposited 
@@ -719,6 +734,7 @@ set @completeUploads = (select count(*)
 from workStatusCount wsc
 where wsc.Volumes = wsc.NumberVolumesDeposited 
 and wsc.Volumes > 0) ;
+*/
 
 set @OldcompleteUploads = (
 
@@ -767,7 +783,7 @@ and   (select count(1) from Volumes v left join DRS d using (volumeId) where d.D
 ) ; 
 
 
-select @batches,@objects, @completeUploads,@partialUploads,   @OldcompleteUploads, @OldpartialUploads, sum(filesCount) as CumCount, sum(size) as CumSize from drs.DRS;
+select @batches,@objects, @unstarteduploads,@partialUploads, @completeUploads,  @OldcompleteUploads, @OldpartialUploads, sum(filesCount) as CumCount, sum(size) as CumSize from drs.DRS;
 
 END ;;
 DELIMITER ;
@@ -785,4 +801,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-30 11:44:52
+-- Dump completed on 2018-09-27 13:11:08
