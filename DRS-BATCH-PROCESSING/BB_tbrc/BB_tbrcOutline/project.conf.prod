@@ -5,6 +5,10 @@
         <property name="successMethod" value=""/>
         <property name="projectName" value="Outline"/>
         <property name="projectDescription" value="template for batch outline file objects"/>
+        <property name="failureEmail" value="jimk@tbrc.org"/>
+        <property name="successEmail" value="jimk@tbrc.org"/>
+        <property name="depositAgent" value="10684323"/>
+        <property name="depositAgentEmail" value="jimk@tbrc.org"/>
     </metadataCategory>
     <directory name="OBJECT TEMPLATE">
         <metadataCategory name="objectMetadata">
