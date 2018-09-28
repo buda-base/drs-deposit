@@ -50,6 +50,8 @@ make-proj-conf.xsl
 makeOneDrs.sh
 makeOneFtp.sh
 makeOneOutline.sh
+makeOneCore.sh
+validate.sh
 parseMail.awk
 ProcessTrackFile.sh
 RemoveDepositedVolumePaths.sh

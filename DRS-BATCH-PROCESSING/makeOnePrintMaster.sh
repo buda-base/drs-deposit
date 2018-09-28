@@ -14,7 +14,6 @@ MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Some constants
 export WORKS_SOURCE_HOME=/Volumes/DRS_Staging/DRS/outlines
-export BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
 export PROJECT_HOME="${MEPATH}"/BB_tbrcOutline
 export MAKEDRS="${MEPATH}"/make-drs-outline.sh
 export BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/$(date +%Y%m%d)

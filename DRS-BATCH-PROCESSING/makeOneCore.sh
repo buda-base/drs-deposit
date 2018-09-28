@@ -42,6 +42,8 @@ ENDUSAGE
 
 source ${MEPATH}/commonUtils.sh
 
+source ${MEPATH}/validate.sh
+
 if (( $# != 3)); then
 	Usage
 	exit 1;
