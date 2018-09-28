@@ -24,7 +24,7 @@ setup(
         'console_scripts': [
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',
             'genOutlinesQuery = DBApps.genOutlinesFromQuery:genOutlines',
-            'AddOutlines = DBApps.addOutlines:AddOutlines',
+            'addRelated = DBApps.addRelated:AddRelated',
             'genWorks = DBApps.genWorks:genWorks',
             'genVolumes = DBApps.genWorks:genVolumes',
             'getReadyRelated = DBApps.getReadyRelated:GetReadyRelated',
