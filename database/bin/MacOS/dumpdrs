@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#!/bin/bash 
 creds=${1?"Login Path Required"}
 db=${2?" database name required"}
 
@@ -15,9 +15,9 @@ DDLFile=${backupPath}"DDL_only.sqldump"
 # Take 2:   Triggers in DDLFile were defined before tables they were to go with
 #           Along the way, I noticed that the data file also referenced the tables before they were defined.
 #           That's mostly ok, but I took out --no-create-info in the DDL definition
-mysqldump  --login-path=$creds --hex-blob  --result-file=$dataFile $db
+mysqldump  --login-path=$creds --hex-blob  --column-statistics=0  --result-file=$dataFile $db
 #
 # --no-create-info is VITAL to not creating tables
-mysqldump  --login-path=$creds --routines -t --no-data --triggers --no-create-info --result-file=$DDLFile $db
+mysqldump  --login-path=$creds --routines -t --no-data --triggers --column_statistics=0 --no-create-info --result-file=$DDLFile $db
 
 
