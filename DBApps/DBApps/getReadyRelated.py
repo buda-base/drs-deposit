@@ -4,7 +4,7 @@
 Entry point for getting related files.
 """
 from DBApps.readyRelated import ReadyRelated, ReadyRelatedParser
-from DBApps.DBAppArgs import DbArgNamespace
+from DBApps.DbAppParser import DbArgNamespace
 from DBApps.Writers.CSVWriter import CSVWriter
 
 
@@ -33,12 +33,12 @@ def PutResults(fileName: str, results: list, expectedColumns: list) -> None:
     """
     # and write
     myCsv = CSVWriter(fileName)
-    myCsv.write_dict(results, expectedColumns)
+    myCsv.PutResultSets(results, expectedColumns)
 
 
 def GetReadyRelated():
     """
-    Entry point for getting Related files, either outlines or printmasters
+    Entry point for getting Related files, either outlines or print masters
     :return:
     """
     rrArgs: DbArgNamespace = SetupParse()

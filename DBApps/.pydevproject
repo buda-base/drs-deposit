@@ -4,7 +4,7 @@
 <path>/${PROJECT_DIR_NAME}/src</path>
 <path>/${PROJECT_DIR_NAME}/conf</path>
 <path>/${PROJECT_DIR_NAME}/src/GenShell</path>
-<path>/${PROJECT_DIR_NAME}/src/DBApp</path>
+<path>/${PROJECT_DIR_NAME}/src/DbApp</path>
 
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python interpreter</pydev_property>

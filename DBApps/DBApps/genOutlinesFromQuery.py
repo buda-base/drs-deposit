@@ -2,6 +2,10 @@
 Created on Mar 6, 2018
 
 @author: jsk
+
+Generates outlines from a saved xml file which is the output
+of https://www.tbrc.org/public?module=outlines&query=outline&arg=
+(see DBApps/conf/drsBatch.config)(
 """
 import sys
 import argparse

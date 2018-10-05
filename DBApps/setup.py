@@ -13,8 +13,7 @@ from setuptools import setup
 setup(
     name='DBApps',
     version='0.42.3',
-    packages=['config', 'config.Tests',
-              'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
+    packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
               'DBApps.SourceProcessors'],
     url='',
     license='',
@@ -24,14 +23,15 @@ setup(
     entry_points={
         'console_scripts': [
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',
-            'genOutlines = DBApps.genOutlines:genOutlines',
+            'genOutlinesQuery = DBApps.genOutlinesFromQuery:genOutlines',
+            'addRelated = DBApps.addRelated:AddRelated',
             'genWorks = DBApps.genWorks:genWorks',
             'genVolumes = DBApps.genWorks:genVolumes',
             'getReadyRelated = DBApps.getReadyRelated:GetReadyRelated',
             'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
             'getNamedWorks = DBApps.getNamedWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
-            'updateBuildStatus = DBApps.getReadyWorks:updateBuildStatus'
+            'updateBuildStatus = DBApps.updateBuildStatus:updateBuildStatus'
         ]
     }
 )

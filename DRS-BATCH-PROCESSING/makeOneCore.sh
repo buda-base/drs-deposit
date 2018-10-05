@@ -1,12 +1,11 @@
-#! /bin/bash
-#   Make one DRS Launch, with tracking control
-#
-# arguments:
+#!/usr/bin/env bash
 
-#
 
-# Dont export
+
+# Dont export. Override from caller
 ME=$(basename $0)
+# jsk: need full path to script for components
+MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 function Usage {
 cat << ENDUSAGE
@@ -26,12 +25,7 @@ Before using:
 
 	edit this script and set up
 
-	WORKS_SOURCE_HOME	Where the works live. Parent of folders named W......
-
-	DRS_CODE_HOME		Where the DRS processing scripts live: typically,
-						the subdirectory DRS-BATCH-PROCESSING of your local
-						repository of
-						https://github.com/BuddhistDigitalResourceCenter/drs-deposit
+	WORKS_SOURCE_HOME	Where the works live. Parent of folders named <md5sum>/W....ttl
 
 	BATCH_OUTPUT_HOME	Where completed batches go.
 						Under this folder are Batch Builder projects, each one
@@ -46,56 +40,25 @@ ENDUSAGE
 }
 
 
-ME=$(basename $0)
-# 
-# Set up Batch builder home
-#
-function prepBBHome {
-	# Copy BatchBuilder code to a location for this instance.
-	# $MAKEDRS will copy the batchbuilder log to the
-	# batch output directory
-	export BB_HOME=$(mktemp -d)
-	cp -rp $BB_SOURCE/* $BB_HOME
-	rm -f $BB_HOME/logs/*
+source ${MEPATH}/commonUtils.sh
 
-	propFile="$BB_HOME/conf/bb.properties" 
-	[ -f $propFile ] && { rm -f $propFile ; }
-	#
-	# See <binFolder>/SetBBLevel.sh
-	cp "${propFile}".${BB_LEVEL} "$propFile"
-}
-
-
-# Some constants
- WORKS_SOURCE_HOME=/Volumes/Archive
- DRS_CODE_HOME=/Users/jimk/drs-deposit/DRS-BATCH-PROCESSING
- BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/prod/$(date +%Y%m%d)
- BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.13
- #
- #
- MAKEDRS='make-drs-batch.sh'
-# for testing
- # MAKEDRS='touch-drs.sh'
-# BATCH_OUTPUT_HOME=./testOut
-
-
+source ${MEPATH}/validate.sh
 
 if (( $# != 3)); then
 	Usage
 	exit 1;
 fi
 
-[ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set' ; Usage ; exit 1; }
-
 [ -e "$1" ] || { echo "${ME}":error: data file \'"$1"\' must exist but does not. ; exit 2; }
 
 statusRoot=$2
 [ -d "$2" ] ||  { echo "${ME}":info: creating status directory  \'"$2"\'
-				mkdir $2;
+				mkdir -p $2;
 			 }
+
 completionRoot=$3
 [ -d "$3" ] ||  { echo "${ME}":info: creating completion directory  \'"$3"\'
-				mkdir $3;
+				mkdir -p $3;
 			 }
 
 # build the status output path
@@ -103,12 +66,7 @@ series=$(basename $1)
 
 # is the processing for this worksList underway?
 underFile=${statusRoot}/${series}
-[ -e $underFile ]  && { echo "${series} already underway."; continue; }
-
-# echo 'series:' $series
-# echo 'x:' $x
-# echo 'statusRoot:' $statusRoot
-# echo 'completionRoot:' $completionRoot
+[ -e $underFile ]  && { echo "${series} already underway.";  }
 
 # read
 #
@@ -118,12 +76,12 @@ underFile=${statusRoot}/${series}
 batchRoot=${BATCH_OUTPUT_HOME}/${series}.$(date +%H.%M)
 
 #
-# Set up the Batch builder level
+# Set up the Batch builder temporary run home
 prepBBHome
 
 # Invoke the build in the background
-  ${DRS_CODE_HOME}/${MAKEDRS} \
-	"$1" ${DRS_CODE_HOME}/BB_tbrc/BB_tbrc2drs $batchRoot \
+  ${MAKEDRS} \
+	"$1" $PROJECT_HOME $batchRoot \
 	$WORKS_SOURCE_HOME ${BB_HOME}  &
 #
 # Capture its pid and mark as underway

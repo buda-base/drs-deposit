@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#
+# makeLinks: 
+# args: none
+# synopsis: reads a list of file names. If they exist in the parent directory,
+# make a link to them here.
+#
+# This prepares the list of files which 'copyLinksToBin' will deploy
+
+while read aLink ; do
+
+      # Support comments
+      aLink=${aLink/\#*/}
+
+      [ -z ${aLink} ] && continue
+
+      # jimk: add directories to linkables
+      #
+      # Some datas have a directory
+      #
+      linkBase=$(basename ${aLink})
+      rm ${linkBase}
+      # use the input as the source path
+      [ -f ../$aLink ] || [ -d ../$aLink ] && { ln -s ../$aLink . ; } || { echo $aLink not found. ; }
+done << YOW
+# full line comments are supported
+BB_tbrc/BB_tbrc2drs    # Comment out tail of line
+BB_tbrc/BB_tbrcOutline
+autoRecovery
+autoRecoveryCore
+buildSendList
+commonUtils.sh
+
+BuildDeepDeleteList.awk
+BuildDeepDeleteList.sh
+BuildRecoveryList.awk
+BuildRecoveryList.sh
+CountFilesInBatches.awk
+GetCumBuiltFileCounts.sh
+deleteAlreadyDepositedSFTP.sh
+drsttl-0.1.0.jar
+ftpMultiple.sh
+getErrorBuildStatus
+ftpMultiple.sh
+ftpScript.sh
+makeOneDrs.sh
+make-drs-batch.sh
+make-drs-outline.sh
+make-proj-conf.xsl
+makeOneDrs.sh
+makeOneFtp.sh
+makeOneOutline.sh
+makeOneCore.sh
+validate.sh
+parseMail.awk
+ProcessTrackFile.sh
+RemoveDepositedVolumePaths.sh
+RemoveDuplicateVolumes.sh
+runMultiple.sh
+RunSerialFtp.sh
+SetBBLevel.sh
+splitWorks.sh
+runMultiple.sh
+saxonhe-9.4.0.7.jar
+setupErrorLog.sh
+splitWorks.sh
+tojsondimensions.py
+YOW
+# Unused files.
+# diag  countBatchesByTime.sh
+# diag findNewerBatches.sh
+# diag fixOneBatch.sh
+# diag CreateOutlineText
+# diag getLinkedCode
+# diag killJava.sh
+# diag runningDepositStatus
+# diag topStats.sh
+# diag echoCat.sh
+# diag findBatchInWorksList.sh

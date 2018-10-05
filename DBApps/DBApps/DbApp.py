@@ -3,12 +3,12 @@ Created 2018-VIII-24
 @author: jimk
 """
 
-from config.config import *
 import pymysql as mysql
-from abc import ABCMeta
+from config.config import DBConfig
+import os
 
 
-class DBApp(metaclass=ABCMeta):
+class DbApp:
     """
     Base class for database applications
     """
@@ -22,14 +22,13 @@ class DBApp(metaclass=ABCMeta):
         self.connection = None
         self.ExpectedColumns = []
 
-    def start_connect(self, cfg: DBConfig):
+    def start_connect(self) -> None:
         """
         Opens a database connection using the DBConfig
-        :param cfg: db configuration
         :return: Nothing. Sets class connection property
         """
-        self.connection = mysql.connect(read_default_file=cfg.db_cnf,
-                                        read_default_group=cfg.db_host,
+        self.connection = mysql.connect(read_default_file=self.dbConfig.db_cnf,
+                                        read_default_group=self.dbConfig.db_host,
                                         charset='utf8')
 
     @property
@@ -102,7 +101,7 @@ class DBApp(metaclass=ABCMeta):
         # desc = queryCursor.description
         # hope something's here
 
-    def GetSprocResults(self: object, sproc: str, maxWorks: int = 200) -> list:
+    def GetSprocResults(self, sproc: str, maxWorks: int = 200) -> list:
         """
         call a sproc using the internal connection,
         validate the result columns with the internal member.
@@ -112,7 +111,7 @@ class DBApp(metaclass=ABCMeta):
         :param maxWorks: limit of return rows
         :returns: a list of dictionary items, each item is a return row
         """
-        self.start_connect(self.dbConfig)
+        self.start_connect()
 
         rl: list[dict] = []
 
@@ -124,7 +123,25 @@ class DBApp(metaclass=ABCMeta):
 
             hasNext: bool = True
             while hasNext:
-                resultRows = workCursor.fetchall_unbuffered()
-                rl.extend(resultRows)
+                resultRows = workCursor.fetchall()
+                rl.append(resultRows)
                 hasNext = workCursor.nextset()
         return rl
+
+    def CallAnySproc(self, sproc: str, *args):
+        """
+        Calls a routine without analyzing the result
+        :param sproc: routine name
+        :param args: arguments
+        :return: true if there are any results, throws exception otherwise.
+        Caller handles
+        """
+        self.start_connect()
+
+        rl: list[dict] = []
+
+        with self.connection:
+            workCursor: mysql.Connection.Cursor = self.connection.cursor()
+            print(f'Calling {sproc} for n = {maxWorks} ')
+            workCursor.callproc(f'{sproc}', tuple(arg for arg in args))
+            workCursor.fetchall()  # wgaf

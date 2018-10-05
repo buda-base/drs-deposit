@@ -53,6 +53,7 @@ ME=$(basename $0)
 # jsk: need full path to script for components
 MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
+# This is the final output home, where successful batch builds go
 OUTPUTHOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/batchBuilds
 
 DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
@@ -254,7 +255,7 @@ while IFS=',' read -ra LINE; do
     $bb -a build -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
 	if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
 		echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-		updateBuildStatus $DbConnectionString "${$targetProjectDir}/${batchName}" "FAIL"
+		updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
 	else
 
 	    mv  ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
