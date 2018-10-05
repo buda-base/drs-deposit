@@ -54,8 +54,8 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 		# Remove each volume's image
 		xx = sprintf("cd %s",volDir);
 		print xx >> filePath;
-		print "rm image/*" >> filePath;
-		print "rmdir image" >> filePath;
+		print "-rm image/*" >> filePath;
+		print "-rmdir image" >> filePath;
 		print "rm descriptor.xml" >> filePath;
 		print "cd .." >> filePath;
 		print "rmdir "volDir >> filePath;
