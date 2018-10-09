@@ -89,4 +89,17 @@ def mustExistDirectory(path: str):
         else:
             return path
 
+
+def mustExistFile(path: str):
+    """
+    Common utility. Returns
+    :param path:
+    :return:
+    """
+    fullPath = os.path.expanduser(path)
+    if not os.path.exists(fullPath):
+        raise argparse.ArgumentTypeError
+    else:
+        return fullPath
+
 # endsection parser validations and utilities

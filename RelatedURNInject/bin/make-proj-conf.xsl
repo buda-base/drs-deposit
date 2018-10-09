@@ -5,11 +5,8 @@
                 version="2.0">
     <xsl:output indent="yes"/>
     <xsl:param name="hId" as="xs:string" required="yes"/>
-    <xsl:variable name="DEFVAL" as="xs:string" select="'DEFVAL'"/>
-    <xsl:param name="outlineURI" as="xs:string" required="no"/>
-    <xsl:param name="printMasterURI" as="xs:string" required="no"/>
-    <!--<xsl:param name="outlineURI" as="xs:string" required="no" select="$DEFVAL"/>-->
-    <!--<xsl:param name="printMasterURI" as="xs:string" required="no" select="$DEFVAL"/>-->
+    <xsl:param name="outlineUrn" as="xs:string" required="no"/>
+    <xsl:param name="printMasterUrn" as="xs:string" required="no"/>
     <xsl:template match="property[@name='alephID']">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
@@ -28,19 +25,24 @@
     </xsl:template>
     <xsl:template match="metadataCategory[@name='objectMetadata']">
         <xsl:copy>
-            <xsl:apply-templates select="@*"/>
-            <xsl:if test="$printMasterURI != '' ">
-
-                <property name="relatedLinks" value="Relationship=Print Master --- URI={$printMasterURI}"/>
+            <xsl:if test="$printMasterUrn != '' ">
+                <!--<xsl:message>-->
+                  <!--pm: <xsl:value-of select="$printMasterUrn"/>-->
+                <!--</xsl:message>-->
+                <property name="relatedLinks" value="Relationship=Print Master --- URI={$printMasterUrn}"/>
             </xsl:if>
-            <xsl:if test="$outlineURI != '' ">
-                <property name="relatedLinks" value="Relationship=Outline --- URI={$outlineURI}"/>
+            <xsl:if test="$outlineUrn != '' ">
+                  <!--<xsl:message>-->
+                        <!--o: <xsl:value-of select="$outlineUrn"/>-->
+                    <!--</xsl:message>-->
+                <property name="relatedLinks" value="Relationship=Outline --- URI={$outlineUrn}"/>
             </xsl:if>
         </xsl:copy>
+        <xsl:apply-templates/>
     </xsl:template>
-
     <xsl:template match="@*|node()">
         <xsl:copy>
+                <!--<xsl:message><xsl:value-of select="."></xsl:value-of></xsl:message>-->
             <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
     </xsl:template>

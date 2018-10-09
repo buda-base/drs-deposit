@@ -53,6 +53,7 @@ ME=$(basename $0)
 # jsk: need full path to script for components
 MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
+# This is the final output home, where successful batch builds go
 OUTPUTHOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/batchBuilds
 
 DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
@@ -83,29 +84,6 @@ function calcArchivePath() {
 }
 
 
-function doOutlineBatch {
-        [ -z "${batchName}" ] && return
-
-        echo ${bb} -a buildtemplate -p ${targetProjectsRoot} -b ${batchName} | tee -a ${logPath}
-        ${bb} -a buildtemplate -p ${targetProjectsRoot} -b ${batchName} >> ${logPath} 2>&1
-
-        # build results into batch
-        # Note I'm deliberately redirecting all output to log file - this is a noisy process.
-
-		echo ${bb} -a build -p ${targetProjectsRoot} -b ${batchName}   | tee -a ${logPath}
-        $bb -a build -p $targetProjectsRoot -b $batchName >> $logPath 2>&1
-
-		if [ ! -f ${targetProjectsRoot}/${batchName}/batch.xml ] ; then
-			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			updateBuildStatus $DbConnectionString "${targetProjectsRoot}/${batchName}" "FAIL"
-		else
-		    mv  ${targetProjectsRoot}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
-		    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
-		fi
-        # jimk 2018-V-18: this used to be above the last fail.
-       cleanUpLogs ${batchName}
-
-}
 #endsection Functions
 #--------------------------------------------------
 
@@ -257,7 +235,7 @@ while IFS=',' read -ra LINE; do
 		updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
 	else
 
-	    mv  ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
+	    mv -b ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
 	    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
 	fi
 

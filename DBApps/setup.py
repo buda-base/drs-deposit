@@ -23,7 +23,8 @@ setup(
     entry_points={
         'console_scripts': [
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',
-            'genOutlines = DBApps.genOutlines:genOutlines',
+            'genOutlinesQuery = DBApps.genOutlinesFromQuery:genOutlines',
+            'addRelated = DBApps.addRelated:AddRelated',
             'genWorks = DBApps.genWorks:genWorks',
             'genVolumes = DBApps.genWorks:genVolumes',
             'getReadyRelated = DBApps.getReadyRelated:GetReadyRelated',
