@@ -78,7 +78,7 @@ def parse_args(arg_namespace: object) -> None:
     :param arg_namespace. class which holds arg values
     """
     _parser = argparse.ArgumentParser(description="Reads  a raw CSV file which holds output of a HUL DRS \
-                     WebAdmin search", usage="%(prog)s -d section:configFile sourcefile \
+                     WebAdmin search", usage="%(prog)s [ -r| --related-file ] -d | --drsDbConfig  section:configFile sourcefile \
                      where 'section' is a section in a python dbConfig file 'configFile' ")
 
     _parser.add_argument("sourceFile", help="CSV file containing search WebAdminResults.")
