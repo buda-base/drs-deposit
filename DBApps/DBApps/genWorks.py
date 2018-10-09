@@ -63,7 +63,7 @@ def parseArgs(argNamespace):
     _parser = argparse.ArgumentParser(description='Replicates work HOLLIS\
      pair file', usage='%(prog)s \n[-c CSV outputs csv format to file CSV.\n\t\
      | -d DBAppSection:DbAppFile outputs to db whose parameters are given in \n\t\
-     config file \'DbAppFile\' which contains section \'DbAppSection\'')
+     dbConfig file \'DbAppFile\' which contains section \'DbAppSection\'')
 
     _parser.add_argument("sourceFile", help='CSV file containing Work, \
     HOLLIS tuples with headings \'RID\' and \'HOLLIS\'')
@@ -81,7 +81,7 @@ def parseVolumeArgs(argNamespace):
     :param argNamespace. class which holds arg values
     """
     _parser = argparse.ArgumentParser(description='Replicates work HOLLIS\
-     pair file', usage='%(prog)s [-c CSV outputs csv format to file CSV.  -d DBAppSection:DbAppFile outputs to db whose parameters are given in config file \'DbAppFile\' which contains section \'DbAppSection\'')
+     pair file', usage='%(prog)s [-c CSV outputs csv format to file CSV.  -d DBAppSection:DbAppFile outputs to db whose parameters are given in dbConfig file \'DbAppFile\' which contains section \'DbAppSection\'')
 
     _parser.add_argument("rootFolder", help='Parent of the directories in folderList')
     _parser.add_argument("folderFile", help='file containing folders to populate volumes.')

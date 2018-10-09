@@ -7,26 +7,19 @@
 function Usage {
 cat << ENDUSAGE
 synopsis:
-	${ME}  batchDirPath statusRoot completionRoot remoteUserName
+${ME}  batchDirPath statusRoot completionRoot remoteUserName
 
-	batchDirPath: 		Path to a file containing a list of folders to upload
+batchDirPath: 		Path to a file containing a list of folders to upload
 
-	statusRoot: 		a directory to hold the tracking file for underway jobs.
+statusRoot: 		a directory to hold the tracking file for underway jobs.
 
-	completionRoot: 	directory the tracking files for completed jobs
+completionRoot: 	directory the tracking files for completed jobs
 
-	remoteUserName		credential for remote system
+remoteUserName		credential for remote system
 
-	statusRoot and completionRoot are created if they do not exist
+remotePath		(optional) remote host name (for QA)
 
-Before using:
-
-	edit this script and set up
-
-	DRS_CODE_HOME		Where the DRS processing scripts live: typically,
-						the subdirectory DRS-BATCH-PROCESSING of your local
-						repository of
-						https://github.com/BuddhistDigitalResourceCenter/drs-deposit
+statusRoot and completionRoot are created if they do not exist
 
 ENDUSAGE
 }
@@ -37,9 +30,9 @@ FTPSCRIPT='ftpScript.sh'
 
 ME=$(basename "$0" )
 
-if (( $# != 4)); then
-	Usage
-	exit 1;
+if (( $# <  4)) || (( $# > 6)) ; then
+Usage
+exit 1;
 fi
 
 [ -f "$1" ] || { echo "${ME}":error: source list  \'"$1"\' must exist but does not. ; exit 2; }
@@ -48,8 +41,8 @@ srcListName=$(basename "$1" )
 
 statusRoot=$2
 [ -d "$statusRoot" ] &&  { echo "${ME}":info: creating status directory  \'"$2"\'
-				mkdir $statusRoot ;
-			 }
+			mkdir $statusRoot ;
+		 }
 # container for status of underway jobs
 underFile=${statusRoot}/${srcListName}
 
@@ -58,22 +51,24 @@ underFile=${statusRoot}/${srcListName}
 # container for status of completed jobs
 completionRoot=$3
 [ -d "$3" ] &&  { echo "${ME}":info: creating completion directory  \'"$3"\'
-				mkdir $3;
-			 }
+			mkdir $3;
+		 }
 
-: ${4?${ME}:error: remote User Name not given}
-remoteUserName=$4
 
+remoteUserName=${4?${ME}:error: remote User Name not given}
+
+remoteHost=$5
 
 # Invoke the upload in the background
 
-${FTPSCRIPT} $srcListPath $remoteUserName &
+${FTPSCRIPT} $srcListPath $remoteUserName $remoteHost &
 
 # Capture its pid and mark as underway
- thisRun=$!
+thisRun=$!
+
 #
 # Mark as underway, with details
- printf "%d_%s" "$thisRun" $(date +%H:%M:%S) >> $underFile
+printf "%d_%s" "$thisRun" $(date +%H:%M:%S) >> $underFile
 
  #
 wait $thisRun

@@ -1,0 +1,1 @@
+../makeOneCore.sh

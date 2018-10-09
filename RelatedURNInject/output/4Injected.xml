@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Projectconfig genre="pds document">
+    <metadataCategory name="projectMetadata">
+        <property name="batchName"
+                value="{owner}_{batchDir}_{yyyy}{mo}{dd}_{hh24}{mm}{ss}"/>
+        <property name="successMethod" value="dropbox"/>
+        <property name="projectName" value="BDRC Work Upload"/>
+        <property name="projectDescription"
+                value="One Volume of a work in HUL PDS structure.&#xA;With agreement, license, documentation,&#xA;and methodology."/>
+        <property name="successEmail" value="jimk@tbrc.org"/>
+        <property name="failureEmail" value="jimk@tbrc.org"/>
+        <property name="depositAgent" value="10684323"/>
+        <property name="depositAgentEmail" value="jimk@tbrc.org"/>
+    </metadataCategory>
+    <node name="testRelatedInjection">
+            <property name="outlineLink"
+                value="Type=outline --- Identifier=outline-osn --- Label=OUTLINE-OSN"/>
+            <property name="printMasterLink"
+                value="Type=printMaster --- Identifier=printmaster-osn --- Label=PRINTMASTER-OSN"/>
+    </node>
+    <directory name="OBJECT TEMPLATE">
+        <metadataCategory name="objectMetadata"/>
+        <metadataCategory name="nrsPDSMetadata">
+            <property name="objectResourceNamePattern" value="{n}"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="urnAuthorityPath" value="FHCL"/>
+            <property name="resourceNamePattern" value="{n}"/>
+        </metadataCategory>
+        <metadataCategory name="otherRightsMetadata">
+            <property name="license" value="urn-3:HUL.DRS.OBJECT:35013887"/>
+            <property name="license" value="urn-3:HUL.DRS.OBJECT:35013885"/>
+        </metadataCategory>
+        <metadataCategory name="additionalPDSURNs">
+            <property name="idsDeliverableURNs" value="no"/>
+        </metadataCategory>
+        <metadataCategory name="importMetadata">
+            <property name="alephID" value="HOLLISIDPARAM"/>
+        </metadataCategory>
+        <directory name="image">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="HIGHUSE"/>
+                <property name="fileAdminCategory"
+                      value="Buddhist Digital Resource Center (id=169937)"/>
+                <property name="fileproducer" value="Tibetan Buddhist Resource Center (id=802)"/>
+            </metadataCategory>
+            <metadataCategory name="pdsDocumentImageFileMetadata">
+                <property name="filerole" value="ARCHIVAL_MASTER"/>
+                <property name="filerole" value="DELIVERABLE"/>
+                <property name="filerole" value="THUMBNAIL"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Projectconfig>

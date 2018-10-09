@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # script to collect transformed outlines into a batch for processing via BatchBuilder and
 # upload to Harvard Digital Repository Service
@@ -45,6 +45,30 @@
 # for each Work to be deposited.
 #
 
+
+
+# Variables and structure from ftpScript.sh
+ME=$(basename $0)
+
+# jsk: need full path to script for components
+MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+# This is the final output home, where successful batch builds go
+OUTPUTHOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/batchBuilds
+
+DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
+
+#section error logging. Requires trailing
+# Output is var ERR_LOG, ERROR_TXT, INFO_TXT variables
+. ${MEPATH}/setupErrorLog.sh "${ME}"
+#endsection Set up logging
+
+#section Commmon utils
+source ${MEPATH}/commonUtils.sh
+#endsection Common utils
+
+#--------------------------------------------------
+#section Functions
 #
 # Calculate the full path to an outline.The algorithm is
 # outlineSrcRoot/substring(md5( $RID))
@@ -54,52 +78,48 @@
 function calcArchivePath() {
 	_archive=$1
 	_workId=$2
-	_bucket=$(echo -n $_workId | md5 )
+	_bucket=$(echo -n ${_workId} | md5 )
 	_bucket=${_bucket:0:2}
 	echo ${_archive}/${_bucket}/${_workId}.ttl
-} 
-
-# Variables and structure from ftpScript.sh
-ME=$(basename $0)
-ME_DIR=$(dirname $0)
+}
 
 
-#section error logging. Requires trailing
-# Output is var ERR_LOG, ERROR_TXT, INFO_TXT variables
-. ${ME_DIR}/setupErrorLog.sh "${ME}"
-#endsection Set up logging
+#endsection Functions
+#--------------------------------------------------
 
+#section Arg validation
 if [ "$#" -ne 5 ]; then
 	echo "${ME}: Needs 5 parameters"
 	echo "Usage: make-drs-outline worksList projectMasterDir targetProjectDir outlineParentDir bbDir"
 	exit 1
 fi
 
-# jsk: need full path to script for components
- MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-
 worksList=${1?${ME}:${ERROR_TXT}:worksList is required}
-echo Works List File: $worksList
-if [ ! -f $worksList ]; then
+echo Works List File: ${worksList}
+if [ ! -f ${worksList} ]; then
 	echo "${ME}: worksList \'${1}\' does not exist or is not a directory"
 	exit 2
 fi
 
 projectMaster=${2?${ME}:${ERROR_TXT}:projectMaster is required}
-echo BB Project Directory: $projectMaster
-if [ ! -d $projectMaster ]; then
+echo BB Project Directory: ${projectMaster}
+if [ ! -d ${projectMaster} ]; then
 	echo "${ME}: projectMaster \'${2}\' does not exist or is not a directory"
 	exit 2
 fi
-masterProjConf=$projectMaster/project.conf
+masterProjConf=${projectMaster}/project.conf
 
 #
-# TargetProjectDir
+# TargetProjectsRoot
 # jsk: Target project might be absolute
+
 targetProjectDir=${3?${ME}:${ERROR_TXT}:targetProjectDir is required}
 
+logPath=${targetProjectDir}/bb-console.txt
+
+
 outlineSrcRoot=${4?${ME}:${ERROR_TXT}:outlineSrcRoot is required}
-echo Archive Directory: $outlineSrcRoot | tee -a $LOG_FILE
+echo Archive Directory: ${outlineSrcRoot} | tee -a $LOG_FILE
 if [ ! -d $outlineSrcRoot ]; then
 	echo "${ME}: outlineSrcRoot \'${4}\' does not exist or is not a directory"
 	exit 2
@@ -118,48 +138,47 @@ if [ ! -f $bbDir/$bb ]; then
 	echo "${ME}: batchbuildercli.sh does not exist in $bbDir"
 	exit 2
 fi
+
+# overload $bb
 bb=${bbDir}/$bb
 # jimk 24.1.18: copy  batchbuilder logs, including failed files
 bbLogDir=${bbDir}/logs
 
 
-# jsk: Target project might be absolute
-targetProjectDir=$3
-
 # template dir path suffix (template/image) is defined in the project conf. If changed there,
 # must be changed here.
-templateDir=$targetProjectDir/template/textOutline
+templateDir=${targetProjectDir}/template/textOutlineTTL
 
-logPath=$targetProjectDir/bb-console.txt
+logPath=${targetProjectDir}/bb-console.txt
 
-echo Target Project Directory: $targetProjectDir
+echo Target Project Directory: ${targetProjectDir}
 
 if [ -e $targetProjectDir ]; then
-	echo "$(logDate):${ME}:${FATAL_TXT}:targetProjectDir ${targetProjectDir} already exists. Remove it or use a different name" | tee -a $logPath
+	echo "$(logDate):${ME}:${FATAL_TXT}:targetProjectDir ${targetProjectDir} already exists. Remove it or use a different name" | tee -a ${logPath}
 	exit 2
 fi
 
-# jimk: 24.IV.2018: dont care if directory exists
+# jimk: 24.IV.2018: don't care if directory exists
 mkdir -p "$targetProjectDir"
 
-echo targetProjectDir: $targetProjectDir  | tee -a $logPath
+echo targetProjectDir: ${targetProjectDir}  | tee -a ${logPath}
 
 # create a BB project to hold the batches that will be created
 # We do this once to initiate the template dirs. Note that
 # the original project conf is repeatedly overwritten
 
-cp $masterProjConf $targetProjectDir  2>&1 | tee -a $logPath
+cp ${masterProjConf} ${targetProjectDir}  2>&1 | tee -a ${logPath}
 
 # Fill in the template
 
-echo $bb -a templatedirs -p $targetProjectDir  | tee -a $logPath 
-$bb -a templatedirs -p $targetProjectDir 2>&1 | tee -a $logPath
+echo ${bb} -a templatedirs -p ${targetProjectDir}  | tee -a ${logPath}
+${bb} -a templatedirs -p ${targetProjectDir} 2>&1 | tee -a ${logPath}
 
 targetConf="$targetProjectDir/project.conf"
 
-echo Template Image Directory: $templateDir
+echo Template Image Directory: ${templateDir}
 
-echo Works List File: $worksList | tee -a  $logPath
+echo Works List File: ${worksList} | tee -a  ${logPath}
 echo BB Project Directory: $projectMaster | tee -a  $logPath
 echo Target Project Name: $targetProjectDir | tee -a  $logPath
 echo Outline parent Directory: $outlineSrcRoot | tee -a $logPath
@@ -169,12 +188,19 @@ echo Target Conf: $targetConf
 while IFS=',' read -ra LINE; do
 	RID=${LINE[0]}
 	HID=${LINE[1]}
+	VID=${LINE[2]}
 
-	echo TBRC $RID at HOLLIS $HID | tee -a  $logPath
+	if $(isNewHeaderLine LINE[@]) ; then
+        continue ; # this is not like the make-drs-batch.sh
+    fi
 
-	batchName=outline"$RID"
+
+	echo TBRC $RID at HOLLIS $HID Volume $VID | tee -a  $logPath
+
+	batchName=outline${VID}
 	echo Batch Name: $batchName | tee -a  $logPath
 
+    # Inject the HOLLIS id into the outline's project.conf
 	java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" $masterProjConf ${MEPATH}/make-proj-conf.xsl hId=$HID > $targetConf
 	rc=$?
 
@@ -187,24 +213,31 @@ while IFS=',' read -ra LINE; do
 	ext="${outlineBaseName##*.}"
 	fnm="${outlineBaseName%.$ext}"
 
-    destNm=${fnm}--outline.${ext}
+    # Silly, but otherwise the file OSN is ${fnm}.${ext} which will have
+    # trouble disambiguating between Outlines and print masters
+    destNm=${VID}--${fnm}-Outline.${ext}
 
 	java -jar ${MEPATH}/drsttl-0.1.0.jar -i $outlineSourcePath > $templateDir/$destNm
 	rc=$?
-	[ $rc == 0 ] || { echo ${ME}:${FATAL_TXT}:Could not transform TTL file $outlineSourcePath rc= $rc ; break; }
+	[ $rc == 0 ] || {
+	    echo ${ME}:${FATAL_TXT}:Could not transform TTL file $outlineSourcePath rc= $rc ;
+	    break;
+	 }
 
     echo $bb -a buildtemplate -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
     $bb -a buildtemplate -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
 
     echo $bb -a build -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
 
-    # { time $bb -a build -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath ; } 2>> $TIMING_LOG_FILE
     $bb -a build -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
+	if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
+		echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
+		updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
+	else
 
-    [ -f $targetProjectDir/$batchName/batch.xml ] || {
-        echo ${ME}:ERROR:BB failed for $batchName  2>&1 | tee -a $logPath ;
+	    mv -b ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
+	    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
+	fi
 
-        # We could decide to continue
-        # exit 1;
-    }
+    cleanUpLogs ${batchName}
 done < $worksList

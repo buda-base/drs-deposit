@@ -9,12 +9,11 @@ from setuptools import setup
 # total 312
 # ...
 # -rwxr-xr-x   1 jimk  staff   413 Jun 19 17:31 getNamedWorks
-# and this is an executable script which wrapps the entry points
+# and this is an executable script which wraps the entry points
 setup(
     name='DBApps',
-    version='0.42.2',
-    packages=['config', 'config.Tests',
-              'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
+    version='0.42.3',
+    packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
               'DBApps.SourceProcessors'],
     url='',
     license='',
@@ -24,13 +23,15 @@ setup(
     entry_points={
         'console_scripts': [
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',
-            'genOutlines = DBApps.genOutlines:genOutlines',
+            'genOutlinesQuery = DBApps.genOutlinesFromQuery:genOutlines',
+            'addRelated = DBApps.addRelated:AddRelated',
             'genWorks = DBApps.genWorks:genWorks',
             'genVolumes = DBApps.genWorks:genVolumes',
-            'getReadies = DBApps.getReadyWorks:getReadyWorks',
-            'getNamedWorks = DBApps.getReadyWorks:getNamedWorks',
+            'getReadyRelated = DBApps.getReadyRelated:GetReadyRelated',
+            'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
+            'getNamedWorks = DBApps.getNamedWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
-            'updateBuildStatus = DBApps.getReadyWorks:updateBuildStatus'
+            'updateBuildStatus = DBApps.updateBuildStatus:updateBuildStatus'
         ]
     }
 )

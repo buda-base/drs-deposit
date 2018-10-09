@@ -12,6 +12,8 @@
 #	listToUpload:		The parent of the directories containing batches.
 #	remoteUser:			The credential of the remote user
 #
+#	remoteHost (optional)	The remote host (generally for QA)
+#
 #
 # Monitoring
 #	Errors are logged to ~/DRS/log/ftpScript.sh<yyyy-mm-dd.hh.mm>.log
@@ -36,12 +38,14 @@ export DRS_DROP_HOST
 
 usage() {
 	cat <<  USAGE
-Usage: ${ME} listToUpload remoteUser  where
+Usage: ${ME} listToUpload remoteUser [dropbox ]  where
+
  	listToUpload	is the file list containing the upload paths.
  					Each line contains a directory to upload
  	remoteUser		is the user on the remote system
 
- 	[dropbox ]		optional: DRS Dropbox address. Uses PROD as default
+ 	[dropbox ]		optional: DRS Dropbox host . Uses PROD as default
+st
 USAGE
 }
 
@@ -102,8 +106,6 @@ drsDropUser=${2?${ME}:error: remote user is not given}
 
 drsDropHost=${3:-$DRS_DROP_HOST}
 
-
-
 #endsection setup and arg parse
 while read sourcePath ; do
 	targetPath=$(basename $sourcePath)
@@ -120,12 +122,11 @@ while read sourcePath ; do
 	# jimk 2018 IV 16: maybe help missing files
 	# Inhibit batch ingestion until all files are loaded
 
-
 	mv $sourcePath/$BATCH_XML $sourcePath/$BATCH_XML_WAIT
-	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${drsDropHost}:incoming/   2>> $ERR_LOG
+	sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${drsDropHost}:incoming/   2>&1 | tee -a  $ERR_LOG
 
 	rc=$?
-	
+
 	# On source, replace the batch.xml
 	mv $sourcePath/$BATCH_XML_WAIT $sourcePath/$BATCH_XML
 

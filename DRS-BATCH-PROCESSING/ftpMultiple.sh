@@ -34,8 +34,8 @@ ME=$(basename $0)
 function usage() {
 	cat << USAGE
 		synopsis: $ME -h  this message
-		synopsis: $ME [ -u userFileName ] -w worksListPath
-		synopsis: $ME  -U userName  -w worksListPrefix  wl1 [ wl2 =wl1] 
+		synopsis: $ME [ -u userFileName ] -w worksListPath [ remoteHost ]
+		synopsis: $ME  -U userName  -w worksListPrefix  wl1 [ wl2 =wl1]  [remoteHost]
 				
 		run multiple lists of works in files '${worksListPath}{1..n}.txt'
 
@@ -119,7 +119,7 @@ function splitWorks() {
 # h   elp
 # u   serList
 # w   orksListPath
-while getopts hu:U:w: opt ; do
+while getopts hu:U:w:r: opt ; do
 	echo "in getopts" $opt $OPTARG
 	case $opt in
 		u)
@@ -136,6 +136,10 @@ while getopts hu:U:w: opt ; do
 			worksListPath=$OPTARG
 #			echo "$opt triggered, arg is $OPTARG aka $worksListPath"
 			;;
+		r)
+			remoteHost=$OPTARG
+			echo "$opt triggered arg is $OPTARG" 
+			;;
 		h)
 			usage
 			exit 0
@@ -143,7 +147,6 @@ while getopts hu:U:w: opt ; do
 	esac
 done
 shift $((OPTIND-1))
-
 
 # if no args, bail
 
@@ -200,6 +203,6 @@ for x in $(seq $wl1 $wl2 ); do
 	
 	# Capture the user and the file they uploaded. We need this in reports
 	printf "%s|%s\n" $curFtpUser  ${worksListPath}${x}.txt >> ${worksListPath}.UploadTrack.lst
-	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR  $curFtpUser &
+	makeOneFtp.sh ${worksListPath}${x}.txt $UNDERWAY_DIR $RESULTS_DIR  $curFtpUser $remoteHost &
  
 done

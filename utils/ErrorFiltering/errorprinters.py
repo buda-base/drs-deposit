@@ -8,7 +8,7 @@ def dumpFunc(errors, errorCollection):
     Optimized to assume multiple lines per file.
     but not any error text.
 
-    Args:
+    DbArgNamespace:
 
     currentError:  BBErrorKey for current error
     error collection:  error instances list

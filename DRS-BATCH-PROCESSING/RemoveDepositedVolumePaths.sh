@@ -33,7 +33,8 @@ BATCHES_WITH_DEPOSIT=batchesWithADeposit
 #
 # Heuristic. Here's a known volume build. find its column index
 # in the dictionary
-export PROBE=W00KG02536-I00KG03142
+# This OSN is known to exist in both Prod and QA
+export PROBE=W1GS66344-I1GS66346
 #
 for idx in $(seq 1 25) ;
 do

@@ -17,7 +17,7 @@ import time
 
 class DbWriter(ListWriter):
     """
-    Writes to a db, connection string in the config file
+    Writes to a db, connection string in the dbConfig file
     """
 
     dbName = ''
@@ -26,7 +26,7 @@ class DbWriter(ListWriter):
 
     def __init__(self, configInfo):
         super().__init__(configInfo)
-        '''Set up config'''
+        '''Set up dbConfig'''
         try:
             args: list = self.oConfig.drsDbConfig.split(':')
             self.dbName = args[0]
@@ -47,7 +47,7 @@ class DbWriter(ListWriter):
         #
 
         cfg = config.DBConfig(self.dbName, self.dbConfigFile)
-        # cfg = config.DBConfig('dev', self.oConfig.drsDbConfig)
+        # cfg = dbConfig.DBConfig('dev', self.oConfig.drsDbConfig)
         dbConnection = self.start_connect(cfg)
 
         with dbConnection:
