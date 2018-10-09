@@ -22,9 +22,10 @@ outFile=${2?"${ME}:Output file must be given."}
 
 [ -f $buildList ] || { echo "${ME}:BuildList doesnt exist" ; exit 1 ; }
 
+[ -z "$BB_LEVEL" ] && {  echo "${ME}:error: BB_LEVEL not set. Source SetBBLevel.sh" ; exit 1 ; }
 
 # Take 2: use the dictionary
-export DICT=~/drs-deposit/output/BDRCCumulativeProdDeposits.csv
+export DICT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/BDRCCumulativeProdDeposits.csv
 BATCHES_WITH_DEPOSIT=batchesWithADeposit
 
 # You may ask: why not just look for a batch directory:
