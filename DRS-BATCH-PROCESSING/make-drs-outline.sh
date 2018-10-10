@@ -234,8 +234,7 @@ while IFS=',' read -ra LINE; do
 		echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
 		updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
 	else
-
-	    mv -b ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
+	    mv -v --bcakup=numbered  ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
 	    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
 	fi
 

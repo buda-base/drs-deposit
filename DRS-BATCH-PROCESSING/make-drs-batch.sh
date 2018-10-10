@@ -190,7 +190,9 @@ function doBatch {
 		    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
 		    # jimk 2018-VI-17
-		    mv -v ${targetProjectDir}/${batchName} ${OUTPUTHOME}  2>&1 | tee -a ${logPath}
+		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
+		    # list.
+		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${OUTPUTHOME}  2>&1 | tee -a ${logPath}
 		    updateBuildStatus ${DbConnectionString} "${OUTPUTHOME}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
         # jimk 2018-V-18: this used to be above the last fail.

@@ -21,10 +21,10 @@ ME=$(basename $0)
 
 function usage() {
 	cat << USAGE
-		synopsis: $ME [-h] file1,file2,...
+		synopsis: $ME [-h] func <files>
 		-h: shows this message
-		run multiple lists of works given in 'files'
-		in parallel execution, One process per file
+		run the process 'func' in a parallel subhsell. 
+		against each of the files in <files>
 
 USAGE
 }
@@ -48,8 +48,10 @@ resultsDir=timing/finishedRuns
 [ -d  $resultsDir ] || mkdir -p $resultsDir
 
 # if no args, bail
-[ x"$1" == "x" ] && { usage ; exit 1 ; }
+[ x"$2" == "x" ] && { usage ; exit 1 ; }
 
+func=$1
+shift
 for x in $* ; do
 	#
 	# do_real_work
@@ -58,6 +60,6 @@ for x in $* ; do
 	# Run each iteration in the background
 	# jsk 21.I.18: shell scripts can be in ~/bin
         
-	makeOneDrs.sh $x $underwayDir $resultsDir &
+	${func} $x $underwayDir $resultsDir &
  
 done

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Do the steps to getting files ready
 # 2018 VI.17 - batches are moved to $RP/batchbuilds on success, and only if no duplicates
@@ -15,6 +15,7 @@ export FILESIZES=fileSizes.txt
 export TARGET=../buildList.txt
 
 echo -n "Get builds ...."
+# WARN: the -not-path *~ filter out backup builds. (as of 2018-10-09, makeXXX was backing up old folders)
 find $PR/batchBuilds -maxdepth 2 -mindepth 2  -type d -not -path \*~ > $BUILT
 echo "Done"
 # filter before doing anything eser
