@@ -180,9 +180,9 @@ function doBatch {
 		echo ${bb} -a build -p ${targetProjectDir} -b ${batchName}   | tee -a ${logPath}
         ${bb} -a build -p ${targetProjectDir} -b ${batchName} >> ${logPath} 2>&1
 
-		if [ ! -f ${targetProjectsRoot}/${batchName}/batch.xml ] ; then
+		if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
 			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			updateBuildStatus ${DbConnectionString} "${targetProjectsRoot}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
+			updateBuildStatus ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
 		    td=$(mktemp -d)
