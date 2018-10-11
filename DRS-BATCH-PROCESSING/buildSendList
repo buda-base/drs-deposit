@@ -16,7 +16,7 @@ export TARGET=../buildList.txt
 
 echo -n "Get builds ...."
 # WARN: the -not-path *~ filter out backup builds. (as of 2018-10-09, makeXXX was backing up old folders)
-find $PR/batchBuilds -maxdepth 2 -mindepth 2  -type d -not -path \*~ > $BUILT
+find $PR/batchBuilds -maxdepth 2 -mindepth 2  -type d -not -path \*~\* > $BUILT
 echo "Done"
 # filter before doing anything eser
 [ -f ${BATCH_EXCLUDE_LIST} ] && { grep -v -f ${BATCH_EXCLUDE_LIST} $BUILT >  $VOLUMES ; } || { mv $BUILT  $VOLUMES ;  }
