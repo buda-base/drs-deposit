@@ -117,24 +117,25 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`bdrc`@`%` PROCEDURE `AddOutline`(workName varchar(45))
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `AddOutline`(IN workName varchar(45), IN volumeLabel varchar(45))
     COMMENT 'Creates an outline row. Looks up the workName, adds it if not exists '
 BEGIN
 
 
+-- Do we have an existing volume?
+set @oVolumeId = (select volumeId from Volumes where label = volumeLabel);
 
-if not exists (select workId from Works w where w.workName = workName) then
-BEGIN
-	call AddWork(workName,NULL);
-END;
+if @oVolumeId is null then
+	-- AddVolume adds the work if it has to
+	Call AddVolume(workName,volumeLabel);
+    set @oVolumeId = (select volumeId from Volumes v where label = volumeLabel);
+
 END IF;
 
-insert into Outlines(workId) values
-((select workId from Works w where w.workName = workName)) 
-
-on duplicate key update workId = workId ;
+insert into Outlines(volumeId) values (@oVolumeId)
+on duplicate key update volumeId = @oVolumeId ;
 
 END ;;
 DELIMITER ;
@@ -152,22 +153,22 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`bdrc`@`%` PROCEDURE `AddPrintMaster`(workName varchar(45),pmPaths varchar(255))
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `AddPrintMaster`(workName varchar(45),volumeLabel varchar(255))
+    COMMENT 'Creates an printmaster row. Looks up the workName, adds it if not exists '
 BEGIN
+											  
+-- Do we have an existing volume?
+set @oVolumeId = (select volumeId from Volumes where label = volumeLabel);
 
-
-if not exists (select workId from Works w where w.workName = workName) then
-BEGIN
-	insert into Works(workName) values(workName);
-	insert into PrintMasters(workId,Path) values (last_insert_id(),pmPaths);
-END;
-else
-
-
-insert into PrintMasters(workId,Path) values
-((select workId from Works w where w.workName = workName), pmPaths) 
-on duplicate key update workId = workId ;
+if @oVolumeId is null then
+	-- AddVolume adds the work if it has to
+	Call AddVolume(workName,volumeLabel);
+    set @oVolumeId = (select volumeId from Volumes v where label = volumeLabel);
 END IF;
+
+insert into PrintMasters(volumeId) values (@oVolumeId)
+on duplicate key update volumeId = @oVolumeId ;
+
 
 END ;;
 DELIMITER ;
@@ -278,7 +279,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `GetReadyVolumes` */;
+/*!50003 DROP PROCEDURE IF EXISTS `GetReadyOutlines` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -288,7 +289,74 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`bdrc`@`%` PROCEDURE `GetReadyVolumes`(fetchBatch int(11))
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `GetReadyOutlines`(IN fetchBatch int)
+    COMMENT 'Return up to numResults outlines which have not yet been batch built'
+BEGIN
+
+
+create temporary table if not exists oWork
+
+select distinct o.volumeId,w.WorkName,w.HOLLIS, v.label as Volume from Outlines o
+	inner join Volumes v using(volumeId)
+    join ReadyWorksNotDeposited w  on w.workId = v.workId
+    where not v.Queued limit fetchBatch ;
+
+update Volumes  set Queued = 1 where volumeId in (select volumeId from oWork );
+
+select WorkName, HOLLIS, Volume, NULL as OutlineUrn, NULL as PrintMasterUrn from oWork;
+  
+drop temporary table oWork;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetReadyPrintMasters` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `GetReadyPrintMasters`(IN fetchBatch int)
+    COMMENT 'Return up to numResults print masters which have not yet been batch built'
+BEGIN
+
+
+create temporary table if not exists oWork
+as (select distinct pm.volumeId,w.WorkName,w.HOLLIS, v.label as Volume from PrintMasters pm
+	inner join Volumes v using(volumeId)
+    join ReadyWorksNotDeposited w  on w.workId = v.workId
+    where not v.Queued limit fetchBatch) ;
+
+update Volumes  set Queued = 1 where volumeId in (select volumeId from oWork );
+
+select WorkName, HOLLIS, Volume, NULL as OutlineUrn, NULL as PrintMasterUrn from oWork;
+  
+drop temporary table oWork;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetReadyVolumes` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`bdrc`@`%` PROCEDURE `GetReadyVolumes`(IN fetchBatch int)
     COMMENT 'Return the Ready volumes.  Can return up to fetchBatch result sets. Marsk  volumes as queued'
 BEGIN
 
@@ -296,34 +364,61 @@ BEGIN
 declare done boolean default 0;
 declare thisWork integer(11);
 
-declare worksC cursor for 
+declare worksC cursor for
 select  workId from tWork;
 
 declare continue handler for SQLSTATE '02000' set done=1;
 
+
+
+
 -- find 'n' works which have at least 1 not queued
-Create temporary table if not exists tWork as ( select distinct r.workId from ReadyWorksNotDeposited r
+Create temporary table if not exists tWork as ( select distinct r.workId from Works r
+	inner join Volumes v on r.workId = v.workId
+    -- where not v.Queued
+where r.WorkName in (
+'W22677'
+,'W1KG5200'
+,'W22344'
+,'W1KG10720'
+,'W1KG1279'
+,'W1KG14700'
+
+    )
+    order by r.workId asc
+    limit fetchBatch);
+
+-- Get the volumes for those works
+Create temporary table if not exists tVol as ( select distinct v.volumeId from Works r
+	inner join Volumes v on r.workId = v.workId
+    where
+        -- not v.Queued and
+          v.workId in (select t.workId from tWork t));
+
+
+-- find 'n' works which have at least 1 not queued
+Create temporary table if not exists tWork0 as ( select distinct r.workId from ReadyWorksNotDeposited r
 	inner join Volumes v on r.Volume = v.label
     where not v.Queued
-    order by r.workId asc 
+    order by r.workId asc
     limit fetchBatch);
-    
+
 -- Get the volumes for those works
-Create temporary table if not exists tVol as ( select distinct v.volumeId from ReadyWorksNotDeposited r
+Create temporary table if not exists tVol0 as ( select distinct v.volumeId from ReadyWorksNotDeposited r
 	inner join Volumes v on r.Volume = v.label
     where not v.Queued
     and v.workId in (select t.workId from tWork t));
-
 open worksC;
 
 read_loop: LOOP
 	fetch worksC into thisWork;
-    if done = 1 then 
+    if done = 1 then
 		leave read_loop;
 	end if;
-	select r.* from ReadyWorksNotDeposited r
-	inner join Volumes v on r.Volume = v.label
-    where not v.Queued and v.workId = thisWork
+	select r.WorkName, r.HOLLIS, v.label as Volume, null as OutlineUrn, null as PrintMasterUrn from Works r
+	inner join Volumes v on r.workId = v.workId
+    where -- not v.Queued and
+          v.workId = thisWork
     order by r.workId asc ;
 END LOOP;
 
@@ -801,4 +896,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-27 13:11:08
+-- Dump completed on 2018-11-01 12:50:58
