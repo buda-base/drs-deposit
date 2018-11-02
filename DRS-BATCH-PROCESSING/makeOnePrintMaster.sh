@@ -13,9 +13,9 @@ MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 [ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set' ; Usage ; exit 1; }
 
 # Some constants
-export WORKS_SOURCE_HOME=/Volumes/DRS_Staging/DRS/outlines
-export PROJECT_HOME="${MEPATH}"/BB_tbrcOutline
-export MAKEDRS="${MEPATH}"/make-drs-outline.sh
+export WORKS_SOURCE_HOME=/Volumes/Assets/WMDL
+export PROJECT_HOME="${MEPATH}"/BB_tbrcPrintMaster
+export MAKEDRS="${MEPATH}"/make-drs-printmaster.sh
 export BATCH_OUTPUT_HOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/$(date +%Y%m%d)
 
 ${MEPATH}/makeOneCore.sh $@

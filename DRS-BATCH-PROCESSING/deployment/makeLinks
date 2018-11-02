@@ -26,6 +26,7 @@ done << YOW
 # full line comments are supported
 BB_tbrc/BB_tbrc2drs    # Comment out tail of line
 BB_tbrc/BB_tbrcOutline
+BB_tbrc/BB_tbrcPrintMaster
 autoRecovery
 autoRecoveryCore
 buildSendList
@@ -50,15 +51,18 @@ saxonhe-9.4.0.7.jar
 # lowest level batch builders
 make-drs-batch.sh
 make-drs-outline.sh
+make-drs-printmaster.sh
 # callers of lowest level batchbuilders
 makeOneDrs.sh
 makeOneFtp.sh
 makeOneOutline.sh
+makeOnePrintMaster.sh
 makeOneCore.sh
 # dispatch masters
 runAny.sh
 runDRS.sh
 runOut.sh
+runPm.sh
 #
 validate.sh
 parseMail.awk
