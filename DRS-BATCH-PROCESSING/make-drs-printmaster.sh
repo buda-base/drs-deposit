@@ -234,19 +234,23 @@ while IFS=',' read -ra LINE; do
         # "Muy importante!  OSN corresponds to Volume, and is used as the FK from DRS to Volume in the DB Trigger
 
 
-        # This transform makes each file its own object. The string
-        # before the -- separator becomes the OSN for the object. The file retains the
-        # name
 
-        pmFile=${printMasterSrcRoot}/$RID/prints/${VID}
-        destNm="${VID}--${VID}"
-        cp ${pmFile} ${templateDir}/${destNm} 2>&1 | tee -a ${logPath}
+        pmFileBase=${printMasterSrcRoot}/$RID/prints/${VID}
+        for f in ${pmFileBase}* ; do
 
-        declare -i rc=${PIPESTATUS[0]}
-        if ((${rc} != 0 )); then
-            echo   cp ${pmFile} ${templateDir}/${destNm}	failed rc: ${rc} | tee -a ${logPath}
-            exit ${rc}       # Just fail here
-        fi
+            # This transform makes each file its own object. The string
+            # before the -- separator becomes the OSN for the object. The file retains the
+            # name
+            destName="${VID}--$(basename ${f})"
+
+            cp ${f} ${templateDir}/${destNm} 2>&1 | tee -a ${logPath}
+
+            declare -i rc=${PIPESTATUS[0]}
+            if ((${rc} != 0 )); then
+                echo   cp ${pmFile} ${templateDir}/${destNm}	failed rc: ${rc} | tee -a ${logPath}
+                exit ${rc}       # Just fail here
+            fi
+        done
     fi
 
 
