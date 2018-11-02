@@ -102,7 +102,13 @@ class RelatedAdder(DbApp):
                         hasHeader = False
                         continue
                     # the sproc takes a label argument
-                    workCursor.callproc(sproc, (row[0], f'{row[0]}{ls}',))
+                    # This is generated from the first column, or the second col
+                    # if it is there
+                    if len(row) > 1:
+                        label = row[1]
+                    else:
+                        label = f'{row[0]}{ls}'
+                    workCursor.callproc(sproc, (row[0], label,))
                     tt.tick()
             self.connection.commit()
 

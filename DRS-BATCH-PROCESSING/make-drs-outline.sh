@@ -231,11 +231,10 @@ while IFS=',' read -ra LINE; do
 
     $bb -a build -p $targetProjectDir -b $batchName  2>&1 | tee -a $logPath
 	if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
-		echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-		updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
+	    echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
+	    updateBuildStatus $DbConnectionString "${targetProjectDir}/${batchName}" "FAIL"
 	else
-
-	    mv -b ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
+	    mv -v --backup=numbered  ${targetProjectDir}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
 	    updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
 	fi
 

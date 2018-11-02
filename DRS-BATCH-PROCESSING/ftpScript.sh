@@ -83,7 +83,7 @@ buildSFTPBatch() {
 	-rmdir $_targetPath
 	mkdir $_targetPath
 	put -r -P $_sourcePath
-	!sleep 2
+	# jimk: test !sleep 2
 	cd $_targetPath
 	rename ${BATCH_XML_WAIT} ${BATCH_XML}
 	quit 

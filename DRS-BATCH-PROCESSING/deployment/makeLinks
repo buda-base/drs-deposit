@@ -26,11 +26,11 @@ done << YOW
 # full line comments are supported
 BB_tbrc/BB_tbrc2drs    # Comment out tail of line
 BB_tbrc/BB_tbrcOutline
+BB_tbrc/BB_tbrcPrintMaster
 autoRecovery
 autoRecoveryCore
 buildSendList
 commonUtils.sh
-
 BuildDeepDeleteList.awk
 BuildDeepDeleteList.sh
 BuildRecoveryList.awk
@@ -39,32 +39,41 @@ CountFilesInBatches.awk
 GetCumBuiltFileCounts.sh
 deleteAlreadyDepositedSFTP.sh
 drsttl-0.1.0.jar
-ftpMultiple.sh
 getErrorBuildStatus
+# deposit scripts
 ftpMultiple.sh
 ftpScript.sh
-makeOneDrs.sh
+# dependencies of make-one-xxx
+make-proj-conf.xsl
+tojsondimensions.py
+saxonhe-9.4.0.7.jar
+#
+# lowest level batch builders
 make-drs-batch.sh
 make-drs-outline.sh
-make-proj-conf.xsl
+make-drs-printmaster.sh
+# callers of lowest level batchbuilders
 makeOneDrs.sh
 makeOneFtp.sh
 makeOneOutline.sh
+makeOnePrintMaster.sh
 makeOneCore.sh
+# dispatch masters
+runAny.sh
+runDRS.sh
+runOut.sh
+runPm.sh
+#
 validate.sh
 parseMail.awk
 ProcessTrackFile.sh
 RemoveDepositedVolumePaths.sh
 RemoveDuplicateVolumes.sh
-runMultiple.sh
 RunSerialFtp.sh
 SetBBLevel.sh
 splitWorks.sh
-runMultiple.sh
-saxonhe-9.4.0.7.jar
 setupErrorLog.sh
 splitWorks.sh
-tojsondimensions.py
 YOW
 # Unused files.
 # diag  countBatchesByTime.sh

@@ -44,7 +44,7 @@ In the mail error data file, separate out the records which contain these three 
 
 There are three distinct workflows for errors
 
-[^88fae8cf]: My exoerience has been that this is best done on a MacOS mail client. On Windows, doing this and ftp'ing it has \n side effects.
+[^88fae8cf]: My experience has been that this is best done on a MacOS mail client. On Windows, doing this and ftp'ing it has \n side effects.
 
 Error Type|Error Text|Fix type
 ----|-----|------
@@ -73,7 +73,7 @@ where
 ```
 Since this process responds to a fire, it immediately runs `sftp` to change each directory's `batch.xml` to `batch.xml.wait` This prevents DRS from ingesting them. Once DRS has done this, you run `ResetUnwritableDirectories.sh` (same arguments) to set them ready to be ingested.
 #### Have any errors been resolved?
-+ Determine what's been published. `~/drs-deposit/output/BDRCCumulativeProdDeposits.csv` keeps a running total of what we've deposited. `cut -f12 -d, | sort -u` to get the list of batches (you need the unique because a work can span deposits) (Nerd note: although the batch directory name is heading 9, one of the data fields has a , in it.)
++ Determine what's been published. `/Volumes/DRS_Staging/DRS/KhyungUploads/$BB_LEVEL/BDRCCumulativeProdDeposits.csv` keeps a running total of what we've deposited. `cut -f12 -d, | sort -u` to get the list of batches (you need the unique because a work can span deposits) (Nerd note: although the batch directory name is heading 9, one of the data fields has a , in it.)
 + Derive the errored batches `grep 'Batch Directory' ` _all your error files_
 This gives the batch ids of the failures. `sort -u` to filter out duplicates.
 From the repository, get all the batch ids of what's deposited.
@@ -114,8 +114,9 @@ An earlier version of the workflow used the existence of LOADREPORTS on disk to 
 ![Select show/hide columns](../images/2018/04/91142cc5-2986-41f8-baaf-5133fc3e2184.png)
 ![Select](../images/2018/04/edd87ba9-9c7e-4159-9c76-490038b61567.png)
 _Getting the 'Deposited in Batch with Name' might be helpful, but is not required_
-Select these columns, and download the report into `~/drs-deposit/output/BDRCCumulativeProdDeposits.csv`
-This file is `git` controlled, so check it in.
+Select these columns, and downloathe report into `/Volumes/DRS_Staging/DRS/KhyungUploads/$BB_LEVEL/BDRCCumulativeProdDeposits.csv`
+
+
 #### Download yesterdays LOADREPORTs
 In the directory you made the on the last day you uploaded,  look for the file _sourceFileList_.UploadTrack.lst. It contains a pipe separated list of users and the sources of the batches they deposited. A typical run is
 ```

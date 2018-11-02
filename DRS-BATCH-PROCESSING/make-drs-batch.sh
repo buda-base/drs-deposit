@@ -180,9 +180,9 @@ function doBatch {
 		echo ${bb} -a build -p ${targetProjectDir} -b ${batchName}   | tee -a ${logPath}
         ${bb} -a build -p ${targetProjectDir} -b ${batchName} >> ${logPath} 2>&1
 
-		if [ ! -f ${targetProjectsRoot}/${batchName}/batch.xml ] ; then
+		if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
 			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			updateBuildStatus ${DbConnectionString} "${targetProjectsRoot}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
+			updateBuildStatus ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
 		    td=$(mktemp -d)
@@ -190,7 +190,9 @@ function doBatch {
 		    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
 		    # jimk 2018-VI-17
-		    mv -v ${targetProjectDir}/${batchName} ${OUTPUTHOME}  2>&1 | tee -a ${logPath}
+		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
+		    # list.
+		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${OUTPUTHOME}  2>&1 | tee -a ${logPath}
 		    updateBuildStatus ${DbConnectionString} "${OUTPUTHOME}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
         # jimk 2018-V-18: this used to be above the last fail.

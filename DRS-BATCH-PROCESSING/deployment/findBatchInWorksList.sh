@@ -1,1 +1,0 @@
-../findBatchInWorksList.sh

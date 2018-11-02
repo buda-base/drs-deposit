@@ -97,6 +97,7 @@ def genVolumes():
     Populates volumes for a list of folders
     :return:
     """
+    pass
 
 #
 # ----------------        MAIN     ------------------------------------
