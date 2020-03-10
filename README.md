@@ -48,4 +48,4 @@ Druk |Update the DRS database | Any PC with the Python library installed, and th
   [68fcc779]: http://nrs.harvard.edu/urn-3:hul:drs2-admin "Harvard Web Admin Search"
 [^b4db8524]: Details of the following section are in: [Building Batches][65e185e8] 
 
-  [65e185e8]: ./BatchBuilding.md "Building Batches"
+  [65e185e8]: ./DRS-BATCH-PROCESSING/BatchBuilding.md "Building Batches"
