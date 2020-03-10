@@ -2,6 +2,13 @@
 Harvard DRS Deposit base
 # Daily Workflow
 Note this is a high level summary, at the checklist level. It does not describe details of installation and operations.
+
+For details and design documents, please see 
+* [Deposit Workflow](DRS-BATCH-PROCESSING/DepositWorkflow.md)
+* [DR Design Doc](./DRS-BATCH-PROCESSING/DRDesignOverview.md)
+* [Batch Building](./DRS-BATCH-PROCESSING/BatchBuilding.md)
+* [Parallel Batching](./DRS-BATCH-PROCESSING/parallelBatching.md)
+
 ## Dramatis Personae
 
 + Druk: The BatchBuilding platform. Platform requires:
