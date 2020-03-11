@@ -49,7 +49,7 @@ Druk |Update the DRS database | Any PC with the Python library installed, and th
   | Prepare to run  | Figure out how many parallel executions you want to run. 4 is a useful upper limit (we've seen that, after 3 parallels, the 4th, 5th, and later streams get starved for CPU)
   |   |Split the readylist into the number of streams  `splitWorks -n 3`**This is not** `splitWorks.sh`  
   | Off with his head! | Start a tmux session. This runs for a long time, and you dont want to depend on your console access.
-  |And go | Launch `runMultiple.sh filespecOfYourSlitWorks output'` for example: `runMultiple.sh myBuildCandidates[1-3].txt` `runMultiple.sh` spawns many background processes (one per file in its arguments list), and then exits. No advantage to running it in the background.
+  |And go | Launch `runAny.sh filespecOfYourSlitWorks output'` for example: `runAny.sh myBuildCandidates[1-3].txt` `runAny.sh` spawns many background processes (one per file in its arguments list), and then exits. No advantage to running it in the background.
   | Checking status  | In the same working directory, examine the `timin/underway` and `timing/finishedRuns` directory.
 
   [68fcc779]: http://nrs.harvard.edu/urn-3:hul:drs2-admin "Harvard Web Admin Search"
