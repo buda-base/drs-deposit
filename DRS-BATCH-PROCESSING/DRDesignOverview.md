@@ -47,7 +47,7 @@ The entry points into the system reflect two separate, yet equally important pat
 #### Building Batches
 1. `getReadies` This python script gets the next set of works to be batch built.
 2. `splitWorks` This python script splits the output of `getReadies` into work lists.
-3. `runMultiple.sh` Generates processes and logging for each of the work lists that `splitWorks` has generated
+3. `runAny.sh` Generates processes and logging for each of the work lists that `splitWorks` has generated
 
 #### Depositing Batches
 1. Get total list of deposits (this is the manual process shown below above). Output is`Current Deposited Volumes.csv`
@@ -93,7 +93,7 @@ These Python modules are the interface into the Database
 *
 ### Shell scripts
 These are the two outermost shell scripts, which setup and launch parallel subtasks:
-* `runMultiple.sh` Starts the batch building processes.
+* `runAny.sh` Starts the batch building processes.
 * `ftpMultiple.sh` Starts the DRS upload processes. Once the files are uploaded, the HUL DRS system completes the deposit.
 
 ### Manual processes
