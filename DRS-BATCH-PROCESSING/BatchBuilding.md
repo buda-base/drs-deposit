@@ -26,15 +26,15 @@ __WARNING__ This process is slow - approximately 1 minute per 10 works.
 **Run:** `~/drs-deposit/DBApps/src/splitWorks.py fileName -n` where -n is the number of instances you want to run. For `fileName` use the output of `getReadyWorks.py`
 **Results**: fileName1....fileNameN
 #### Build the batches
-Entry point is `runMultiple.sh` which processes the files.
+Entry point is `runAny.sh` which processes the files.
 Typically you'd run it against the splitworks, by using file globbing:
-`./runMultiple.sh filename[1-n]` where the list is the output of the file you listed
+`./runAny.sh filename[1-n]` where the list is the output of the file you listed
 **NOTE:** Don't include the master source file in your argument list. The platform won't know that you're asking it to batch build the same works twice.
 
 Usage:
 ```
-$ ./runMultiple.sh -h
-                synopsis: runMultiple.sh [-h] file1,file2,...
+$ ./runAny.sh -h
+                synopsis: runAny.sh [-h] file1,file2,...
                 -h: shows this message
                 run multiple lists of works given in 'files'
                 in parallel execution, One process per file
@@ -44,7 +44,7 @@ $ ./runMultiple.sh -h
 
 #### Test for done
 The process writes statuses in `timing/underway` and `timing/finishedRuns`
-When `timing/underway` has no more files in it, and `timing/finishedRuns` has one file for each input file to `runMultiple.sh` the process is complete.
+When `timing/underway` has no more files in it, and `timing/finishedRuns` has one file for each input file to `runAny.sh` the process is complete.
 You can run `topStats.sh` in the meantime. If you see java processes somewhere in the list, things are proceeding ok. Make multiple observations.
 
 #### Contents of timing files
