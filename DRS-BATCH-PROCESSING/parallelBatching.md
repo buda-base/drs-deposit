@@ -23,17 +23,17 @@ Given a file which contains a list of works, separate it into files of 240 works
 
 It's advisable to run this in a subdirectory, to not clutter up your working directory.
 
-### Step 2:Launch `runMultiple.sh`
+### Step 2:Launch `runAny.sh`
 
 ** Location Note ** These scripts don't need to be run from any particular directory  Paths to other scripts are fully qualified in the calling script. These may need configuration in your particular view.
 
-`runMultiple.sh` is called with the beginning and end numbers of a sequence
-(e.g. `runMultiple.sh 3 6`) which sets up a call to the `makeOneDrs.sh`script.
+`runAny.sh` is called with the beginning and end numbers of a sequence
+(e.g. `runAny.sh 3 6`) which sets up a call to the `makeOneDrs.sh`script.
 the beginning and end numbers are the numeric part of the worksList_nnn_.txt file name.
 
 Along the way, it initializes the directories for tracking progress, passing their paths to `makeOneDrs.sh`
 
-Note that the parallelism happens here. `runMultiple.sh` spawns one child thread for each work list.
+Note that the parallelism happens here. `runAny.sh` spawns one child thread for each work list.
 
 ## Step 3: Batching
 The batching process is described in [Parallel Batching 2 gdrawing][8d428e13], and is shown in ![Batching 2 flowchart](../images/2018/01/Parallel%20Batching%202.png)
@@ -50,8 +50,8 @@ The most important of these are:
 
 resource|defined in (file:variable)|purpose
 --|---|--
-underway|`runMultiple.sh:underwayDir`|Location of status files for underway  
-finished|`runMultiple.sh:underwayDir`|Location of status files when jobs are completed.
+underway|`runAny.sh:underwayDir`|Location of status files for underway  
+finished|`runAny.sh:underwayDir`|Location of status files when jobs are completed.
 Works source|`makeOneDrs.sh:WORKS_SRC`|Location of worksList*n*.txt files  
 Batch output|`makeOneDrs.sh:BATCH_OUTPUT_HOME`|Parent directory of all completed batch projects.
 
