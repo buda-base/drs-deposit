@@ -40,7 +40,7 @@
 # This script copies and renames the images in each imagegroup of each Work listed in the
 # worksList. The images are copied into the project/template/image directory.
 #
-# Then the batchbuildercli.sh is called to create the batch directory structure in the 
+# Then the batchbuildercli.sh is called to create the batch directory structure in the
 # project directory. After this, the batchbuildercli.sh is called again to create the control
 # files: batch.xml and descriptor.xml which are used to control the DRS import.
 #
@@ -308,12 +308,18 @@ declare -i thisBatchVolCount=0
 declare firstLine=
 declare -i batchesThisWork=1
 
+# delete the first line of workfile, using sed, into a $(mktemp)
+# cat rest | parallel
+# cat ${worksListFile} | parallel , using , as a parameter separator
+# watch out for times. This routine makes directories based on time.
+# function_called  {1} {2} {3} {4} {5}
 while IFS=, read -ra LINE ; do
     # skip the first line
     [ -z ${firstLine} ] &&  {
             firstLine=1;
             continue;
     }
+    # put the rest of this loop into function_called
     RID=${LINE[0]}
     HID=${LINE[1]}
     VID=${LINE[2]}
