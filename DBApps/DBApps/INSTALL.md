@@ -1,6 +1,6 @@
 # Installing and running  DBApps 
 on a new machine:
-1. Install Python 3.6
+1. Install Python 3.6 or 3.7
 1. Install venv. (`python3 venv someFolder`) 
 1. Put a `. ~/venv/activate`  call into your shell profile. You have to do this, to find 
 the virtual environment in your path.
