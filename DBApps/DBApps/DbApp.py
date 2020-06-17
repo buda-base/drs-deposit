@@ -115,17 +115,25 @@ class DbApp:
 
         rl: list[dict] = []
 
+        hasNext: bool = True
         with self.connection:
-            workCursor: mysql.Connection.Cursor = self.connection.cursor(mysql.cursors.SSDictCursor)
-            print(f'Calling {sproc} for n = {maxWorks} ')
-            workCursor.callproc(f'{sproc}', (maxWorks,))
-            self.validateExpectedColumns(workCursor.description)
+            try:
+                # jimk #drs-deposit 76. Dont use unbuffered cursor, which blocks access to the db
+                # until it's done or cleared. (e.g. pyCharm queries
+                workCursor: mysql.Connection.Cursor = self.connection.cursor(mysql.cursors.DictCursor)
+                print(f'Calling {sproc} for n = {maxWorks} ')
+                workCursor.callproc(f'{sproc}', (maxWorks,))
+                self.validateExpectedColumns(workCursor.description)
 
-            hasNext: bool = True
-            while hasNext:
-                resultRows = workCursor.fetchall()
-                rl.append(resultRows)
-                hasNext = workCursor.nextset()
+                while hasNext:
+                    resultRows = workCursor.fetchall()
+                    rl.append(resultRows)
+                    hasNext = workCursor.nextset()
+            finally:
+                # have to drain result sets if there was an exception (if
+                while hasNext:
+                    workCursor.fetchall()
+                    hasNext = workCursor.nextset()
         return rl
 
     def CallAnySproc(self, sproc: str, *args):
@@ -142,6 +150,6 @@ class DbApp:
 
         with self.connection:
             workCursor: mysql.Connection.Cursor = self.connection.cursor()
-            print(f'Calling {sproc} for n = {maxWorks} ')
+            print(f'Calling {sproc} for n = {maxWorks}')
             workCursor.callproc(f'{sproc}', tuple(arg for arg in args))
             workCursor.fetchall()  # wgaf

@@ -25,5 +25,5 @@ qaNRS=https://nrs-qa.lib.harvard.edu/
 
 export HUL_NRS_RESOLVER_URL=$(eval echo \$${BB_LEVEL}NRS)
 
-export BB_SOURCE=/Users/jimk/DRS/BatchBuilder-2.2.19
+export BB_SOURCE=~/DRS/BatchBuilder-2.2.19
 

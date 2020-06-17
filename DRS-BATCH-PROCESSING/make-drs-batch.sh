@@ -40,7 +40,7 @@
 # This script copies and renames the images in each imagegroup of each Work listed in the
 # worksList. The images are copied into the project/template/image directory.
 #
-# Then the batchbuildercli.sh is called to create the batch directory structure in the 
+# Then the batchbuildercli.sh is called to create the batch directory structure in the
 # project directory. After this, the batchbuildercli.sh is called again to create the control
 # files: batch.xml and descriptor.xml which are used to control the DRS import.
 #
@@ -70,7 +70,8 @@ TIMING_LOG_FILE=timeBuildBatch.log
 TIMEFORMAT=$'%R\t%U\t%S\t%P'
 export TIMEFORMAT
 
-OUTPUTHOME=/Volumes/DRS_Staging/DRS/$BB_LEVEL/batchBuilds
+# jimk drs-deposit #77 Use global var
+# OUTPUTHOME=/Volumes/DRS_Staging/DRS/$BB_LEVEL/batchBuilds
 
 DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
 
@@ -185,15 +186,18 @@ function doBatch {
 			updateBuildStatus ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
-		    td=$(mktemp -d)
-		    tojsondimensions.py -i ${targetProjectDir}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
-		    rm -rf ${td}  2>&1 | tee -a ${logPath}
+#		    td=$(mktemp -d)
+	#	    tojsondimensions.py -i ${targetProjectDir}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
+	# timb 2020-04-20
+	# commented out json dimensions since that is handled at a differnt step inte process now. If something
+	#does need json with dimensions created run it through the volume manifest tool before batch building.
+#		    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
 		    # jimk 2018-VI-17
 		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
 		    # list.
-		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${OUTPUTHOME}  2>&1 | tee -a ${logPath}
-		    updateBuildStatus ${DbConnectionString} "${OUTPUTHOME}/${batchName}" "success"  2>&1 | tee -a ${logPath}
+		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${BATCH_OUTPUT_PUBDIR}  2>&1 | tee -a ${logPath}
+		    updateBuildStatus ${DbConnectionString} "${BATCH_OUTPUT_PUBDIR}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
         # jimk 2018-V-18: this used to be above the last fail.
        cleanUpLogs ${batchName}
@@ -308,20 +312,29 @@ declare -i thisBatchVolCount=0
 declare firstLine=
 declare -i batchesThisWork=1
 
+# delete the first line of workfile, using sed, into a $(mktemp)
+# cat rest | parallel
+# cat ${worksListFile} | parallel , using , as a parameter separator
+# watch out for times. This routine makes directories based on time.
+# function_called  {1} {2} {3} {4} {5}
 while IFS=, read -ra LINE ; do
     # skip the first line
     [ -z ${firstLine} ] &&  {
             firstLine=1;
             continue;
     }
+    # put the rest of this loop into function_called
     RID=${LINE[0]}
     HID=${LINE[1]}
     VID=${LINE[2]}
+
+    [[ -n $VID ]] ||  continue
+    
     OutlineUrn=$(generateHulNrsUrn ${LINE[3]})
     PrintMasterUrn=$(generateHulNrsUrn ${LINE[4]})
 
     # Sanity check - have we built this volume somewhere else?
-    thisVolBuildPath=$(find ${OUTPUTHOME} -maxdepth 2 -mindepth 2 -type d  -name ${VID} )
+    thisVolBuildPath=$(find ${BATCH_OUTPUT_HOME} -maxdepth 2 -mindepth 2 -type d  -name ${VID} )
     [ ! -z ${thisVolBuildPath} ] && {
         echo "Skipping: $thisVolBuildPath already built" | tee -a ${logPath}
     continue
@@ -344,7 +357,7 @@ while IFS=, read -ra LINE ; do
 
             # jimk 2018-VI-18: Append new with n.
             # jimk 2018-VII-18: add short hashtag
-	    mdDate=$(date +%H%M%S | md5)
+	    mdDate=$(date +%H%M%S | md5sum )
 	    mdDate=${mdDate:0:2}
             batchName=$(printf "%s-%d-%s" "batch$RID" ${batchesThisWork} $mdDate)
             echo Batch Name: ${batchName} | tee -a  ${logPath}

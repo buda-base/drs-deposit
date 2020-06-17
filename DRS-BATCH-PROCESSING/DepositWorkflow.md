@@ -45,6 +45,7 @@ step uses that file.
 #### Get results from DRS WebAdmin
 An earlier version of the workflow used the existence of LOADREPORTS on disk to determine which works had been uploaded. This workflow uses the output of a DRS WebAdmin search. Details to follow.
 ** IMPORTANT ** When you do the search, be sure to add the column "Deposited in Batch with Directory" to the output columns.
+
 ![Select show/hide columns](../images/2018/04/91142cc5-2986-41f8-baaf-5133fc3e2184.png)
 ![Select](../images/2018/04/edd87ba9-9c7e-4159-9c76-490038b61567.png)
 _Getting the 'Deposited in Batch with Name' might be helpful, but is not required_
@@ -78,6 +79,7 @@ Usage: pollDRS.sh uploadedBatchList remoteUser reportDir where
 
 ```
 It's most common use is to download the results of batches which were uploaded, and were defined in the `uploadedBatchList` parameter.
+
 </s>
 
 Using the output of the previous command (`uniqueVolumes`) feed that into `RemoveDepositedBatchPaths.sh uniqeVolumes outputFileName.lst`
