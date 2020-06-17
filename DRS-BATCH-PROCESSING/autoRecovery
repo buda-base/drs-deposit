@@ -4,7 +4,6 @@
 #
 # Assume a mailerrs.txt
 
-
 export ME=$(basename $0)
 export ME_DIR=$(dirname $0)
 . ~/bin/setupErrorLog.sh
@@ -23,7 +22,7 @@ export ERR_BATCHES=dontBuildBatches.txt
 
 #
 # First get some stats before we try to repair
-$ddc/runningDepositStatus 2>&1 | tee -a statusLog
+runningDepositStatus 2>&1 | tee -a statusLog
 
 
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
