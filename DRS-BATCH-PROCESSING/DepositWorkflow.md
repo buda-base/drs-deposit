@@ -109,7 +109,10 @@ The scripts you generated in the previous step reset the batches for rebuild. Th
 It requires about two minutes to process each error, so go away and do something else for the required time.
 
 ### Get results from DRS WebAdmin
-An earlier version of the workflow used the existence of LOADREPORTS on disk to determine which works had been uploaded. This workflow uses the output of a DRS WebAdmin search. Details to follow.
+An earlier version of the workflow used the existence of LOADREPORTS on disk to determine which works had been uploaded.
+This workflow uses the output of a DRS WebAdmin search. 
+Open DRS WebAdmin, and search for objects whose 'BILLING CODE' is 'FHCL.COLL.TBRC_0001'. 
+[WebAdmin Search box](../images/2018/04/Screen%20Shot%202020-04-29%20at%2014.00.20.png)
 ** IMPORTANT ** When you do the search, be sure to add the column "Batch Directory" to the output columns.
 ![Select show/hide columns](../images/2018/04/91142cc5-2986-41f8-baaf-5133fc3e2184.png)
 ![Select](../images/2018/04/edd87ba9-9c7e-4159-9c76-490038b61567.png)
@@ -147,11 +150,11 @@ After the recovered batches are built, go into WebAdmin and download a csv of th
 `cd $DEPOSIT_ROOT`
 mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anything.
 ### Capture all the builds
-`$CODE/RemoveDuplicateBuilds.sh` to generate a canonical list of all builds.
+`$CODE/RemoveDuplicateVolumes.sh` to generate a canonical list of all builds.
 (In a future, this will have deposits removed)
-gives you the file `BuildList.txt`
+gives you the file `BuildList.txt` ??`volList.txt` ??
 ### Remove the deposits from the list
-Check `$CODE/RemoveDepositedBatchPaths.sh` for the correct setting  `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`. Run it, and you get `UnDepositedBuildPaths.txt` and `DictUnDepositedBuildPaths.txt`
+Check `$CODE/RemoveDepositedVolumePaths.sh` for the correct setting  `DEPOSIT_ROOT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/`. Run it, and you get `UnDepositedBuildPaths.txt` and `DictUnDepositedBuildPaths.txt`
 
 These files are:
 

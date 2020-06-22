@@ -16,15 +16,23 @@ For details and design documents, please see
 	- Bash v3
 	- drs-deposit github - only needs DRS-BATCH-PROCESSING folder, not complete repository
 	- drs-deposit/DBApps installed (see DBApps/setup.py)
-	- drs-deposit/DRS-BATCH-PROCESING and drs-deposit/DRS-BATCH-PROCESSING/parallelBatch in your path.[^4487da72]
+	- drs-deposit/DRS-BATCH-PROCESSING and drs-deposit/DRS-BATCH-PROCESSING/parallelBatch in your path.[^4487da72]
 + Khyung: Uploading platform. Requires:
-	- Python 3.6 (recomended in a virtual environment)
+	- Python 3.6 (recomended in a virtual environment). See [^Detailed platform Requirements]
 	- Cisco VirtualConnect software (from Harvard)
 + Optional: another machine with Cisco AnyConnect software
 
 [^4487da72]: I link the files I need into `~/bin`.
 
 Except for downloading the CSVs, and the step of collecting the error results, all these steps are command line, so you can run them through `ssh`. I advise you run them under `tmux`, so that long running commands don't pin down your machine.
+
+## Detailed platform requirements
+1. OS:This suite has been tested on MacOS High Sierra and Mojave only.
+1. Coreutils.  `brew install coreutils` ( as root, or owner of `/usr/local/bin`). Be sure to `brew list coreutils` and read the caveat about PATH. These scripts expect the GNU versions of their commands.
+1. Python 3.7 and virtualenv.  Since we can't use Python 3 at a systemwide level on MacOS machines, each user has to create a virtual env and initialize it. See [python venv documentation](https://docs.python.org/3/library/venv.html). If `pip` breaks, you need to drop back your openssl to version 1.0.2a (`brew remove --ignore-dependencies openssl && brew install openssl=1.0.2a` or something like it.)
+    1. The python scripts depend on pip packages `lxml` and `pymysql`
+1. Harvard University Library Batch building system. You can just copy from `Druk:~yr-obdt-dsvt/DRS/BatchBuilder2.2.1.9`
+
 
 ## Steps
 Host  | Action  |Comments

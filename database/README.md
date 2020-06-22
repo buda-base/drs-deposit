@@ -16,7 +16,7 @@ If you would like to browse the data, update the schema, update the server (acce
 1. A Mysql administration utility. The easiest way to acquire this is through MySql Workbench (download it [here](https://dev.mysql.com/downloads/workbench/))
 2. (Optional): to perform routine database operations, the MySqlUtilities console is helpful, but not necessary. You can get download information from within MySql workbench Menu Tools | Start Shell for MySqlUtilities  
 
-##Database Functionality
+## Database Functionality
 The DRS database provides this information:
 1. Which works are ready to be batched?
 2. Which works have been batched? When? Did the batch attempt fail?

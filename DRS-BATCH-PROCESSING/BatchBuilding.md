@@ -1,6 +1,6 @@
 # Batch Building
 ## Document Version
-0.1,  13 June 2018
+0.2,  13 June 2018
 ## Getting list of works
 ### SQL Structures
 * `AllReadyWorks`: works which have no printmasters or outlines

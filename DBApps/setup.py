@@ -12,7 +12,7 @@ from setuptools import setup
 # and this is an executable script which wraps the entry points
 setup(
     name='DBApps',
-    version='0.42.3',
+    version='0.42.4',
     packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
               'DBApps.SourceProcessors'],
     url='',
