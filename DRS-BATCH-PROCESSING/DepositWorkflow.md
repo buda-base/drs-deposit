@@ -77,7 +77,7 @@ in the third pipe field (`249236` in the example above)
 ### Prepare a list for ftpMultiple.sh
 `YourUploads.lst`has the full path to the folders containing batches
 ### Run ftpMultiple.sh
-**Helpful to run this in a tmux window, so you can peek the status remotely.**
+**Helpful to run this in a tmux window, so you can scan the status remotely.**
 You won't get email notifications of success, only failure.
 **DONT PEEK using FileZilla or sftp** There's a strong suspicion that opening an 
 SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
