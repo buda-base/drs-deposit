@@ -53,6 +53,8 @@ Select these columns, and download the report into `/Volumes/DRS_Staging/DRS/Khy
 Run the command `$CODE/FindUploadableBatchPaths.sh` and tee or pipe the output. (Note the process prints
 diagnostics - these are not reflected in the output)
 
+**the script which used to do this,** `buildSendList` **is DEPRECATED**
+
 This process creates a number of work files ending in `.lst` These are optional to keep
 ### Calculate how many of these you can deposit
 The output of `FindUploadableBatchPaths.sh` is a pipe separated set of lines, like
