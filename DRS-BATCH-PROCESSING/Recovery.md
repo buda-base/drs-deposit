@@ -2,13 +2,13 @@
 ## Platform
 ## Software
 You will need the complete contents of `github/drs-deposit/DRS-BATCH-PROCESSING` It can be useful to create symbolic links
-in ~/bin to these, 
+in ~/bin, or somewhere else in your path, to these. If you are not a developer, see AO for setting up your machine. 
 ### Cisco AnyConnect
 Launch the Cisco AnyConnect VPN to vpn.harvard.edu. Setting this up is **way** beyond the scope of this doc. You can only connect to DRS deposit servers when this is running.
 ### Email notification
 The default `project.conf` has settings which email `jimk@tbrc.org` when a batch deposit fails.
 a user needs to manually extract the mail messages. The preferred workflow is to
-+ select all the email messages (you can use a filter 'DRS Deposit Error')
++ select all the email messages (you can use a filter 'DRS Deposit Error') (See **Collecting errors:** `mailerrs.dat` for details) 
 + Save them into one file, in the deposit directory (typically `/Volumes/DRS_Staging/DRS/KhyungUploads/yyyymmdd/mailerrs.dat`. The filename `mailerrs.dat` is required)
 + Run the recovery scripts detailed below, **in order**
 ### Deposit directory
@@ -17,16 +17,6 @@ The deposit directory must contain the list of paths which contain the batch dir
 mail message.
 This example uses `/Volumes/DRS_Deposit/DRS/KhyungUploads/prod/2018/06/01/` as the deposit directory.
 
-#### Mapping errors to batches
-For example, the error mail message contains a line: 
-`
-Batch Directory: batchW20813-5
-`
-There must be a reference in a list of batch build paths to this directory.
-These files are typcially named `buildList[1-n].txt`
-In this example,  you can use `buildList2.txt`
-It contains the batch build path 
-`buildList2.txt:/Volumes/DRS_Staging/DRS/prod/20180515/worksList3.23.25/batchW20813-5`
  
 ## Recovery scripts
 1. First, run `autoRecovery`
@@ -34,7 +24,13 @@ This script parses the `mailerrs.txt` you saved above. It creates `mailErrs.dat`
 It examines each error message, and decides whether to:
 - Delete already deposited batches by invoking BuildDeepDeleteList.sh
 - Fix failed deposits by replacing `descriptor.xml` by BuildRecoveryList.sh
-It then calls `RunSerialFtp` to execute the fix for each error
+It then calls `RunSerialFtp` to execute the fix for each error.
+
+**autoRecovery Usage**
+`autoRecovery` takes two arguments:
+ - the UploadTrack list (derived from the output of `ftpMultiple.sh`) 
+ - a double quoted file specification which describes all the batches which were uploaded. Note that the internal `splitWorks.sh` script
+ not only splits the works into the number of FTP Users baseName[1-4].txt, but leaves the original file in baseName5.txt.You can use baseName5.txt as the one, unquoted argument here, instead of a bash file specification 
         
 # Oh, ROB (Sob)
 `autoRecovery` works by 
@@ -65,6 +61,18 @@ April 26, 2018 at 9:02:35 AM EDT|1524747755529114845|drs2_tbrcftp3|batchW23945-1
 April 26, 2018 at 9:02:25 AM EDT|1524747745829114833|drs2_tbrcftp3|batchW23947-1|Caught exception in ingest(): javax.persistence.PersistenceException: org.hibernate.exception.GenericJDBCException: could not extract ResultSet|
 ```
 For the rest of this tutorial, this file is named `mailerrs.dat`
+
+#### Mapping errors to batches
+For example, the error mail message contains a line: 
+`
+Batch Directory: batchW20813-5
+`
+There must be a reference in a list of batch build paths to this directory.
+These files are typcially named `buildList[1-n].txt`
+In this example,  you can use `buildList2.txt`
+It contains the batch build path 
+`buildList2.txt:/Volumes/DRS_Staging/DRS/prod/20180515/worksList3.23.25/batchW20813-5`
+
 ### AutoRecovery
 This is what `autoRecoveryCore` shell does
 In the mail error data file, separate out the records which contain these three strings, as they each have different workflows to repair:
