@@ -1,4 +1,4 @@
-#Recovery from deposit errors
+# Recovery from deposit errors
 ## Platform
 ## Software
 You will need the complete contents of `github/drs-deposit/DRS-BATCH-PROCESSING` It can be useful to create symbolic links
