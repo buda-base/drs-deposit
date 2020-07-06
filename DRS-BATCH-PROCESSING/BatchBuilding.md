@@ -5,7 +5,7 @@
 ### SQL Structures
 * `AllReadyWorks`: works which have no printmasters or outlines
 * `ReadyWorksNeedsBuilding`: subset of `AllReadyWorks` which have not been deposited
-Tehcnically, these return collections of __Volumes__ which have not been deposited.
+Technically, these return collections of __Volumes__ which have not been deposited.
 
 ### Workflow
 #### Prerequisites to these steps:
@@ -15,26 +15,32 @@ See Technical Reference, ????
 #### Build a list of items to batch build
 You need to do this every time you start, to make sure you are not building anything that has been built or deposited.
 
-**Run**: `~/drs-deposit/DBApps/src/GenShell/getReadyWorks.py `_n_
-Where _n_ the total number of works you want to batch build.
+Before running this be sure to check that you have Python 3.6 and the DBApps scripts set up. Check the [INSTALL](./DBApps/DBApps/INSTALL.md) document in DBApps.
 
+**Run**: `getReadyWorks -d prod:~/.drsBatch.config -n 200 ./yyyymmddReadyWorks`
+
+`-d` Should be your batch config file. The recommended location is in you home directory
+
+`-n` the total number of works you want to batch build. The script defaults to n = 200
 __WARNING__ This process is slow - approximately 1 minute per 10 works.
 
-**Results**:a file named `Readyworksyymmddhhmmss`
+your need to create a valid filename for the output file. We recommend a name with the date in yyyy-mm-dd format
+
+**Results**:a file named `yymmddReadyWorks`
 
 #### Split the ready works
-**Run:** `~/drs-deposit/DBApps/src/splitWorks.py fileName -n` where -n is the number of instances you want to run. For `fileName` use the output of `getReadyWorks.py`
+**Run:** `splitWorks fileName -n` where -n is the number of instances you want to run. For `fileName` use the output of `getReadyWorks.py`
 **Results**: fileName1....fileNameN
 #### Build the batches
-Entry point is `runAny.sh` which processes the files.
+Entry point is `runDRS.sh` which processes the files.
 Typically you'd run it against the splitworks, by using file globbing:
-`./runAny.sh filename[1-n]` where the list is the output of the file you listed
+`./runDRS.sh filename[1-n]` where the list is the output of the file you listed
 **NOTE:** Don't include the master source file in your argument list. The platform won't know that you're asking it to batch build the same works twice.
 
 Usage:
 ```
-$ ./runAny.sh -h
-                synopsis: runAny.sh [-h] file1,file2,...
+$ ./runDRS.sh -h
+                synopsis: runDRS.sh [-h] file1,file2,...
                 -h: shows this message
                 run multiple lists of works given in 'files'
                 in parallel execution, One process per file
