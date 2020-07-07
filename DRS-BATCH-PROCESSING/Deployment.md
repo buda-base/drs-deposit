@@ -20,5 +20,8 @@ contents, only changed ones
 + cd `...drs-deposit/DRS-BATCH-PRoCESSING/deployment/`
 + `./copyLinksToBin [folder, default='~/bin']`
 The optional argument can be any folder. 
+### Post deployment configuration
+Edit `SetBBLevel.sh` to point `BB_SOURCE` to a folder which contains the HUL (Harvard University Library) java complex which creates batch builder. If needed, copy it from a known installation.
+**Warning** Only BatchBuilder 2.2.19 is tested (as of 20 June 2020). newer versions may not work correctly.
 
 **tip** To be useful, it should be a folder on your path.

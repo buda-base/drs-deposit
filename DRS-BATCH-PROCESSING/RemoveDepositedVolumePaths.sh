@@ -16,6 +16,7 @@
 # UnDepositedBuildPaths.txt: Set difference between curDeposits  
 #
 ME=$(basename "$0")
+export JUSTNOW=$(date +%H-%M-%S)
 
 buildList=${1?"${ME}:Build list argument required, not given"}
 outFile=${2?"${ME}:Output file must be given."}
@@ -26,7 +27,7 @@ outFile=${2?"${ME}:Output file must be given."}
 
 # Take 2: use the dictionary
 export DICT=/Volumes/DRS_Staging/DRS/KhyungUploads/prod/BDRCCumulativeProdDeposits.csv
-BATCHES_WITH_DEPOSIT=batchesWithADeposit
+BATCHES_WITH_DEPOSIT=$(mktemp  --suffix=.lst BATCHES-WITH-DEPOSIT-"${JUSTNOW}"-XXX)
 
 # You may ask: why not just look for a batch directory:
 # Because the batch directories may have different roots, or a 
@@ -37,6 +38,7 @@ BATCHES_WITH_DEPOSIT=batchesWithADeposit
 # This OSN is known to exist in both Prod and QA
 export PROBE=W1GS66344-I1GS66346
 #
+# 25 is the rough number of fields
 for idx in $(seq 1 25) ;
 do
     test=$(awk -F',' -v fNum="$idx" -v searchTarget=$PROBE '{ if ($fNum == searchTarget) {print fNum}}' $DICT)
@@ -45,7 +47,7 @@ done
 result=$(printf "Found volume %s in comma separated field %s\n" $PROBE "$idx")
 echo "$result"
 
-dictFieldsFile=$(mktemp)
+dictFieldsFile=$(mktemp -p . --suffix=.lst BATCHES_WITH_DEPOSIT)
 #
 # Could use grep, bu I want the field separation syntax to be the same,
 # sometimes there are commas in quoted fields
