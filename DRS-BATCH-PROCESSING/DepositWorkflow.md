@@ -20,7 +20,7 @@ no print masters or outlines. This is taken care of in the drs-deposit/output/No
 It's possible, desirable even, to re-run deposit records from prior days.
 ## Preparation for today's deposits
 
-## Todays uploads
+### Get all uploaded objects
 After the recovered batches are built, go into WebAdmin and download a csv of the results.
  `RemoveDepositedBatchPaths.sh` knows how to parse this for batch directory names.
 ### Make a new directory
@@ -51,7 +51,7 @@ _Getting the 'Deposited in Batch with Name' might be helpful, but is not require
 Select these columns, and download the report into `/Volumes/DRS_Staging/DRS/KhyungUploads/$BB_LEVEL/BDRCCumulativeProdDeposits.csv`
 
 
-This section is obsolete because we're using WebAdmin to download all successful results, instead of going after 
+This next section is obsolete because we're using WebAdmin to download all successful results, instead of going after 
 just the work that was done on the prior run.
 <s>
 #### Download yesterdays LOADREPORTs
@@ -112,7 +112,54 @@ only uses the batch.xml containing folder. You can either
 `while read dd ; do dirname $dd ; done <tmptmp > DoTheseNow.txt`
 * Just strip out the batch.xml when you build DoThisNow.txt
 `sed -n -e '1,/242505/p' -e 's/\/batch.xml//' CumList.txt  | cut -f1 -d'|' > DoThisNow.txt`
-### Run ftpMultiple.sh
+## Run today's deposits
+##  Run ftpMultiple.sh
 **Helpful to run this in a tmux window, so you can peek the status remotely.**
 You won't get email notifications of success, only failure.
 **DONT PEEK** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
+## Update DRS Database
+### Get recently deposited works
+The DRS deposit platform maintains a database of updated objects. Various steps in the batch building process call DBApps commands which update statuses.
+Periodically, should update the database with the most recent uploads. To update the
+count efficiently, you should know when the last successful deposit was. When you have that date,
+you run a query in HUL DRS WebAdmin to get all batches newer than that date:
+
+![](.DepositWorkflow_images/c8260c1d.png)
+
+The platform can handle overlap, so if you're not sure, go back further in time. It
+only means that the ingest fixing takes longer to run. 
+
+Then, update the display columns as in the getting the total cumulative step:
+![Select show/hide columns](../images/2018/04/91142cc5-2986-41f8-baaf-5133fc3e2184.png)
+![Select](../images/2018/04/edd87ba9-9c7e-4159-9c76-490038b61567.png)
+
+Download that file. **Do not save it as the `BDRCCumulativeFile...` as in the other step.
+It is only a differential file, not the cumulative one.**
+## Run DRSUpdate
+
+
+Give the usual config information and the name of the file you saved in the previous step:
+```bash
+(py371) gre@Shmeng:Downloads$ DRSUpdate -d prod:~/.garTweezix.config DRSDepositsPost2018-10-17.csv
+/Users/gre/pyEnvs/py371/lib/python3.7/site-packages/pymysql/cursors.py:276: Warning: (1265, "Data truncated for column 'IngestDate' at row 1")
+  self._query(q)
+ 50 calls ( 6.39 %).  Rate: 11.21 /sec
+ 100 calls ( 12.79 %).  Rate: 11.26 /sec
+ 150 calls ( 19.18 %).  Rate: 11.23 /sec
+ 200 calls ( 25.58 %).  Rate: 11.26 /sec
+ 250 calls ( 31.97 %).  Rate: 11.28 /sec
+ 300 calls ( 38.36 %).  Rate: 11.23 /sec
+ 350 calls ( 44.76 %).  Rate: 11.30 /sec
+ 400 calls ( 51.15 %).  Rate: 11.26 /sec
+ 450 calls ( 57.54 %).  Rate: 11.16 /sec
+ 500 calls ( 63.94 %).  Rate: 11.24 /sec
+ 550 calls ( 70.33 %).  Rate: 11.29 /sec
+ 600 calls ( 76.73 %).  Rate: 11.23 /sec
+ 650 calls ( 83.12 %).  Rate: 11.29 /sec
+ 700 calls ( 89.51 %).  Rate: 11.26 /sec
+ 750 calls ( 95.91 %).  Rate: 11.29 /sec
+
+```
+
+
+

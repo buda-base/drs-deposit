@@ -1,0 +1,91 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="WeeklyStatus@().sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+    <data-source id="7ea80a08-b3d6-4426-9c6d-7aacc0e5d5de" namespace="schema/&quot;drs&quot;" />
+    <script-text>drop procedure WeeklyStatus;
+create definer = bdrc@`%` procedure WeeklyStatus()
+BEGIN
+    set @objects = (SELECT count(1) FROM drs.DRS);
+    set @batches = (select count(distinct DRSDir) from drs.DRS);
+
+    set @unStartedUploads = (select count(*) from DepositedWorksFacts where workVolumes &lt;&gt; 0 and DRSVolumes = 0);
+    set @partialUploads = (select count(*) from DepositedWorksFacts where
+            workVolumes &gt; 0
+                                                                      and DRSVolumes &gt; 0
+                                                                      and DRSVolumes &lt;&gt; workVolumes);
+    set @completeUploads = (select count(*) from DepositedWorksFacts where
+            workVolumes &gt; 0
+                                                                       and DRSVolumes &gt; 0
+                                                                       and DRSVolumes = workVolumes);
+
+
+    -- jimk: rewrote to use new view of volume and DRS counts
+/*-----------------------------------------
+set @partialUploads = (select count(*) 
+from workStatusCount wsc
+where wsc.Volumes &lt;&gt; wsc.NumberVolumesDeposited 
+and wsc.Volumes &gt; 0
+and wsc.NumberVolumesDeposited &gt; 0);
+
+
+set @completeUploads = (select count(*) 
+-- wsc.Volumes, wsc.NumberVolumesDeposited 
+from workStatusCount wsc
+where wsc.Volumes = wsc.NumberVolumesDeposited 
+and wsc.Volumes &gt; 0) ;
+*/
+
+    set @OldcompleteUploads = (
+
+
+        select count(distinct workName)
+
+
+        from Works w
+
+# jimk: removing outlines and printmasters from consideration
+#     left outer join drs.Outlines o using (workId) left outer join drs.PrintMasters p using (workId)
+#     inner join Volumes v using (workId)
+#
+#     where w.HOLLIS is not null
+#           and p.PrintMasterId is  null
+#           and o.outLineId is  null
+#     and
+        where
+                (select count(1) from Volumes v where v.workId = w.WorkId)
+
+                =
+                (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
+
+
+          and   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) &lt;&gt; 0
+    ) ;
+
+    set @OldpartialUploads = (
+        select count(distinct workName)
+
+
+        from Works w
+
+                 left outer join drs.Outlines o using (workId) left outer join drs.PrintMasters p using (workId)
+                 inner join Volumes v using (workId)
+
+        where w.HOLLIS is not null
+          and p.PrintMasterId is  null
+          and o.outLineId is  null
+          and
+                (select count(1) from Volumes v where v.workId = w.WorkId)
+
+                &lt;&gt;
+                (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId)
+
+
+          and   (select count(1) from Volumes v left join DRS d using (volumeId) where d.DRSid is not null and v.workId = w.workId) &lt;&gt; 0
+    ) ;
+
+
+    select @batches,@objects, @unstarteduploads,@partialUploads, @completeUploads,  @OldcompleteUploads, @OldpartialUploads, sum(filesCount) as CumCount, sum(size) as CumSize from drs.DRS;
+
+END;</script-text>
+    <method v="2" />
+  </configuration>
+</component>
