@@ -7,8 +7,8 @@
 * Extract todays deposit file limit from batches.
 ## Assumptions:
 ### Environment
-You don't need the entire drs-deposit project, just the folder DRS-BATCH-PROCESSING and its subdirectories. you might want to put those paths into your PATH, or to link them in a common dir on your path.
-You will also need to link, or add to your path, the `parallelBatch` subdirectory.
+You don't need the entire drs-deposit project in your path. See the directory DRS-BATCH-PROCESSING/deployment/ `copyLinksToBin` and `makeLinks`.
+You can use them to update files in your `~/bin` folder with current GIT objects.
 #### Environment variables:
 **You need these set for anything to work**
 `export PR=/Volumes/DRS_Staging/DRS/prod`  This is the parent of all batch builds.

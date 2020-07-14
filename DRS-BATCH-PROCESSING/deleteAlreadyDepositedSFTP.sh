@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-# Parses the output of 'parseMail.awk' looking for batches which are already deposited.
-# See ./parseMail.awk for format
+
 
 export ME=$(basename $0)
 . ~/bin/setupErrorLog.sh

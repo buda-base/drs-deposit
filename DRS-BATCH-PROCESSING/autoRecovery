@@ -16,22 +16,27 @@ MAIL_TXT=mailerrs.txt
 #
 # ${ME} creates these files
 MAIL_DAT=mailerrs.dat
-BUILD_LIST_SPEC='buildList*.txt'
+UPLOAD_TRACK=${1?"usage: $ME uploadTrackingFileName BuildListSpec"}
+BUILD_LIST_SPEC="${2-'buildList*.txt'}"
 ERR_BATCH_USER_PAIRS=errbatchUsers.dat
 export ERR_BATCHES=dontBuildBatches.txt
 
+echo "using $BUILD_LIST_SPEC for build list"
+
 #
 # First get some stats before we try to repair
-runningDepositStatus 2>&1 | tee -a statusLog
-
+runningDepositStatus "$UPLOAD_TRACK" 2>&1 | tee -a statusLog
 
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
 # get the user and the batch
 grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $ERR_BATCH_USER_PAIRS
 
-
 # Save the batches only to a well known place
 cut -f2 -d'|' $ERR_BATCH_USER_PAIRS > $ERR_BATCHES
 
+cat $ERR_BATCH_USER_PAIRS
+cat $ERR_BATCHES
+read -p 'that was err batch user pairs'  frelm
+
 ## Danger_ assumes BUILD_LIST_SPEC is quoted. The unglobbed version needs to be passed.
-autoRecoveryCore $1 $ERR_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
+autoRecoveryCore  $ERR_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
