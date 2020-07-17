@@ -93,9 +93,101 @@ Everything else|varies|recover the batch using workflow ???? below
 ### Error resolution workflows
 #### Workflow 'Object Owner supplied name exists'
 Fix these first. When you download batch results, you don't want these in your downloads. These occur because of absences in the deposit records. Go to WebAdmin and refresh the deposit batches.
-The fix is to go into an SFTP UI (FileZilla or  BitVise), and delete the directory in the UI. This is a very tedious and slow procedure.
 
-3. For each user, open an SFTP ui and delete `/incoming/batchWnnnnn-m`
+
+There are two possible causes for this error:
+- the entire batch has been already deposited
+- the volume (same text as the OSN) was deposited in a different batch.
+
+To troubleshoot:
+Here's a typical example of a duplicate OSN Message. Data you will need is marked with `==>`:
+
+```
+Report ID: 1594867901370100398
+==>Drop Box: drs2_tbrcftp3
+
+==> Batch Directory: batchW1KG13126-6-5d
+
+Batch Name: FHCL.COLL_batchW1KG13126-6-5d_20200520_125333
+
+An unexpected problem occurred processing batch . If this problem persists, please contact https://nrs.harvard.edu/urn-3:hul.ois:drshelp, forwarding the entire contents of this message.
+
+Message: 
+
+Object owner supplied name ==> 'W1KG13126-I1KG13275' already exists for owner code FHCL.COLL
+```
+##### Was the complete batch uploaded already?
+To see if the entire batch has been already deposited, look for the **Batch Directory** in BDRCCumulative....csv
+`grep 'batchW1KG13126-6-5d' $PR/../KhyungUploads/prod/BDRCCum*csv`
+If you get returns, then look for the specific volume:
+`grep 'W1KG13126-I1KG13275.*batchW1KG13126-6-5d' $PR/../KhyungUploads/prod/BDRCCum*csv`
+if that returns, then you are most likely all set. Just delete the batch directory.
+sftp to the `==> Drop Box` directory and delete the /incoming/batchW.... folder that reported the error. In the following 
+example:
+```
+Report ID: 1594912498895100485
+Drop Box: drs2_tbrcftp2
+Batch Directory: batchW1KG10687-1-93
+Batch Name: FHCL.COLL_batchW1KG10687-1-93_20200514_160846
+
+An unexpected problem occurred processing batch . If this problem persists, please contact https://nrs.harvard.edu/urn-3:hul.ois:drshelp, forwarding the entire contents of this message.
+
+Message: 
+Object owner supplied name 'W1KG10687-I1KG10689' already exists for owner code FHCL.COLL
+```
+ sfp to drs2_tbrcftp2 and delete /incoming/batchW1KG10687-1-93/ This is a tedious process
+ which is facilitated in 'FileZilla Pro' - it recursively travels the directory and deletes.
+ ##### Was the volume deposited already in a different batch?
+ If so, you have to examine the batch to see if any other volumes in the batch which failed were already deposited.
+ In this example, only one work in the batch was found to be duplicate:
+ 
+```
+Report ID: 1594867901370100398
+==>Drop Box: drs2_tbrcftp3
+
+==> Batch Directory: batchW1KG13126-6-5d
+
+Batch Name: FHCL.COLL_batchW1KG13126-6-5d_20200520_125333
+
+An unexpected problem occurred processing batch . If this problem persists, please contact https://nrs.harvard.edu/urn-3:hul.ois:drshelp, forwarding the entire contents of this message.
+
+Message: 
+
+Object owner supplied name ==> 'W1KG13126-I1KG13275' already exists for owner code FHCL.COLL
+```
+- Look for batchW1KG13126-6-5d in BDRCCum...
+```shell script
+xxxups$ grep  batchW1KG13126-6-5d !$
+grep  batchW1KG13126-6-5d /Volumes/DRS_Staging/DRS/KhyungUploads/prod/BDRCCum*csv
+xxxups$
+```
+Not there. So which batch was it deposited in?
+```shell script
+xxxups$ grep  W1KG13126-I1KG13275 /Volumes/DRS_Staging/DRS/KhyungUploads/prod/BDRCCum*csv
+/Volumes/DRS_Staging/DRS/KhyungUploads/prod/BDRCCumulativeProdDeposits.csv:484289538,
+W1KG13126-I1KG13275,"URN-3:FHCL:100002474, URN-3:HUL.DRS.OBJECT:100002473",
+Buddhist Digital Resource Center,FHCL.COLL,FHCL.COLL.TBRC_0001,PDS DOCUMENT,,
+==>batchW1KG13126-4-17,<==
+993052,2020-07-15T20:55:58.0Z,FHCL.COLL_batchW1KG13126-4-17_20200520_123820,737,,R,"bstan 'gyur/ (pe cing /), pe cing bstan 'gyur, bstan 'gyur/ (pe cin/), pe cin bstan 'gyur, བསྟན་འགྱུར། ༼པེ་ཅིང་།༽",Tibetan Buddhist Resource Center,316010256
+xxxups$
+```
+Here we see the volume's been published, but in a different batch,`batchW1KG13126-4-17`
+(column 10)
+So we have to look at both batches:
+- if they contain the same volumes, then delete the batch with the error.
+- if they have different volumes, then you have to resolve each one.
+In the above case, the batch reporting the error has a super set of the volumes in the other batch.
+This will require you to roll back the DRS for the undeposited volumes.
+
+
+
+
+
+
+
+
+
+
 
 **Note: the directory could have both a batch.xml.failed and a LOADREPORT. If it has a LOADREPORT, just delete the batch.xml.failed and the other directory (Wnnnnn-Immmmmm)**
 #### Workflow Inhibit further PROCESSING

@@ -69,7 +69,7 @@ Run the command `$CODE/FindUploadableBatchPaths.sh` and tee or pipe the output. 
 diagnostics - these are not reflected in the output)
 
 **the script which used to do this,** `buildSendList` **is DEPRECATED**
-
+</s>
 This process creates a number of work files ending in `.lst` These are optional to keep
 ### Calculate how many of these you can deposit
 The output of `FindUploadableBatchPaths.sh` is a pipe separated set of lines, like
