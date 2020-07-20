@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="WeeklyStatus@().sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+    <data-source id="7ea80a08-b3d6-4426-9c6d-7aacc0e5d5de" namespace="schema/&quot;drs&quot;" />
+    <script-text>call GetReadyVolumes(10)</script-text>
+    <method v="2" />
+  </configuration>
+</component>

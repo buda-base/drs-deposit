@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
+# *** DEPRECATED *** use FindUploadbleBatchPaths.sh
+##
 # Do the steps to getting files ready
-# 2018 VI.17 - batches are moved to $RP/batchbuilds on success, and only if no duplicates
-# RemoveDuplicateVolumes.sh > BuildList.txt
-# ls $PR/batchBuilds
-# 
+#
 # BATCH_EXCLUDE_LIST depends on $ddc/AutoRecovery:
 # export ERR_BATCHES=dontBuildBatches.txt
+
 export BATCH_EXCLUDE_LIST=dontBuildBatches
 export BUILT=build.txt
 export VOLUMES=volList.txt
@@ -18,7 +18,7 @@ echo -n "Get builds ...."
 # WARN: the -not-path *~ filter out backup builds. (as of 2018-10-09, makeXXX was backing up old folders)
 find $PR/batchBuilds -maxdepth 2 -mindepth 2  -type d -not -path \*~\* > $BUILT
 echo "Done"
-# filter before doing anything eser
+# filter before doing anything else
 [ -f ${BATCH_EXCLUDE_LIST} ] && { grep -v -f ${BATCH_EXCLUDE_LIST} $BUILT >  $VOLUMES ; } || { mv $BUILT  $VOLUMES ;  }
 echo -n "Remove Deposited Paths...."
 RemoveDepositedVolumePaths.sh $VOLUMES  UndepositedVolumes

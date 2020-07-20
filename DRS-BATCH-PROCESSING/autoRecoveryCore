@@ -18,6 +18,10 @@ cat << USAGE
 USAGE
 }
 
+echo "errs: " "$1"
+echo "Build list spec: "  "$2"
+read -p blp
+
 # Get the unique users
 declare -a uu
 
@@ -47,9 +51,12 @@ buildListSpec=${2?${ME}:${FATAL_TXT}:build list spec file not given.}
 
 uu=($(cut -f1 -d'|' ${errPairs}  | sort -u))
 
+#set -v
+#set -x
+
 #
 # send each users batches to their own script
-for drsUser in ${uu[@]} ; do
+for drsUser in "${uu[@]}" ; do
     rb=${drsUser}recovBatches
     grep -w $drsUser $errPairs | cut -f2 -d'|' > $rb
 

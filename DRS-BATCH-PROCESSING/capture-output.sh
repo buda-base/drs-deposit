@@ -23,10 +23,10 @@ BATCH_XML=batch.xml
 WAIT_SUFFIX=".wait"
 
 #section error logging. Requires trailing /
-set -vx
+# set -vx
 . ./setupErrorlog.sh "${ME}"
 #endsection error logging
-set +vx
+# set +vx
 read -p "${ERR_LOG}"
 
 [ -d "$1" ] || { echo "${ME}: sourceRoot "$1" is not a directory or does not exist" ; exit 2 ;  } 
