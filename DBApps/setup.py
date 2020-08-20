@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 #
 # Simpler than simple:
@@ -11,15 +11,20 @@ from setuptools import setup
 # -rwxr-xr-x   1 jimk  staff   413 Jun 19 17:31 getNamedWorks
 # and this is an executable script which wraps the entry points
 setup(
-    name='DBApps',
-    version='0.42.4',
-    packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
-              'DBApps.SourceProcessors'],
+    name='bdrc_DBApps',
+    version='1.00.00',
+    # packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
+    #           'DBApps.SourceProcessors'],
+    packages=find_packages(),
     url='',
     license='',
     author='jimk',
-    author_email='',
-    description='DRS DB Apps Suite',
+    author_email='jimk@tbrc.org',
+    description='BDRC DRS DB Apps Suite',
+    python_requires='>=3.7',
+    classifiers=["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License",
+                 "Operating System :: MacOS :: MacOS X", "Operating System :: OS Independent",
+                 "Development Status :: 5 - Production/Stable"],
     entry_points={
         'console_scripts': [
             'DRSUpdate = DBApps.DRSUpdate:DRSUpdate',

@@ -20,7 +20,7 @@ def updateBuildStatus():
     """
     ubArgs: DbArgNamespace = SetupParse()
     updater = BuildStatusUpdater(ubArgs)
-    updater.DoUpdate()
+    updater.do_update()
 
 
 if __name__ == '__main__':

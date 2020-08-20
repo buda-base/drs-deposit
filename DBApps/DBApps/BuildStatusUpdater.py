@@ -69,40 +69,42 @@ class BuildStatusUpdater(DbApp):
         self._options = options
 
     # noinspection PyBroadException
-    def DoUpdate(self) -> None:
+    def do_update(self) -> None:
         """
         Update each volume in the options' buildPath
         """
         self.start_connect()
         conn = self.connection
 
-        uCursor = conn.cursor()
-        hadBarf = False
-        errVolPersist = ""
+        u_cursor = conn.cursor()
+        had_barf = False
+        err_vol_persist = ""
         try:
             buildPath = self._options.buildPath
-            for volDir in volumesForBatch(buildPath):
-                fullBuildPath = str(Path(buildPath).resolve())
-                volPath: Path = Path(fullBuildPath, volDir)
+            if 'FAIL' in str(self._options.result).upper():
+                u_cursor.callproc('DeleteBatchBuild', (buildPath))
+            else:
+                for vol_dir in volumesForBatch(buildPath):
+                    full_build_path = str(Path(buildPath).resolve())
+                    vol_path: Path = Path(full_build_path, vol_dir)
 
-                volFiles, volSize = self.get_tree_values(str(volPath))
-                errVolPersist = volDir
+                    vol_files, vol_size = self.get_tree_values(str(vol_path))
+                    err_vol_persist = vol_dir
 
-                uCursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{buildPath}") ;')
-                conn.commit()
+                    u_cursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{buildPath}") ;')
+                    conn.commit()
 
-                uCursor.callproc('UpdateBatchBuild', (
-                    volDir, buildPath, self._options.buildDate, self._options.result, volFiles, volSize))
-
-        except:
+                    u_cursor.callproc('UpdateBatchBuild', (
+                        vol_dir, buildPath, self._options.buildDate, self._options.result, vol_files, vol_size))
+        except Exception:
             import sys
             exc = sys.exc_info()
-            print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file=sys.stderr)
+            print("unexpected error for volume, ", err_vol_persist, exc[0], exc[1], file=sys.stderr)
             conn.rollback()
-            hadBarf = True
+            had_barf = True
         finally:
-            uCursor.close()
-            if not hadBarf:
+            u_cursor.close()
+            if not had_barf:
                 conn.commit()
             conn.close()
 
