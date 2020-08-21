@@ -40,6 +40,10 @@ class CSVWriter(listwriter.ListWriter):
         :param columnNames: list of columns to write (independent of result set)
         :return:
         """
+
+        if not self.setup(data):
+            return
+
         with self.osPath.open("w", newline=None) as fw:
             # Create the CSV writer. NOTE: multiple headers are written to the
             csvwr = csv.DictWriter(fw, columnNames, lineterminator='\n')
@@ -60,6 +64,19 @@ class CSVWriter(listwriter.ListWriter):
     @osPath.setter
     def osPath(self, value):
         self._osPath = value
+
+    def setup(self, results: list) -> bool:
+        """
+        Returns true if there is data to write
+        :param results: output to write
+        :return: true if there is data
+        """
+        # Anything to do?
+        if results is None or len(results) == 0:
+            return False
+        # Build the output path
+        self.MakePathDir(self.osPath)
+        return True
 
     @staticmethod
     def MakePathDir(filePath: pathlib.Path) -> None:
@@ -83,7 +100,8 @@ class CSVWriter(listwriter.ListWriter):
         """
         # and write
 
-        # Build the output path
+        if not self.setup(results):
+            return
 
         with self.osPath.open("w", newline='') as fw:
             # Create the CSV writer. NOTE: multiple headers are written to the
@@ -98,9 +116,7 @@ class CSVWriter(listwriter.ListWriter):
 
     def __init__(self, fileName: str):
         """
-
-        :rtype: object
         """
         super().__init__(fileName)
         self.osPath = pathlib.Path(os.path.expanduser(self.oConfig))
-        self.MakePathDir(self.osPath)
+
