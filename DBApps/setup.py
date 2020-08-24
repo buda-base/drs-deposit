@@ -31,7 +31,7 @@ setup(
             'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
             'getNamedWorks = DBApps.getNamedWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
-            'updateBuildStatus = DBApps.updateBuildStatus:updateBuildStatus'
+            'update_build_status = DBApps.update_build_status:update_build_status'
         ]
     }
 )

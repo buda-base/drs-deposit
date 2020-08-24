@@ -30,20 +30,21 @@ class UpdateBuildParser(DbAppParser):
         Constructor. Sets up the arguments
         """
         super().__init__(description, usage)
+        self._parser.add_argument("-d", "--delete", action="store_true")
         self._parser.add_argument("buildPath", help='Folder containing batch.xml and objects', type=mustExistDirectory)
         self._parser.add_argument("result", help='String representing the result')
         self._parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',
                                   default=datetime.datetime.now(), type=str2date)
 
 
-def volumesForBatch(batchFolder: str) -> list:
+def volumes_for_batch(batch_folder: str) -> list:
     """
     The folders in a batch build project represent the BDRC Volumes in the
     batch build.
-    :param batchFolder:
+    :param batch_folder:
     :return: list of the folders in a batch build project
     """
-    for root, dirs, folders in os.walk(batchFolder):
+    for root, dirs, folders in os.walk(batch_folder):
         return dirs
 
 
@@ -69,40 +70,44 @@ class BuildStatusUpdater(DbApp):
         self._options = options
 
     # noinspection PyBroadException
-    def DoUpdate(self) -> None:
+
+    def do_update(self):
         """
-        Update each volume in the options' buildPath
+        Update each volume in the options' build_path
         """
         self.start_connect()
         conn = self.connection
 
-        uCursor = conn.cursor()
-        hadBarf = False
-        errVolPersist = ""
+        u_cursor = conn.cursor()
+        had_barf = False
+        err_vol_persist = ""
         try:
-            buildPath = self._options.buildPath
-            for volDir in volumesForBatch(buildPath):
-                fullBuildPath = str(Path(buildPath).resolve())
-                volPath: Path = Path(fullBuildPath, volDir)
+            build_path = self._options.buildPath
+            for volDir in volumes_for_batch(build_path):
+                err_vol_persist = volDir
+                if not self._options.delete:
+                    full_build_path = str(Path(build_path).resolve())
+                    vol_path: Path = Path(full_build_path, volDir)
 
-                volFiles, volSize = self.get_tree_values(str(volPath))
-                errVolPersist = volDir
+                    vol_files, vol_size = self.get_tree_values(str(vol_path))
 
-                uCursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{buildPath}") ;')
-                conn.commit()
+                    u_cursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{build_path}") ;')
+                    conn.commit()
 
-                uCursor.callproc('UpdateBatchBuild', (
-                    volDir, buildPath, self._options.buildDate, self._options.result, volFiles, volSize))
+                    u_cursor.callproc('UpdateBatchBuild', (
+                        volDir, build_path, self._options.buildDate, self._options.result, vol_files, vol_size))
+            else:
+                u_cursor.callproc('DeleteBatchBuild', (volDir, build_path))
 
-        except:
+        except Exception:
             import sys
             exc = sys.exc_info()
-            print("unexpected error for volume, ", errVolPersist, exc[0], exc[1], file=sys.stderr)
+            print("unexpected error for volume, ", err_vol_persist, exc[0], exc[1], file=sys.stderr)
             conn.rollback()
-            hadBarf = True
+            had_barf = True
         finally:
-            uCursor.close()
-            if not hadBarf:
+            u_cursor.close()
+            if not had_barf:
                 conn.commit()
             conn.close()
 
@@ -115,14 +120,14 @@ class BuildStatusUpdater(DbApp):
         """
 
         total: int = 0
-        fileCount: int = 0
+        file_count: int = 0
 
         for entry in os.scandir(path):
             if entry.is_dir(follow_symlinks=False):
-                subCount, subTotal = self.get_tree_values(entry.path)
+                sub_count, sub_total = self.get_tree_values(entry.path)
             else:
-                subTotal = entry.stat(follow_symlinks=False).st_size
-                subCount = 1
-            total += subTotal
-            fileCount += subCount
-        return fileCount, total
+                sub_total = entry.stat(follow_symlinks=False).st_size
+                sub_count = 1
+            total += sub_total
+            file_count += sub_count
+        return file_count, total
