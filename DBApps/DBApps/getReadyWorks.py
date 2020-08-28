@@ -8,7 +8,11 @@ from DBApps.Writers.CSVWriter import CSVWriter
 from DBApps.readyWorks import GetReadyWorks, GetReadyWorksParser
 
 
-def SetupParse() -> object:
+def SetupParse() -> DbArgNamespace:
+    """
+
+    :rtype: object
+    """
     p = GetReadyWorksParser(
         description='Downloads ready works to folder, creating files related to folder',
         usage="%(prog)s | -d DBAppSection:DbAppFile [ -n default(200) ] resultPath")
@@ -20,8 +24,10 @@ def getReadyWorks():
     Entry point for getting works
     :return:
     """
+
     grArgs: DbArgNamespace = SetupParse()
     gr = GetReadyWorks(grArgs)
+    # myrs: list = gr.GetSprocResults('GetReadyVolumes', grArgs.numWorks)
     myrs: list = gr.GetSprocResults('GetReadyVolumes', grArgs.numWorks)
     csvOut = CSVWriter(grArgs.resultsPath)
     csvOut.PutResultSets(myrs, gr.ExpectedColumns)

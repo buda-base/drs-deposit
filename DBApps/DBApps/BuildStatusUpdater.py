@@ -82,7 +82,7 @@ class BuildStatusUpdater(DbApp):
         try:
             buildPath = self._options.buildPath
             if 'FAIL' in str(self._options.result).upper():
-                u_cursor.callproc('DeleteBatchBuild', (buildPath))
+                u_cursor.callproc('DeleteBatchBuild', (buildPath,))
             else:
                 for vol_dir in volumesForBatch(buildPath):
                     full_build_path = str(Path(buildPath).resolve())

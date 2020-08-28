@@ -10,6 +10,9 @@ from setuptools import setup, find_packages
 # ...
 # -rwxr-xr-x   1 jimk  staff   413 Jun 19 17:31 getNamedWorks
 # and this is an executable script which wraps the entry points
+long_description='#BDRC DBApps  ' \
+                 'Functions to assist in BDRC to HUL DRS and marshalling results to the DRS database processing.'
+
 setup(
     name='bdrc_DBApps',
     version='1.00.00',
@@ -21,6 +24,8 @@ setup(
     author='jimk',
     author_email='jimk@tbrc.org',
     description='BDRC DRS DB Apps Suite',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     python_requires='>=3.7',
     classifiers=["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License",
                  "Operating System :: MacOS :: MacOS X", "Operating System :: OS Independent",

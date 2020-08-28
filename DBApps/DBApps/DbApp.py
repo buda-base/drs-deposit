@@ -4,6 +4,8 @@ Created 2018-VIII-24
 """
 
 import pymysql as mysql
+
+from DBApps.SprocColumnError import SprocColumnError
 from config.config import DBConfig
 import os
 
@@ -12,6 +14,7 @@ class DbApp:
     """
     Base class for database applications
     """
+    _invoked_object: str
     _dbConfig: DBConfig
     _cn: mysql.Connection
     _dbConnection: mysql.Connection
@@ -86,17 +89,24 @@ class DbApp:
         :return: Throws ValueError on fail
         """
         found = False
-        for expectedColumn in self.ExpectedColumns:
+        found_columns: list = []
+
+        # Data expected but not returned
+        if cursorDescription is None and len(self.ExpectedColumns) > 0:
+            raise SprocColumnError(f'Invoked object {self._invoked_object} returned no expected data.')
+
+        for expected_column in self.ExpectedColumns:
             found = False
-            for cursorTuple in cursorDescription:
-                if cursorTuple[0] == expectedColumn:
+            for cursor_tuple in cursorDescription:
+                if cursor_tuple[0] == expected_column:
                     found = True
+                    found_columns.append(cursor_tuple[0])
                     break
             # each expected column must be in the list
             if not found:
                 break
         if not found:
-            raise ValueError(f'SPROC did not return expected columns')
+            raise SprocColumnError(f'Invoked object {self._invoked_object} Expected to return columns {self.ExpectedColumns}. Only returned {found_columns}.')
 
         # desc = queryCursor.description
         # hope something's here
@@ -111,6 +121,8 @@ class DbApp:
         :param maxWorks: limit of return rows
         :returns: a list of dictionary items, each item is a return row
         """
+
+        self._invoked_object = sproc
         self.start_connect()
 
         rl: list[dict] = []
@@ -150,6 +162,6 @@ class DbApp:
 
         with self.connection:
             workCursor: mysql.Connection.Cursor = self.connection.cursor()
-            print(f'Calling {sproc} for n = {maxWorks}')
+            print(f'Calling {sproc}')
             workCursor.callproc(f'{sproc}', tuple(arg for arg in args))
             workCursor.fetchall()  # wgaf
