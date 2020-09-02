@@ -1,5 +1,6 @@
 #! /bin/bash
-
+#
+#  Intended to be run on a DRS deropbox host
 cd incoming
 for b in batchW* ; do
 	if [ -f $b/batch.xml.wait ]; then

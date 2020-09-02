@@ -18,6 +18,7 @@ def update_build_status():
     Entry point for getting works
     :return:
     """
+
     ub_args: DbArgNamespace = setup_parse()
     updater = BuildStatusUpdater(ub_args)
 

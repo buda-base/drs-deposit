@@ -6,10 +6,13 @@ sproc 'AddDRS'
 import argparse
 from typing import Dict, Any
 
+from DBApps.Writers.CSVWriter import CSVWriter
 from DBApps.Writers.DbWriter import DbWriter
 from DBApps.SourceProcessors import WebAdminResults
 
 # The key represents a column in the designated file
+from DBApps.Writers.listwriter import ListWriter
+
 PDSHeaders: Dict[Any, str] = dict(object_id_num='objectid', object_huldrsadmin_ownerSuppliedName_string='OSN',
                                   object_urn_string_sort='objectUrn',
                                   batch_huldrsadmin_batchDirectoryName_string='DRSDir',
@@ -67,9 +70,14 @@ def DRSUpdate():
 
     myArgs.sproc = "AddDRS"
     writer = DbWriter(myArgs)
-
     param_list = dict_to_add_DRS_param_list(param_dict_list)
     writer.write_list(param_list)
+
+    # For thrills, change the writer to csv, and import the csv.
+    # writer = CSVWriter("somedamfile.csv")
+    # param_headers = dict_to_add_DRS_param_list(param_dict_list)
+    # writer.write_dict(param_dict_list,fileColumnDict.values())
+
 
 
 def parse_args(arg_namespace: object) -> None:

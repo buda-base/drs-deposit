@@ -8,7 +8,7 @@ from datetime import datetime
 import argparse
 
 from DBApps.DbApp import DbApp
-from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
+from DBApps.DbAppParser import DbAppParser, DbArgNamespace
 
 
 def mustExistDirectory(path: str):

@@ -43,6 +43,7 @@ getErrorBuildStatus
 # deposit scripts
 ftpMultiple.sh
 ftpScript.sh
+delete-batches.sh
 # dependencies of make-one-xxx
 make-proj-conf.xsl
 tojsondimensions.py

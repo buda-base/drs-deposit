@@ -70,8 +70,7 @@ class BuildStatusUpdater(DbApp):
         self._options = options
 
     # noinspection PyBroadException
-
-    def do_update(self):
+    def do_update(self) -> None:
         """
         Update each volume in the options' build_path
         """
@@ -98,7 +97,6 @@ class BuildStatusUpdater(DbApp):
                         volDir, build_path, self._options.buildDate, self._options.result, vol_files, vol_size))
             else:
                 u_cursor.callproc('DeleteBatchBuild', (volDir, build_path))
-
         except Exception:
             import sys
             exc = sys.exc_info()
