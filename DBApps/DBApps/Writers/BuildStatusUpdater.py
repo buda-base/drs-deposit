@@ -3,24 +3,13 @@ DbApp class to update Build Status
 
 """
 import sys
-import os
 from datetime import datetime
-import argparse
 
 from DBApps.DbApp import DbApp
-from DBApps.DbAppParser import DbAppParser, DbArgNamespace
+from DBAppParser import DbAppParser, DbArgNamespace, mustExistDirectory, str2date
 
 
-def mustExistDirectory(path: str):
-    if not os.path.isdir(path):
-        raise argparse.ArgumentTypeError
-    for root, dirs, files in os.walk(path, True):
-        if len(dirs) == 0:
-            raise argparse.ArgumentTypeError
-        else:
-            return path
-
-class updateBuildStatusParser(DbAppParser):
+class UpdateBuildStatusParser(DbAppParser):
     """
     Specifies arguments for get ready works
     """
@@ -31,7 +20,7 @@ class updateBuildStatusParser(DbAppParser):
         self._parser.add_argument("buildPath", help='Folder containing batch.xml and objects', type=mustExistDirectory)
         self._parser.add_argument("result", help='String representing the result')
         self._parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',
-                             default=datetime.datetime.now(), type=str2date)
+                                  default=datetime.now(), type=str2date)
 
 
 class GetReadyWorks(DbApp):

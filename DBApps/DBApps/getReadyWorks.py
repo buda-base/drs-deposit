@@ -3,7 +3,7 @@
 Entry point for getting ready works' volumes
 """
 
-from DBApps.DbAppParser import DbArgNamespace
+from DBAppParser import DbArgNamespace
 from DBApps.Writers.CSVWriter import CSVWriter
 from DBApps.readyWorks import GetReadyWorks, GetReadyWorksParser
 

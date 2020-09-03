@@ -1,6 +1,6 @@
 /.pytest_cache/
 /.settings/
 /dist/
-/build/
+/build/*
 /*egg-info/
 /venv/

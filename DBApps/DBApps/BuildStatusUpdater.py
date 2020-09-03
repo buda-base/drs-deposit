@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from typing import Tuple, Any, Union
 
-from DBApps.DbAppParser import DbArgNamespace, str2date, DbAppParser, mustExistDirectory
+from DBAppParser import DbArgNamespace, str2date, DbAppParser, mustExistDirectory
 from DBApps.DbApp import DbApp
 
 
@@ -30,7 +30,7 @@ class UpdateBuildParser(DbAppParser):
         Constructor. Sets up the arguments
         """
         super().__init__(description, usage)
-        self._parser.add_argument("-d", "--delete", action="store_true")
+        self._parser.add_argument("-D", "--delete", action="store_true")
         self._parser.add_argument("buildPath", help='Folder containing batch.xml and objects', type=mustExistDirectory)
         self._parser.add_argument("result", help='String representing the result')
         self._parser.add_argument("buildDate", nargs='?', help='build date. Defaults to time this call was made.',
@@ -95,8 +95,8 @@ class BuildStatusUpdater(DbApp):
 
                     u_cursor.callproc('UpdateBatchBuild', (
                         volDir, build_path, self._options.buildDate, self._options.result, vol_files, vol_size))
-            else:
-                u_cursor.callproc('DeleteBatchBuild', (volDir, build_path))
+                else:
+                    u_cursor.callproc('DeleteBatchBuild', (volDir, build_path))
         except Exception:
             import sys
             exc = sys.exc_info()
