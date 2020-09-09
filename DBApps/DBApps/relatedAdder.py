@@ -1,6 +1,6 @@
 import csv
 import sys
-from DBApps.DbAppParser import DbAppParser, DbArgNamespace, mustExistFile
+from DBAppParser import DbAppParser, DbArgNamespace, mustExistFile
 from DBApps.DbApp import DbApp
 from DBApps.Writers.progressTimer import ProgressTimer
 

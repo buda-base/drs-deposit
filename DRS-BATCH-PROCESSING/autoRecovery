@@ -36,7 +36,13 @@ cut -f2 -d'|' $ERR_BATCH_USER_PAIRS > $ERR_BATCHES
 
 cat $ERR_BATCH_USER_PAIRS
 cat $ERR_BATCHES
-read -p 'that was err batch user pairs'  frelm
 
+read -p 'that was err batch user pairs. Retry, or delete [D to delete]'  delFlag
+if [[ $delFlag == "D" ]]  ; then
+    delFlag=" -D "
+else
+    delFlag=""
+fi
 ## Danger_ assumes BUILD_LIST_SPEC is quoted. The unglobbed version needs to be passed.
-autoRecoveryCore  $ERR_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
+autoRecoveryCore  $delFlag  $ERR_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
+

@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 # Undo a failed batchs change to batch.xml.wait
+#
+# Intended to be run on a DRS dropbox host
 DEFAULT_BATCH_DIR_PATTERN="batchW*"
 BATCH_DIR_PATTERN=$DEFAULT_BATCH_DIR_PATTERN
 BATCH_XML=batch.xml

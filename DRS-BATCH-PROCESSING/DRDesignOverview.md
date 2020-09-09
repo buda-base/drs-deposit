@@ -82,13 +82,13 @@ As a rule, they create the parent object if it does not exist. These routines on
 * `GetReadyVolumes` Build the list of volumes which are ready to batch build. The output structure reflects the needs of the shell script which builds the batches, and marks a Volume as `Queued` so that subsequent calls return different results.
 ##### State change
 These routines change the state of the database to reflect batch building and DRS deposit. Generally, they are accessed through python modules which the batch building process calls.
-* `UpdateBatchBuild` updates the batch build table, and adds build information (such as file count and total size) for each volume. The data is calculated by the Python module `updateBuildStatus`
+* `UpdateBatchBuild` updates the batch build table, and adds build information (such as file count and total size) for each volume. The data is calculated by the Python module `update_build_status`
 * `AddDRS` Adds a record to the `DRS` table, which records the deposit information for a volume.
 
 ### Python modules
 These Python modules are the interface into the Database
 * `getReadies` Gets the next _n_ batches to build
-* `updateBuildStatus` this is called after a batch has been built. It calculates some values, and passes the result to the database (`UpdateBatchBuild`)
+* `update_build_status` this is called after a batch has been built. It calculates some values, and passes the result to the database (`UpdateBatchBuild`)
 * `DRSUpdate` updates the deposit records in the database. Usually called against an incremental list of the "Current deposited  volumes.:"
 *
 ### Shell scripts

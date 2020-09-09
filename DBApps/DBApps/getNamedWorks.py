@@ -119,5 +119,5 @@ def parseByNameArgs(argNamespace: GetReadyWorksArgs) -> None:
 
 
 if __name__ == '__main__':
-    #  updateBuildStatus()
+    #  update_build_status()
     getNamedWorks()

@@ -6,7 +6,7 @@ Get Ready Related works class
 import sys
 from abc import ABC
 # usr
-from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
+from DBAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
 from DBApps.DbApp import DbApp
 
 

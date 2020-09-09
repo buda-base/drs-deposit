@@ -4,8 +4,9 @@ DbApp class to get ready works
 """
 import sys
 
+
 from DBApps.DbApp import DbApp
-from DBApps.DbAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
+from DBAppParser import DbAppParser, DbArgNamespace, writableExpandoFile
 
 
 class GetReadyWorksParser(DbAppParser):
