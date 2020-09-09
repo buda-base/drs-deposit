@@ -35,7 +35,8 @@ BuildDeepDeleteList.awk
 BuildDeepDeleteList.sh
 BuildRecoveryList.awk
 BuildRecoveryList.sh
-CountFilesInBatches.awk
+FindUploadableBatchPaths.sh
+FixUnwritableRemotePath.sh
 GetCumBuiltFileCounts.sh
 deleteAlreadyDepositedSFTP.sh
 drsttl-0.1.0.jar
@@ -50,12 +51,11 @@ tojsondimensions.py
 saxonhe-9.4.0.7.jar
 #
 # lowest level batch builders
+makeOneDrs.sh
 make-drs-batch.sh
 make-drs-outline.sh
 make-drs-printmaster.sh
-# callers of lowest level batchbuilders
-makeOneDrs.sh
-makeOneFtp.sh
+# callers of lowest level batchbuildersmakeOneFtp.sh
 makeOneOutline.sh
 makeOnePrintMaster.sh
 makeOneCore.sh
@@ -75,6 +75,7 @@ SetBBLevel.sh
 splitWorks.sh
 setupErrorLog.sh
 splitWorks.sh
+transferBatch.sh
 YOW
 # Unused files.
 # diag  countBatchesByTime.sh

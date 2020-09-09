@@ -44,7 +44,7 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 
 	    # Get all the descriptors.xml in this patch and replace them
 	    # Find the parents of descriptor.xml
-	    getAllDesc = "find " srcDir " -type d -maxdepth 1 -mindepth 1";
+	    getAllDesc = "find " srcDir " -maxdepth 1 -mindepth 1 -type d  ";
 #  print "getAllDesc :" getAllDesc ;
 	    while ( ( getAllDesc | getline volume) > 0){
 		volDir=volume
