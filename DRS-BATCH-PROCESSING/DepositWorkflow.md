@@ -12,7 +12,12 @@ You can use them to update files in your `~/bin` folder with current GIT objects
 #### Environment variables:
 **You need these set for anything to work**
 `export PR=/Volumes/DRS_Staging/DRS/prod`  This is the parent of all batch builds.
+
 `source setBBLevel.sh` (to set `$BB_LEVEL`)
+
+#### Programming resources
+Install `bdrc-DBApps>=1.0.0` from PyPI. On Macs, you probably want to do this in a `venv` environment.
+
 ### Temporary assumptions, to change as uploads continue
 Any work to deposit does not require links to it - that means (for now)
 no print masters or outlines. This is taken care of in the drs-deposit/output/NoPrintNoOutline.csv
@@ -27,18 +32,6 @@ After the recovered batches are built, go into WebAdmin and download a csv of th
 `cd $DEPOSIT_ROOT`
 mkdir Something. This can be anything meaningful. It could be a yyyymmdd, anything. Best to put it on the DRS_Staging
 share on Druk
-### Capture all the builds
-`RemoveDuplicateBuilds.sh` to generate a canonical list of all builds (from `$PR/batchBuilds/`)
-
-Ex:
-
-```bash
-j@D:drs-doc$ RemoveDuplicateVolumes.sh | tee uniqueVolumes
-```
-This writes a list of the volumes in the repository (Druk:/Volumes/DRS_Staging/prod/), sorts them, and removes
-any duplicate builds. In the above example, it writes its output to a file `uniqueVolumes` The next processing
-step uses that file.
-
 
 ### Get results from DRS WebAdmin
 An earlier version of the workflow used the existence of LOADREPORTS on disk to determine which works had been uploaded. This workflow uses the output of a DRS WebAdmin search. Details to follow.
@@ -49,30 +42,8 @@ An earlier version of the workflow used the existence of LOADREPORTS on disk to 
 _Getting the 'Deposited in Batch with Name' might be helpful, but is not required_
 Select these columns, and download the report into `/Volumes/DRS_Staging/DRS/KhyungUploads/$BB_LEVEL/BDRCCumulativeProdDeposits.csv`
 
-
-This next section is obsolete because we're using WebAdmin to download all successful results, instead of going after 
-just the work that was done on the prior run.
-<s>
-#### Download yesterdays LOADREPORTs
-In the directory you made the on the last day you uploaded,  look for the file _sourceFileList_.UploadTrack.lst. It contains a pipe separated list of users and the sources of the batches they deposited. A typical run is
-```
-drs2_tbrcftp|20180405DepositList1.txt
-drs2_tbrcftp1|20180405DepositList2.txt
-drs2_tbrcftp2|20180405DepositList3.txt
-drs2_tbrcftp3|20180405DepositList4.txt
-drs2_tbrcftp|20180405DepositList1.txt
-drs2_tbrcftp|20180405DepositList1.txt
-```
-Each line decomposes into an argument list for pollDRS.sh. Use `ProcessTrackFile.sh` to turn this into a download script using `pollDRS.sh`
-### Process the list
-Run the command `$CODE/FindUploadableBatchPaths.sh` and tee or pipe the output. (Note the process prints
-diagnostics - these are not reflected in the output)
-
-**the script which used to do this,** `buildSendList` **is DEPRECATED**
-</s>
-This process creates a number of work files ending in `.lst` These are optional to keep
 ### Calculate how many of these you can deposit
-The output of `FindUploadableBatchPaths.sh` is a pipe separated set of lines, like
+Run `FindUploadableBatchPaths.sh | tee resultsFile` writes a pipe separated set of lines into `resultsFile`, like
 
 `/Volumes/DRS_Staging/DRS/prod/batchBuilds/batchW10954-1-38|1093|249236`
 
