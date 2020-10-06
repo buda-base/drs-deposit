@@ -4,8 +4,10 @@
 #
 # Assume a mailerrs.txt
 
-export ME=$(basename $0)
-export ME_DIR=$(dirname $0)
+# shellcheck disable=SC2155
+export ME=$(basename "$0")
+export ME_DIR=$(dirname "$0")
+# shellcheck disable=SC1090
 . ~/bin/setupErrorLog.sh
 
 ## HACK ALERT: This var is the same as in deleteAlreadyDepositedSFTP.sh
@@ -24,22 +26,26 @@ UPLOAD_TRACK=${1?"usage: $ME uploadTrackingFileName BuildListSpec"}
 # get the user and the batch name from the mail errors, look up the build list
 # in the upload track.
 # get the batch path from the build list file
-while IFS='|'  read -a aLine ; do
+while IFS='|'  read -ra aLine ; do
 
   user=${aLine[0]}
   batchName=${aLine[1]}
 
 # -w because sometimes users are subsets of other users
-  buildList=$(grep -w ${user} "$UPLOAD_TRACK" | cut -f2 -d'|' | sort -u)
+  buildList=$(grep -w "${user}" "$UPLOAD_TRACK" | cut -f2 -d'|' | sort -u)
 
   batchPath=$(grep "${batchName}" "$buildList" | cut -f2 -d'|' | sort -u)
 
   # echo ${user}':'${batchName}':'${buildList}':'${batchPath}':' len is ${#aLine[@]}
 
-  printf "Updating DB for ${batchPath}.."
+  printf "Updating DB for %s .." "${batchPath}"
   updateBuildStatus -d prod:~/.drsBatch.config "$batchPath" FAIL
   printf "removing path...."
-  rm -rf "$batchPath"
+  if [ -d "$batchPath " ]  ; then
+    rm -rf "$batchPath"
+  else
+    printf " Path %s not found\n" "$batchPath"
+  fi
   printf "done\n"
 done < <(parseMail.awk $MAIL_TXT | grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -u -k1 -t'|')
 

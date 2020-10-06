@@ -20,7 +20,6 @@ USAGE
 
 echo "errs: " "$1"
 echo "Build list spec: "  "$2"
-read -p blp
 
 # Get the unique users
 declare -a uu

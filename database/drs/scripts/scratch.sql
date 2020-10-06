@@ -173,7 +173,8 @@ select * from Outlines where create_time > '2018-05-14' order by create_time asc
 delete from Works where workId > 13774 ; -- order by Works.create_time asc;
 /* -----------------   get all the duplicate works   ------------------------------- */
 
-select w0.workId, w0.workName, w0.HOLLIS from Works w0 inner join 
+select w0.workId, w0.workName, w0.HOLLIS from Works w0 inner join
+
 (
 select workId, workName, HOLLIS 
 from Works 

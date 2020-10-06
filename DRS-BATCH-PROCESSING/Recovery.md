@@ -234,7 +234,17 @@ where:
 ```
 The scripts you generated in the previous step reset the batches for rebuild. The DRS ingestion process restarts immediately
 
-** IMPORTANT DO NOT POLL FOR RESULTS RIGHT AWAY ** This can interfere with the DRS process.
+** IMPORTANT DO NOT POLL FOR RESULTS RIGHT AWAY ** This can interfere with the DRS process. It requires
+about two minutes to process each error, so go away and do something else for the required time.
 
-It requires about two minutes to process each error, so go away and do something else for the required time.
+## When recovery is not possible
+Sometimes, works fail ingest repeatedly. You may want t forget they've been built, and rebuild them from scratch.
+This is a two step process:
+
+1. Removing the deposited batches from the DRS dropbox, and removing the built batches from the build file folder. `autoRecovery` does this when you
+answer 'yes' to the `Retry or Delete` prompt.
+2. Removing the build status from the DRS database (BDRC database which tracks DRS builds - not affiliated with the
+DRS dropbox).  `delete-batches.sh` was written to handle this case. **Syntax:** `delete-batches.sh <upload-track-file> <build-list-spec>`
+This step erases all the records of the volumes in the batch build folder from every having been built, so that it is
+eligible for building again when the `getReadyWorks` script is run again.
 
