@@ -65,9 +65,9 @@ in the third pipe field (`249236` in the example above)
 ### Run ftpMultiple.sh
 **Helpful to run this in a tmux window, so you can scan the status remotely.**
 You won't get email notifications of success, only failure.
-**DONT PEEK using FileZilla or sftp** There's a strong suspicion that opening an 
-SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
 **DONT PEEK** There's a strong suspicion that opening an SFTP UI onto the servers degrades its performance and generates lots of spurious errors.
+Instead, use [the batch update monitor on webadmin](https://drs2.lib.harvard.edu:9400/drs2_webadmin/loadqreport) to peruse the progress.
+
 ## Update DRS Database
 ### Get recently deposited works
 The DRS deposit platform maintains a database of updated objects. Various steps in the batch building process call DBApps commands which update statuses.

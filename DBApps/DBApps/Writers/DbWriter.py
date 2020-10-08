@@ -42,16 +42,15 @@ class DbWriter(ListWriter):
         Requires self.oConfig.sproc to exist
         """
 
-        hadBarf = False
+        had_barf = False
         # Load the db configuration from the file given in
         #
 
         cfg = config.DBConfig(self.dbName, self.dbConfigFile)
         # cfg = dbConfig.DBConfig('dev', self.oConfig.drsDbConfig)
-        dbConnection = self.start_connect(cfg)
+        db_connection = self.start_connect(cfg)
 
-        with dbConnection:
-            curs = dbConnection.cursor()
+        with db_connection.cursor() as curs:
             total = len(srcList)
             calls = 0
             etnow = time.perf_counter()
@@ -80,22 +79,19 @@ class DbWriter(ListWriter):
                                                   aVal[1].strip()))
                         pass
                     except Exception:
-                        hadBarf = True
+                        had_barf = True
                         exc_type, exc_obj, exc_tb = sys.exc_info()
                         print(exc_type)
-                        if dbConnection is not None:
-                            dbConnection.rollback()
+                        if db_connection is not None:
+                            db_connection.rollback()
                         raise
 
             finally:
-                if not hadBarf:
-                    dbConnection.commit()
+                if not had_barf:
+                    db_connection.commit()
                 if curs is not None:
                     curs.close()
-
-    def test(self):
-        cfg = config.DbConfig(self.dbName, self.dbConfigFile)
-        self.start_connect(cfg)
+                db_connection.close()
 
     @staticmethod
     def start_connect(cfg):

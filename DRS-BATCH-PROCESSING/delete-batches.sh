@@ -41,7 +41,7 @@ while IFS='|'  read -ra aLine ; do
   printf "Updating DB for %s .." "${batchPath}"
   updateBuildStatus -d prod:~/.drsBatch.config "$batchPath" FAIL
   printf "removing path...."
-  if [ -d "$batchPath " ]  ; then
+  if [ -d "$batchPath" ]  ; then
     rm -rf "$batchPath"
   else
     printf " Path %s not found\n" "$batchPath"
