@@ -40,7 +40,6 @@ FixUnwritableRemotePath.sh
 GetCumBuiltFileCounts.sh
 deleteAlreadyDepositedSFTP.sh
 drsttl-0.1.0.jar
-getErrorBuildStatus
 # deposit scripts
 ftpMultiple.sh
 ftpScript.sh
@@ -78,6 +77,7 @@ splitWorks.sh
 transferBatch.sh
 YOW
 # Unused files.
+# diag  getErrorBuildStatus
 # diag  countBatchesByTime.sh
 # diag findNewerBatches.sh
 # diag fixOneBatch.sh

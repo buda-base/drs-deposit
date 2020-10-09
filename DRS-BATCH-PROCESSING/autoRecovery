@@ -16,10 +16,13 @@ MAIL_TXT=mailerrs.txt
 #
 # ${ME} creates these files
 MAIL_DAT=mailerrs.dat
+
 UPLOAD_TRACK=${1?"usage: $ME uploadTrackingFileName BuildListSpec"}
 BUILD_LIST_SPEC="${2-'buildList*.txt'}"
-ERR_BATCH_USER_PAIRS=errbatchUsers.dat
-export ERR_BATCHES=dontBuildBatches.txt
+RETRY_BATCH_USER_PAIRS=errbatchUsers.dat
+DUPL_BATCH_USER_PAIRS=duplBatchUsers.dat
+RETRY_ERR_BATCHES=dontBuildBatches.txt
+DUPL_ERR_BATCHES=duplBatch.txt
 
 echo "using $BUILD_LIST_SPEC for build list"
 
@@ -29,20 +32,36 @@ runningDepositStatus "$UPLOAD_TRACK" 2>&1 | tee -a statusLog
 
 cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
 # get the user and the batch
-grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $ERR_BATCH_USER_PAIRS
+
+
+grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $RETRY_BATCH_USER_PAIRS
 
 # Save the batches only to a well known place
-cut -f2 -d'|' $ERR_BATCH_USER_PAIRS > $ERR_BATCHES
+cut -f2 -d'|' $RETRY_BATCH_USER_PAIRS > $RETRY_ERR_BATCHES
 
-cat $ERR_BATCH_USER_PAIRS
-cat $ERR_BATCHES
+cat $RETRY_BATCH_USER_PAIRS
+cat $RETRY_ERR_BATCHES
 
-read -p 'that was err batch user pairs. Retry, or delete [D to delete]'  delFlag
+read -p 'that was retry  user pairs. Retry, or delete [D to delete]'  delFlag
 if [[ $delFlag == "D" ]]  ; then
     delFlag=" -D "
 else
     delFlag=""
 fi
 ## Danger_ assumes BUILD_LIST_SPEC is quoted. The unglobbed version needs to be passed.
-autoRecoveryCore  $delFlag  $ERR_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
+autoRecoveryCore  $delFlag  $RETRY_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
+#
+# Step 2 - remove any ones where the duplicate OSN was found
+
+grep  "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > "$DUPL_BATCH_USER_PAIRS"
+
+# Save the batches only to a well known place
+cut -f2 -d'|' $DUPL_BATCH_USER_PAIRS > $DUPL_ERR_BATCHES
+
+cat $DUPL_BATCH_USER_PAIRS
+cat $DUPL_ERR_BATCHES
+
+read -p 'These will be deleted: Proceed?'  delFlag
+
+autoRecoveryCore  -D  $DUPL_ERR_BATCHES  \'$BUILD_LIST_SPEC\'
 

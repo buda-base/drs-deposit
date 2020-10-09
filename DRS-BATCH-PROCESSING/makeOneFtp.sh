@@ -31,6 +31,8 @@ FTPSCRIPT='ftpScript.sh'
 ME=$(basename "$0" )
 
 if (( $# <  4)) || (( $# > 6)) ; then
+  echo nargs: $#
+  echo args  "$@"
 Usage
 exit 1;
 fi
@@ -60,6 +62,12 @@ remoteUserName=${4?${ME}:error: remote User Name not given}
 remoteHost=$5
 
 # Invoke the upload in the background
+
+
+# jimk: with parallel, we dont need this overhead
+${FTPSCRIPT} $srcListPath $remoteUserName $remoteHost
+
+exit
 
 ${FTPSCRIPT} $srcListPath $remoteUserName $remoteHost &
 

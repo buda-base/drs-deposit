@@ -3,8 +3,11 @@
 # Build scripts to monitor ingestion process
 #
 # Assumes errBatches, a file of drsUser|batch dir commands
+#
+#  SEVERE WARNING ALERT - Don't run this until you know all the affected
+# batches have finished loading!.
 
-ERR_BATCHES=errbatches.dat
+ERR_BATCHES=${1:-"errbatches.dat"}
 
 [ ! -f $ERR_BATCHES ] && { echo "$ERR_BATCHES not found." ; exit 1; }
 

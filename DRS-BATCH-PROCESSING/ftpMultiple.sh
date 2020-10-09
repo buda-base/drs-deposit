@@ -75,7 +75,7 @@ USAGE
 function die() {
 	rc=$1
 	shift 1
-	echo $@
+	echo "$@"
 	exit $rc
 }
 
@@ -96,24 +96,41 @@ function die() {
 #		the outer scope's $wl1 and $wl2 indices (the limits of the)
 # 
 function splitWorks() {
-	declare worksDir=$(dirname $worksListPath) \
-			worksFileName=$(basename $worksListPath)
+	worksDir=$(dirname "$worksListPath")
+	worksFileName=$(basename "$worksListPath")
 
 	while read aUser ; do
 		sendingUsers+=($aUser)
-	done < $userListPath
+	done < "$userListPath"
 
 	
-	pushd ${worksDir}
+	pushd "${worksDir}" || return
 	wl1=1
 	wl2=${#sendingUsers[*]}
 
-	splitWorks.sh -f ${wl2} $worksFileName
+	splitWorks.sh -f "${wl2}" "$worksFileName"
 
-	popd
+	popd || return
 }
 
+function kernel() {
+  	curFtpUser=${sendingUsers[$((ui++))]:-$ftpUser}
+	printf "%s|%s\n" $curFtpUser  "${worksListPath}${1}.txt" >> ${worksListPath}.UploadTrack.lst
+	makeOneFtp.sh ${worksListPath}${1}.txt $UNDERWAY_DIR $RESULTS_DIR  $curFtpUser $remoteHost
 
+}
+
+# export all vars for parallel
+export -f kernel
+export 	sendingUsers=()
+export ftpUser
+export worksListPath
+export UNDERWAY_DIR
+export RESULTS_DIR
+export remoteHost
+export ui
+#
+#
 
 #
 # h   elp
@@ -138,12 +155,13 @@ while getopts hu:U:w:r: opt ; do
 			;;
 		r)
 			remoteHost=$OPTARG
-			echo "$opt triggered arg is $OPTARG" 
+#			echo "$opt triggered arg is $OPTARG"
 			;;
 		h)
 			usage
 			exit 0
 			;;
+	  *)
 	esac
 done
 shift $((OPTIND-1))
@@ -160,6 +178,8 @@ shift $((OPTIND-1))
 worksListPath=${worksListPath:?${ME}:usage:worksListPath is empty, or -w flag not given}
 
 
+set -v
+set -x
 
 if [ "${userListPath:-${NO_VALUE}}" != "$NO_VALUE" ] ; then
 # splitWorks fills this in
@@ -189,6 +209,14 @@ fi
 ui=$((0))
 export ui
 
+# Try parallel
+
+	# Capture the user and the file they uploaded. We need this in reports
+
+source $(which env_parallel.bash)
+seq "$wl1" "$wl2" | env_parallel -j 4 --delay 3 --joblog="drs.$(date +%H-%M-%S).para.log" --results outdir 'kernel {}'
+
+exit
 for x in $(seq $wl1 $wl2 ); do
 	#
 	# do_real_work
