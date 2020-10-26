@@ -15,7 +15,7 @@ long_description='#BDRC DBApps  ' \
 
 setup(
     name='bdrc-DBApps',
-    version='1.00.02',
+    version='1.00.04',
     # packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
     #           'DBApps.SourceProcessors'],
     packages=find_packages(),
@@ -42,7 +42,7 @@ setup(
             'getReadyWorks = DBApps.getReadyWorks:getReadyWorks',
             'getNamedWorks = DBApps.getNamedWorks:getNamedWorks',
             'splitWorks = DBApps.splitWorks:splitWorks',
-            'update_build_status = DBApps.update_build_status:update_build_status'
+            'update_build_status = DBApps.updateBuildStatus:update_build_status'
         ]
     }
 )
