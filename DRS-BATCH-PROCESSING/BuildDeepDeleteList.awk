@@ -66,7 +66,8 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 	    print "cd .." >> filePath;
 	    print "rmdir "batchNum >> filePath;
 
-	    print "quit" >> filePath;
+       # jimk 2020.10.16 - dont quit - let the caller manage the connection
+	    # print "quit" >> filePath;
 
 	    close(filePath);
 	}

@@ -18,8 +18,7 @@ cat << USAGE
 USAGE
 }
 
-echo "errs: " "$1"
-echo "Build list spec: "  "$2"
+
 
 # Get the unique users
 declare -a uu
@@ -29,9 +28,7 @@ while getopts Dh opt ; do
 	case $opt in
 		D)
 			dArg=1 ;
-			read -p "You are going to delete uploaded batches. Are you sure? (y|n, default is n)" dAns
-			dAns=$(echo $dAns | tr a-z A-Z)
-			[ $dAns != "Y" ] && { exit 0; }
+
 			;;
 		h)
 		    Usage ;
@@ -41,7 +38,15 @@ while getopts Dh opt ; do
 done
 
 shift $((OPTIND-1))
+echo "errs: " "$1"
+echo "Build list spec: "  "$2"
 
+# Confirm deletion
+if [[ -n $dArg ]] ; then
+		read -r -p "You are going to delete uploaded batches. Are you sure? (y|n, default is n)" dAns
+			dAns=$(echo "$dAns" | tr [:lower:] [:upper:])
+			[ "$dAns" != "Y" ] && { exit 0; }
+fi
 dFlag=${dArg:-0}
 errPairs=${1?${ME}:${FATAL_TXT}:error pair file not given.}
 buildListSpec=${2?${ME}:${FATAL_TXT}:build list spec file not given.}
@@ -50,11 +55,10 @@ buildListSpec=${2?${ME}:${FATAL_TXT}:build list spec file not given.}
 
 uu=($(cut -f1 -d'|' ${errPairs}  | sort -u))
 
-#set -v
-#set -x
 
 #
 # send each users batches to their own script
+
 for drsUser in "${uu[@]}" ; do
     rb=${drsUser}recovBatches
     grep -w $drsUser $errPairs | cut -f2 -d'|' > $rb

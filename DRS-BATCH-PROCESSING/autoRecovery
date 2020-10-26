@@ -28,40 +28,37 @@ echo "using $BUILD_LIST_SPEC for build list"
 
 #
 # First get some stats before we try to repair
-runningDepositStatus "$UPLOAD_TRACK" 2>&1 | tee -a statusLog
+# This can mess up processing if any are in process
+# runningDepositStatus "$UPLOAD_TRACK" 2>&1 | tee -a statusLog
 
-cat $MAIL_TXT | parseMail.awk > $MAIL_DAT
+cat $MAIL_TXT | parseMail.awk >$MAIL_DAT
 # get the user and the batch
 
-
-grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > $RETRY_BATCH_USER_PAIRS
+grep -v "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' >$RETRY_BATCH_USER_PAIRS
 
 # Save the batches only to a well known place
-cut -f2 -d'|' $RETRY_BATCH_USER_PAIRS > $RETRY_ERR_BATCHES
+cut -f2 -d'|' $RETRY_BATCH_USER_PAIRS >$RETRY_ERR_BATCHES
 
 cat $RETRY_BATCH_USER_PAIRS
-cat $RETRY_ERR_BATCHES
+#cat $RETRY_ERR_BATCHES
 
-read -p 'that was retry  user pairs. Retry, or delete [D to delete]'  delFlag
-if [[ $delFlag == "D" ]]  ; then
-    delFlag=" -D "
+read -p 'that was retry  user pairs. Retry, or delete [D to delete]' delFlag
+if [[ $delFlag == "D" ]]; then
+  delFlag=" -D "
 else
-    delFlag=""
+  delFlag=""
 fi
 ## Danger_ assumes BUILD_LIST_SPEC is quoted. The unglobbed version needs to be passed.
-autoRecoveryCore  $delFlag  $RETRY_BATCH_USER_PAIRS  \'$BUILD_LIST_SPEC\'
+autoRecoveryCore $delFlag $RETRY_BATCH_USER_PAIRS \'$BUILD_LIST_SPEC\'
 #
 # Step 2 - remove any ones where the duplicate OSN was found
 
-grep  "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' > "$DUPL_BATCH_USER_PAIRS"
+nDups=$(($(grep -c "${targetErrRE}" $MAIL_DAT )))
 
-# Save the batches only to a well known place
-cut -f2 -d'|' $DUPL_BATCH_USER_PAIRS > $DUPL_ERR_BATCHES
+if [[ $((nDups)) -gt 0 ]]; then
+  grep "${targetErrRE}" $MAIL_DAT | cut -f3,4 -d'|' | sort -k1 -t'|' >"$DUPL_BATCH_USER_PAIRS"
+  cat $DUPL_BATCH_USER_PAIRS
+  read -p 'These will be deleted: Proceed?' delFlag
 
-cat $DUPL_BATCH_USER_PAIRS
-cat $DUPL_ERR_BATCHES
-
-read -p 'These will be deleted: Proceed?'  delFlag
-
-autoRecoveryCore  -D  $DUPL_ERR_BATCHES  \'$BUILD_LIST_SPEC\'
-
+  autoRecoveryCore -D $DUPL_BATCH_USER_PAIRS \'$BUILD_LIST_SPEC\'
+fi

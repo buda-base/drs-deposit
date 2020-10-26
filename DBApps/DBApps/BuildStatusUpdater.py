@@ -82,12 +82,13 @@ class BuildStatusUpdater(DbApp):
         err_vol_persist = ""
         try:
             build_path = self._options.buildPath
-            for volDir in volumes_for_batch(build_path):
-                err_vol_persist = volDir
-                if not self._options.delete:
+            if self._options.delete:
+                u_cursor.callproc('DeleteBatchBuild', ( build_path,))
+            else:
+                for volDir in volumes_for_batch(build_path):
+                    err_vol_persist = volDir
                     full_build_path = str(Path(build_path).resolve())
                     vol_path: Path = Path(full_build_path, volDir)
-
                     vol_files, vol_size = self.get_tree_values(str(vol_path))
 
                     u_cursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{build_path}") ;')
@@ -95,8 +96,6 @@ class BuildStatusUpdater(DbApp):
 
                     u_cursor.callproc('UpdateBatchBuild', (
                         volDir, build_path, self._options.buildDate, self._options.result, vol_files, vol_size))
-                else:
-                    u_cursor.callproc('DeleteBatchBuild', (volDir, build_path))
         except Exception:
             import sys
             exc = sys.exc_info()

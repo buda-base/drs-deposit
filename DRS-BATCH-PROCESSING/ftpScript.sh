@@ -85,6 +85,7 @@ buildSFTPBatch() {
   # Note the caller is responsible for creating and removing the wait file
   # jimk:  take 2. Don't quit until the whole run is built, not each folder in the run.
   cat <<EFTP >> "$SFTP_CMD_FILE"
+  cd /incoming
 	-rmdir $_targetPath
 	mkdir $_targetPath
 	put -r -P $_sourcePath
@@ -134,10 +135,10 @@ done <"$targetList"
 # Maybe wont fail so often if we do all our uploads then quit
 printf "quit\n" >>"${SFTP_CMD_FILE}"
 
-cat "${SFTP_CMD_FILE}"
-echo "${SFTP_CMD_FILE}"
+# cat "${SFTP_CMD_FILE}"
+# echo "${SFTP_CMD_FILE}"
 
-# sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${drsDropHost}:incoming/ 2>&1 | tee -a $ERR_LOG
+ sftp -oLogLevel=VERBOSE -b ${SFTP_CMD_FILE} -i $ME_PPK ${drsDropUser}@${drsDropHost}:incoming/ 2>&1 | tee -a $ERR_LOG
 
 rc=$?
 

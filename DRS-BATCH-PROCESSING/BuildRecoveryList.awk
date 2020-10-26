@@ -65,7 +65,8 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 	    ftpUpCmd = sprintf("put %s/%s", srcDir,BATCH_XML);
 
 	    print  ftpUpCmd >> filePath;
-	    print "quit" >> filePath;
+	    # jimk 2020.10.16 - dont quit - let the caller manage the connection
+	    # print "quit" >> filePath;
 
 	    close(filePath);
 	}

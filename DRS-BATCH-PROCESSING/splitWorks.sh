@@ -92,19 +92,19 @@ esac
 
 
 #
-# This is BSD split. If we move to Ubuntu, look up GNU
+# GNU split
 
-split -l $linesPerFile $sourceFile $worksFn # -a $suffixLen 
+split -l $linesPerFile --numeric-suffixes=1  $sourceFile $worksFn # -a $suffixLen
 
 rc=$(($!))
 
- [ ! $rc ]  && { echo "${ME}:error: ${rc}" ; exit $rc ; }
+[ ! $rc ]  && { echo "${ME}:error: ${rc}" ; exit $rc ; }
 
 i=$((0))
 for file in ${worksFn}*
 do
     # ${file/%.*/mumble} means replace the pattern that starts at end of string
-    mv "$file" "${file/%.*/$((++i)).txt}"
+  mv "$file" "${file/%.*/$((++i)).txt}"
 done
 
 # while IFS=',' read -ra  workLine ; do

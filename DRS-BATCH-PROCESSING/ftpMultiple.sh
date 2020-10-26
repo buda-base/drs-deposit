@@ -114,15 +114,16 @@ function splitWorks() {
 }
 
 function kernel() {
-  	curFtpUser=${sendingUsers[$((ui++))]:-$ftpUser}
+  insource=${worksListPath}${1}.txt
+  curFtpUser="$2"
 	printf "%s|%s\n" $curFtpUser  "${worksListPath}${1}.txt" >> ${worksListPath}.UploadTrack.lst
-	makeOneFtp.sh ${worksListPath}${1}.txt $UNDERWAY_DIR $RESULTS_DIR  $curFtpUser $remoteHost
+	makeOneFtp.sh "$insource" "$curFtpUser" $remoteHost
 
 }
 
 # export all vars for parallel
 export -f kernel
-export 	sendingUsers=()
+export 	sendingUsers
 export ftpUser
 export worksListPath
 export UNDERWAY_DIR
@@ -178,9 +179,6 @@ shift $((OPTIND-1))
 worksListPath=${worksListPath:?${ME}:usage:worksListPath is empty, or -w flag not given}
 
 
-set -v
-set -x
-
 if [ "${userListPath:-${NO_VALUE}}" != "$NO_VALUE" ] ; then
 # splitWorks fills this in
 	sendingUsers=()
@@ -214,7 +212,8 @@ export ui
 	# Capture the user and the file they uploaded. We need this in reports
 
 source $(which env_parallel.bash)
-seq "$wl1" "$wl2" | env_parallel -j 4 --delay 3 --joblog="drs.$(date +%H-%M-%S).para.log" --results outdir 'kernel {}'
+# seq "$wl1" "$wl2" | env_parallel  --link --dryrun -j 4 --delay 3 --joblog="drs.$(date +%H-%M-%S).para.log" --results outdir 'kernel {}'
+ env_parallel  --jobs 4 --delay 3 --joblog="drs.$(date +%H-%M-%S).para.log" --results runout-$(date +%H-%M-%S) 'kernel {1} {2}' :::+ $(seq $wl1 $wl2) :::+ "${sendingUsers[@]::${#sendingUsers[@]}}"
 
 exit
 for x in $(seq $wl1 $wl2 ); do

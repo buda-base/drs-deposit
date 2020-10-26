@@ -26,6 +26,7 @@
 
 #
 ME=$(basename "$0")
+# shellcheck disable=SC2155
 export JUSTNOW=$(date +%H-%M-%S)
 
 [ -z "$BB_LEVEL" ] && {
@@ -33,15 +34,36 @@ export JUSTNOW=$(date +%H-%M-%S)
   exit 1
 }
 
+
+#
+# h   elp
+# u   serList
+# w   orksListPath
+
+export ignorePath=
+while getopts v: opt ; do
+	case $opt in
+		v)
+			ignorePath=$OPTARG;
+			[ -f "$ignorePath" ] || {
+			  echo "${ME}:error:List of batches to ignore  \'$ignorePath\' must exist but does not" ;
+			  exit 2 ;
+			  }
+			;;
+
+	  *)
+	esac
+done
+shift $((OPTIND-1))
+
 # Filenames
 export DICT=/Volumes/DRS_Staging/DRS/KhyungUploads/${BB_LEVEL}/BDRCCumulativeProdDeposits.csv
 BATCHES_WITH_DEPOSIT=$(mktemp -p . --suffix=.lst batchesWithADeposit-$JUSTNOW-XXX)
 UNIQUE_VOLUMES=$(mktemp -p. --suffix=.lst UNIQUE-VOLUMES-${JUSTNOW}-XXXX)
 UNDEPOSITED_VOLUME_PATHS=$(mktemp -p. --suffix=.lst UNDEPOSITED_VOLUME_PATHS-${JUSTNOW}-XXXX)
 DEPOSITED_VOLUMES=$(mktemp -p . --suffix=.lst volsInDRSDeposit-${JUSTNOW}-XXXX)
-COUNTFILES_AWK=~/bin/CountFilesInBatches.awk
 
->&2 echo $(date)
+>&2  date
 #
 # Get the unique volumes
 #  Thanks SO for clever way to sort by last field:
@@ -51,6 +73,7 @@ COUNTFILES_AWK=~/bin/CountFilesInBatches.awk
 # Sort on the last field, reassemble the full paths.
 # Then, scan each line, printing where the last field is different from tBTW, you should know thathe saved last field.
 # This line may have been causing problems with not finding batchBuilds
+# shellcheck disable=SC2044
 for riji in $(find $PR/batchBuilds -maxdepth 3 -name batch.xml); do find $(dirname $riji) -maxdepth 1 -mindepth 1 -type d; done |
   awk -F'/' '{print $NF,$0}' | sort | cut -f2 -d' ' |
   awk -F/ 'BEGIN {vol="CANTFIND"; rmDups = "foundDuplicateVolumes.lst" } { if ($NF != vol)  { print $0 ; vol = $NF }else {print $0 > rmDups  } } ' \
@@ -109,6 +132,12 @@ fi
 
 
 >&2 echo $(date +%H-%M-%S) $(ls -l "$UNDEPOSITED_VOLUME_PATHS")
+
+if [[ -n $ignorePath ]] ; then
+  tt=$(mktemp)
+  mv  "$UNDEPOSITED_VOLUME_PATHS" $tt
+  grep -vf "$ignorePath" $tt > "$UNDEPOSITED_VOLUME_PATHS"
+fi
 
 # 4. From those undeposited volumes, cat out the first 200, which is usually more than the
 # DRS system can ingest in a day anyway.
