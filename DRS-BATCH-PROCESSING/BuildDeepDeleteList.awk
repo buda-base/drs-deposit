@@ -51,20 +51,30 @@ function BuildSftpBatch(filePath,batchNum,fileWhoseParentsWeFetch)
 		# Strip the parent directories
 		gsub(".*/","",volDir)
 
+        # jimk 2020-10-29: make position independent and failure proof, to
+        # allow restarts
+
 		# Remove each volume's image
-		xx = sprintf("cd %s",volDir);
+		xx = sprintf("-rm /incoming/%s/%s/image/*",batchNum,volDir);
+
 		print xx >> filePath;
-		print "-rm image/*" >> filePath;
-		print "-rmdir image" >> filePath;
-		print "rm descriptor.xml" >> filePath;
-		print "cd .." >> filePath;
-		print "rmdir "volDir >> filePath;
+
+		xx = sprintf("-rmdir /incoming/%s/%s/image",batchNum,volDir);
+        print xx >> filePath;
+
+		xx = sprintf("-rm /incoming/%s/%s/descriptor.xml",batchNum,volDir);
+		print xx  >> filePath;
+
+		xx = sprintf("-rmdir /incoming/%s/%s",batchNum,volDir);
+		print xx >> filePath;
 	    }
 	    close(getAllDesc)
 
-	    print "rm batch.xml.failed" >> filePath;
-	    print "cd .." >> filePath;
-	    print "rmdir "batchNum >> filePath;
+		xx = sprintf("-rm /incoming/%s/batch.xml.failed",batchNum);
+	    print xx >> filePath;
+
+		xx = sprintf("-rmdir /incoming/%s",batchNum);
+	    print xx >> filePath;
 
        # jimk 2020.10.16 - dont quit - let the caller manage the connection
 	    # print "quit" >> filePath;
