@@ -16,19 +16,17 @@ targetErrRE="Object owner supplied name" #  .* already exists for owner code"
 MAIL_TXT=mailerrs.txt
 
 function usage() {
-  printf "$Synopsis:\n"
-  printf "\t$ME [ -f path_list ] [  -m ] \n" \
-  "\twhere\n" \
-  "\t-f path_list is a file containing a list of batch builds to delete" \
-  "\t-m is a flag indicating to parse mailerrs.txt\n" \
-  "\tboth flags can be used"
-  echo "    "
+  printf "%s\n" "Synopsis: $ME [ -f path_list ] [  -m ]" \
+   "    where" \
+  "       -f path_list is a file containing a list of batch builds to delete" \
+  "       -m is a flag indicating to parse mailerrs.txt" \
+  "   both flags can be used"
 }
 function delete_one() {
 
   v_batchPath=${1?"delete_one requires a non-null argument."}
   printf "Updating DB for %s .." "${v_batchPath}"
-  update_build_status -D -d prod:~/.drsBatch.config "$batchPath" FAIL
+  update_build_status -D -d prod:~/.drsBatch.config "$v_batchPath" FAIL
   rc=$?
   if [[ $rc == "0" ]]; then
     printf "removing path...."
@@ -44,7 +42,7 @@ function delete_one() {
 }
 #
 
-while getopts f:m opt; do
+while getopts f:mh opt; do
   # echo "in getopts" $opt $OPTARG
   case $opt in
   f)
@@ -53,7 +51,12 @@ while getopts f:m opt; do
   m)
     mailFlag=1
     ;;
-  *) ;;
+  h)
+    usage
+    ;;
+  *)
+    usage
+    ;;
   esac
 done
 

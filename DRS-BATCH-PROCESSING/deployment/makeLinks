@@ -64,6 +64,7 @@ runDRS.sh
 runOut.sh
 runPm.sh
 #
+CountFilesInBatches.awk
 validate.sh
 parseMail.awk
 ProcessTrackFile.sh
@@ -75,6 +76,7 @@ splitWorks.sh
 setupErrorLog.sh
 splitWorks.sh
 transferBatch.sh
+move-deposited-batches.sh
 YOW
 # Unused files.
 # diag  getErrorBuildStatus

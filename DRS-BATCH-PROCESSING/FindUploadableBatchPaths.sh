@@ -142,9 +142,10 @@ fi
 # 4. From those undeposited volumes, cat out the first 200, which is usually more than the
 # DRS system can ingest in a day anyway.
 #
-head -200  "$UNDEPOSITED_VOLUME_PATHS" | awk '{ \
+head -400  "$UNDEPOSITED_VOLUME_PATHS" | awk '{ \
     cmd = "find "$1" -type f | wc -l" ; \
     cmd | getline thisCount ; \
      close(cmd); \
-     sumCount += thisCount;print $1 "|" thisCount "|" sumCount; \
+     if (int(thisCount) < 9999) { \
+     sumCount += thisCount;print $1 "|" thisCount "|" sumCount; } \
       }'
