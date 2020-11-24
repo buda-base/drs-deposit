@@ -15,7 +15,7 @@ See Technical Reference, ????
 #### Build a list of items to batch build
 You need to do this every time you start, to make sure you are not building anything that has been built or deposited.
 
-Before running this be sure to check that you have Python 3.6 and the DBApps scripts set up. Check the [INSTALL](./DBApps/DBApps/INSTALL.md) document in DBApps.
+Before running this be sure to check that you have Python 3.6 and the DBApps scripts set up. DBApps installation is in [README](./DBApps/README.md) document in DBApps.
 
 **Run**: `getReadyWorks -d prod:~/.drsBatch.config -n 200 ./yyyymmddReadyWorks`
 
@@ -26,7 +26,7 @@ __WARNING__ This process is slow - approximately 1 minute per 10 works.
 
 your need to create a valid filename for the output file. We recommend a name with the date in yyyy-mm-dd format
 
-**Results**:a file named `yymmddReadyWorks`
+**Results**:a file named `yymmddReadyWorks` in the output folder
 
 #### Split the ready works
 **Run:** `splitWorks fileName -n` where -n is the number of instances you want to run. For `fileName` use the output of `getReadyWorks.py`
