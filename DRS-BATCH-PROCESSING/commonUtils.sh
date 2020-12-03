@@ -44,8 +44,9 @@ function cleanUpLogs() {
 function prepBBHome {
 	# Copy BatchBuilder code to a location for this instance.
 	# $MAKEDRS will copy the batchbuilder log to the
-	# batch output directory
-	export BB_HOME=$(mktemp -d)
+    # batch output directory
+    [[ -d ~/tmp ]] && { mkdir ~/tmp ; }
+	export BB_HOME=$(mktemp -d -p ~/tmp )
 	cp -rp $BB_SOURCE/* $BB_HOME
 	rm -f $BB_HOME/logs/*
 
@@ -55,4 +56,9 @@ function prepBBHome {
 	# See <binFolder>/SetBBLevel.sh
 	cp "${propFile}".${BB_LEVEL} "$propFile"
 }
+
+function cleanBBHome {
+    rm -rf $BB_HOME
+}
+
 

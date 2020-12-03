@@ -183,7 +183,7 @@ function doBatch {
 
 		if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
 			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			updateBuildStatus ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
+			update_build_status ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
 #		    td=$(mktemp -d)
@@ -197,7 +197,7 @@ function doBatch {
 		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
 		    # list.
 		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${BATCH_OUTPUT_PUBDIR}  2>&1 | tee -a ${logPath}
-		    updateBuildStatus ${DbConnectionString} "${BATCH_OUTPUT_PUBDIR}/${batchName}" "success"  2>&1 | tee -a ${logPath}
+		    update_build_status ${DbConnectionString} "${BATCH_OUTPUT_PUBDIR}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
         # jimk 2018-V-18: this used to be above the last fail.
        cleanUpLogs ${batchName}
@@ -294,7 +294,9 @@ templateDir=${targetProjectDir}/template/image
 
 # 30 is about 18 - 20000 files, which is too
 # many for poor old DRS.
-declare -i volsPerBatch=20
+#
+# jimk 2020-XII-01 So is 15000
+declare -i volsPerBatch=9
 echo Volumes per Batch: ${volsPerBatch}
 
 echo Template Image Directory: ${templateDir}

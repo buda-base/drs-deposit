@@ -1,1 +1,1 @@
-../move-built-batches.sh
+../move-deposited-batches.sh

@@ -50,7 +50,7 @@ function doBatch {
 
     if [ ! -f ${srcDir}/${batchName}/batch.xml ] ; then
 	echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-	updateBuildStatus $DbConnectionString "${srcDir}" "FAIL"
+	update_build_status $DbConnectionString "${srcDir}" "FAIL"
     else
 		    # set up mets
 	td=$(mktemp -d)
@@ -59,7 +59,7 @@ function doBatch {
 		    #
 		    # jimk 2018-VI-17
 	mv  ${targetProjectRoot}/${batchName} $OUTPUTHOME  2>&1 | tee -a ${logPath}
-	updateBuildStatus $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
+	update_build_status $DbConnectionString "${OUTPUTHOME}/${batchName}" "success"
     fi
 
 }
