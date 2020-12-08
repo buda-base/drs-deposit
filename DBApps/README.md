@@ -17,7 +17,9 @@ it writes the application libraries globally, but hides the console scripts in y
 `pip install bdrc-DBApps`
 or 
 `sudo pip install bdrc-DBApps`
-to install for global users
+to install for global users.
+
+Detailed information is at [pyPI.org bdrc-DBApps project page](https://pypi.org/project/bdrc-DBApps/)
 ## Source Installation
 on a new machine:
 1. Install Python 3.7 or 3.8
