@@ -1,4 +1,4 @@
-\#! /bin/bash
+#! /bin/bash
 
 # script to collect imagegroups into a batch for processing via BatchBuilder and
 # upload to Harvard Digital Repository Service
