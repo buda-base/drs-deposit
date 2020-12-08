@@ -21,15 +21,13 @@ ME=$(basename $0)
 
 function usage() {
 	cat << USAGE
-		synopsis: $ME [-h] func <files>
+		synopsis: $ME [-h] func <args>
 		-h: shows this message
 		run the process 'func' in a parallel subhsell. 
-		against each of the files in <files>
+		against each of the args in <args>
 
 USAGE
 }
-
-
 
 while getopts h opt ; do
 	# echo "in getopts" $opt $OPTARG
@@ -38,28 +36,34 @@ while getopts h opt ; do
 			usage
 			exit 0
 			;;
+		*)
+		    usage
+		    exit 1
+		    ..
 	esac
 done
 
-underwayDir=timing/underway
-[ -d  $underwayDir ] || mkdir -p $underwayDir
-#
-resultsDir=timing/finishedRuns
-[ -d  $resultsDir ] || mkdir -p $resultsDir
-
-# if no args, bail
-[ x"$2" == "x" ] && { usage ; exit 1 ; }
-
-func=$1
+func=${1?$(usage)}
 shift
-for x in $* ; do
-	#
-	# do_real_work
-	#
-	# jsk 12.22.17 Put the iteration here where we can see it
-	# Run each iteration in the background
-	# jsk 21.I.18: shell scripts can be in ~/bin
+
+# Sigh. We need to do this because we're not in our login shell
+# Specific to  debian
+# [[ -f /usr/bin/env_parallel.bash ]] && { . /usr/bin/env_parallel.bash ;  }
+
+# env_parallel --record-env
+
+parallel   --joblog="drs.$(date +%H-%M-%S).para.log" \
+           --results runout-$(date +%H-%M-%S) \
+	     $func {}  ::: $*
+
+# for x in $* ; do
+# 	#
+# 	# do_real_work
+# 	#
+# 	# jsk 12.22.17 Put the iteration here where we can see it
+# 	# Run each iteration in the background
+# 	# jsk 21.I.18: shell scripts can be in ~/bin
         
-	${func} $x $underwayDir $resultsDir &
+# 	echo ${func} $x $underwayDir $resultsDir &
  
-done
+# done

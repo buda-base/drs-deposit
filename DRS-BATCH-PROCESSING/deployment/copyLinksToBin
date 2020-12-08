@@ -20,6 +20,9 @@ mybin=${1:-~/bin}
 # pushd is noisy
 pushd $dd/DRS-BATCH-PROCESSING/deployment > /dev/null
 
+# Add this if you get 'less' like behavior
+# ❯ git config --global pager.branch false
+# See https://stackoverflow.com/questions/48341920/git-branch-command-behaves-like-less
 git branch
 read -p "Press enter to deploy this branch, any other key to quit." okGo
 

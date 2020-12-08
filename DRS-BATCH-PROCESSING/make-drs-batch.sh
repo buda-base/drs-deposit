@@ -178,30 +178,29 @@ function doBatch {
         # { time $bb -a build -p $targetProjectDir -b $batchName >> $logPath 2>&1 ; } 2>> $TIMING_LOG_FILE
         #  DO REAL WORK
         # Note I'm deliberately redirecting all output to log file - this is a noisy process.
-		echo ${bb} -a build -p ${targetProjectDir} -b ${batchName}   | tee -a ${logPath}
-        ${bb} -a build -p ${targetProjectDir} -b ${batchName} >> ${logPath} 2>&1
-
-		if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
+	echo ${bb} -a build -p ${targetProjectDir} -b ${batchName}   | tee -a ${logPath}
+	${bb} -a build -p ${targetProjectDir} -b ${batchName} >> ${logPath} 2>&1
+	#
+	if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
 			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			updateBuildStatus ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
+			update_build_status ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
-#		    td=$(mktemp -d)
+	#	    td=$(mktemp -d)
 	#	    tojsondimensions.py -i ${targetProjectDir}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
 	# timb 2020-04-20
 	# commented out json dimensions since that is handled at a differnt step inte process now. If something
 	#does need json with dimensions created run it through the volume manifest tool before batch building.
-#		    rm -rf ${td}  2>&1 | tee -a ${logPath}
+	#	    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
 		    # jimk 2018-VI-17
 		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
 		    # list.
 		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${BATCH_OUTPUT_PUBDIR}  2>&1 | tee -a ${logPath}
-		    updateBuildStatus ${DbConnectionString} "${BATCH_OUTPUT_PUBDIR}/${batchName}" "success"  2>&1 | tee -a ${logPath}
+		    update_build_status ${DbConnectionString} "${BATCH_OUTPUT_PUBDIR}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
-        # jimk 2018-V-18: this used to be above the last fail.
-       cleanUpLogs ${batchName}
-
+       # jimk 2018-V-18: this used to be above the last fail.
+	cleanUpLogs ${batchName}
 }
 
 #
@@ -294,7 +293,9 @@ templateDir=${targetProjectDir}/template/image
 
 # 30 is about 18 - 20000 files, which is too
 # many for poor old DRS.
-declare -i volsPerBatch=20
+#
+# jimk 2020-XII-01 So is 15000
+declare -i volsPerBatch=9
 echo Volumes per Batch: ${volsPerBatch}
 
 echo Template Image Directory: ${templateDir}
@@ -323,76 +324,94 @@ while IFS=, read -ra LINE ; do
     VID=${LINE[2]}
 
     [[ -n $VID ]] ||  continue
-    
+
     OutlineUrn=$(generateHulNrsUrn ${LINE[3]})
     PrintMasterUrn=$(generateHulNrsUrn ${LINE[4]})
 
     # Sanity check - have we built this volume somewhere else?
     thisVolBuildPath=$(find ${BATCH_OUTPUT_HOME} -maxdepth 2 -mindepth 2 -type d  -name ${VID} )
-    [ ! -z ${thisVolBuildPath} ] && {
-        echo "Skipping: $thisVolBuildPath already built" | tee -a ${logPath}
-    continue
-    }
-
-    if   (($thisBatchVolCount == $volsPerBatch )) ||  $(isNewHeaderLine LINE[@]) ; then
-      doBatch
-      if (($thisBatchVolCount == $volsPerBatch ))  ; then
-        batchesThisWork+=1
-      else
-        batchesThisWork=1
-      fi
-       thisBatchVolCount=0
-    else
-
-        # Are we starting a new batch?
-        if (($thisBatchVolCount == 0)) ; then
-            echo TBRC ${RID} at HOLLIS ${HID} | tee -a  ${logPath}
-            java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl hId=${HID}   outlineUrn=${OutlineUrn} printMasterUrn=${PrintMasterUrn} > ${targetConf}
-
-            # jimk 2018-VI-18: Append new with n.
-            # jimk 2018-VII-18: add short hashtag
-	    mdDate=$(date +%H%M%S | md5sum )
-	    mdDate=${mdDate:0:2}
-            batchName=$(printf "%s-%d-%s" "batch$RID" ${batchesThisWork} $mdDate)
-            echo Batch Name: ${batchName} | tee -a  ${logPath}
-        fi
-
-        imagesDir=${archiveDir}/${RID}/images/${VID}
-        echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
-        pdsName=${VID}
-
-        for f in ${imagesDir}/* ; do
-        # cp and rename each image
-            fullNm=$(basename ${f})
-            ext="${fullNm##*.}"
-
-            # jsk: 12.21.17: Issue #14
-             if $(isBannedExt ${ext} ) ; then continue ; fi
-            fnm="${fullNm%.$ext}"
-
-            # jsk 01Feb18: Issue #33. Note this requires the filename to end in 4 digits
-            # dont use page seq - suffix=$(printf %04d $pageSeq)
-            #
-            # TrailingNums returns a string of numerics, not a real integer
-            suffix=$(trailingNums ${fnm} 4)
-
-            [ "$suffix" == "0" -o -z "$suffix" ] && {
-                    echo ${ME}:WARNING: Skipping invalid sequence in work ${RID} volume ${pdsName} ${fnm} | tee -a ${logPath}
-                continue
-            }
-
-            # This transform makes the file name comply with PDS sequencing
-            destNm="$pdsName--${fnm}__${suffix}.$ext"
-            cp ${f} ${templateDir}/${destNm} 2>&1 | tee -a ${logPath}
-
-            declare -i rc=$?
-            if ((${rc} != 0 )); then
-                echo cp ${f} ${templateDir}/${destNm}	failed rc: ${rc} | tee -a ${logPath}
-                exit ${rc}       # Just fail here
-            fi
-        done
-        thisBatchVolCount+=1
-
+    if [[ ! -z ${thisVolBuildPath} ]] ; then
+	echo "Skipping: $thisVolBuildPath already built" | tee -a ${logPath}
+	continue
+	#    else
+	# debug only        printf "loop trace %s %s %s\n" $RID $HID $VID | tee -a ${logPath}
     fi
+    
+					       
+
+    # We've Added the number of volumes to the batch, or encountered a new header line in the file
+    if   (($thisBatchVolCount == $volsPerBatch )) ||  $(isNewHeaderLine ${LINE[@]}) ; then
+	    printf "    >> Batch full or EOF thisVols:%d \tvolsperBatch:%d \t Line: %s\n" $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
+
+	    # This call builds a batch out of the prior runs
+	    doBatch
+
+	    # Reset counts for next batch
+	    if (($thisBatchVolCount == $volsPerBatch ))  ; then
+		batchesThisWork+=1
+	    else
+		batchesThisWork=1
+	    fi
+
+	    # Add this volume to a possiby new batch
+	    thisBatchVolCount=0
+    fi
+
+    # Are we starting a new batch?
+    if (($thisBatchVolCount == 0)) ; then
+	printf "    >> Starting new batch  thisVols:%d \tvolsperBatch:%d \t Line: %d\n" $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
+        echo TBRC ${RID} at HOLLIS ${HID} | tee -a  ${logPath}
+        java -jar "${MEPATH}/saxonhe-9.4.0.7.jar" ${masterProjConf} ${MEPATH}/make-proj-conf.xsl hId=${HID}   outlineUrn=${OutlineUrn} printMasterUrn=${PrintMasterUrn} > ${targetConf}
+
+        # jimk 2018-VI-18: Append new with n.
+        # jimk 2018-VII-18: add short hashtag
+	mdDate=$(date +%H%M%S | md5sum )
+	mdDate=${mdDate:0:2}
+        batchName=$(printf "%s-%d-%s" "batch$RID" ${batchesThisWork} $mdDate)
+        echo Batch Name: ${batchName} | tee -a  ${logPath}
+    fi
+    
+    printf "    >> Adding volume %s to batch %s  thisVols:%d \tvolsperBatch:%d \t Line: %s\n" ${VID} $batchName $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
+
+
+    imagesDir=${archiveDir}/${RID}/images/${VID}
+    echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
+    pdsName=${VID}
+
+    thisBatchVolCount+=1
+
+    for f in ${imagesDir}/* ; do
+        # cp and rename each image
+        fullNm=$(basename ${f})
+        ext="${fullNm##*.}"
+
+        # jsk: 12.21.17: Issue #14
+        if $(isBannedExt ${ext} ) ; then continue ; fi
+        fnm="${fullNm%.$ext}"
+
+        # jsk 01Feb18: Issue #33. Note this requires the filename to end in 4 digits
+        # dont use page seq - suffix=$(printf %04d $pageSeq)
+        #
+        # TrailingNums returns a string of numerics, not a real integer
+        suffix=$(trailingNums ${fnm} 4)
+
+        [ "$suffix" == "0" -o -z "$suffix" ] && {
+            echo ${ME}:WARNING: Skipping invalid sequence in work ${RID} volume ${pdsName} ${fnm} | tee -a ${logPath}
+            continue
+        }
+
+        # This transform makes the file name comply with PDS sequencing
+        destNm="$pdsName--${fnm}__${suffix}.$ext"
+        cp ${f} ${templateDir}/${destNm} 2>&1 | tee -a ${logPath}
+
+        declare -i rc=$?
+        if ((${rc} != 0 )); then
+            echo cp ${f} ${templateDir}/${destNm}	failed rc: ${rc} | tee -a ${logPath}
+            exit ${rc}       # Just fail here
+        fi
+    done
+    
 done < ${worksList}
+#
+# build the last batch out of the accumulated files
 doBatch
