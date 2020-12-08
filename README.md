@@ -15,7 +15,7 @@ For details and design documents, please see
 	- Python 3.6+ in a virtual environment
 	- Bash v3+
 	- drs-deposit github - only needs DRS-BATCH-PROCESSING folder, not complete repository
-	- drs-deposit/DBApps installed (see DBApps/setup.py)
+	- drs-deposit/DBApps installed (see [DBApps Readme](DBapps/README.md) )
 	- drs-deposit/DRS-BATCH-PROCESSING and drs-deposit/DRS-BATCH-PROCESSING/parallelBatch in your path.[^4487da72]
 + Khyung: Uploading platform. Requires:
 	- Python 3.6 (recommended in a virtual environment). See [^Detailed platform Requirements]
