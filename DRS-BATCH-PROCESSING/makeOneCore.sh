@@ -32,8 +32,6 @@ ENDUSAGE
 
 }
 
-set -v
-set -x
 source ${MEPATH}/commonUtils.sh
 
 source ${MEPATH}/validate.sh

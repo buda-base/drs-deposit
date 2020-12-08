@@ -52,8 +52,6 @@ shift
 
 # env_parallel --record-env
 
-set -v
-set -x
 parallel   --joblog="drs.$(date +%H-%M-%S).para.log" \
            --results runout-$(date +%H-%M-%S) \
 	     $func {}  ::: $*
