@@ -1,4 +1,4 @@
-#! /bin/bash
+\#! /bin/bash
 
 # script to collect imagegroups into a batch for processing via BatchBuilder and
 # upload to Harvard Digital Repository Service
@@ -186,12 +186,12 @@ function doBatch {
 			update_build_status ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
 		else
 		    # set up mets
-		    td=$(mktemp -d)
+	#	    td=$(mktemp -d)
 	#	    tojsondimensions.py -i ${targetProjectDir}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
 	# timb 2020-04-20
 	# commented out json dimensions since that is handled at a differnt step inte process now. If something
 	#does need json with dimensions created run it through the volume manifest tool before batch building.
-		    rm -rf ${td}  2>&1 | tee -a ${logPath}
+	#	    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
 		    # jimk 2018-VI-17
 		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
