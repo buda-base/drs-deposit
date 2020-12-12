@@ -1,4 +1,4 @@
-\#! /bin/bash
+#! /bin/bash
 
 # script to collect imagegroups into a batch for processing via BatchBuilder and
 # upload to Harvard Digital Repository Service
@@ -182,14 +182,18 @@ function doBatch {
 	${bb} -a build -p ${targetProjectDir} -b ${batchName} >> ${logPath} 2>&1
 	#
 	if [ ! -f ${targetProjectDir}/${batchName}/batch.xml ] ; then
-			echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
-			update_build_status ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
-		else
+	    echo ${ME}:ERROR:BB failed for ${batchName} | tee -a ${logPath}
+	    update_build_status ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
+	    udb_status=${PIPESTATUS[0]}
+	    if [[ $((udb_status != 0 )) ]] ; then
+		 echo ${ME}:error: update_build_status ${DbConnectionString} "${targetProjectDir}/${batchName}" "FAIL" 2>&1 | tee -a ${logPath}
+	    fi
+	else
 		    # set up mets
 	#	    td=$(mktemp -d)
 	#	    tojsondimensions.py -i ${targetProjectDir}/${batchName} -o ${td} 2>&1 | tee -a ${logPath}
 	# timb 2020-04-20
-	# commented out json dimensions since that is handled at a differnt step inte process now. If something
+	# commented out json dimensions since that is  handled at a differnt step inte process now. If something
 	#does need json with dimensions created run it through the volume manifest tool before batch building.
 	#	    rm -rf ${td}  2>&1 | tee -a ${logPath}
 		    #
@@ -313,7 +317,7 @@ declare -i thisBatchVolCount=0
 declare firstLine=
 declare -i batchesThisWork=1
 
-while IFS=, read -ra LINE ; do
+while IFS=, read -ra LINE <&3 ; do
     # skip the first line
     [ -z ${firstLine} ] &&  {
             firstLine=1;
@@ -337,14 +341,21 @@ while IFS=, read -ra LINE ; do
 	# debug only        printf "loop trace %s %s %s\n" $RID $HID $VID | tee -a ${logPath}
     fi
     
-					       
-
+    
     # We've Added the number of volumes to the batch, or encountered a new header line in the file
-    if   (($thisBatchVolCount == $volsPerBatch )) ||  $(isNewHeaderLine ${LINE[@]}) ; then
-	    printf "    >> Batch full or EOF thisVols:%d \tvolsperBatch:%d \t Line: %s\n" $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
+    if   (( $thisBatchVolCount == $volsPerBatch )) ||  isNewHeaderLine ${LINE[@]}  ;  then
+	    if [[ $thisBatchVolCount == $volsPerBatch  ]] ;  then
+		printf ">> Batch full thisVols:%d \tvolsperBatch:%d \t Line: %s\n" $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
+	    fi
+	    if  isNewHeaderLine ${LINE[@]} ;  then
+		printf ">> NewWork thisVols:%d \tvolsperBatch:%d \t Line: %s\n" $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
+	    fi
+	    
 
 	    # This call builds a batch out of the prior runs
-	    doBatch
+	    if [[ $thisBatchVolCount -gt 0 ]] ;then
+		doBatch
+	    fi
 
 	    # Reset counts for next batch
 	    if (($thisBatchVolCount == $volsPerBatch ))  ; then
@@ -353,8 +364,13 @@ while IFS=, read -ra LINE ; do
 		batchesThisWork=1
 	    fi
 
-	    # Add this volume to a possiby new batch
 	    thisBatchVolCount=0
+
+    fi
+
+    if isNewHeaderLine ${LINE[@]} ;  then
+	printf ">>> skipping new header line. reading next line\n"
+	continue
     fi
 
     # Are we starting a new batch?
@@ -375,15 +391,30 @@ while IFS=, read -ra LINE ; do
 
 
     imagesDir=${archiveDir}/${RID}/images/${VID}
-    echo ImageGroup Directory: ${imagesDir} | tee -a ${logPath}
+
+    # does it exist?
+    ige=
+    if [[ ! -d ${imagesDir} ]]; then 
+	ige="not found"
+    fi
+
+    printf "ImageGroup Directory: %s %s\n" "${ige}" "${imagesDir}" | tee -a ${logPath}
+
+    if [[ -n $ige ]] ; then
+	continue
+    fi
+       
     pdsName=${VID}
+    
 
     thisBatchVolCount+=1
 
+    
     for f in ${imagesDir}/* ; do
         # cp and rename each image
         fullNm=$(basename ${f})
         ext="${fullNm##*.}"
+
 
         # jsk: 12.21.17: Issue #14
         if $(isBannedExt ${ext} ) ; then continue ; fi
@@ -411,7 +442,7 @@ while IFS=, read -ra LINE ; do
         fi
     done
     
-done < ${worksList}
+done 3< ${worksList}
 #
 # build the last batch out of the accumulated files
 doBatch
