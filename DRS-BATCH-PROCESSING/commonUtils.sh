@@ -3,15 +3,9 @@
 #
 # Argument is the first token in a line. Tests for it to be a magic header
 function isNewHeaderLine {
-
     seekTok=WorkName
-
-    declare -a argA=("${!1}")
-    if [ "${argA[0]}" = "${seekTok}" ] ; then
-        return 0 ;
-    else
-        return 1 ;
-    fi
+    declare -a argA=$1
+    [ "${argA[0]}" == "${seekTok}" ]
 }
 
 #
