@@ -85,15 +85,19 @@ class BuildStatusUpdater(DbApp):
             if self._options.delete:
                 u_cursor.callproc('DeleteBatchBuild', ( build_path,))
             else:
+                # Add or replace the build path
+                build_dir: str = os.path.basename(build_path)
+                u_cursor.execute(f'insert ignore BuildPaths ( `BuildPath`,`build_dir`) values ("{build_path}","{build_dir}") ;')
+                conn.commit()
+
+                # Update each volume
                 for volDir in volumes_for_batch(build_path):
                     err_vol_persist = volDir
                     full_build_path = str(Path(build_path).resolve())
                     vol_path: Path = Path(full_build_path, volDir)
                     vol_files, vol_size = self.get_tree_values(str(vol_path))
 
-                    u_cursor.execute(f'insert ignore BuildPaths ( `BuildPath`) values ("{build_path}") ;')
-                    conn.commit()
-
+                    print(f"{volDir}, {build_path}, {self._options.buildDate}, {self._options.result}, {vol_files}, {vol_size}")
                     u_cursor.callproc('UpdateBatchBuild', (
                         volDir, build_path, self._options.buildDate, self._options.result, vol_files, vol_size))
         except Exception:
