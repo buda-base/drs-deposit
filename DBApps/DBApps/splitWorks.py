@@ -86,7 +86,7 @@ def buildOutPath(outPath, baseName, currentFileNumber, ext):
     :param ext:
     :return:
     """
-    return pathlib.Path(outPath) / f'{baseName:s}{currentFileNumber:d}{ext:s}'
+    return pathlib.Path(outPath) / f'{baseName:s}{currentFileNumber:02d}{ext:s}'
 
 
 def parseArgs(argNamespace):
