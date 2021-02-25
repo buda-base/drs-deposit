@@ -68,7 +68,7 @@ sourceFile=$1
 # Give worksFn a default, if none
 srcBase=$(basename $sourceFile)
 # Take only the first segment with %%
-worksFn=${worksFn:-${srcBase%%.*}}"."
+worksFn=${worksFn:-Split${srcBase%%.*}}"."
 
 fileCount=$(($(wc -l < $sourceFile)))
 #
