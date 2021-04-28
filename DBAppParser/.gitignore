@@ -149,6 +149,5 @@ cython_debug/
 *.iml
 out
 gen
-DBAppParser/DbAppParser.py
 bdrc_DBAppParser.egg-info/
-setup.py
+
