@@ -22,7 +22,7 @@ to install for global users.
 Detailed information is at [pyPI.org bdrc-DBApps project page](https://pypi.org/project/bdrc-DBApps/)
 ## Source Installation
 on a new machine:
-1. Install Python 3.7 or 3.8
+1. Install Python 3.7 - 3.9
 1. Install venv. (`python3 venv someFolder`) 
 1. Create a virtual environment
 1. Add an `activate` statement for that environment, 
