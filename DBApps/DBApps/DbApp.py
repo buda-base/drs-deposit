@@ -174,7 +174,7 @@ class DbApp:
             work_cursor: mysql.Connection.Cursor = self.connection.cursor(mysql.cursors.DictCursor)
 
             sql_args = tuple(arg for arg in args)
-            self._log.debug(f"Calling {sproc} args {':'.join(sql_arg for sql_arg in sql_args)}" )
+            self._log.debug(f"Calling {sproc} args {':'.join(str(sql_arg) for sql_arg in sql_args)}")
             try:
                 work_cursor.callproc(f'{sproc}', sql_args)
                 has_next: bool = True
@@ -184,7 +184,7 @@ class DbApp:
                     has_next = work_cursor.nextset()
                 self.connection.commit()
             except pymysql.Error as e:
-                self._log.error("Error calling", sys.exc_info())
+                self._log.error("Error calling", exc_info=sys.exc_info())
                 self.connection.rollback()
                 raise e
         return rl
