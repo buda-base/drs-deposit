@@ -54,6 +54,14 @@ def str2date(arg: str) -> datetime.datetime:
     return datetime.datetime.strptime(arg, "%Y-%m-%d")
 
 
+def str2datetime(arg: str) -> datetime.datetime:
+    """
+    parses date given as in bash  date +"%Y-%m-%d %R:%S",
+    or 2021-05-24 5:3.22
+    """
+    return datetime.datetime.strptime(arg, "%Y-%m-%d %H:%M:%S")
+
+
 def writableExpandoFile(path: str):
     """
     argparse type for a file in a writable directory
