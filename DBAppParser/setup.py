@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 long_description = '# BDRC DBApp Parser ' \
                    'Basic parsers for db apps. Library only'
 setup(
-    name='DBAppParser',
+    name='bdrc-DBAppParser',
     version='1.00.02',
     packages=find_packages(),
     url='',
