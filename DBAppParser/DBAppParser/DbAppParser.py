@@ -20,6 +20,8 @@ class DbAppParser:
     argparse.parseArguments, this class returns a structure containing
     a member drsDbConfig: str
     """
+
+    _default_config: str = 'prod:~/.config/bdrc/db_apps.config'
     _parser: argparse.ArgumentParser = None
 
     _args: DbArgNamespace = None
@@ -27,7 +29,8 @@ class DbAppParser:
     def __init__(self, description: str, usage: str):
         self._parser = argparse.ArgumentParser(description=description,
                                                usage="%(prog)s | -d DBAppSection:DbAppFile " + usage)
-        self._parser.add_argument('-d', '--drsDbConfig', help='specify section:configFileName', required=True)
+        self._parser.add_argument('-d', '--drsDbConfig', help='specify section:configFileName', required=False,
+                                  default=self._default_config, type=mustExistDbConfig)
 
     @property
     def parsedArgs(self) -> DbArgNamespace:
@@ -69,15 +72,15 @@ def writableExpandoFile(path: str):
     :return:
     """
 
-    osPath = os.path.expanduser(path)
-    p = pathlib.Path(osPath)
-    if os.path.isdir(osPath):
-        raise argparse.ArgumentTypeError(f"{osPath} is a directory. A file name is required.")
+    os_path = os.path.expanduser(path)
+    p = pathlib.Path(os_path)
+    if os.path.isdir(os_path):
+        raise argparse.ArgumentTypeError(f"{os_path} is a directory. A file name is required.")
 
     # Is the parent writable?
-    pDir = p.parent
-    if not os.access(str(pDir), os.W_OK):
-        raise argparse.ArgumentTypeError(f"{osPath} is in a readonly directory ")
+    p_dir = p.parent
+    if not os.access(str(p_dir), os.W_OK):
+        raise argparse.ArgumentTypeError(f"{os_path} is in a readonly directory ")
 
     return path
 
@@ -90,7 +93,7 @@ def mustExistDirectory(path: str):
     :return:
     """
     if not os.path.isdir(path):
-        raise argparse.ArgumentTypeError
+        raise argparse.ArgumentTypeError(f"{path} not found")
     for root, dirs, files in os.walk(path, True):
         if len(dirs) == 0:
             raise argparse.ArgumentTypeError
@@ -104,10 +107,25 @@ def mustExistFile(path: str):
     :param path:
     :return:
     """
-    fullPath = os.path.expanduser(path)
-    if not os.path.exists(fullPath):
-        raise argparse.ArgumentTypeError
+    full_path = os.path.expanduser(path)
+    if not os.path.exists(full_path):
+        raise argparse.ArgumentTypeError(f"{full_path} not found")
     else:
-        return fullPath
+        return full_path
 
-# endsection parser validations and utilities
+def mustExistDbConfig(db_config_arg: str):
+    """
+    Validates that the file, and the section in the file, exist
+    :param db_config_arg:
+    :return:
+    """
+    conf_values = db_config_arg.split(":")
+    if len(conf_values) < 2:
+        raise argparse.ArgumentTypeError(db_config_arg)
+    try:
+        mustExistFile(conf_values[1])
+    except argparse.ArgumentTypeError:
+        raise
+    return db_config_arg
+
+# end section parser validations and utilities
