@@ -1,4 +1,10 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+# Pytyhon stuff
+**/venv/**
+**/build/**
+**/dist/**
+**/*.egg-info/**
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
