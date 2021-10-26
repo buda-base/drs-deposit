@@ -1,3 +1,3 @@
 lxml
 pymysql
-bdrc-DBAppParser
+bdrc-DBAppParser>=1.0.4

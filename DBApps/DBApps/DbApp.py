@@ -188,3 +188,38 @@ class DbApp:
                 self.connection.rollback()
                 raise e
         return rl
+
+
+
+    def ExecQuery(self, query: str, *args) -> []:
+        """
+        Calls a routine without analyzing the result
+        :param sproc: routine name
+        :param out_arg_index:  If  there is an out arg, its index in the tuple of args
+        :param args: arguments
+        :return: true if there are any results, throws exception otherwise.
+        Caller handles
+        """
+        self.start_connect()
+
+        rl: [] = []
+
+        with self.connection:
+
+            work_cursor: mysql.Connection.Cursor = self.connection.cursor(mysql.cursors.DictCursor)
+
+            sql_args = tuple(arg for arg in args)
+            self._log.debug(f"Calling query args {':'.join(str(sql_arg) for sql_arg in sql_args)}")
+            try:
+                work_cursor.execute(query, sql_args)
+                has_next: bool = True
+                while has_next:
+                    result_rows = work_cursor.fetchall()
+                    rl.append(result_rows)
+                    has_next = work_cursor.nextset()
+                self.connection.commit()
+            except pymysql.Error as e:
+                self._log.error("Error invoking", exc_info=sys.exc_info())
+                self.connection.rollback()
+                raise e
+        return rl
