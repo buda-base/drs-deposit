@@ -56,7 +56,7 @@ class DBConfig:
     @property
     def db_cnf(self):
         """    MySQL ConfigFile - read only    """
-        self.test_init
+        self.test_init()
         return self._configParser[self.__cnfFileSection][self.__cnfKey]
         # --------------------------------------------------------------------------
 
