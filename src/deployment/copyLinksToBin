@@ -17,9 +17,6 @@ mybin=${1:-~/bin}
 [ ! -w ${mybin} ] && { echo ${mybin} not writable ; exit 1 ; }
 
 
-# pushd is noisy
-pushd $dd/DRS-BATCH-PROCESSING/deployment > /dev/null
-
 # Add this if you get 'less' like behavior
 # ❯ git config --global pager.branch false
 # See https://stackoverflow.com/questions/48341920/git-branch-command-behaves-like-less
@@ -33,5 +30,3 @@ find . -type l | awk -F' ' -v mybin=${mybin} '{print "cp -vHrp ", $NF, mybin}' >
 source  .tmp
 rm .tmp
 #
-# Back, back, return from whence ye came
-popd > /dev/null

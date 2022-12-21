@@ -15,6 +15,14 @@ targetErrRE="Object owner supplied name" #  .* already exists for owner code"
 # Assume these files exist
 MAIL_TXT=mailerrs.txt
 
+#
+# jimk drs-deposit-108 2022-12-20 ; get literal files out of git
+if [[ -z $DB_CONN ]]
+then
+    printf "FATAL: Cannot connect to database"
+    exit 42
+fi
+
 function usage() {
   printf "%s\n" "Synopsis: $ME [ -f path_list ] [  -m ]" \
    "    where" \
@@ -26,7 +34,7 @@ function delete_one() {
 
   v_batchPath=${1?"delete_one requires a non-null argument."}
   printf "Updating DB for %s .." "${v_batchPath}"
-  update_build_status -D -d prod:~/.drsBatch.config "$v_batchPath" FAIL
+  update_build_status -D -d ${BB_LEVEL:${DB_CONN} "$v_batchPath" FAIL
   rc=$?
   if [[ $rc == "0" ]]; then
     printf "removing path...."
