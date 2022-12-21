@@ -71,7 +71,15 @@ DEBUGECHO=HOWDY echo
 
 OUTPUTHOME=/Volumes/DRS_Staging/DRS/prod/batchBuilds
 
-DbConnectionString='-d prod:~/.drsBatch.config'
+#
+# jimk drs-deposit-108 2022-12-20 ; get literal files out of git
+if [[ -z $DB_CONN ]]
+then
+    printf "FATAL: Cannot connect to database"
+    exit 42
+fi
+
+DbConnectionString='-d ' ${BB_LEVEL}:{$DB_CONN}
 
 # Who's running?
 ME=$(basename ${0})

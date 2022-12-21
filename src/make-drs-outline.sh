@@ -56,7 +56,15 @@ MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # This is the final output home, where successful batch builds go
 OUTPUTHOME=/Volumes/DRS_Staging/DRS/${BB_LEVEL}/batchBuilds
 
-DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
+#
+# jimk drs-deposit-108 2022-12-20 ; get literal files out of git
+if [[ -z $DB_CONN ]]
+then
+    printf "FATAL: Cannot connect to database"
+    exit 42
+fi
+
+DbConnectionString='-d '${BB_LEVEL}:${DB_CONN}
 
 #section error logging. Requires trailing
 # Output is var ERR_LOG, ERROR_TXT, INFO_TXT variables
