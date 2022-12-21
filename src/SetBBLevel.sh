@@ -25,5 +25,11 @@ qaNRS=https://nrs-qa.lib.harvard.edu/
 
 export HUL_NRS_RESOLVER_URL=$(eval echo \$${BB_LEVEL}NRS)
 
-export BB_SOURCE=~/DRS/BatchBuilder-2.2.19
+# jimk drs-deposit-108
+# User copies their configuration
+echo export BB_SOURCE=<SET_YOUR_BATCH_BUILDER_PARENT_DIR_HERE> (e.g.) ~/DRS/BatchBuilder-2.2.19
+echo export DbConnectionString=<SET YOUR DB CONNECTION HERE>
+
+#
+# 
 
