@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 # script to collect imagegroups into a batch for processing via BatchBuilder and
 # upload to Harvard Digital Repository Service
@@ -73,7 +73,15 @@ export TIMEFORMAT
 # jimk drs-deposit #77 Use global var
 # OUTPUTHOME=/Volumes/DRS_Staging/DRS/$BB_LEVEL/batchBuilds
 
-DbConnectionString='-d '${BB_LEVEL}':~/.drsBatch.config'
+#
+# jimk drs-deposit-108 2022-12-20 ; get literal files out of git
+if [[ -z $DB_CONN ]]
+then
+    printf "FATAL: Cannot connect to database"
+    exit 42
+fi
+
+DbConnectionString='-d ' ${BB_LEVEL}:${DB_CONN}
 
 # Harvard Name resolver URIs. See generateHulNrsUrn()
 # HACK: must contain trailing /
@@ -199,7 +207,7 @@ function doBatch {
 		    #
 		    # jimk 2018-VI-17
 		    # WARN: buildSendList now has to filter out backfile directories ( *~) from its
-		    # list.
+	    # list.
 		    mv -v --backup=numbered ${targetProjectDir}/${batchName} ${BATCH_OUTPUT_PUBDIR}  2>&1 | tee -a ${logPath}
 		    update_build_status ${DbConnectionString} "${BATCH_OUTPUT_PUBDIR}/${batchName}" "success"  2>&1 | tee -a ${logPath}
 		fi
@@ -238,9 +246,9 @@ fi
 masterProjConf=${projectMaster}/project.conf
 
 archiveDir=$4
-echo Archive Directory: ${archiveDir}
-if [ ! -d ${archiveDir} ]; then
-	echo "${ME}: archiveDir \'${4}\' does not exist or is not a directory"
+echo Archive Directory Prefix: ${archiveDir}
+if [ ! -d ${archiveDir}0 ]; then
+	echo "${ME}: archiveDir ${4}0 does not exist or is not a directory"
 	exit 2
 fi
 
@@ -383,14 +391,15 @@ while IFS=, read -ra LINE <&3 ; do
         # jimk 2018-VII-18: add short hashtag
 	mdDate=$(date +%H%M%S | md5sum )
 	mdDate=${mdDate:0:2}
-        batchName=$(printf "%s-%d-%s" "batch$RID" ${batchesThisWork} $mdDate)
+        batchName=$(printf "%s-%d-%s" "batch${RID}" ${batchesThisWork} $mdDate)
         echo Batch Name: ${batchName} | tee -a  ${logPath}
     fi
     
     printf "    >> Adding volume %s to batch %s  thisVols:%d \tvolsperBatch:%d \t Line: %s\n" ${VID} $batchName $thisBatchVolCount  $volsPerBatch  $(isNewHeaderLine ${LINE[@]}) | tee -a ${logPath}
 
 
-    imagesDir=${archiveDir}/${RID}/images/${VID}
+    # jimk drs-deposit-108 - new archive hierarchy 
+    imagesDir=$(locate_archive ${archiveDir} ${RID})/images/${VID}
 
     # does it exist?
     ige=
