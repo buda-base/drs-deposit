@@ -108,7 +108,11 @@ class DBConfig:
                 or not self.__cnfKey:
             raise ValueError
 
-            #
+    #  -------------  free form
+    def get_value(self, section: str, key: str):
+        if not self._configParser[section]:
+            raise ValueError(f"section [{section} not found")
+        return self._configParser[section][key]
 
     # private variables
     _configFQPath = None
@@ -117,3 +121,4 @@ class DBConfig:
     __serverKey = 'server'
     __cnfFileSection = 'mysql'
     __cnfKey = 'mySqlCnfPath'
+    __resourcesKey = 'resources'

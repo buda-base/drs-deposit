@@ -15,7 +15,7 @@ long_description='#BDRC DBApps  ' \
 
 setup(
     name='bdrc-DBApps',
-    version='1.00.06',
+    version='1.00.07',
     # packages=['config', 'DBApps', 'DBApps.TBRCSrc', 'DBApps.Writers', 'DBApps.DBAppTests',
     #           'DBApps.SourceProcessors'],
     packages=find_packages(),
