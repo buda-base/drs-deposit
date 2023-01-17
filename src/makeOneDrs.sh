@@ -8,36 +8,43 @@
 # eliminate need for RP$
 function getBatchTop() {
 
-    # Get the hostname
-    host=$(hostname | tr '[:upper:]' '[:lower:]')
+  # Get the hostname
+  host=$(hostname | tr '[:upper:]' '[:lower:]')
 
-    # drop the domain
-    host=${host%%.*}
+  # drop the domain
+  host=${host%%.*}
 
-    # these are specific to each server
-    if [[ ${host} == "bodhi" ]] ; then
-	bTop=/data/DRS
-    else if [[ ${host} == "sattva" ]] ; then
-		bTop=/home/DRS
-	    else if [[ ${host} == "druk" ]] ; then
-		bTop=/Volumes/DRS_Staging/DRS
-	    else
-		bTop=/dev/null
-		 fi
-	 fi
-	 
+  # these are specific to each server
+  if [[ ${host} == "bodhi" ]]; then
+    bTop=/data/DRS
+  else
+    if [[ ${host} == "sattva" ]]; then
+      bTop=/home/DRS
+    else
+      if [[ ${host} == "druk" ]]; then
+        bTop=/Volumes/DRS_Staging/DRS
+      else
+        bTop=/dev/null
+      fi
     fi
-    
-    echo $bTop
-    }
-	     
+
+  fi
+
+  echo $bTop
+}
 
 # Dont export
 ME=$(basename $0)
 # jsk: need full path to script for components
-MEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+MEPATH="$(
+  cd "$(dirname "$0")"
+  pwd -P
+)"
 
-[ -z "$BB_LEVEL" ] &&  { echo ${ME}':error:BB level not set'  ; exit 1 ;  }
+[ -z "$BB_LEVEL" ] && {
+  echo ${ME}':error:BB level not set'
+  exit 1
+}
 export WORKS_SOURCE_HOME=/mnt/Archive
 export PROJECT_HOME=${MEPATH}/BB_tbrc2drs
 export MAKEDRS=${MEPATH}"/make-drs-batch.sh"

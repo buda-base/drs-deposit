@@ -1,6 +1,0 @@
-/.pytest_cache/
-/.settings/
-/dist/
-/build/*
-/*egg-info/
-/venv/
