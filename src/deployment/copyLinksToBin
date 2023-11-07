@@ -7,7 +7,7 @@
 # * dd env var, pointing to the root of the local drs-deposit 
 # repository
 #
-# * $dd/DRS-BATCH-PROCESSING/deployment (which should be in the repository)
+# * $dd/src/deployment (which should be in the repository)
 # * the destination folder (~/bin default)
 
 mybin=${1:-~/bin}

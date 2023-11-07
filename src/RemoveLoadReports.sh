@@ -10,7 +10,7 @@ ME_DIR=$(dirname $0)
 
 #section error logging. Requires trailing
 # Output is var ERR_LOG, ERROR_TXT, INFO_TXT variables
-. ~/drs-deposit/DRS-BATCH-PROCESSING/setupErrorLog.sh "${ME}"
+. ~/drs-deposit/src/setupErrorLog.sh "${ME}"
 #endsection Set up logging
 
 #section I

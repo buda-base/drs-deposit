@@ -10,7 +10,7 @@
 # the arguments are:
 #
 #		workList		is the path to a text file each whose format is given in
-#                       drs-deposit/DRS-BATCH-PROCESSING/BatchBuilding.md
+#                       drs-deposit/src/BatchBuilding.md
 #
 #		projectMaster	is the path to a BatchBuilder project that has been initialized via
 #						the BathBuilder GUI. This should include the project level defaults

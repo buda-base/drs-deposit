@@ -15,7 +15,7 @@ export QA_BB_LEVEL=qa
 export BB_LEVEL=$QA_BB_LEVEL
 
 # Set up the nrs resolver for injecting into project.conf
-# See DRS-BATCH-PROCESSING/make-drs-batch.conf
+# See src/make-drs-batch.conf
 
 prodNRS=https://nrs.lib.harvard.edu/
 qaNRS=https://nrs-qa.lib.harvard.edu/

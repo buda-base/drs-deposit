@@ -6,7 +6,7 @@
  #
  # jsk: this is WebArchive onRS3. Depends on the script host having mounted it.
  WORKS_HOME=/Volumes/WebArchive
- DRS_HOME=/Users/jimk/svn/DRS-BATCH-PROCESSING
+ DRS_HOME=/Users/jimk/svn/src
 
  export DRS_HOME
 [ -e "$1" ] || { echo "$(basename $0)": WorksList \'"$1"\' must exist but does not ; exit 2; }

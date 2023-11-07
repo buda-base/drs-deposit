@@ -4,19 +4,19 @@ Harvard DRS Deposit base
 Note this is a high level summary, at the checklist level. It does not describe details of installation and operations.
 
 For details and design documents, please see 
-* [Deposit Workflow](DRS-BATCH-PROCESSING/DepositWorkflow.md)
-* [DR Design Doc](./DRS-BATCH-PROCESSING/DRDesignOverview.md)
-* [Batch Building](./DRS-BATCH-PROCESSING/BatchBuilding.md)
-* [Parallel Batching](./DRS-BATCH-PROCESSING/parallelBatching.md)
+* [Deposit Workflow](src/DepositWorkflow.md)
+* [DR Design Doc](./src/DRDesignOverview.md)
+* [Batch Building](./src/BatchBuilding.md)
+* [Parallel Batching](./src/parallelBatching.md)
 
 ## DPlatform Requirements
 
 + The BatchBuilding platform. Platform requires:
 	- Python 3.6+ in a virtual environment
 	- Bash v4+
-	- drs-deposit github - only needs DRS-BATCH-PROCESSING folder, not complete repository
+	- drs-deposit github - only needs src folder, not complete repository
 	- drs-deposit/DBApps installed (see [DBApps Readme](DBapps/README.md) )
-	- install from DRS-BATCH-PROCESSING/deployment/copyLinksToBin
+	- install from src/deployment/copyLinksToBin
 + Khyung: Uploading platform. Requires:
 	- Python 3.6 (recommended in a virtual environment). See [^Detailed platform Requirements]
 	- DBApps as above.
@@ -70,4 +70,4 @@ Except for downloading the CSVs, and the step of collecting the error results, a
   [68fcc779]: http://nrs.harvard.edu/urn-3:hul:drs2-admin "Harvard Web Admin Search"
 [^b4db8524]: Details of the following section are in: [Building Batches][65e185e8] 
 
-  [65e185e8]: ./DRS-BATCH-PROCESSING/BatchBuilding.md "Building Batches"
+  [65e185e8]: ./src/BatchBuilding.md "Building Batches"

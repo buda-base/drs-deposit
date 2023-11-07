@@ -7,7 +7,7 @@
 * Extract todays deposit file limit from batches.
 ## Assumptions:
 ### Environment
-You don't need the entire drs-deposit project in your path. See the directory DRS-BATCH-PROCESSING/deployment/ `copyLinksToBin` and `makeLinks`.
+You don't need the entire drs-deposit project in your path. See the directory src/deployment/ `copyLinksToBin` and `makeLinks`.
 You can use them to update files in your `~/bin` folder with current GIT objects.
 #### Environment variables:
 **You need these set for anything to work**

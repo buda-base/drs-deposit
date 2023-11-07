@@ -2,7 +2,7 @@
 A deployment strategy breaks the run-time dependency on the git source tree
 ## Architecture
 The `deployment` subdirectory contains links to the files to be deployed. The 
-relative path of these files is the parent directory of `deployment:` ie `drs-deposit/DRS-BATCH-PROCESSING`
+relative path of these files is the parent directory of `deployment:` ie `drs-deposit/src`
 ## Implementation
 These bash scripts live in the `deployment` directory
 + `makeLinks` contains an in-file dictionary of files and directories.
