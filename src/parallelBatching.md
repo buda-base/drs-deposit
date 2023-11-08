@@ -48,12 +48,12 @@ At this writing, each `make-drs-batch.sh` processes 240 works. Depending on how 
 **Location Note** Most of these scripts were written as utilities, and use resources, such as magic file names and directory paths. These resources are catalogued below
 The most important of these are:
 
-resource|defined in (file:variable)|purpose
---|---|--
-underway|`runAny.sh:underwayDir`|Location of status files for underway  
-finished|`runAny.sh:underwayDir`|Location of status files when jobs are completed.
-Works source|`makeOneDrs.sh:WORKS_SRC`|Location of worksList*n*.txt files  
-Batch output|`makeOneDrs.sh:BATCH_OUTPUT_HOME`|Parent directory of all completed batch projects.
+| resource     | defined in (file:variable)        | purpose                                           |
+|--------------|-----------------------------------|---------------------------------------------------|
+| underway     | `runAny.sh:underwayDir`           | Location of status files for underway             |
+| finished     | `runAny.sh:underwayDir`           | Location of status files when jobs are completed. |
+| Works source | `makeOneDrs.sh:WORKS_SRC`         | Location of worksList*n*.txt files                |
+| Batch output | `makeOneDrs.sh:BATCH_OUTPUT_HOME` | Parent directory of all completed batch projects. |
 
 Before monitoring works, be sure these scripts point to the correct directories.
 
@@ -64,10 +64,11 @@ Creates a running count of all completed batches, by directory crawling the "Bat
 
 Start this when you run multiple. Outputs a running total of the completed batches, with time. Typical output:
 
-|
-15:43|6979
-15:52|6979
-15:58|6981
+|Time| # batches|
+|---|---|
+|15:43|6979|
+|15:52|6979|
+|15:58|6981|
 
 Which is the 24 hour time, and the number of batches.
 

@@ -1,7 +1,7 @@
 # Recovery from deposit errors
 ## Platform
 ## Software
-You will need the complete contents of `github/drs-deposit/DRS-BATCH-PROCESSING` It can be useful to create symbolic links
+You will need the complete contents of `github/drs-deposit/src` It can be useful to create symbolic links
 in ~/bin, or somewhere else in your path, to these. If you are not a developer, see AO for setting up your machine. 
 ### Cisco AnyConnect
 Launch the Cisco AnyConnect VPN to vpn.harvard.edu. Setting this up is **way** beyond the scope of this doc. You can only connect to DRS deposit servers when this is running.
