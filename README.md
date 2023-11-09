@@ -73,6 +73,18 @@ Also, the customizations in `batchbuildercli.sh` are optional - they are for log
 
 ## Steps
 
+** HYPER IMPORTANT **
+Make sure that your QA/Production levels are synchronized.
+
+Legend:
+BB_bin: the directory where you installed BatchBuilder (e.g. `~/bin/BatchBuilder-2.4.1`)
+For details on WebAdmin connection and usage, see [HUL DRS Wiki Connecting to WebAdmin](https://wiki.harvard.edu/confluence/display/LibraryStaffDoc/1.+Connecting+to+Web+Admin)
+
+| Level      | BatchBuilderAction                                     | Environment       | BDRC DB Connection                                   |WebAdmin UI|
+|------------|--------------------------------------------------------|-------------------|------------------------------------------------------|---|
+| Production | $BB_bin/conf/bb.properties contains bb.properties.prod | set BB_Level=prod | `prod:~/.d...` (some scripts set this from BB_Level) |http://nrs.harvard.edu/urn-3:hul:drs2-admin|
+| QA         | $BB_bin/conf/bb.properties contains bb.properties.qa   | set BB_Level=qa   | qa:~/.d...                           |https://nrs.harvard.edu/URN-3:HUL:DRS2QA-ADMIN|
+
 | Host     | Action                                                                                                                                                                                          | Comments                                                                                                                                                                                                                                                                                                                                                                                       |
 |----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Any PC   | Get Deposit Updates                                                                                                                                                                             | Log on to the Harvard VPN. Point a browser to [WebAdminSearch][68fcc779]                                                                                                                                                                                                                                                                                                                       |
