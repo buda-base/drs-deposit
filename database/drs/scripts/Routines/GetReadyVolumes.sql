@@ -173,7 +173,7 @@ set nUnqueuedVolumes_post = (
 
 start transaction;
 
-INSERT INTO `DRSQA`.`GetReadyLog`
+INSERT INTO `drs`.`GetReadyLog`
 (`vols_unqueued_pre`,
 `vols_unqueued_post`,
 `works_unqueued_pre`,
