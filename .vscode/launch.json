@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: Attach to Container",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                // trying this in place of localhost
+                "host": "127.0.0.1",
+                "port": 5678
+            },
+            "justMyCode": true,
+            "pathMappings": [
+                {
+                    // "localRoot": "${workspaceFolder}/dags",
+                    // "remoteRoot": "/opt/airflow/dags"                    
+                    // try this instead, to find the code in the container (github)
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/opt/airflow"
+                }
+            ]
+        },
+
+        {
+            "name": "Python: Attach to local",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                // trying this in place of 127.0.0.1
+                "host": "localhost",
+                "port": 5678
+            },
+            "justMyCode": true
+        }        
+    ]
+}

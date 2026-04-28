@@ -1,0 +1,15 @@
+  services:
+    # bc task debugging is in worker, not service, per ghcopilot
+    airflow-worker:
+    # GH copilto wait-for-client may have been suggested because I was attaching to thwe wrong service.
+    # Nope, probably still needed. --wait-for-client 
+    # One more attempt without wait for client, because of status hash on airflow
+    # 
+      command: bash -c "python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678  -m airflow celery worker"
+      volumes:
+        - ./dags:/opt/airflow/dags
+        - ./logs:/opt/airflow/logs
+      ports:
+        - "5678:5678"
+      environment:
+        _PIP_ADDITIONAL_REQUIREMENTS: debugpy
