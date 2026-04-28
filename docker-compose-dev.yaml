@@ -12,4 +12,6 @@
       ports:
         - "5678:5678"
       environment:
-        _PIP_ADDITIONAL_REQUIREMENTS: debugpy
+        # For now, add other requirements that the DAG might need here. When distributing, bake into a modified image.
+        # Get the tools from ao-workflows/airflow-docker.
+        _PIP_ADDITIONAL_REQUIREMENTS: debugpy PIL

@@ -9,4 +9,7 @@ dependencies = [
     "bdrc-db-lib2",
     "cryptography>=47.0.0",
     "debugpy>=1.8.20",
+    "pathlib>=1.0.1",
+    "pillow>=12.2.0",
+    "tqdm>=4.67.3",
 ]
