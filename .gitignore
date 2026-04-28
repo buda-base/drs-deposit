@@ -88,7 +88,8 @@ Pipfile.lock
 poetry.lock
 
 # VS Code
-.vscode/
+# We actually want .vscode, so that debug launch configs can be shared
+# .vscode/
 .code-workspace
 
 # mypy
@@ -111,6 +112,9 @@ cython_debug/
 # Airflow
 airflow.db
 logs/
+
+# Wretched VSCode devcontainers
+.devcontainer/
 
 # MacOS
 .DS_Store

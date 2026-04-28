@@ -8,4 +8,5 @@ dependencies = [
     #     "bdrc-db-lib>=1.0.23",
     "bdrc-db-lib2",
     "cryptography>=47.0.0",
+    "debugpy>=1.8.20",
 ]
