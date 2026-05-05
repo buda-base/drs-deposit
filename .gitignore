@@ -118,3 +118,4 @@ logs/
 
 # MacOS
 .DS_Store
+uv.lock
