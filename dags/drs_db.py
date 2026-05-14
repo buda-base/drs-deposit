@@ -2,41 +2,58 @@
 Use BDRC ORM to get works which that have volumes that have not been deposited into DRS. 
 Assume that all possible proce
 """
-import BdrcDbLib.DbOrm
-from requests import session
-
-print(dir(BdrcDbLib.DbOrm))
+import  BdrcDbModels.project_manager as pm
 
 
-from  BdrcDbLib.DbOrm.DrsContextBase import DrsDbContextBase 
-from BdrcDbModels.project_manager import Projects, Steps, ProjectSteps
+from   BdrcDbLib.DrsContextBase import DrsDbContextBase
+# from BdrcDbModels.project_manager import Projects, Steps, ProjectSteps, ProjectMemberSteps
 from sqlalchemy.orm import Session
 
 
 def create_drs3_project_with_steps(session: Session):
     # Create the project
     
-    project: Projects = Projects(name="DRS3", description="DRS3 project") # type: ignore
-    session.add(project)
-    session.flush()  # To get project.id
+    # Only insert the DRS3 project if it does not already exist
+    existing_project = session.query(pm.Projects).filter_by(name="DRS3").first()
+    if existing_project:
+        print("DRS3 project already exists, skipping creation.")
+#        return existing_project
+    else:
+        project: pm.Projects = pm.Projects(name="DRS3", description="DRS3 project") # type: ignore
+        session.add(project)
+        session.flush()  # To get project.id
+        existing_project = project
 
     # Define step names
-    step_names = ["transcode", "upload", "Check for upload completed"]
+    step_names = ["stage", "transcode", "upload", "publish_confirm"]
 
     # Create steps and link to project
-    for name in step_names:
-        step = Steps(s_name=name, s_desc=f"{name} step")# type: ignore
+    for step_name in step_names:
+        existing_step = session.query(pm.Steps).filter_by(s_name=step_name).first()
+        if existing_step:
+            print(f"Step '{step_name}' already exists, skipping creation.")
+            continue
+        step = pm.Steps(s_name=step_name, s_desc=f"{step_name} step")# type: ignore
         session.add(step)
+        # Add this step to the project steps
+        project_step = pm.ProjectSteps(ps_project_id=existing_project.id, ps_step_id=step.id)  # pyright: ignore[reportCallIssue]
+        session.add(project_step)
         session.flush()  # To get step.id
 
-        project_step = ProjectSteps(ps_project=project.id)# type: ignore
-        session.add(project_step)
-
     session.commit()
-    return project
-
-with DrsDbContextBase('qa') as drs:
-    session = drs.get_session()
-    if session is None:
+   
+with DrsDbContextBase('RDSAWSQASA') as drs:
+    drs_session = drs.get_session()
+    if drs_session is None:
         raise ValueError("Failed to get a valid database session")
-    create_drs3_project_with_steps(session)
+
+    # If the table defined in Steps, project member steps does not exist, create it
+    engine = drs.get_engine()
+    if not engine.dialect.has_table(engine.connect(), pm.Steps.__tablename__): # pyright: ignore[reportOptionalMemberAccess]   
+        pm.Steps.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), pm.ProjectSteps.__tablename__):# pyright: ignore[reportOptionalMemberAccess]
+        pm.ProjectSteps.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), pm.ProjectMemberSteps.__tablename__):# pyright: ignore[reportOptionalMemberAccess]
+        pm.ProjectMemberSteps.__table__.create(bind=engine)
+
+    create_drs3_project_with_steps(drs_session)
