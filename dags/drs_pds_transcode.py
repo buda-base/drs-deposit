@@ -11,9 +11,16 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def process_directory(root_dir: Path, drs_name: str, use_tqdm: bool = False):
+def transcode(root_dir: Path, work_name: str, use_tqdm: bool = False):
     """
     Traverse the root directory to find 'images' directories and process them.
+
+    :param root_dir: Root directory to search for 'images' directories.
+    :type root_dir: Path
+    :param work_name: Name of the work directory to create/process.
+    :type work_name: str
+    :param use_tqdm: Whether to use tqdm for progress display.
+    :type use_tqdm: bool
     """
     
     def progress_iter(iterable, **kwargs):
@@ -21,6 +28,7 @@ def process_directory(root_dir: Path, drs_name: str, use_tqdm: bool = False):
             return tqdm(iterable, **kwargs)
         else:
             return iterable
+
 
     targets = []
     for dirpath, dirnames, filenames in os.walk(root_dir):
@@ -32,9 +40,11 @@ def process_directory(root_dir: Path, drs_name: str, use_tqdm: bool = False):
         return
 
     for target in targets:
-        logging.info(f"\nProcessing top-level directory: {target}")
+        logging.info(f"Processing top-level directory: {target}")
+        # stubelicious
+        continue
         images_dir = os.path.join(target, 'images')
-        drs_dir = os.path.join(target, drs_name)
+        drs_dir = os.path.join(target, work_name)
         os.makedirs(drs_dir, exist_ok=True)
 
         # Gather all files from all volumes first to track total progress

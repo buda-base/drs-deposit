@@ -11,5 +11,6 @@ dependencies = [
     "pathlib>=1.0.1",
     "pillow>=12.2.0",
     "pip>=26.1.1",
+    "s3pathlib>=2.3.6",
     "tqdm>=4.67.3",
 ]
