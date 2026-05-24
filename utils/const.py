@@ -1,0 +1,11 @@
+"""
+constants
+"""
+DRS3_PROJECT_NAME: str = "DRS3"
+DRS3_PROJECT_DESC: str = "DRS3 project"
+STAGE_STEP_NAME: str = "stage"
+TRANSCODE_STEP_NAME: str = "transcode"
+UPLOAD_STEP_NAME: str = "upload"
+PUBLISH_CONFIRM_STEP_NAME: str = "publish_confirm"
+PROJECT_MEMBER_TYPE_WORK: str = "work"
+PROJECT_MEMBER_TYPE_VOLUME: str = "volume"

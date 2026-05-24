@@ -7,10 +7,19 @@ requires-python = ">=3.13"
 dependencies = [
     "bdrc-db-models>=2.0.3",
     "cryptography>=47.0.0",
-    "debugpy>=1.8.20",
     "pathlib>=1.0.1",
     "pillow>=12.2.0",
-    "pip>=26.1.1",
     "s3pathlib>=2.3.6",
     "tqdm>=4.67.3",
+]
+
+# uv native group
+[dependency-groups]
+dev =  [
+    "apache-airflow>=2.0.0",
+    "sphinx",
+    "docutils",  # reST processing
+    "pip>=26.1.1",
+    "debugpy>=1.8.20",
+    # add other dev-only tools here
 ]
