@@ -2,16 +2,15 @@
 DAG to process staged entries: transcode, generate metadata, and upload to S3, as specified in Architecture.md.
 """
 import os
-from airflow import DAG
+from pathlib import Path
+from typing import Any
 
-from datetime import datetime
 import pendulum
+from airflow import DAG
+from airflow.exceptions import AirflowFailException
 
-from utils.drs_utils import create_metadata_file, send_to_s3
-from dags.drs_pds_transcode import transcode
 import utils.staging_utils as su
-import utils.drs_utils as du
-
+import utils.transcode_utils as tu
 
 with DAG(
     dag_id='drs3_process_staged',
@@ -25,59 +24,33 @@ with DAG(
         return su.get_next_unstaged_work()
 
     @dag.task
-    def transcode_staged_volumes(work_id: int):
-        return du.transcode_staged_volumes(work_id)
+    def transcode_staged_volumes(work_ : Any):
+        return tu.transcode_staged_volumes(work_)
 
  
 
     @dag.task
-    def generate_metadata(work_id: int):
+    def generate_metadata(work: Any):
         """Generate metadata for the given work."""
-        if work_id is None:
-            return None
-        staging_root = os.path.expanduser(STAGING_ROOT)
-        with DrsDbContext('qa') as db:
-            session = db.get_session()
-            work = session.query(pm.ProjectMembers).get(work_id)
-            if not work:
-                return None
-            metadata_path = Path(staging_root) / f"{work.work_name}_metadata.json"
-            create_metadata_file(Path(staging_root) / work.work_name, metadata_path)
-        return work_id
+        if work is None:
+            raise AirflowFailException("No work to generate metadata for.")
+        staging_root = su.STAGING_ROOT
+        tu.create_metadata_file(Path(staging_root), work)
+        return work
 
     @dag.task
-    def upload_to_s3(work_id: int):
+    def upload_to_s3(work: Any):
         """Upload the work and its metadata to S3."""
-        if work_id is None:
-            return 'No work to upload.'
-        staging_root = os.path.expanduser(STAGING_ROOT)
-        # Open context to get work and metadata path, then close before upload
-        with DrsDbContext('qa') as db:
-            session = db.get_session()
-            work = session.query(pm.ProjectMembers).get(work_id)
-            if not work:
-                return 'Work not found.'
-            work_name = work.work_name
-            metadata_path = Path(staging_root) / f"{work.work_name}_metadata.json"
-        # Outside DB context, do the upload
-        upload_success = True
+        if work is None:
+            raise AirflowFailException("No work to upload.")
+        staging_root = os.path.expanduser(su.STAGING_ROOT)
         try:
-            send_to_s3(Path(staging_root) / work_name, None)  # S3Path to be set
-            send_to_s3(metadata_path, None)
-        except Exception:
-            upload_success = False
-        # Reopen context to update PMS
-        with DrsDbContext('qa') as db2:
-            session2 = db2.get_session()
-            work = session2.query(pm.ProjectMembers).get(work_id)
-            for obj in [*work.projectmembersteps]:
-                if obj.step in ('transcode', 'upload') and not obj.end_time:
-                    obj.end_time = datetime.utcnow()
-                    obj.result_code = 0 if upload_success else 1
-            session2.commit()
-        return 'Upload complete.'
+            tu.send_to_s3(Path(staging_root), work)  # S3Path to be set
+        except Exception as err:
+            raise AirflowFailException("Failed to upload to DRS.") from err
 
-    wid = get_next_staged_work()
-    transcoded = transcode_staged_volumes(wid)
+
+    work_ = get_next_staged_work()
+    transcoded = transcode_staged_volumes(work_)
     metadata = generate_metadata(transcoded)
     upload_to_s3(metadata)

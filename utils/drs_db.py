@@ -3,15 +3,15 @@ Use BDRC ORM to get works which that have volumes that have not been deposited i
 Assume that all possible proce
 """
 
-from BdrcDbModels.project_manager import Projects, Steps, ProjectMemberSteps, Works, Volumes, MemberTypes
-from BdrcDbLib.DrsContext import DrsDbContext
-from typing import cast
-from sqlalchemy import Table
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-    
 import logging
-import const as c 
+from typing import cast
+
+import const as c
+from BdrcDbLib.DrsContext import DrsDbContext
+from BdrcDbModels.project_manager import MemberTypes, ProjectMemberSteps, Projects, Steps, Volumes, Works
+from sqlalchemy import Table
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 
 def create_drs3_project_with_steps(session: Session):

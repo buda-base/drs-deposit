@@ -1,31 +1,35 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
     "version": "0.2.0",
     "configurations": [
+        {
+            "name": "PyRun Current File",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "zsh -lc 'set -a; source \"${workspaceFolder}/.env\"; set +a; \"${workspaceFolder}/.venv/bin/python\" \"${file}\"'",
+            "cwd": "${workspaceFolder}"
+        },
         {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "envFile": "${workspaceFolder}/.env",
+            "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": true
         },
         {
             "name": "Python: Attach to Container",
-            "type": "python",
+            "type": "debugpy",
             "request": "attach",
             "connect": {
-                // trying this in place of localhost
                 "host": "127.0.0.1",
                 "port": 5678
             },
             "justMyCode": true,
             "pathMappings": [
                 {
-                    // "localRoot": "${workspaceFolder}/dags",
-                    // "remoteRoot": "/opt/airflow/dags"                    
-                    // try this instead, to find the code in the container (github)
                     "localRoot": "${workspaceFolder}",
                     "remoteRoot": "/opt/airflow"
                 }
@@ -33,10 +37,9 @@
         },
         {
             "name": "Python: Attach to local",
-            "type": "python",
+            "type": "debugpy",
             "request": "attach",
             "connect": {
-                // trying this in place of 127.0.0.1
                 "host": "localhost",
                 "port": 5678
             },

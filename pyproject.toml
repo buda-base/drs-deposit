@@ -11,8 +11,8 @@ dependencies = [
     "pillow>=12.2.0",
     "s3pathlib>=2.3.6",
     "tqdm>=4.67.3",
+    "bdrc-util2"
 ]
-
 # uv native group
 [dependency-groups]
 dev =  [
@@ -21,5 +21,41 @@ dev =  [
     "docutils",  # reST processing
     "pip>=26.1.1",
     "debugpy>=1.8.20",
+    "mypy>=1.11.0",
+    "ruff>=0.6.9",
     # add other dev-only tools here
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"utils/xxxstaging_utils.py" = ["F401"]
+
+[tool.mypy]
+python_version = "3.13"
+pretty = true
+show_error_codes = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+strict_optional = true
+no_implicit_optional = true
+plugins = []
+
+[[tool.mypy.overrides]]
+module = ["utils.xxxstaging_utils"]
+disable_error_code = ["attr-defined", "arg-type", "call-arg"]
+
+[tool.pyright]
+typeCheckingMode = "basic"
+pythonVersion = "3.13"
+
+[[tool.pyright.executionEnvironments]]
+root = "."
+

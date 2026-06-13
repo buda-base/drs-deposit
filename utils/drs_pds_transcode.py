@@ -1,17 +1,17 @@
-from pathlib import Path
+import logging
 import os
-import logging
-from PIL import Image
 import shutil
-from tqdm.asyncio import tqdm   
-import logging
- 
+from pathlib import Path
+
+from PIL import Image
+from tqdm.asyncio import tqdm
+
 # Context configures, we access
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def transcode(root_dir: Path, work_name: str, use_tqdm: bool = False):
+def transcode_work(root_dir: Path, work_name: str, use_tqdm: bool = False):
     """
     Traverse the root directory to find 'images' directories and process them.
 
@@ -31,7 +31,7 @@ def transcode(root_dir: Path, work_name: str, use_tqdm: bool = False):
 
 
     targets = []
-    for dirpath, dirnames, filenames in os.walk(root_dir):
+    for dirpath, dirnames, filenames in os.walk(root_dir):  # noqa: B007
         if 'images' in dirnames:
             targets.append(dirpath)
 
@@ -68,23 +68,47 @@ def transcode(root_dir: Path, work_name: str, use_tqdm: bool = False):
             if fname.lower().endswith('.json'):
                 continue
             try:
-                with Image.open(fpath) as img:
-                    if img.format in ("TIFF", "TIF"):
-                        shutil.copy2(fpath, drs_vol_path)
-                    else:
-                        base, _ = os.path.splitext(fname)
-                        jp2_path = os.path.join(drs_vol_path, base + ".jp2")
-                        converted_img = img.convert("RGB")
-                        
-                        # Calculate the compression rate to match the original file size
-                        orig_size_bytes = os.path.getsize(fpath)
-                        uncompressed_size_bytes = converted_img.width * converted_img.height * 3
-                        target_rate = max(1.0, uncompressed_size_bytes / orig_size_bytes)
-                        
-                        converted_img.save(jp2_path, format="JPEG2000", quality_mode="rates", quality_layers=[target_rate])
+                convert_one(fpath, drs_vol_path, fname)
             except Exception as e:
                 # Use tqdm.write to avoid breaking the progress bar display
                 msg = f"Skipping {fpath}: Could not process image. Error: {e}"
                 if use_tqdm:
                     tqdm.write(msg)
                 logging.error(msg)
+
+def convert_one(fpath, drs_vol_path, fname, quality_mode, quality_layers) -> None:
+    with Image.open(fpath) as img:
+        if img.format in ("TIFF", "TIF"):
+            shutil.copy2(fpath, drs_vol_path)
+        else:
+            base, _ = os.path.splitext(fname)
+            jp2_path = os.path.join(drs_vol_path, base + ".jp2")
+            converted_img = img.convert("RGB")
+    
+            # Calculate the compression rate to match the original file size
+            orig_size_bytes = os.path.getsize(fpath)
+            uncompressed_size_bytes = converted_img.width * converted_img.height * 3
+            target_rate = max(1.0, uncompressed_size_bytes / orig_size_bytes)
+    
+            converted_img.save(jp2_path, format="JPEG2000", quality_mode="rates", quality_layers=[target_rate])
+    return target_rate
+
+
+def transcode_volume(volume_path: Path, drs_vol_path: Path):
+    """
+    Transcode all images in a volume directory.
+
+    :param volume_path: Path to the volume directory containing images.
+    :type volume_path: Path
+    :param drs_vol_path: Path to the output directory where transcoded images will be saved.
+    :type drs_vol_path: Path
+    """
+
+    for fname in os.listdir(volume_path):
+        if fname.lower().endswith('.json'):
+                continue
+        fpath = Path(volume_path, fname)
+        try:
+            convert_one(fpath, drs_vol_path, fname)
+        except Exception as e:
+            raise RuntimeError(f"Skipping {fpath}: Could not process image. Error: {e}") from e

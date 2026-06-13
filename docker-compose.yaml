@@ -81,6 +81,8 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    # prod volumes- on a server
+
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -189,6 +191,12 @@ services:
         condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
+    volumes:
+        # Overridden in dev
+      - /mnt/Archive0:/mnt/Archive0
+      - /mnt/Archive1:/mnt/Archive1
+      - /mnt/Archive2:/mnt/Archive2
+      - /mnt/Archive3:/mnt/Archive3
 
   airflow-triggerer:
     <<: *airflow-common

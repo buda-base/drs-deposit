@@ -3,12 +3,14 @@
 """
 DAG to stage works and volumes, as specified in Architecture.md.
 """
-import os
-from airflow import DAG
 
 import pendulum
-from pathlib import Path
+from airflow import DAG
+
 import utils.staging_utils as utils
+
+SRC_ROOT= "/Users/jkatz/tmp/DRS3/Archive"
+STAGING_ROOT = "/Users/jkatz/tmp/DRS3/staging"
 
 with DAG(
     dag_id='drs3_stage_works',
@@ -18,7 +20,7 @@ with DAG(
 ) as dag:
     @dag.task
     def stage_next_work():
-        utils.stage_next_work()
+        utils.stage_next_work(SRC_ROOT, STAGING_ROOT)
 
  
     stage_next_work()

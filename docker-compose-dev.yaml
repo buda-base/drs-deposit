@@ -4,14 +4,18 @@
     # GH copilto wait-for-client may have been suggested because I was attaching to thwe wrong service.
     # Nope, probably still needed. --wait-for-client 
     # One more attempt without wait for client, because of status hash on airflow
+    # This is the debug client command
     # 
       command: bash -c "python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678  -m airflow celery worker"
-      volumes:
-        - ./dags:/opt/airflow/dags
-        - ./logs:/opt/airflow/logs
       ports:
         - "5678:5678"
       environment:
         # For now, add other requirements that the DAG might need here. When distributing, bake into a modified image.
         # Get the tools from ao-workflows/airflow-docker.
-        _PIP_ADDITIONAL_REQUIREMENTS: debugpy PIL
+        _PIP_ADDITIONAL_REQUIREMENTS: debugpy Pillow bdrc-db-lib2 bdrc-db-models bdrc-util2
+        _ARCHIVE_ROOT: /mnt/Archive
+      volumes:
+        - /Users/jkatz/tmp/DRS3/Archive0:/mnt/Archive0
+        - /Users/jkatz/tmp/DRS3/Archive1:/mnt/Archive1
+        - /Users/jkatz/tmp/DRS3/Archive2:/mnt/Archive2
+        - /Users/jkatz/tmp/DRS3/Archive3:/mnt/Archive3
