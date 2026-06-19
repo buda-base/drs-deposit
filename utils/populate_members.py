@@ -62,16 +62,20 @@ def populate_members(archive_root: str, work_names: list[str],):
                     for vol_dir in images_dir.iterdir():
                         if vol_dir.is_dir():
                             # Lookup volumeId from Volumes table
-                            # Ge
                             volume_stmt =select(Volumes).where(Volumes.label == vol_dir.name) 
 
                             vol = session.execute(volume_stmt).scalars().first()
                             if not vol:
-                                raise RuntimeError(f"Volume with label {vol_dir.name} not found in database for work {work_name}")
+                                raise RuntimeError(
+                                    f"Volume with label {vol_dir.name} not "
+                                    f"found in database for work {work_name}"
+                                )
 
                             v_pm, is_new = get_or_create(session, ProjectMembers,
                                 pm_type=volume_member_type,
                                 project=project,
+                                # Have to add work here, to help find volumes that are not 
+                                # processed. See get_pms_for_step()
                                 work = work,
                                 volume = vol
                             )

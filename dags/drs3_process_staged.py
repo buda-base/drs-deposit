@@ -21,11 +21,11 @@ with DAG(
 
     @dag.task
     def get_next_staged_work():
-        return su.get_next_unstaged_work()
+        return su.get_next_unstaged_work_pm_item()
 
     @dag.task
     def transcode_staged_volumes(work_ : Any):
-        return tu.transcode_staged_volumes(work_)
+        return tu.transcode_next_work(work_)
 
  
 

@@ -76,7 +76,7 @@ def transcode_work(root_dir: Path, work_name: str, use_tqdm: bool = False):
                     tqdm.write(msg)
                 logging.error(msg)
 
-def convert_one(fpath, drs_vol_path, fname, quality_mode, quality_layers) -> None:
+def convert_one(fpath, drs_vol_path, fname) -> None:
     with Image.open(fpath) as img:
         if img.format in ("TIFF", "TIF"):
             shutil.copy2(fpath, drs_vol_path)
@@ -91,7 +91,7 @@ def convert_one(fpath, drs_vol_path, fname, quality_mode, quality_layers) -> Non
             target_rate = max(1.0, uncompressed_size_bytes / orig_size_bytes)
     
             converted_img.save(jp2_path, format="JPEG2000", quality_mode="rates", quality_layers=[target_rate])
-    return target_rate
+
 
 
 def transcode_volume(volume_path: Path, drs_vol_path: Path):
