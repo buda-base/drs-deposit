@@ -108,6 +108,8 @@ cython_debug/
 # dotenv environment variables
 .env
 .env.*
+secrets/*.txt
+!secrets/*.example.txt
 
 # Airflow
 airflow.db

@@ -24,6 +24,13 @@ with DAG(
         
         exists = os.path.isfile(file_path)
         print(f"Checking for {file_path}: {'Found' if exists else 'Not Found'}")
+        #
+        # validate secrets - not for production
+        env_vars = ["AIRFLOW_JWT_SECRET", "AIRFLOW_ADMIN_PASSWORD", "DB_CONFIG", "AWS_CONFIG",
+                    "AIRFLOW__CORE__FERNET_KEY", "AIRFLOW__API_AUTH__JWT_SECRET", "_AIRFLOW_WWW_USER_PASSWORD"]
+        for var in env_vars:
+            value = os.getenv(var)
+            print(f"{var}: {'Set' if value else 'Not Set'}")
         return exists
 
     check_dataset()
