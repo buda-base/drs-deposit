@@ -78,6 +78,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
     # prod volumes- on a server
 
   user: "${AIRFLOW_UID:-50000}:0"
@@ -134,6 +135,7 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    entrypoint: /opt/airflow/scripts/load_secret_env.sh
 
   airflow-scheduler:
     <<: *airflow-common
