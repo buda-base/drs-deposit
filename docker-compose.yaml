@@ -193,7 +193,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
     volumes:
-        # Overridden in dev
+        # Overridden in dev. 
       - /mnt/Archive0:/mnt/Archive0
       - /mnt/Archive1:/mnt/Archive1
       - /mnt/Archive2:/mnt/Archive2
@@ -203,6 +203,11 @@ services:
       # on sattva
       # - /home/DRS3/staging:/mnt/staging
       # see docker-compose-dev.yaml for dev overrides
+      - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+      - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
+      - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+      - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+      - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
 
 
   airflow-triggerer:
