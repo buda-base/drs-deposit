@@ -6,4 +6,5 @@
 
 copilot_remote_docker
 secrets
+operation
 ```
