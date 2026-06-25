@@ -42,11 +42,11 @@ def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
         work_to_stage_pm_item, source_root, DRS3_STAGING_STEP
     )
     if not unstaged_volumes_pms_items:
-        raise RuntimeError(f"No volumes to stage for work {work_to_stage_pm_item.name} (id={work_to_stage_pm_item.id})")
+        raise RuntimeError(f"No volumes to stage for work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.o_id})")
     try:
         do_staging(unstaged_work_pms_item, unstaged_volumes_pms_items, source_root, staging_root)
     except Exception as e:
-        logger.error(f"Error staging work {work_to_stage_pm_item.name} (id={work_to_stage_pm_item.id}): {e}")
+        logger.error(f"Error staging work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.id}): {e}")
 
         # Maybe partial success
         unstaged_work_pms_item.extras["project_step_result_code"] = 1

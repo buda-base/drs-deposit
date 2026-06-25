@@ -2,13 +2,13 @@
 DAG to populate ProjectMembers from a dataset file, as specified in Architecture.md.
 """
 import os
+from pathlib import Path
+
+import pendulum
 from airflow import DAG
 from airflow.decorators import task
 from airflow.sensors.filesystem import FileSensor
-import pendulum
-from pathlib import Path
-from utils.populate_members import populate_members
-
+from populate_members import populate_members
 
 DATASET_PATH = os.environ.get("DRS3_DATASET_PATH", os.path.expanduser("~/tmp/DRS3/dataset.txt"))
 ARCHIVE_ROOT = os.environ.get("DRS3_ARCHIVE_ROOT", os.path.expanduser("~/tmp/DRS3/Archive"))
@@ -18,6 +18,7 @@ with DAG(
     schedule=None,
     start_date=pendulum.datetime(2026, 5, 15, tz="UTC"),
     catchup=False,
+    tags=["project_members","drs3"],
 ) as dag:
     
     sense_dataset = FileSensor(

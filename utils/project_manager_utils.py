@@ -29,7 +29,7 @@ class PMTarget(enum.StrEnum):
     PROJECT_MEMBER = "project_member"
     PROJECT_MEMBER_STEP = "project_member_step"
 
-AllowedModel: TypeAlias = "ProjectMembers | ProjectMemberSteps"  # noqa: UP040
+AllowedModel: TypeAlias = ProjectMembers | ProjectMemberSteps  # noqa: UP040
 ORMIdentity: TypeAlias = int | tuple[Any, ...] | Mapping[str, Any]  # noqa: UP040
 
 TARGET_TO_MODEL: dict[PMTarget, type] = {

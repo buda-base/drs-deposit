@@ -1,14 +1,14 @@
+import os
+
+import pendulum
 from airflow import DAG
 from airflow.decorators import task
-from datetime import datetime
-import pendulum
-import os
 
 with DAG(
     dag_id='hoopsty_dataset_checker',
     # schedule='@hourly',
     schedule=None,
-    start_date=pendulum.datetime(2026, 4, 26, tz="UTC"),
+    tags=["staging", "works", "volumes", "drs3"],
     catchup=False,
 ) as dag:
 
@@ -25,12 +25,6 @@ with DAG(
         exists = os.path.isfile(file_path)
         print(f"Checking for {file_path}: {'Found' if exists else 'Not Found'}")
         #
-        # validate secrets - not for production
-        env_vars = ["AIRFLOW_JWT_SECRET", "AIRFLOW_ADMIN_PASSWORD", "DB_CONFIG", "AWS_CONFIG",
-                    "AIRFLOW__CORE__FERNET_KEY", "AIRFLOW__API_AUTH__JWT_SECRET", "_AIRFLOW_WWW_USER_PASSWORD"]
-        for var in env_vars:
-            value = os.getenv(var)
-            print(f"{var}: {'Set' if value else 'Not Set'}")
         return exists
 
     check_dataset()

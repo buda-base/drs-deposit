@@ -6,17 +6,17 @@ from pathlib import Path
 from typing import Any
 
 import pendulum
+import staging_utils as su
+import transcode_utils as tu
 from airflow import DAG
 from airflow.exceptions import AirflowFailException
-
-import utils.staging_utils as su
-import utils.transcode_utils as tu
 
 with DAG(
     dag_id='drs3_process_staged',
     schedule=None,
-    start_date=pendulum.datetime(2026, 5, 15, tz="UTC"),
+    start_date=None, # pendulum.datetime(2026, 5, 15, tz="UTC"),
     catchup=False,
+    tags=["drs3"],
 ) as dag:
 
     @dag.task
