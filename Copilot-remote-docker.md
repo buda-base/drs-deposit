@@ -75,3 +75,38 @@ Deploy Airflow in production with a clear separation between development and pro
 - Should I help you set up a CI/CD pipeline for DAG deployment?
 
 Let me know which part you want to implement first, and I’ll generate the necessary files and instructions.
+
+# Debugging airflow in VSCODE
+
+## Keep the worker running under debugpy
+Your worker command in docker-compose-dev.yaml is correct in principle.
+For easier first attach, add wait-for-client once:
+command: bash -c "python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m airflow celery worker"
+
+## Make sure the dags don't auto fire off
+Comment out their start dates and schedule, so they only can be manually triggered in the web.
+## Start services (or recreate worker)
+- Run:
+docker compose -f docker-compose.yaml -f docker-compose-dev.yaml -f docker-compose-secrets.yaml up -d --force-recreate airflow-worker airflow-scheduler airflow-dag-processor
+
+- Attach from VS Code
+Use the existing config in launch.json:
+Python: Attach to Container
+`launch.json` already set up to localhost:5678, which connects to the `airflow-worker` service command `docker-compose.py` which maps its port 5678 (the default pydebug port) to host's 5678
+
+- Set breakpoints in task execution code, then trigger DAG
+Set breakpoint inside the task body in simple_dag.py, not only at module top-level DAG definition code.
+- Then trigger hoopsty_dataset_checker from UI.
+The worker should hit the breakpoint when it executes check_dataset.
+
+- If breakpoints still do not hit, switch Celery to single-process debug mode
+REM that the airflow-worker command (docker-compose.py) is to run debugpy on celery worker
+Celery prefork can miss breakpoints in child processes.
+Temporarily run worker as:
+... -m airflow celery worker --pool solo --concurrency 1
+This is the most reliable mode for breakpoint debugging.
+
+- If run never starts, check scheduler health
+If scheduler is restarting, tasks will not dispatch even with correct worker debugpy setup.
+Check:
+docker compose -f docker-compose.yaml -f docker-compose-dev.yaml -f docker-compose-secrets.yaml ps

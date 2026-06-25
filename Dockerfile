@@ -1,5 +1,17 @@
 FROM apache/airflow:3.2.1
 
+USER root
+RUN mkdir -p /mnt/staging/DRS3
+RUN mkdir -p /mnt/Archive0
+RUN mkdir -p /mnt/Archive1
+RUN mkdir -p /mnt/Archive2
+RUN mkdir -p /mnt/Archive3
+RUN chown -R airflow:root /mnt/staging/DRS3
+RUN chown -R airflow:root /mnt/Archive0
+RUN chown -R airflow:root /mnt/Archive1
+RUN chown -R airflow:root /mnt/Archive2
+RUN chown -R airflow:root /mnt/Archive3
+
 USER airflow
 
 COPY --chown=airflow:root --chmod=755 scripts/load_secret_env.sh /opt/airflow/scripts/load_secret_env.sh

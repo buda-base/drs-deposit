@@ -21,17 +21,24 @@ services:
     # One more attempt without wait for client, because of status hash on airflow
     # This is the debug client command
     # 
-    command: bash -c "python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678  -m airflow celery worker"
+    command: bash -c "python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678 -m airflow celery worker"
     ports:
-      - "5678:5678"
+    - "5678:5678"
     environment:
       _ARCHIVE_ROOT: /mnt/Archive
     volumes:
+      # Uncomment these when testing on a server - this is for local testing.
       - /Users/jkatz/tmp/DRS3/Archive0:/mnt/Archive0
       - /Users/jkatz/tmp/DRS3/Archive1:/mnt/Archive1
       - /Users/jkatz/tmp/DRS3/Archive2:/mnt/Archive2
       - /Users/jkatz/tmp/DRS3/Archive3:/mnt/Archive3
       - /Users/jkatz/tmp/DRS3/staging:/mnt/staging
+      - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+      - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
+      - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+      - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+      - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
+      - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
 
   airflow-triggerer:
     <<: *airflow-dev-build
