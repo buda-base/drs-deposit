@@ -74,3 +74,20 @@ Operational Notes
 - Skipped tasks do not emit Dataset events.
 - The hash Variable prevents duplicate work from unchanged files.
 - If scheduling appears stalled, check scheduler health and logs first.
+
+Pytest Invocation
+-----------------
+
+Use inline environment variables at invocation time so credentials are not hardcoded:
+
+.. code-block:: bash
+
+   BDRC_DB_CNF="<fill_me>" BDRC_DB_PASSWORD="<fill_me>" pytest -q
+
+For optional DB integration tests only:
+
+.. code-block:: bash
+
+   BDRC_DB_CNF="<fill_me>" BDRC_DB_PASSWORD="<fill_me>" pytest -q -m integration
+
+.
