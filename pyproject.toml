@@ -24,6 +24,7 @@ dev =  [
     "debugpy>=1.8.20",
     "mypy>=1.11.0",
     "ruff>=0.6.9",
+    "pytest>=8.3.0",
     # add other dev-only tools here
 ]
 
@@ -60,3 +61,8 @@ pythonVersion = "3.14"
 [[tool.pyright.executionEnvironments]]
 root = "."
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: tests requiring BDRC_DB_CNF and BDRC_DB_PASSWORD",
+]

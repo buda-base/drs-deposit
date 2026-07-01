@@ -22,7 +22,7 @@ templates_path = ['_templates']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'classic'
-html_static_path = ["_static"]
+html_static_path = []
 # MyST Parser configuration
 myst_enable_extensions = [
     "colon_fence",
