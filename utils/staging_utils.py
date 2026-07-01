@@ -5,9 +5,11 @@ Supports DAG. Extracted for testing
 """
 
 import logging
+from pathlib import Path
 
 import const as c
 import pendulum
+from archive_ops.api import get_archive_location
 from project_manager_utils import (
     _get_drs3_step_name,
     get_next_work_pm_for_step,
@@ -30,23 +32,28 @@ def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
     :type staging_root: str
     :return: pmItem instance for the work being staged
     :rtype: pmItem
+
+    ACHTUNG! the sources for staging are assumed to be in the archive in
+    archive_ops.api.get_archive_location(...) format
     """
 
     work_to_stage_pm_item : pmItem | None = get_next_work_pm_for_step(DRS3_STAGING_STEP)
     if not work_to_stage_pm_item:
         return
 
+    archive_source_root: Path = Path(get_archive_location(source_root, work_to_stage_pm_item.label))
+    staging_source_work_root: Path = Path(staging_root, work_to_stage_pm_item.label)
     unstaged_work_pms_item: pmItem
     unstaged_volumes_pms_items: list[pmItem] 
     unstaged_work_pms_item, unstaged_volumes_pms_items = get_pms_for_step(
-        work_to_stage_pm_item, source_root, DRS3_STAGING_STEP
+        work_to_stage_pm_item, archive_source_root, DRS3_STAGING_STEP
     )
     if not unstaged_volumes_pms_items:
         raise RuntimeError(f"No volumes to stage for work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.o_id})")
     try:
-        do_staging(unstaged_work_pms_item, unstaged_volumes_pms_items, source_root, staging_root)
+        do_staging(unstaged_work_pms_item, unstaged_volumes_pms_items, archive_source_root, staging_source_work_root)
     except Exception as e:
-        logger.error(f"Error staging work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.id}): {e}")
+        logger.error(f"Error staging work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.o_id}): {e}")
 
         # Maybe partial success
         unstaged_work_pms_item.extras["project_step_result_code"] = 1
@@ -57,28 +64,23 @@ def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
 def do_staging(
     work_pms_item: pmItem,
     volumes_pms_items: list[pmItem],
-    source_root: str, staging_root: str) -> None:
+    work_source_root: Path, staging_root: Path) -> None:
     """
     Stage mainline
     :param work_pms_item: the pmItem for the work being staged, updated out of context
     :param volumes_pms_items: list of pmItem for the volumes being staged, updated out of context
-    :param staging_root: root directory for staging
-    :param source_root: root directory for source
+    :param work_source_root: root directory for work source content
+    :type work_source_root: Path
+    :param staging_root: root directory for staging the work's volumes
+    :type staging_root: Path
     :type work_pms_item: pmItem
     :type volumes_pms_items: list[pmItem]
-    :type staging_root: str
-    :return: status message
-    :rtype: str
     """
 
     import shutil
-    from pathlib import Path
 
-    from archive_ops.api import get_archive_location
-
-    work_name: str = work_pms_item.label
-    source_path: Path = c.get_work_image_path(Path(get_archive_location(source_root,work_name)))
-    staging_path: Path = c.get_work_image_path(Path(staging_root) / work_name)
+    source_path: Path = c.get_work_image_path(work_source_root)
+    staging_path: Path = c.get_work_image_path(staging_root)
 
 
     # always look on the bright side of liff

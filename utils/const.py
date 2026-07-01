@@ -38,3 +38,13 @@ def get_work_transcode_path(work_path: StrPath) -> Path:
     :rtype: Path
     """
     return Path(work_path) / "drs"
+
+def get_work_metadata_path(work_path: StrPath) -> Path:
+    """
+    Get the path to the metadata output for a given work in the archive.
+    :param work_path: path to the work directory
+    :type work_path: StrPath
+    :return: Path to the metadata output file for the given work
+    :rtype: Path
+    """
+    return Path(work_path) / "metadata.json"

@@ -32,7 +32,7 @@ def create_metadata_file(content_path: Path, metadata_file_path: Path):
     logger.info(f"Generating metadata from {str(content_path)} into {str(metadata_file_path)}.")
 
 
-def transcode_staged_volumes(staging_root: str) -> None:
+def transcode_staged_volumes(work_staging_root: str) -> None:
     """
     Transcode all staged volumes for the given work.
     Like the staging process, it  uses what's on disk. So if a stage failed, it will

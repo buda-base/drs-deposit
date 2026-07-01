@@ -215,15 +215,15 @@ def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps = Non
 
 
 def get_pms_for_step(
-    work_pm_item: pmItem, source_root: str, project_step: Steps
+    work_pm_item: pmItem, work_source_root: Path, project_step: Steps
 ) -> tuple[pmItem, list[pmItem]]:
     """
     Get or create all the ProjectMemberSteps for the volumes of this work
     that need to be operated on, and return them as a list
     :param work_pm_item: the pmItem instance for the work to stage
     :type unstaged_work_pm_item: pmItem
-    :param source_root: the root directory for the source files
-    :type source_root: str
+    :param work_source_root: the root directory for the source files of a work
+    :type work_source_root: Path
     :param project_step: the Steps instance for the staging step
     :type project_step: Steps
     :return: list of pmItem for the volumes to stage
@@ -256,7 +256,7 @@ def get_pms_for_step(
             PMTarget.PROJECT_MEMBER_STEP
         )
     
-        images_root = c.get_work_image_path(Path(   source_root, unstaged_work_pm.work.WorkName))
+        images_root = c.get_work_image_path(work_source_root)
         image_dirs = [d for d in images_root.iterdir() if d.is_dir()] if images_root.exists() else []
 
         # Get the ProjectMembers for the volumes in this work
