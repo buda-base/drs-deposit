@@ -7,7 +7,6 @@ import pendulum
 from drs_pds_transcode import transcode_volume
 from project_manager_utils import (
     _get_drs3_step_name,
-    get_next_work_pm_for_step,
     get_pms_for_step,
     pmItem,
     update_database_from_pm_items,
@@ -32,23 +31,23 @@ def create_metadata_file(content_path: Path, metadata_file_path: Path):
     logger.info(f"Generating metadata from {str(content_path)} into {str(metadata_file_path)}.")
 
 
-def transcode_staged_volumes(work_staging_root: str) -> None:
+def transcode_staged_volumes(staging_root: str, work_pm: pmItem) -> pmItem:
     """
     Transcode all staged volumes for the given work.
     Like the staging process, it  uses what's on disk. So if a stage failed, it will
     not appear on disk.
+    :param staging_root: The root directory under which where staged works are located.
+    :type staging_root: str
+    :param work_pm: The work item to be transcoded.
+    :type work_pm: pmItem
     """
-    work_pm: pmItem = get_next_work_pm_for_step(
-        project_step=DRS3_TRANSCODE_STEP,
-        prerquisite_step=DRS3_STAGE_STEP)
-    if not work_pm:
-        logger.info("No work found ready for transcoding.")
-        return
+
+    work_staging_root: Path = Path(staging_root, work_pm.label)
     work_pms_item: pmItem
     staged_volume_pms_items: list[pmItem] = []
     work_pms_item, staged_volume_pms_items = get_pms_for_step(
         work_pm,
-        staging_root,DRS3_TRANSCODE_STEP
+        work_staging_root,DRS3_TRANSCODE_STEP
     )
     
     work_pms_item.extras[c.PROJECT_STEP_RESULT_CODE_KEY] = 0        
@@ -64,9 +63,8 @@ def transcode_staged_volumes(work_staging_root: str) -> None:
         try:
             staged_volume.extras[c.PROJECT_STEP_RESULT_CODE_KEY] = 0
             staged_volume.extras[c.PROJECT_STEP_START_TIME_KEY] = pendulum.now("UTC")
-            work_root = Path(staging_root,work_pm.label)
-            volume_root = c.get_work_image_path(work_root) / staged_volume.label
-            output_root = c.get_work_transcode_path(work_root) / staged_volume.label
+            volume_root = c.get_work_image_path(work_staging_root) / staged_volume.label
+            output_root = c.get_work_transcode_path(work_staging_root) / staged_volume.label
             os.makedirs(output_root, exist_ok=True)
             logger.info(f"Transcoding volume {staged_volume.label} from {str(volume_root)} to {str(output_root)}")
             transcode_volume(volume_root, output_root)
@@ -83,6 +81,8 @@ def transcode_staged_volumes(work_staging_root: str) -> None:
     work_pms_item.extras[c.PROJECT_STEP_RESULT_CODE_KEY] = 0 if all_worked_ok else 1
 
     update_database_from_pm_items(work_pms_item, staged_volume_pms_items)
+    return work_pm
+
 
 def send_to_s3(source_path: Path, destination_s3_path: S3Path):
     """

@@ -1,4 +1,4 @@
-FROM apache/airflow:3.2.1
+FROM apache/airflow:3.2.1-python3.12
 
 USER root
 RUN mkdir -p /mnt/staging/DRS3
@@ -20,7 +20,6 @@ RUN pip install --no-cache-dir \
     "bdrc-db-models>=2.0.6" \
     "bdrc-db-lib2>=2.0.6" \
     "cryptography>=47.0.0" \
-    "pathlib>=1.0.1" \
     "pillow>=12.2.0" \
     "s3pathlib>=2.3.6" \
     "tqdm>=4.67.3" \

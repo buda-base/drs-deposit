@@ -72,7 +72,7 @@ def _comm_new_lines(previous: list[str], current: list[str]) -> list[str]:
 logger = logging.getLogger(__name__)
 with DAG(
     dag_id="drs3_candidate_works_asset",
-    schedule="0 * * * *",
+    schedule="*/15 * * * *",
     start_date=pendulum.datetime(2026, 5, 15, tz="UTC"),
     catchup=False,
     tags=["staging", "works", "project_members", "drs3"],

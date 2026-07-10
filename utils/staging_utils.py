@@ -4,14 +4,15 @@
 Supports DAG. Extracted for testing
 """
 
+
 import logging
 from pathlib import Path
 
 import const as c
 import pendulum
+import project_manager_utils as pmu
 from archive_ops.api import get_archive_location
 from project_manager_utils import (
-    _get_drs3_step_name,
     get_next_work_pm_for_step,
     get_pms_for_step,
     pmItem,
@@ -19,8 +20,6 @@ from project_manager_utils import (
 )
 
 logger = logging.getLogger(__name__)
-
-DRS3_STAGING_STEP = _get_drs3_step_name(c.STAGE_STEP_NAME)
 
 def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
     """
@@ -37,7 +36,7 @@ def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
     archive_ops.api.get_archive_location(...) format
     """
 
-    work_to_stage_pm_item : pmItem | None = get_next_work_pm_for_step(DRS3_STAGING_STEP)
+    work_to_stage_pm_item : pmItem | None = get_next_work_pm_for_step(pmu.DRS3_STAGE_STEP)
     if not work_to_stage_pm_item:
         return
 
@@ -46,10 +45,13 @@ def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
     unstaged_work_pms_item: pmItem
     unstaged_volumes_pms_items: list[pmItem] 
     unstaged_work_pms_item, unstaged_volumes_pms_items = get_pms_for_step(
-        work_to_stage_pm_item, archive_source_root, DRS3_STAGING_STEP
+        work_to_stage_pm_item, archive_source_root, pmu.DRS3_STAGE_STEP
     )
     if not unstaged_volumes_pms_items:
-        raise RuntimeError(f"No volumes to stage for work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.o_id})")
+        raise RuntimeError(
+            f"No volumes to stage for work {work_to_stage_pm_item.label} "
+            f"(id={work_to_stage_pm_item.o_id})"
+        )
     try:
         do_staging(unstaged_work_pms_item, unstaged_volumes_pms_items, archive_source_root, staging_source_work_root)
     except Exception as e:

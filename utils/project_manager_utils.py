@@ -23,7 +23,10 @@ from sqlalchemy.orm import Session, aliased, joinedload
 # from BdrcDbModels.project_manager import ProjectMembers, ProjectMemberSteps
 
 logger = logging.getLogger(__name__)
+# TODO: Use environment variable supported in 
+# bdrc-db-lib2>=2.0.7
 MY_DB = "qa"  # or 'prod' in production
+
 
 class PMTarget(enum.StrEnum):
     PROJECT_MEMBER = "project_member"
@@ -88,6 +91,8 @@ def _get_drs3_step_name(step_name: str) -> Steps:
         if not transcode_step:
             raise RuntimeError(f"{step_name} step not found")
         return transcode_step
+DRS3_STAGE_STEP = _get_drs3_step_name(c.STAGE_STEP_NAME)
+DRS3_TRANSCODE_STEP = _get_drs3_step_name(c.TRANSCODE_STEP_NAME)
 
 def _get_drs3_project_objects() -> tuple[Projects, MemberTypes, MemberTypes, Steps]:
     """
@@ -342,3 +347,13 @@ def update_database_from_pm_items(work_pms_item: pmItem, volume_pms_items: list[
         if not upd_ok:
             db_work_pms.project_step_result_code = 1
         session.commit()
+
+def get_next_work_to_transcode() -> pmItem | None:
+    """
+    Get the next work item that has been staged but not yet transcoded.
+    Returns None if no such work is found.
+    """
+    _t_step = _get_drs3_step_name(c.TRANSCODE_STEP_NAME)
+    _s_step = _get_drs3_step_name(c.STAGE_STEP_NAME)
+    return get_next_work_pm_for_step(_t_step, _s_step)
+

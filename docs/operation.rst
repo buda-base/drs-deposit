@@ -39,14 +39,17 @@ Producer DAG
 - Schedule: every minute
 - Behavior:
 
-  - If candidate file is missing, unchanged, or empty: short-circuit (no Dataset event)
-  - If candidate file changed and has values: populate project members, then emit Dataset event
+   - If candidate file is missing, unchanged, or empty: short-circuit
+      (no Asset event)
+
+   - If candidate file changed and has values: populate project members,
+      then emit Asset event
 
 Consumer DAG
 ~~~~~~~~~~~~
 
 - DAG ID: ``drs3_stage_works``
-- Schedule: ``[Dataset("drs3://candidate_works/changed")]``
+- Schedule: ``[Asset("drs3://candidate_works/changed")]``
 - Behavior:
 
   - Triggered by Dataset event from producer DAG
@@ -57,7 +60,8 @@ How To Test
 
 1. Ensure Airflow services are healthy (scheduler, dag-processor, worker).
 2. Put work IDs (one per line) into ``drs3_candidate_works.lst``.
-3. Wait for the next producer poll interval (about 1 minute), or manually trigger the producer DAG.
+3. Wait for the next producer poll interval (about 1 minute),
+   or manually trigger the producer DAG.
 4. In Airflow UI, confirm:
 
    - ``drs3_candidate_works_dataset`` run succeeds
@@ -65,7 +69,8 @@ How To Test
    - ``drs3_stage_works`` is automatically triggered
    - Three stage tasks run in parallel
 
-5. Re-run without changing file content: producer should short-circuit and no new consumer run should start.
+5. Re-run without changing file content: producer should short-circuit
+   and no new consumer run should start.
 
 Operational Notes
 -----------------
@@ -78,7 +83,8 @@ Operational Notes
 Pytest Invocation
 -----------------
 
-Use inline environment variables at invocation time so credentials are not hardcoded:
+Use inline environment variables at invocation time so credentials
+are not hardcoded:
 
 .. code-block:: bash
 

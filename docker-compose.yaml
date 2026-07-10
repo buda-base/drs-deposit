@@ -79,6 +79,7 @@ x-airflow-common:
     DRS3_STAGING_ROOT: /mnt/staging
     DRS3_ARCHIVE_ROOT: /mnt/Archive
 
+
   volumes:
       - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
       - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -288,6 +289,10 @@ services:
         echo "Running airflow config list to create default config file if missing."
         echo
         /entrypoint airflow config list >/dev/null
+        echo
+        echo "Running database migration."
+        echo
+        /entrypoint airflow db migrate
         echo
         echo "Files in shared volumes:"
         echo
