@@ -8,9 +8,8 @@ import os
 
 import pendulum
 from airflow import DAG
-from airflow.decorators import task
-from airflow.sdk import Asset
-from airflow.sensors.time_delta import TimeDeltaSensor
+from airflow.providers.standard.sensors.time_delta import TimeDeltaSensor
+from airflow.sdk import Asset, task
 from staging_utils import stage_next_work
 
 # File paths Must exist in docker. See docker-compose
@@ -39,13 +38,13 @@ with DAG(
     # in 30 second increments
     stage_tasks = []
     for i in range(1, 4):
-        stage_task = stage_next_work_task.override(task_id=f"stage_next_work_task_{i}")()
-        stage_tasks.append(stage_task)
-
-        # stagger_start = TimeDeltaSensor(
-        # ask_id=f"stagger_start_{i}",
-        #     delta=pendulum.duration(seconds=(i - 1) * 30),
-        # )
         # stage_task = stage_next_work_task.override(task_id=f"stage_next_work_task_{i}")()
-        # stagger_start >> stage_task
         # stage_tasks.append(stage_task)
+
+        stagger_start = TimeDeltaSensor(
+            task_id=f"stagger_start_{i}",
+            delta=pendulum.duration(seconds=(i - 1) * 30),
+        )
+        stage_task = stage_next_work_task.override(task_id=f"stage_next_work_task_{i}")()
+        stagger_start >> stage_task
+        stage_tasks.append(stage_task)
