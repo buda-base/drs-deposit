@@ -8,6 +8,7 @@ import pendulum
 import project_manager_utils as pmu
 import transcode_utils as tu
 from airflow import DAG
+from airflow.sdk import task
 from airflow.sdk.exceptions import AirflowFailException, AirflowSkipException
 
 STAGING_ROOT = os.environ["DRS3_STAGING_ROOT"]
@@ -20,7 +21,7 @@ with DAG(
     tags=["drs3","transcode","metadata","upload"],
 ) as dag:
 
-    @dag.task
+    @task
     def get_next_staged_work():
         """
         Get the next staged work item that has not been transcoded yet
@@ -28,13 +29,14 @@ with DAG(
         _nsw = pmu.get_next_work_to_transcode()
         if not _nsw:
             raise AirflowSkipException("No staged work to process.")
-    @dag.task
+        return _nsw
+    @task
     def transcode_staged_volumes(work_ : pmu.pmItem):
         return tu.transcode_staged_volumes(STAGING_ROOT, work_)
 
  
 
-    @dag.task
+    @task
     def generate_metadata(work: pmu.pmItem):
         """Generate metadata for the given work."""
 
@@ -47,7 +49,7 @@ with DAG(
         tu.create_metadata_file(work_staging_root, work_metadata_root)
         return work
 
-    @dag.task
+    @task
     def upload_to_s3(work: pmu.pmItem):
         """Upload the work and its metadata to S3."""
         if work is None or not work.label or not work.o_id:

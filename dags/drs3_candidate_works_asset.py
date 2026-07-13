@@ -10,8 +10,7 @@ from pathlib import Path
 
 import pendulum
 from airflow import DAG
-from airflow.decorators import task
-from airflow.sdk import Asset
+from airflow.sdk import Asset, task
 from populate_members import populate_members
 
 SRC_ROOT = os.environ.get("DRS3_ARCHIVE_ROOT", "/mnt/Archive")
