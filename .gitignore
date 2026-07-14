@@ -121,3 +121,4 @@ logs/
 # MacOS
 .DS_Store
 uv.lock
+.logs0/dag_processor/latest

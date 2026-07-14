@@ -15,28 +15,40 @@ from archive_ops.api import get_archive_location
 from project_manager_utils import (
     get_next_work_pm_for_step,
     get_pms_for_step,
+    get_work_pm_for_step,
     pmItem,
     update_database_from_pm_items,
 )
 
 logger = logging.getLogger(__name__)
 
-def stage_next_work(source_root: str, staging_root: str) -> pmItem | None:
+def stage_next_work(source_root: str, staging_root: str, work_name: str | None = None) -> pmItem | None:
     """
-    Finds the next unstaged work from the project, creates the ProjectMemberSteps 
-    for the work and its volumes, and stages the content for each volume.
+    Finds the next unstaged work (or a requested work by name), creates the
+    ProjectMemberSteps for the work and its volumes, and stages each volume.
     :param source_root: root directory for source content
     :param staging_root: root directory for staging
     :type source_root: str
     :type staging_root: str
+    :param work_name: optional explicit work name to stage
+    :type work_name: str | None
     :return: pmItem instance for the work being staged
     :rtype: pmItem
 
     ACHTUNG! the sources for staging are assumed to be in the archive in
     archive_ops.api.get_archive_location(...) format
     """
+# Aloow calling without work name, and use the DB
+# Unknwn: does this break the db based search? No.absWe used to be tagging 
+# works that had PMs, but no steps.abs# With the
+# new pattern of processing 'n' at a time, the PMS'abs
+# are created when neeeded, not sought and filtered (looking for one iwth
+# no data).)
+    if work_name:
+        work_to_stage_pm_item = get_work_pm_for_step(work_name, pmu.DRS3_STAGE_STEP)
+    else:
+        work_to_stage_pm_item = get_next_work_pm_for_step(pmu.DRS3_STAGE_STEP)
 
-    work_to_stage_pm_item : pmItem | None = get_next_work_pm_for_step(pmu.DRS3_STAGE_STEP)
     if not work_to_stage_pm_item:
         return
 

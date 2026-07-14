@@ -78,6 +78,7 @@ x-airflow-common:
     PYTHONPATH: /opt/airflow:/opt/airflow/utils
     DRS3_STAGING_ROOT: /mnt/staging
     DRS3_ARCHIVE_ROOT: /mnt/Archive
+    DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS: ${DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS:-4}
 
 
   volumes:

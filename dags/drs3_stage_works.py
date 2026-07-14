@@ -8,8 +8,7 @@ import os
 
 import pendulum
 from airflow import DAG
-from airflow.providers.standard.sensors.time_delta import TimeDeltaSensor
-from airflow.sdk import Asset, task
+from airflow.sdk import task
 from staging_utils import stage_next_work
 
 # File paths Must exist in docker. See docker-compose
@@ -17,34 +16,31 @@ from staging_utils import stage_next_work
 # so copying the references is valid in any module
 os.environ.setdefault("DRS3_SRC_ROOT", "/mnt/Archive")
 os.environ.setdefault("DRS3_STAGING_ROOT", "/mnt/staging")
-os.environ.setdefault("DRS3_STAGE_WORKS_ASSET_URI", "drs3://candidate_works/changed")
+os.environ.setdefault("DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS", "4")
 
 SRC_ROOT = os.environ["DRS3_SRC_ROOT"]
 STAGING_ROOT = os.environ["DRS3_STAGING_ROOT"]
-DRS3_STAGE_WORKS_ASSET = Asset(os.environ["DRS3_STAGE_WORKS_ASSET_URI"])
+MAX_ACTIVE_RUNS = int(os.environ["DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS"])
 
 with DAG(
     dag_id='drs3_stage_works',
-    schedule=[DRS3_STAGE_WORKS_ASSET],
+    schedule=None,
     start_date=pendulum.datetime(2026, 5, 15, tz="UTC"),
     catchup=False,
+    max_active_runs=MAX_ACTIVE_RUNS,
     tags=["staging", "works", "volumes", "drs3"],
 ) as dag:
+    try:
+        from airflow.sdk import get_current_context
+    except ImportError:
+        from airflow.operators.python import get_current_context
+
     @task
     def stage_next_work_task():
-        stage_next_work(SRC_ROOT, STAGING_ROOT)
+        context = get_current_context()
+        dag_run = context.get("dag_run")
+        dag_run_conf = dag_run.conf if dag_run else {}
+        work_name = dag_run_conf.get("work_name")
+        stage_next_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
 
-    # This should stagger the start of each stage task
-    # in 30 second increments
-    stage_tasks = []
-    for i in range(1, 4):
-        # stage_task = stage_next_work_task.override(task_id=f"stage_next_work_task_{i}")()
-        # stage_tasks.append(stage_task)
-
-        stagger_start = TimeDeltaSensor(
-            task_id=f"stagger_start_{i}",
-            delta=pendulum.duration(seconds=(i - 1) * 30),
-        )
-        stage_task = stage_next_work_task.override(task_id=f"stage_next_work_task_{i}")()
-        stagger_start >> stage_task
-        stage_tasks.append(stage_task)
+    stage_next_work_task()

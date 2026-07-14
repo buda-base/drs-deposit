@@ -1,5 +1,5 @@
 """
-Producer DAG that checks candidate works file changes and emits a Dataset event.
+Producer DAG that checks candidate works and triggers one stage DAG run per new work.
 """
 
 import logging
@@ -10,7 +10,8 @@ from pathlib import Path
 
 import pendulum
 from airflow import DAG
-from airflow.sdk import Asset, task
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+from airflow.sdk import task
 from populate_members import populate_members
 
 SRC_ROOT = os.environ.get("DRS3_ARCHIVE_ROOT", "/mnt/Archive")
@@ -20,7 +21,7 @@ DRS3_CANDIDATE_TMP_DIR = Path(STAGING_ROOT, "tmp")
 DRS3_CANDIDATE_SNAPSHOT_PREFIX = ".tmp.drs3_candidate_works."
 DRS3_CANDIDATE_SNAPSHOT_RETAIN_COUNT = 50
 DRS3_CANDIDATE_ARCHIVE_ZIP = DRS3_CANDIDATE_TMP_DIR / "tmp.drs3_candidates.zip"
-DRS3_STAGE_WORKS_ASSET = Asset("drs3://candidate_works/changed")
+DRS3_STAGE_WORKS_DAG_ID = "drs3_stage_works"
 
 
 def _read_sorted_unique_lines(path: Path) -> list[str]:
@@ -76,15 +77,15 @@ with DAG(
     catchup=False,
     tags=["staging", "works", "project_members", "drs3"],
 ) as dag:
-    @task.short_circuit
-    def populate_candidate_work_members() -> bool:
+    @task
+    def populate_candidate_work_members() -> list[str]:
         """
         Get any new works from the list. The lnlist could be a new file, or an extension of the old file.
         There is no requirement to remove the old file.
         """
         if not DRS3_CANDIDATE_WORKS.exists():
             logger.info("No candidate works file found.")
-            return False
+            return []
 
         sorted_lines = _read_sorted_unique_lines(DRS3_CANDIDATE_WORKS)
         current_snapshot = _write_snapshot(sorted_lines)
@@ -95,13 +96,30 @@ with DAG(
         new_work_names = _comm_new_lines(previous_lines, sorted_lines)
 
         if not new_work_names:
-            return False
+            return []
 
         populate_members(SRC_ROOT, new_work_names)
-        return True
+        return new_work_names
 
-    @task(outlets=[DRS3_STAGE_WORKS_ASSET])
-    def emit_stage_works_asset_event() -> str:
-        return "candidate works changed"
+    @task
+    def build_stage_work_run_confs(work_names: list[str]) -> list[dict[str, str]]:
+        run_confs = [{"work_name": work_name} for work_name in work_names]
+        logger.info(
+            "Emitting %d trigger events for %s (dag_id=%s)",
+            len(run_confs),
+            DRS3_STAGE_WORKS_DAG_ID,
+            dag.dag_id,
+        )
+        return run_confs
 
-    populate_candidate_work_members() >> emit_stage_works_asset_event()
+    work_names = populate_candidate_work_members()
+    stage_work_run_confs = build_stage_work_run_confs(work_names)
+
+    # partial sets shared args once; expand triggers one run per conf item.
+    # Keep reset_dag_run=False so an existing run_id is not reset/rerun.
+    TriggerDagRunOperator.partial(
+        task_id="trigger_stage_work_dag_runs",
+        trigger_dag_id=DRS3_STAGE_WORKS_DAG_ID,
+        wait_for_completion=False,
+        reset_dag_run=False,
+    ).expand(conf=stage_work_run_confs)

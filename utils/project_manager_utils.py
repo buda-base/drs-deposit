@@ -219,6 +219,44 @@ def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps = Non
         return pmItem(next_work_pm.work.WorkName, next_work_pm.id, PMTarget.PROJECT_MEMBER)
 
 
+def get_work_pm_for_step(work_name: str, project_step: Steps) -> pmItem | None:
+    """
+    Get a specific work ProjectMembers row by work name and create/get its
+    ProjectMemberSteps row for the requested step.
+    Returns None if the work is not found.
+    """
+    with DrsDbContext(MY_DB) as db:
+        session: Session = db.get_session()
+
+        stmt = (
+            select(ProjectMembers)
+            .where(
+                ProjectMembers.project == DRS3_PROJECT,
+                ProjectMembers.pm_type == DRS3_WORK_TYPE,
+                ProjectMembers.work.has(WorkName=work_name),  # pyright: ignore[reportArgumentType]
+            )
+            .order_by(ProjectMembers.id)
+        )
+
+        work_pm = session.scalars(stmt).first()
+        if not work_pm:
+            logger.info(f"Work not found in project members: {work_name}")
+            return None
+
+        _, is_new = get_or_create(
+            session,
+            ProjectMemberSteps,
+            project_member=work_pm,
+            project_step=project_step,
+        )
+        session.commit()
+
+        logger.info(
+            f"{'Created' if is_new else 'Found'} ProjectMemberSteps for requested work {work_name}"
+        )
+        return pmItem(work_pm.work.WorkName, work_pm.id, PMTarget.PROJECT_MEMBER)
+
+
 def get_pms_for_step(
     work_pm_item: pmItem, work_source_root: Path, project_step: Steps
 ) -> tuple[pmItem, list[pmItem]]:
