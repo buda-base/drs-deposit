@@ -67,18 +67,23 @@ def stage_next_work(source_root: str, staging_root: str, work_name: str | None =
     try:
         do_staging(unstaged_work_pms_item, unstaged_volumes_pms_items, archive_source_root, staging_source_work_root)
     except Exception as e:
-        logger.error(f"Error staging work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.o_id}): {e}")
+        logger.error(f"- X staging work {work_to_stage_pm_item.label} (id={work_to_stage_pm_item.o_id}): {e}")
 
         # Maybe partial success
         unstaged_work_pms_item.extras["project_step_result_code"] = 1
     finally:        
         update_database_from_pm_items(unstaged_work_pms_item, unstaged_volumes_pms_items)
-    return work_to_stage_pm_item
+        if unstaged_work_pms_item.extras.get("project_step_result_code", -1) != 0:
+            logger.error(f"- X staging work {unstaged_work_pms_item.label} (id={unstaged_work_pms_item.o_id})")
+        else:
+            logger.info(f"+ Staged work {unstaged_work_pms_item.label} (id={unstaged_work_pms_item.o_id})")
+
+    return unstaged_work_pms_item
 
 def do_staging(
     work_pms_item: pmItem,
     volumes_pms_items: list[pmItem],
-    work_source_root: Path, staging_root: Path) -> None:
+    work_source_root: Path, staging_root: Path) -> pmItem:
     """
     Stage mainline
     :param work_pms_item: the pmItem for the work being staged, updated out of context
@@ -109,9 +114,12 @@ def do_staging(
             output_dir.mkdir(parents=True, exist_ok=True)
             volume_pms_item.extras[c.PROJECT_STEP_START_TIME_KEY] = pendulum.now("UTC")
             shutil.copytree(source_path, output_dir, dirs_exist_ok=True)
+            logger.info(
+                f"Staged volume {volume_pms_item.label} {source_path=} {output_dir=}"
+                f" (id={volume_pms_item.o_id}) to {output_dir}")
             step_rc = 0
         except Exception as e:
-            logger.error(f"Error staging volume {volume_pms_item.label} (id={volume_pms_item.id}): {e}")
+            logger.error(f"Error staging volume {volume_pms_item.label} (id={volume_pms_item.o_id}): {e}")
             step_rc = -1
         finally:
             # Update PMS with end time and result
@@ -123,7 +131,7 @@ def do_staging(
     )
     work_pms_item.extras["project_step_end_time"] = pendulum.now("UTC")
 
-
+    return work_pms_item
 
 if __name__ == "__main__":
     # For testing

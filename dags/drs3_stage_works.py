@@ -9,6 +9,8 @@ import os
 import pendulum
 from airflow import DAG
 from airflow.sdk import task
+from airflow.sdk.exceptions import AirflowFailException
+from project_manager_utils import pmItem
 from staging_utils import stage_next_work
 
 # File paths Must exist in docker. See docker-compose
@@ -41,6 +43,11 @@ with DAG(
         dag_run = context.get("dag_run")
         dag_run_conf = dag_run.conf if dag_run else {}
         work_name = dag_run_conf.get("work_name")
-        stage_next_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
+        work_pmItem: pmItem = stage_next_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
+
+        if work_pmItem.extras.get("project_step_result_code", -1) != 0:
+            raise AirflowFailException(f"Error staging work {work_pmItem.label} (id={work_pmItem.o_id})")   
+
 
     stage_next_work_task()
+     

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pendulum
 from airflow import DAG
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sdk import task
 from populate_members import populate_members
 
