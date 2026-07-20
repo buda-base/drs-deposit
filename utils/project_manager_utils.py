@@ -1,13 +1,15 @@
+# pyright: reportOptionalMemberAccess=false
+
 import enum
 import logging
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, TypeAlias
+from typing import Any, TypeAlias, cast
 
 import const as c
 from BdrcDbLib.DrsContext import DrsDbContext
-from BdrcDbModels.models import Volumes
+from BdrcDbModels.models import Volumes, Works
 from BdrcDbModels.project_manager import (
     MemberTypes,
     ProjectMembers,
@@ -80,6 +82,12 @@ class pmItem:
         return obj
 
 
+def _require_label(value: str | None, context: str) -> str:
+    if value is None:
+        raise RuntimeError(f"Missing required label for {context}")
+    return value
+
+
 def _get_drs3_step_name(step_name: str) -> Steps:
     """
     Pre-fetch some standard lookup model objects
@@ -94,7 +102,7 @@ def _get_drs3_step_name(step_name: str) -> Steps:
 DRS3_STAGE_STEP = _get_drs3_step_name(c.STAGE_STEP_NAME)
 DRS3_TRANSCODE_STEP = _get_drs3_step_name(c.TRANSCODE_STEP_NAME)
 
-def _get_drs3_project_objects() -> tuple[Projects, MemberTypes, MemberTypes, Steps]:
+def _get_drs3_project_objects() -> tuple[Projects, MemberTypes, MemberTypes]:
     """
     Pre-fetch some standard lookup model objects
     """
@@ -120,7 +128,7 @@ def _get_drs3_project_objects() -> tuple[Projects, MemberTypes, MemberTypes, Ste
 
 DRS3_PROJECT, DRS3_WORK_TYPE, DRS3_VOLUME_TYPE = _get_drs3_project_objects()
 
-def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps = None) -> pmItem | None:
+def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps | None = None) -> pmItem | None:
     """
     Get the next ProjectMembers for a work for which project_step has not been
     run on any of its volumes
@@ -213,10 +221,16 @@ def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps = Non
             project_step=project_step,
         )
 
-        logger.info(f"{'Created' if is_new else 'Found'} ProjectMemberSteps for work {next_work_pm.work.WorkName}")
+        next_work_pm_work = cast(Works, next_work_pm.work)
+        logger.info(f"{'Created' if is_new else 'Found'} ProjectMemberSteps for work {next_work_pm_work.WorkName}")
         session.commit()
 
-        return pmItem(next_work_pm.work.WorkName, next_work_pm.id, PMTarget.PROJECT_MEMBER)
+
+        return pmItem(
+            _require_label(next_work_pm_work.WorkName, "work project member"),
+            next_work_pm.id,
+            PMTarget.PROJECT_MEMBER,
+        )
 
 
 def get_work_pm_for_step(work_name: str, project_step: Steps) -> pmItem | None:
@@ -254,7 +268,11 @@ def get_work_pm_for_step(work_name: str, project_step: Steps) -> pmItem | None:
         logger.info(
             f"{'Created' if is_new else 'Found'} ProjectMemberSteps for requested work {work_name}"
         )
-        return pmItem(work_pm.work.WorkName, work_pm.id, PMTarget.PROJECT_MEMBER)
+        return pmItem(
+            _require_label(work_pm.work.WorkName, "requested work project member"),
+            work_pm.id,
+            PMTarget.PROJECT_MEMBER,
+        )
 
 
 def get_pms_for_step(
@@ -273,11 +291,11 @@ def get_pms_for_step(
     :rtype: list[pmItem]
       """
 
-    unstaged_volumes_pms_items: list[ProjectMemberSteps] = []
+    unstaged_volumes_pms_items: list[pmItem] = []
     with DrsDbContext(MY_DB) as db:
         session: Session = db.get_session()
 
-        unstaged_work_pm: ProjectMembers = work_pm_item.load(session)
+        unstaged_work_pm: ProjectMembers = cast(ProjectMembers, work_pm_item.load(session))
         if not unstaged_work_pm:
             raise RuntimeError(
                 f"ProjectMember not found for {work_pm_item.label} "
@@ -294,7 +312,7 @@ def get_pms_for_step(
         )
         session.flush()
         unstaged_work_pms_item : pmItem = pmItem(
-            unstaged_work_pm.work.WorkName,
+            _require_label(unstaged_work_pm.work.WorkName, "work project member step"),
             {"project_member_id": unstaged_work_pm.id, "step_id": project_step.id},
             PMTarget.PROJECT_MEMBER_STEP
         )
@@ -343,7 +361,10 @@ def get_pms_for_step(
             # Add the 
             unstaged_volumes_pms_items.append(
                 pmItem(
-                    volume_pm.volume.label,
+                    _require_label(
+                        volume_pm.volume.label if volume_pm.volume is not None else None,
+                        "volume project member step",
+                    ),
                     {"project_member_id": volume_pm.id, "step_id": project_step.id},
                      PMTarget.PROJECT_MEMBER_STEP)
             )
@@ -376,9 +397,15 @@ def update_database_from_pm_items(work_pms_item: pmItem, volume_pms_items: list[
                 
             except Exception as e:
                 upd_ok = False
-                logger.error(f"Error updating volume pmItems: {v_pms_item.label} (id={v_pms_item.id}) Exc: {e}")
+                logger.error(f"Error updating volume pmItems: {v_pms_item.label} (id={v_pms_item.o_id}) Exc: {e}")
 
-        db_work_pms : ProjectMemberSteps= work_pms_item.load(session)
+        loaded_work_pms = work_pms_item.load(session)
+        if not isinstance(loaded_work_pms, ProjectMemberSteps):
+            raise RuntimeError(
+                f"Work pmItem did not resolve to ProjectMemberSteps: "
+                f"{work_pms_item.label} (id={work_pms_item.o_id})"
+            )
+        db_work_pms: ProjectMemberSteps = loaded_work_pms
         for k, val in work_pms_item.extras.items():
             if hasattr(db_work_pms, k):
                 setattr(db_work_pms, k, val)

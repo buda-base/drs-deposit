@@ -111,4 +111,5 @@ def transcode_volume(volume_path: Path, drs_vol_path: Path):
         try:
             convert_one(fpath, drs_vol_path, fname)
         except Exception as e:
-            raise RuntimeError(f"Skipping {fpath}: Could not process image. Error: {e}") from e
+            logger.exception(f"Skipping {fpath}: Could not process image. Error: {e}")
+            raise e

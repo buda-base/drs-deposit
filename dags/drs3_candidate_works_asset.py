@@ -113,7 +113,7 @@ with DAG(
         return run_confs
 
     work_names = populate_candidate_work_members()
-    stage_work_run_confs = build_stage_work_run_confs(work_names)
+    stage_work_run_confs = build_stage_work_run_confs(work_names) # type: ignore
 
     # partial sets shared args once; expand triggers one run per conf item.
     # Keep reset_dag_run=False so an existing run_id is not reset/rerun.

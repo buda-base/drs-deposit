@@ -27,6 +27,9 @@ def _select_member_type(session, m_type: str) -> MemberTypes:
         select(MemberTypes).where(MemberTypes.m_type == m_type)
     ).scalars().first()
 
+
+
+
 def populate_members(archive_root: str, work_names: list[str],):
      
         with DrsDbContext(MY_DB) as db:
@@ -34,9 +37,11 @@ def populate_members(archive_root: str, work_names: list[str],):
 
             work_member_type: MemberTypes = _select_member_type(session, 'work')
             volume_member_type: MemberTypes = _select_member_type(session, 'volume')
-            project = session.execute(
+            project: Projects | None = session.execute(
                 select(Projects).where(Projects.name == 'DRS3')
             ).scalars().first()
+            if not project:
+                raise ValueError("Project 'DRS3' not found in Projects table. Please create it first.")
             for work_name in work_names:
                 # Locate work path using bdrc-utils (pseudo-code)
                 # work_path = get_mappings(archive_root, work_name)
@@ -46,7 +51,10 @@ def populate_members(archive_root: str, work_names: list[str],):
                     select(Works).where(Works.WorkName == work_name)
                 ).scalars().first()
                 if not work:
-                    continue
+                    work = Works(WorkName=work_name)
+                    session.add(work)
+                    session.flush()
+                    logger.info(f"Added work {work_name} to Works table")
                 w_pm, is_new = get_or_create(session, ProjectMembers,
                     pm_type=work_member_type,
                     project=project,
@@ -54,7 +62,8 @@ def populate_members(archive_root: str, work_names: list[str],):
                     volume = None
                 )
                 act: str = "Added" if is_new else "Found"
-                logger.info(f"{act} work member for {work_name} in project {project.name}")
+                #TODO - why is this optional member access?  Shouldn't project.name
+                logger.info(f"{act} work member for {work_name} in project {project.name}") # pyright: ignore[reportOptionalMemberAccess]
                 
                 # For each volume under images/
                 images_dir = Path(get_archive_location(archive_root, work_name)) / 'images'
@@ -66,10 +75,10 @@ def populate_members(archive_root: str, work_names: list[str],):
 
                             vol = session.execute(volume_stmt).scalars().first()
                             if not vol:
-                                raise RuntimeError(
-                                    f"Volume with label {vol_dir.name} not "
-                                    f"found in database for work {work_name}"
-                                )
+                                vol = Volumes(label=vol_dir.name, workId=work.workId)
+                                session.add(vol)
+                                session.flush()
+                                logger.info(f"Added volume {vol_dir.name} to Volumes table")
 
                             v_pm, is_new = get_or_create(session, ProjectMembers,
                                 pm_type=volume_member_type,

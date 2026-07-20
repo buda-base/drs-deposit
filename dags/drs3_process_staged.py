@@ -1,3 +1,5 @@
+# pyright: reportArgumentType=false
+
 """
 DAG to process staged entries: transcode, generate metadata, and upload to S3, as specified in Architecture.md.
 """
@@ -32,7 +34,12 @@ with DAG(
         return _nsw
     @task
     def transcode_staged_volumes(work_ : pmu.pmItem):
-        return tu.transcode_staged_volumes(STAGING_ROOT, work_)
+        out_work: pmu.pmItem
+        try:    
+            out_work = tu.transcode_staged_volumes(STAGING_ROOT, work_)
+        except Exception as e:
+            raise AirflowFailException(f"Error transcoding work {work_.label}: {e}") from e
+        return out_work
 
  
 
@@ -45,8 +52,11 @@ with DAG(
         if work is None:
             raise AirflowFailException("No work to generate metadata for.")
         work_staging_root: Path = Path(STAGING_ROOT, work.label)
-        work_metadata_root: Path =  c.get_work_metadata_path(work_staging_root)
-        tu.create_metadata_file(work_staging_root, work_metadata_root)
+        try:
+            work_metadata_root: Path =  c.get_work_metadata_path(work_staging_root)
+            tu.create_metadata_file(work_staging_root, work_metadata_root)
+        except Exception as err:
+            raise AirflowFailException("Failed to generate metadata.") from err
         return work
 
     @task

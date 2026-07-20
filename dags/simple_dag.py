@@ -1,7 +1,7 @@
 import os
 
 from airflow import DAG
-from airflow.sdk.decorators import task
+from airflow.sdk import task
 
 with DAG(
     dag_id='hoopsty_dataset_checker',

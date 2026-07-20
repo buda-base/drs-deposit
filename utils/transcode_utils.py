@@ -96,6 +96,6 @@ def send_to_s3(source_path: Path, destination_s3_path: S3Path):
     logger.info(f"Sending {str(source_path)} to {str(destination_s3_path)} using s3pathlib.")
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 #    work_pm: ProjectMembers = su.stage_next_work('/Users/jkatz/tmp/DRS3/Archive', '/Users/jkatz/tmp/DRS3/staging')
-    transcode_staged_volumes('/Users/jkatz/tmp/DRS3/staging')
+#    transcode_staged_volumes('/Users/jkatz/tmp/DRS3/staging')

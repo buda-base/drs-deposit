@@ -8,7 +8,7 @@ import os
 
 import pendulum
 from airflow import DAG
-from airflow.sdk import task
+from airflow.sdk import get_current_context, task
 from airflow.sdk.exceptions import AirflowFailException
 from project_manager_utils import pmItem
 from staging_utils import stage_next_work
@@ -32,10 +32,6 @@ with DAG(
     max_active_runs=MAX_ACTIVE_RUNS,
     tags=["staging", "works", "volumes", "drs3"],
 ) as dag:
-    try:
-        from airflow.sdk import get_current_context
-    except ImportError:
-        from airflow.operators.python import get_current_context
 
     @task
     def stage_next_work_task():
@@ -43,10 +39,17 @@ with DAG(
         dag_run = context.get("dag_run")
         dag_run_conf = dag_run.conf if dag_run else {}
         work_name = dag_run_conf.get("work_name")
-        work_pmItem: pmItem = stage_next_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
+        try:
+            work_pmItem: pmItem | None = stage_next_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
+                        # ...existing code...
+            if not work_pmItem:
+                return None
+            # ...existing code...
 
-        if work_pmItem.extras.get("project_step_result_code", -1) != 0:
-            raise AirflowFailException(f"Error staging work {work_pmItem.label} (id={work_pmItem.o_id})")   
+            if work_pmItem.extras.get("project_step_result_code", -1) != 0:
+                raise AirflowFailException(f"Error staging work {work_pmItem.label} (id={work_pmItem.o_id})")
+        except Exception as e:
+            raise AirflowFailException(f"Error staging work {work_name}: {e}") from e
 
 
     stage_next_work_task()

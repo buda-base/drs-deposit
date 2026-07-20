@@ -47,7 +47,7 @@ def stage_next_work(source_root: str, staging_root: str, work_name: str | None =
     if work_name:
         work_to_stage_pm_item = get_work_pm_for_step(work_name, pmu.DRS3_STAGE_STEP)
     else:
-        work_to_stage_pm_item = get_next_work_pm_for_step(pmu.DRS3_STAGE_STEP)
+        work_to_stage_pm_item = get_next_work_pm_for_step(pmu.DRS3_STAGE_STEP, None)
 
     if not work_to_stage_pm_item:
         return

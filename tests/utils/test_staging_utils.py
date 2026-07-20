@@ -1,3 +1,4 @@
+# pyright: reportAttributeAccessIssue=false
 import types
 from pathlib import Path
 

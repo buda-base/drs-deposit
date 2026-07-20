@@ -29,7 +29,7 @@ dev =  [
 
 [tool.ruff]
 line-length = 120
-target-version = "py313"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
@@ -39,7 +39,7 @@ ignore = []
 "utils/xxxstaging_utils.py" = ["F401"]
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 pretty = true
 show_error_codes = true
 warn_unused_ignores = true
@@ -55,7 +55,14 @@ disable_error_code = ["attr-defined", "arg-type", "call-arg"]
 
 [tool.pyright]
 typeCheckingMode = "basic"
-pythonVersion = "3.13"
+pythonVersion = "3.14"
+exclude = [
+    "**/__pycache__",
+    ".venv",
+    "docs/_build",
+    "logs",
+    "tests",
+]
 
 [tool.pyright.executionEnvironments]
 root = "."
