@@ -41,10 +41,8 @@ with DAG(
         work_name = dag_run_conf.get("work_name")
         try:
             work_pmItem: pmItem | None = stage_next_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
-                        # ...existing code...
             if not work_pmItem:
                 return None
-            # ...existing code...
 
             if work_pmItem.extras.get("project_step_result_code", -1) != 0:
                 raise AirflowFailException(f"Error staging work {work_pmItem.label} (id={work_pmItem.o_id})")
