@@ -8,6 +8,7 @@ from drs_pds_transcode import transcode_volume
 from project_manager_utils import (
     _get_drs3_step_name,
     get_pms_for_step,
+    get_work_pm_for_step,
     pmItem,
     update_database_from_pm_items,
 )
@@ -30,6 +31,8 @@ def create_metadata_file(content_path: Path, metadata_file_path: Path):
     """
     logger.info(f"Generating metadata from {str(content_path)} into {str(metadata_file_path)}.")
 
+def transcode_staged_works(staging_root: str, work_pm_list: list[pmItem]) -> list[pmItem]:
+    return [transcode_staged_volumes(staging_root, work_pm) for work_pm in work_pm_list]
 
 def transcode_staged_volumes(staging_root: str, work_pm: pmItem) -> pmItem:
     """
@@ -95,7 +98,24 @@ def send_to_s3(source_path: Path, destination_s3_path: S3Path):
     """
     logger.info(f"Sending {str(source_path)} to {str(destination_s3_path)} using s3pathlib.")
 
+# Only used by DAG 'drs3_process_launcher'
+def get_works_to_transcode(limit: int = 1) -> list[pmItem]:
+    """
+    Get a list of works that have been staged but not yet transcoded.
 
+    :param staging_root: The root directory under which where staged works are located.
+    :type staging_root: str
+    :param limit: The maximum number of works to retrieve.
+    :type limit: int
+    :return: A list of pmItem objects representing the works to be transcoded.
+    """
+    works_to_transcode: list[pmItem] = get_work_pm_for_step(
+        DRS3_TRANSCODE_STEP,
+        prerequisite_step=DRS3_STAGE_STEP,
+        limit=limit)
+    # Logic to retrieve works that have been staged but not yet transcoded
+    # This is a placeholder for actual implementation
+    return works_to_transcode
 # if __name__ == "__main__":
 #    work_pm: ProjectMembers = su.stage_next_work('/Users/jkatz/tmp/DRS3/Archive', '/Users/jkatz/tmp/DRS3/staging')
 #    transcode_staged_volumes('/Users/jkatz/tmp/DRS3/staging')
