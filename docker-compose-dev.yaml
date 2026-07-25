@@ -27,6 +27,7 @@ services:
     environment:
       _ARCHIVE_ROOT: /mnt/Archive
       BDRC_DB_DEV: "1"
+      # DRS3_LIMIT_WORKS_TO_PROCESS: "1"
     volumes:
       # comment these when testing on a server - this is for local testing.
       - /Users/jkatz/tmp/DRS3/Archive0:/mnt/Archive0

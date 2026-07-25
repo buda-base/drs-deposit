@@ -58,6 +58,9 @@ typeCheckingMode = "basic"
 pythonVersion = "3.14"
 exclude = [
     "**/__pycache__",
+    "**/node_modules",
+    "**/.*",
+    "/opt/Homebrew"
     ".venv",
     "docs/_build",
     "logs",

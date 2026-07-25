@@ -13,16 +13,14 @@ import pendulum
 import project_manager_utils as pmu
 from archive_ops.api import get_archive_location
 from project_manager_utils import (
-    get_next_work_pm_for_step,
     get_pms_for_step,
-    get_work_pm_for_step,
     pmItem,
     update_database_from_pm_items,
 )
 
 logger = logging.getLogger(__name__)
 
-def stage_next_work(source_root: str, staging_root: str, work_name: str | None = None) -> pmItem | None:
+def stage_work(source_root: str, staging_root: str, work_name: str) -> pmItem | None:
     """
     Finds the next unstaged work (or a requested work by name), creates the
     ProjectMemberSteps for the work and its volumes, and stages each volume.
@@ -38,16 +36,14 @@ def stage_next_work(source_root: str, staging_root: str, work_name: str | None =
     ACHTUNG! the sources for staging are assumed to be in the archive in
     archive_ops.api.get_archive_location(...) format
     """
-# Aloow calling without work name, and use the DB
-# Unknwn: does this break the db based search? No.absWe used to be tagging 
-# works that had PMs, but no steps.abs# With the
-# new pattern of processing 'n' at a time, the PMS'abs
-# are created when neeeded, not sought and filtered (looking for one iwth
-# no data).)
-    if work_name:
-        work_to_stage_pm_item = get_work_pm_for_step(work_name, pmu.DRS3_STAGE_STEP)
-    else:
-        work_to_stage_pm_item = get_next_work_pm_for_step(pmu.DRS3_STAGE_STEP, None)
+    # Allow calling without work name, and use the DB? No - the launching DAG takes care of this
+    # Unknwn: does this break the db based search? No.
+    # We used to be tagging works that had PMs, but no steps
+    # With the
+    # new pattern of processing 'n' at a time, the PMS'abs
+    # are created when neeeded, not sought and filtered (looking for one iwth
+    # no data).)
+    work_to_stage_pm_item = pmu.get_work_pm_from_name(work_name)
 
     if not work_to_stage_pm_item:
         return
@@ -135,4 +131,5 @@ def do_staging(
 
 if __name__ == "__main__":
     # For testing
-    stage_next_work('/Users/jkatz/tmp/DRS3/Archive', '/Users/jkatz/tmp/DRS3/staging')
+    # stage_next_work('/Users/jkatz/tmp/DRS3/Archive', '/Users/jkatz/tmp/DRS3/staging')
+    pass

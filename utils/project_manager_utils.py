@@ -9,7 +9,7 @@ from typing import Any, TypeAlias, cast
 
 import const as c
 from BdrcDbLib.DrsContext import DrsDbContext
-from BdrcDbModels.models import Volumes, Works
+from BdrcDbModels.models import Volumes
 from BdrcDbModels.project_manager import (
     MemberTypes,
     ProjectMembers,
@@ -28,7 +28,6 @@ logger = logging.getLogger(__name__)
 # TODO: Use environment variable supported in 
 # bdrc-db-lib2>=2.0.7
 MY_DB = "qa"  # or 'prod' in production
-
 
 class PMTarget(enum.StrEnum):
     PROJECT_MEMBER = "project_member"
@@ -54,11 +53,15 @@ class pmItem:
     if hasattr(v_pms, k):
         setattr(v_pms, k, val)
 
-    Usage Notes: for a pmItem with a compound key,
-    Tuple identity:
-        pmItem("x", (10, 7), PMTarget.PROJECT_MEMBER_STEP)
-    Dict identity:
-        pmItem("x", {"project_member_id": 10, "project_step_id": 7}, PMTarget.PROJECT_MEMBER_STEP)
+    Usage Notes: 
+        for a pmItem with a single primary key, you can use either a scalar or a dict for the o_id.
+            For most uses, an integer scalar is sufficient, but you can use a scalar with the key name
+                pmItem("x",  {"id": 10}, PMTarget.PROJECT_MEMBER)
+        for a pmItem with a compound key, you can use either a tuple or a dict for the o_id.
+            Tuple identity:
+                pmItem("x", (10, 7), PMTarget.PROJECT_MEMBER_STEP)
+            Dict identity:
+                pmItem("x", {"project_member_id": 10, "project_step_id": 7}, PMTarget.PROJECT_MEMBER_STEP)
     """
     label: str
     # SQLAlchemy session.get() identity can be scalar PK, tuple for composite PK,
@@ -81,12 +84,10 @@ class pmItem:
             )
         return obj
 
-
 def _require_label(value: str | None, context: str) -> str:
     if value is None:
         raise RuntimeError(f"Missing required label for {context}")
     return value
-
 
 def _get_drs3_step_name(step_name: str) -> Steps:
     """
@@ -128,15 +129,27 @@ def _get_drs3_project_objects() -> tuple[Projects, MemberTypes, MemberTypes]:
 
 DRS3_PROJECT, DRS3_WORK_TYPE, DRS3_VOLUME_TYPE = _get_drs3_project_objects()
 
+# Used only in launching DAGS.
 def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps | None = None) -> pmItem | None:
+    results = get_work_pm_for_step(project_step, prerquisite_step, limit=1)
+    return results[0] if results else None
+
+# used only in launching DAGs.
+def get_work_pm_for_step(project_step: Steps, prerequisite_step: Steps | None = None, limit: int = 1) -> list[pmItem]:
     """
-    Get the next ProjectMembers for a work for which project_step has not been
-    run on any of its volumes
-    Returns None if no such work is found.
+    Get ProjectMembers for a work for which project_step has not been
+    run on any of its volumes.
+    Returns an empty list if no such work is found.
+    
     :param project_step: the Steps instance for the staging step
     :type project_step: Steps
-    :return: pmItem for the next  work, or None if no such work is found
+    :param prerequisite_step: optional prerequisite step that must be completed on all volumes
+    :type prerequisite_step: Steps | None
+    :param limit: maximum number of candidate work project members to evaluate
+    :type limit: int
+    :return: list of pmItem for the next works, or an empty list if no such work is found
     """
+    work_pm_items: list[pmItem] = []
     with DrsDbContext(MY_DB) as db:
         session: Session = db.get_session()
 
@@ -167,17 +180,26 @@ def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps | Non
                 ),
             )
             .order_by(WorkPM.id)
+            .limit(limit)
         )
+        candidate_work_dtos = session.scalars(stmt).all()
 
-        candidate_work_pm_list = session.scalars(stmt).all()
-
-        if not prerquisite_step:
-            next_work_pm =candidate_work_pm_list[0] if candidate_work_pm_list else None
-        else:
-            next_work_pm = None
-            for candidate_work_pm in candidate_work_pm_list:
+        if prerequisite_step:
+            for candidate_work_dto in candidate_work_dtos:
                 # A candidate is valid only if every volume for the work has a
                 # successful prerequisite step recorded.
+                # Look at volume project members that belong to:
+                # the DRS3 project,
+                # the volume member type,
+                # and the same work as the current candidate work.
+                # Keep only volumes for which there is no matching ProjectMemberSteps
+                # row where:
+                # - the step is the prerequisite step,
+                # - and that step has an end time (meaning it finished, regardless of success/failure).
+                # So effectively: “Find volumes in this work that do *not* (~exists) have 
+                # not completed the prerequisite step.”
+                # For drs-deposit#126, this setp was changed so that only the end time is considered:
+                # We don't want to include works that are in process, and we don't care if the volumes have failed.
                 # This seems a little counterintuitive, but the code to count all the succeses
                 # is frighteningly complex.
                 missing_prereq_stmt = (
@@ -186,93 +208,54 @@ def get_next_work_pm_for_step(project_step: Steps, prerquisite_step: Steps | Non
                     .where(
                         VolumePM.project == DRS3_PROJECT,
                         VolumePM.pm_type == DRS3_VOLUME_TYPE,
-                        VolumePM.pm_work_id == candidate_work_pm.pm_work_id,
+                        VolumePM.pm_work_id == candidate_work_dto.pm_work_id,
                         ~exists(
                             select(1)
                             .select_from(ProjectMemberSteps)
                             .where(
                                 ProjectMemberSteps.project_member_id == VolumePM.id,
-                                ProjectMemberSteps.step_id == prerquisite_step.id,
-                                ProjectMemberSteps.project_step_result_code == 0,
+                                ProjectMemberSteps.step_id == prerequisite_step.id,
+                                #jimk drs-deposit#126 - we want to exc;ude any that have been completed,
+                                # regardless of success status (used to check for return_code = 0)
+                                ProjectMemberSteps.project_step_end_time.is_not(None)
                             )
                         ),
                     )
-                    .limit(1)
                 )
 
                 missing_prereq_volume = session.execute(missing_prereq_stmt).first()
+                # This is the key part - if there is a row that has not completed (~exists(....)), there will
+                # be a row present. If there is such a row, then this work is not a candidate.
+                # If there is no such row, then all volumes have completed the prerequisite step,
+                # and this work is a candidate.
                 if not missing_prereq_volume:
-                    # Then the query failed to find a work that had no prereq, so this one
-                    # must have the prereq
-                    next_work_pm = candidate_work_pm
-                    break
-        if not next_work_pm:
-            logger.info("No unstaged work found with successful prerequisite step on all volumes")
-            return None
+                    _work_pm: pmItem =  pmItem(
+                            _require_label(candidate_work_dto.work.WorkName, "work project member"),
+                            candidate_work_dto.id,
+                            PMTarget.PROJECT_MEMBER,
+                        )
+                    work_pm_items.append(_work_pm)
 
-        # Create the ProjectMemberStep for this work
-        # Bug - for sql get or create, you only supply the key fields
-        # in the call - because all parameters are searched for, including
-        # runtime constructs
-        work_pms, is_new = get_or_create(
-            session,
-            ProjectMemberSteps,
-            project_member=next_work_pm,
-            project_step=project_step,
-        )
-
-        next_work_pm_work = cast(Works, next_work_pm.work)
-        logger.info(f"{'Created' if is_new else 'Found'} ProjectMemberSteps for work {next_work_pm_work.WorkName}")
-        session.commit()
-
-
-        return pmItem(
-            _require_label(next_work_pm_work.WorkName, "work project member"),
-            next_work_pm.id,
-            PMTarget.PROJECT_MEMBER,
-        )
+                    # Create the ProjectMemberStep for this work
+                    # Bug - for sql get or create, you only supply the key fields
+                    # in the call - because all parameters are searched for, including
+                    # runtime constructs
+                    work_pms, is_new = get_or_create(
+                        session,
+                        ProjectMemberSteps,
+                        project_member = candidate_work_dto,
+                        project_step=project_step,
+                    )
+                    logger.info(f"{'Created' if is_new else 'Found'} ProjectMemberSteps for work "
+                                f"{candidate_work_dto.work.WorkName}")
+                    if is_new:
+                        session.commit()
 
 
-def get_work_pm_for_step(work_name: str, project_step: Steps) -> pmItem | None:
-    """
-    Get a specific work ProjectMembers row by work name and create/get its
-    ProjectMemberSteps row for the requested step.
-    Returns None if the work is not found.
-    """
-    with DrsDbContext(MY_DB) as db:
-        session: Session = db.get_session()
-
-        stmt = (
-            select(ProjectMembers)
-            .where(
-                ProjectMembers.project == DRS3_PROJECT,
-                ProjectMembers.pm_type == DRS3_WORK_TYPE,
-                ProjectMembers.work.has(WorkName=work_name),  # pyright: ignore[reportArgumentType]
-            )
-            .order_by(ProjectMembers.id)
-        )
-
-        work_pm = session.scalars(stmt).first()
-        if not work_pm:
-            logger.info(f"Work not found in project members: {work_name}")
-            return None
-
-        _, is_new = get_or_create(
-            session,
-            ProjectMemberSteps,
-            project_member=work_pm,
-            project_step=project_step,
-        )
-        session.commit()
-
-        logger.info(
-            f"{'Created' if is_new else 'Found'} ProjectMemberSteps for requested work {work_name}"
-        )
-        return pmItem(
-            _require_label(work_pm.work.WorkName, "requested work project member"),
-            work_pm.id,
-            PMTarget.PROJECT_MEMBER,
-        )
+        if not work_pm_items:
+            logger.warning(f"No unstaged work found for step {project_step.s_name} with successful" 
+                           f"prerequisite step {prerequisite_step.s_name} on all volumes")
+        return work_pm_items
 
 
 def get_pms_for_step(
@@ -371,7 +354,6 @@ def get_pms_for_step(
         session.commit()
     return unstaged_work_pms_item, unstaged_volumes_pms_items
 
-
 def update_database_from_pm_items(work_pms_item: pmItem, volume_pms_items: list[pmItem]) -> None:
     """
     Complete any process for a work item and its associated volumes.
@@ -413,6 +395,7 @@ def update_database_from_pm_items(work_pms_item: pmItem, volume_pms_items: list[
             db_work_pms.project_step_result_code = 1
         session.commit()
 
+# drs-deposit#126 - may be obsoleted. 
 def get_next_work_to_transcode() -> pmItem | None:
     """
     Get the next work item that has been staged but not yet transcoded.
@@ -422,3 +405,30 @@ def get_next_work_to_transcode() -> pmItem | None:
     _s_step = _get_drs3_step_name(c.STAGE_STEP_NAME)
     return get_next_work_pm_for_step(_t_step, _s_step)
 
+def get_work_pm_from_name(work_name: str) -> pmItem | None:
+    """
+    Get the ProjectMembers row for a specific work by name.
+    Returns a pmItem projection if the work is found, 
+    None otherwise.
+    """
+    with DrsDbContext(MY_DB) as db:
+        session: Session = db.get_session()
+        stmt = (
+            select(ProjectMembers)
+            .where(
+                ProjectMembers.project == DRS3_PROJECT,
+                ProjectMembers.pm_type == DRS3_WORK_TYPE,
+                ProjectMembers.work.has(WorkName=work_name),  # pyright: ignore[reportArgumentType]
+            )
+            .order_by(ProjectMembers.id)
+        )
+        work_pm = session.scalars(stmt).first()
+        if not work_pm:
+            logger.info(f"Work not found in project members: {work_name}")
+            return None
+
+        return pmItem(
+            _require_label(work_pm.work.WorkName, "work project member"),
+            {"id": work_pm.id},
+            PMTarget.PROJECT_MEMBER
+        )
