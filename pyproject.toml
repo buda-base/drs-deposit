@@ -50,7 +50,6 @@ no_implicit_optional = true
 plugins = []
 
 [tool.mypy.overrides]
-module = ["utils.xxxstaging_utils"]
 disable_error_code = ["attr-defined", "arg-type", "call-arg"]
 
 [tool.pyright]
@@ -60,11 +59,12 @@ exclude = [
     "**/__pycache__",
     "**/node_modules",
     "**/.*",
-    "/opt/Homebrew"
+    "/opt/Homebrew",
     ".venv",
     "docs/_build",
     "logs",
     "tests",
+    "/opt/Homebrew"
 ]
 
 [tool.pyright.executionEnvironments]
