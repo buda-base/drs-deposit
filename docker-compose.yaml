@@ -85,13 +85,18 @@ x-airflow-common:
     
 
 
-  volumes:
-      - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-      - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
-      - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-      - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-      - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
-      - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
+  # volumes:
+  #     - /mnt/Archive0:/mnt/Archive0
+  #     - /mnt/Archive1:/mnt/Archive1
+  #     - /mnt/Archive2:/mnt/Archive2
+  #     - /mnt/Archive3:/mnt/Archive3
+  #     - /vmpool/data/DRS3/staging:/mnt/staging
+  #     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+  #     - /mnt/processing/logs/drs3-logs:/opt/airflow/logs
+  #     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+  #     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+  #     - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
+  #     - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -201,16 +206,28 @@ services:
       airflow-init:
         condition: service_completed_successfully
     volumes:
-        # Overridden in dev. 
       - /mnt/Archive0:/mnt/Archive0
       - /mnt/Archive1:/mnt/Archive1
       - /mnt/Archive2:/mnt/Archive2
       - /mnt/Archive3:/mnt/Archive3
-      # on bodhi:
-      # - /vmpool/data/DRS3/staging:/mnt/staging
-      # on sattva
-      # - /home/DRS3/staging:/mnt/staging
-      # see docker-compose-dev.yaml for dev overrides
+      - /vmpool/data/DRS3/staging:/mnt/staging
+      - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+      - /mnt/processing/logs/drs3-logs:/opt/airflow/logs
+      - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+      - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+      - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
+      - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
+    # volumes:
+    #     # Overridden in dev. 
+    #   - /mnt/Archive0:/mnt/Archive0
+    #   - /mnt/Archive1:/mnt/Archive1
+    #   - /mnt/Archive2:/mnt/Archive2
+    #   - /mnt/Archive3:/mnt/Archive3
+    #   # on bodhi:
+    #   # - /vmpool/data/DRS3/staging:/mnt/staging
+    #   # on sattva
+    #   # - /home/DRS3/staging:/mnt/staging
+    #   # see docker-compose-dev.yaml for dev overrides
 
 
 

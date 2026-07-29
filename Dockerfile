@@ -1,4 +1,4 @@
-FROM apache/airflow:3.2.1-python3.12
+FROM apache/airflow:3.2.1
 
 USER root
 RUN mkdir -p /mnt/staging/DRS3
