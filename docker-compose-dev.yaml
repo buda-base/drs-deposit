@@ -24,9 +24,8 @@ services:
     # command: bash -c "python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678 -m airflow celery worker"
     # ports:
     #   - "5678:5678"
-    environment:
-      _ARCHIVE_ROOT: /mnt/Archive
-      BDRC_DB_DEV: "1"
+    # environment:
+    #   BDRC_DB_DEV: "1"
       # DRS3_LIMIT_WORKS_TO_PROCESS: "1"
 #    volumes:
       # comment these when testing on a server - this is for local testing.

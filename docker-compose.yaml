@@ -76,27 +76,38 @@ x-airflow-common:
     #
     # Application environments
     PYTHONPATH: /opt/airflow:/opt/airflow/utils
+    # Debian
     DRS3_STAGING_ROOT: /mnt/staging
     DRS3_ARCHIVE_ROOT: /mnt/Archive
+    DRS3_LOG_ROOT: /mnt/processing/logs/drs3-logs
+    # MacOS
+    # DRS3_STAGING_ROOT: /Users/jkatz/tmp/DRS3/staging
+    # DRS3_ARCHIVE_ROOT: /Users/jkatz/tmp/DRS3/Archive
+    # DRS3_LOG_ROOT: ${AIRFLOW_PROJ_DIR:-.}/logs
+
+    # 
     # If these aren't set in a dev env, set them now.
     DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS: ${DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS:-4}
     DRS3_PROCESS_MAX_ACTIVE_RUNS: ${DRS3_PROCESS_MAX_ACTIVE_RUNS:-6}
     DRS3_LIMIT_WORKS_TO_PROCESS: ${DRS3_LIMIT_WORKS_TO_PROCESS:-20}
-    
+  volumes:
+    - ${DRS3_ARCHIVE_ROOT}0:/mnt/Archive0
+    - ${DRS3_ARCHIVE_ROOT}1:/mnt/Archive1
+    - ${DRS3_ARCHIVE_ROOT}2:/mnt/Archive2
+    - ${DRS3_ARCHIVE_ROOT}3:/mnt/Archive3
+    # Debian
+    # - /vmpool/data/DRS3/staging:/mnt/staging
+    # - /mnt/processing/logs/drs3-logs:/opt/airflow/logs
+    # MacOS
+    - ${DRS3_STAGING_ROOT}:/mnt/staging
+    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
+    # Common
+    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
+    - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
 
-
-  # volumes:
-  #     - /mnt/Archive0:/mnt/Archive0
-  #     - /mnt/Archive1:/mnt/Archive1
-  #     - /mnt/Archive2:/mnt/Archive2
-  #     - /mnt/Archive3:/mnt/Archive3
-  #     - /vmpool/data/DRS3/staging:/mnt/staging
-  #     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-  #     - /mnt/processing/logs/drs3-logs:/opt/airflow/logs
-  #     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-  #     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-  #     - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
-  #     - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -205,31 +216,6 @@ services:
         condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
-    volumes:
-      - /mnt/Archive0:/mnt/Archive0
-      - /mnt/Archive1:/mnt/Archive1
-      - /mnt/Archive2:/mnt/Archive2
-      - /mnt/Archive3:/mnt/Archive3
-      - /vmpool/data/DRS3/staging:/mnt/staging
-      - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-      - /mnt/processing/logs/drs3-logs:/opt/airflow/logs
-      - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-      - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-      - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
-      - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
-    # volumes:
-    #     # Overridden in dev. 
-    #   - /mnt/Archive0:/mnt/Archive0
-    #   - /mnt/Archive1:/mnt/Archive1
-    #   - /mnt/Archive2:/mnt/Archive2
-    #   - /mnt/Archive3:/mnt/Archive3
-    #   # on bodhi:
-    #   # - /vmpool/data/DRS3/staging:/mnt/staging
-    #   # on sattva
-    #   # - /home/DRS3/staging:/mnt/staging
-    #   # see docker-compose-dev.yaml for dev overrides
-
-
 
   airflow-triggerer:
     <<: *airflow-common
