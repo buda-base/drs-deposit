@@ -97,3 +97,100 @@ For optional DB integration tests only:
    BDRC_DB_CNF="<fill_me>" BDRC_DB_PASSWORD="<fill_me>" pytest -q -m integration
 
 .
+
+Transitioning to Debian
+=======================
+This section logs the transition from the macOS development environment to the Debian production environment.
+
+Platform Preparation
+--------------------
+#. ``/var/lib/docker`` is the default Docker data root on Debian. On my host, it needed 10G free, so ``docker compose .... up -d`` gave me a shout 
+about not enough space: docker requires 10G, only had 6.7G. I ran ``docker system prune -a --volumes`` to free up space,
+but for long term health, I wanted to move the Docker data root to a different partition. 
+I didn't want to change the ``/`` partition. They don't recommend symlinking ``/var/lib/docker`` 
+but it can be changed in ``/etc/docker/daemon.json``. So I changed it to point to a big-ass-partition: ``/vmnpool/data/docker``
+
+#. groups 
+   
+   - ``docker`` group is needed to run docker commands without sudo. 
+   - ``sudo usermod -aG docker $USER`` adds the current user to the docker group. 
+
+  .. code-block:: zsh
+
+   # create group if missing
+   sudo groupadd docker 2>/dev/null || true
+
+   # add current user
+   sudo usermod -aG docker "$USER"
+
+   # verify socket group
+   ls -l /var/run/docker.sock
+   # should be root docker
+
+   # apply new group in current shell
+   newgrp docker
+
+Build
+-----
+**Assumptions**
+
+   See ``jimk@bodhi:/.oh-my-zsh/custom/aiases.zsh`` for the commands described here:
+**d-comp**
+   is an alias for ``docker compose``. It is used to avoid typing the space in ``docker compose`` with some specific 
+   docker compose files You just say ``dcomp ``__any docker compose sequence__
+
+**dagup**
+   restart the whole dag (using the complex of compose files)
+
+**db-clup** 
+   Remove all history from the DRS3 database.safe - hardwired to work on QA only  
+
+**dag-reset**
+   Remove tmp files and restart the airflow-worker service. Useful to force reparse of code.
+
+Methods
+^^^^^^^
+#. get ``github://drs-deposit`` (branch ``drs-deposit-DRS3``)
+When you start from scratch, ``d-comp build`` from inside the repo working dir.
+(to access ``.env`` and    ``secrets``)
+
+#. Make all the host directories you need.
+
+Artifacts
+---------
+#. ``.env`` ``secrets`` You have to get these from a developer. They're secrets, not handed out like candy.
+
+Processing
+----------
+1. Running, airflow-apiserver was unhealthy. COpilot recommended:
+
+.. code-block:: zsh
+
+   docker compose ps
+   docker compose logs --no-color --tail=300 airflow-apiserver
+   docker inspect $(docker compose ps -q airflow-apiserver) --format '{{json .State.Health}}' | jq
+   # Gives "Mode":"rw" for most, "Mode":"" for files in secrets. Mac is the same
+   # Verify db dependencies
+   docker compose logs --no-color --tail=200 postgres scheduler
+   docker compose run --rm airflow-init
+   docker compose up -d
+   # Check API health from inside:
+   docker compose exec airflow-apiserver sh -lc 'curl -fsS http://localhost:8080/health || wget -qO- http://localhost:8080/health'
+   CID=$(docker compose ps -q airflow-apiserver)
+   docker inspect "$CID" --format 'Exit={{.State.ExitCode}} Restart={{.HostConfig.RestartPolicy.Name}} Error={{.State.Error}}'
+   docker inspect "$CID" --format '{{json .Mounts}}' | jq
+   docker inspect "$CID" --format 'User={{.Config.User}} Entrypoint={{json .Config.Entrypoint}} Cmd={{json .Config.Cmd}}'
+
+These are all helpful, but ``airflow-apiserver`` couldn't read  secrets.
+Fix: ``chown -R 50000:0 ~/dev/drs-deposit/secrets``
+
+2. No dags found
+Since I'm not using the debug anymore, my ``docker-compose`` defined mounts in 
+the ``airflow-common`` section, but only had a subset of them defined in the ``airflow-worker`` section.
+First pass: Remove the entire ``volumes:`` section from ``airflow-worker`` and let it inherit from ``airflow-common``.  
+
+Basically, the host mount points have to be owned by 50000:docker (or be a link, like ``/mnt/Archive[0-3]``
+
+
+
+
