@@ -105,10 +105,13 @@ This section logs the transition from the macOS development environment to the D
 Platform Preparation
 --------------------
 #. ``/var/lib/docker`` is the default Docker data root on Debian. On my host, it needed 10G free, so ``docker compose .... up -d`` gave me a shout 
-about not enough space: docker requires 10G, only had 6.7G. I ran ``docker system prune -a --volumes`` to free up space,
-but for long term health, I wanted to move the Docker data root to a different partition. 
-I didn't want to change the ``/`` partition. They don't recommend symlinking ``/var/lib/docker`` 
-but it can be changed in ``/etc/docker/daemon.json``. So I changed it to point to a big-ass-partition: ``/vmnpool/data/docker``
+   about not enough space: docker requires 10G, only had 6.7G. I ran
+   ``docker system prune -a --volumes`` to free up space, but for long term
+   health, I wanted to move the Docker data root to a different partition.
+   I didn't want to change the ``/`` partition. They don't recommend
+   symlinking ``/var/lib/docker`` but it can be changed in
+   ``/etc/docker/daemon.json``. So I changed it to point to a
+   big-ass-partition: ``/vmnpool/data/docker``
 
 #. groups 
    
@@ -187,10 +190,90 @@ Fix: ``chown -R 50000:0 ~/dev/drs-deposit/secrets``
 2. No dags found
 Since I'm not using the debug anymore, my ``docker-compose`` defined mounts in 
 the ``airflow-common`` section, but only had a subset of them defined in the ``airflow-worker`` section.
-First pass: Remove the entire ``volumes:`` section from ``airflow-worker`` and let it inherit from ``airflow-common``.  
+First pass: Remove the entire ``volumes:`` section from ``airflow-worker`` and let 
+it inherit from ``airflow-common``.  
 
-Basically, the host mount points have to be owned by 50000:docker (or be a link, like ``/mnt/Archive[0-3]``
+Basically, the host mount points have to be owned by ``50000:docker``,
+or be a link, like ``/mnt/Archive[0-3]``
 
+Ok, on Debian, I have the folders as 50000:0 on the host.
+I
+try the different - 50000:0 50000:jimk or 777?
+I had thought that the `ao-workflows`` chaned ownerships on
+/opt/airflow/dags, but it didn't. However the ao-workflows/airflow-docker/deploy script **does**
+make dags, logs, & etc 777. And I don't recall having to chown them.
 
+Nope, that wasn't it. And I still need secrets to be 50000 (I' running 777, so maybe I don't need the :0)
+Nope, trying 755/jimk:jimk, but I noticed that ``secrets/airflow_jwt_secret.txt`` was 600.
+So I changed it to 644, jimk:jimk, and the service came up.
+It just couldn't read that one file.
 
+Now, I need to be able to touch and edit dag files in place.
+OK, so I've found out that running airflow under docker actually changes thhe owner of
+airflow files,
 
+..code-block:: zsh
+
+   drwxr-xr-x    - jimk  jimk 27 Jul 22:52  .vscode
+   drwxrwxrwx    - 50000 root 27 Jul 22:52  config
+   drwxrwxrwx    - 50000 root 29 Jul 18:37  dags
+   drwxrwxr-x    - jimk  jimk 29 Jul 18:35  docs
+   drwxrwxrwx    - 50000 root 29 Jul 18:37  logs
+   drwxrwxrwx    - 50000 root 28 Jul 18:02  plugins
+   drwxrwxrwx    - 50000 root 27 Jul 22:52  scripts
+   drwxr-xr-x    - jimk  jimk 27 Jul 22:54  secrets
+   drwxrwxr-x    - jimk  jimk 27 Jul 22:52  tests
+   drwxrwxrwx    - 50000 root 29 Jul 18:37  utils
+
+So, the next thing to do is to write a deploy script,
+like for the ``ao-workflows`` repo, that will chown the dags, logs, and plugins to 50000:0
+
+Deploy Sync Helper
+------------------
+
+Use the project deploy helper to copy only the runtime deploy set needed
+to run docker compose from the target directory:
+
+- ``.env``
+- ``Dockerfile``
+- ``Dockerfile.dev``
+- ``docker-compose.yaml``
+- ``docker-compose-dev.yaml``
+- ``docker-compose-secrets.yaml``
+- ``dags/``
+- ``plugins/``
+- ``scripts/``
+- ``utils/``
+
+You can use a local target path or an rsync remote target
+(``user@host:/absolute/path``).
+
+For remote deploys without sudo privileges, ownership normalization on
+``secrets/`` now falls back automatically:
+
+- first try ``chown`` to ``${AIRFLOW_UID:-50000}:0``
+- then try ACL via ``setfacl`` (if available) **This really works**
+- finally apply readable permissions (``755`` on dirs, ``644`` on files)
+
+If the remote path is already known to exist, you can skip the initial
+SSH mkdir precheck:
+
+.. code-block:: zsh
+
+   ./scripts/deploy_project.sh jimk@bodhi:/home/jimk/dev/ao-workflows/airflow-docker/deploy --delete --no-ssh-precheck
+
+Standard one-liner:
+
+.. code-block:: zsh
+
+   ./scripts/deploy_project.sh /home/jimk/dev/ao-workflows/airflow-docker/deploy --delete
+
+Common variants:
+
+.. code-block:: zsh
+
+   # Preview changes only
+   ./scripts/deploy_project.sh /home/jimk/dev/ao-workflows/airflow-docker/deploy --dry-run
+
+   # Sync (secrets ownership normalization is applied automatically)
+   ./scripts/deploy_project.sh /home/jimk/dev/ao-workflows/airflow-docker/deploy --delete
