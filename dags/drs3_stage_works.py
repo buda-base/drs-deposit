@@ -27,6 +27,8 @@ SRC_ROOT = os.environ["DRS3_SRC_ROOT"]
 STAGING_ROOT = os.environ["DRS3_STAGING_ROOT"]
 MAX_ACTIVE_RUNS = int(os.environ["DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS"])
 
+STAGING_OUTPUT
+
 with DAG(
     dag_id='drs3_stage_works',
     # schedule=None,
@@ -47,14 +49,11 @@ with DAG(
             #
             # Ok, we're doing real work now.
             work_pmItem = su.stage_work(SRC_ROOT, STAGING_ROOT, work_name=work_name)
-            if not work_pmItem:
-                return None
-
-            step_rc = work_pmItem.extras.get("project_step_result_code", -1)
+            step_rc = work_pmItem.extras.get("project_step_result_code", -1) if work_pmItem else -1
+        finally:
             if step_rc != 0:
                 logger.exception(f"Error staging work {work_pmItem.label} (id={work_pmItem.o_id}) {step_rc=}")
-        except Exception as e:
-            raise AirflowFailException(f"Error staging {work_name=}: {e}") from e
+                raise AirflowFailException(f"Error staging {work_name=}: {step_rc}")
 
     stage_next_work_task()
      
