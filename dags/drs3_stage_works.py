@@ -27,8 +27,6 @@ SRC_ROOT = os.environ["DRS3_SRC_ROOT"]
 STAGING_ROOT = os.environ["DRS3_STAGING_ROOT"]
 MAX_ACTIVE_RUNS = int(os.environ["DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS"])
 
-STAGING_OUTPUT
-
 with DAG(
     dag_id='drs3_stage_works',
     # schedule=None,
