@@ -231,6 +231,7 @@ SYNC_DIRS=(
   "scripts"
   "utils"
   "secrets"
+  "config"
 )
 
 CHOWN_AIRFLOW=(

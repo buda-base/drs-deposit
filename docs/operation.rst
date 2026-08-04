@@ -100,11 +100,13 @@ For optional DB integration tests only:
 
 Transitioning to Debian
 =======================
-This section logs the transition from the macOS development environment to the Debian production environment.
+This section logs the transition from the macOS development environment to
+the Debian production environment.
 
 Platform Preparation
 --------------------
-#. ``/var/lib/docker`` is the default Docker data root on Debian. On my host, it needed 10G free, so ``docker compose .... up -d`` gave me a shout 
+#. ``/var/lib/docker`` is the default Docker data root on Debian. On my host,
+   it needed 10G free, so ``docker compose .... up -d`` gave me a shout
    about not enough space: docker requires 10G, only had 6.7G. I ran
    ``docker system prune -a --volumes`` to free up space, but for long term
    health, I wanted to move the Docker data root to a different partition.
@@ -113,10 +115,10 @@ Platform Preparation
    ``/etc/docker/daemon.json``. So I changed it to point to a
    big-ass-partition: ``/vmnpool/data/docker``
 
-#. groups 
-   
-   - ``docker`` group is needed to run docker commands without sudo. 
-   - ``sudo usermod -aG docker $USER`` adds the current user to the docker group. 
+#. groups
+   - ``docker`` group is needed to run docker commands without sudo.
+   - ``sudo usermod -aG docker $USER`` adds the current user to
+   the docker group.
 
   .. code-block:: zsh
 
@@ -136,23 +138,28 @@ Platform Preparation
 Build
 -----
 **Assumptions**
+   See ``jimk@bodhi:/.oh-my-zsh/custom/aiases.zsh`` for the commands
+   described here:
 
-   See ``jimk@bodhi:/.oh-my-zsh/custom/aiases.zsh`` for the commands described here:
 **d-comp**
-   is an alias for ``docker compose``. It is used to avoid typing the space in ``docker compose`` with some specific 
-   docker compose files You just say ``dcomp ``__any docker compose sequence__
+   is an alias for ``docker compose``. It is used to avoid
+   typing the space in ``docker compose`` with some specific
+   docker compose files You just type ``d-comp`` followed by
+   any docker compose sequence.
 
 **dagup**
    restart the whole dag (using the complex of compose files)
 
-**db-clup** 
-   Remove all history from the DRS3 database.safe - hardwired to work on QA only  
+**db-clup**
+   Remove all history from the DRS3 database.safe -
+   hardwired to work on QA only.
 
 **dag-reset**
-   Remove tmp files and restart the airflow-worker service. Useful to force reparse of code.
+   Remove tmp files and restart the airflow-worker service.
+   Useful to force reparse of code.
 
 Methods
-^^^^^^^
+~~~~~~~
 #. get ``github://drs-deposit`` (branch ``drs-deposit-DRS3``)
 When you start from scratch, ``d-comp build`` from inside the repo working dir.
 (to access ``.env`` and    ``secrets``)
@@ -160,12 +167,13 @@ When you start from scratch, ``d-comp build`` from inside the repo working dir.
 #. Make all the host directories you need.
 
 Artifacts
----------
-#. ``.env`` ``secrets`` You have to get these from a developer. They're secrets, not handed out like candy.
+~~~~~~~~~
+#. ``.env`` ``secrets`` You have to get these from a developer.
+They're secrets, not handed out like candy.
 
 Processing
-----------
-1. Running, airflow-apiserver was unhealthy. COpilot recommended:
+~~~~~~~~~~
+1. Running, airflow-apiserver was unhealthy. Copilot recommended:
 
 .. code-block:: zsh
 
@@ -188,10 +196,10 @@ These are all helpful, but ``airflow-apiserver`` couldn't read  secrets.
 Fix: ``chown -R 50000:0 ~/dev/drs-deposit/secrets``
 
 2. No dags found
-Since I'm not using the debug anymore, my ``docker-compose`` defined mounts in 
-the ``airflow-common`` section, but only had a subset of them defined in the ``airflow-worker`` section.
-First pass: Remove the entire ``volumes:`` section from ``airflow-worker`` and let 
-it inherit from ``airflow-common``.  
+Since I'm not using the debug anymore, my ``docker-compose`` defined mounts in
+the ``airflow-common`` section, but only had a subset of them defined in the
+``airflow-worker`` section. First pass: Remove the entire ``volumes:``
+section from ``airflow-worker`` and let it inherit from ``airflow-common``.
 
 Basically, the host mount points have to be owned by ``50000:docker``,
 or be a link, like ``/mnt/Archive[0-3]``
@@ -200,16 +208,20 @@ Ok, on Debian, I have the folders as 50000:0 on the host.
 I
 try the different - 50000:0 50000:jimk or 777?
 I had thought that the `ao-workflows`` chaned ownerships on
-/opt/airflow/dags, but it didn't. However the ao-workflows/airflow-docker/deploy script **does**
+/opt/airflow/dags, but it didn't. However the
+ao-workflows/airflow-docker/deploy script **does**
 make dags, logs, & etc 777. And I don't recall having to chown them.
 
-Nope, that wasn't it. And I still need secrets to be 50000 (I' running 777, so maybe I don't need the :0)
-Nope, trying 755/jimk:jimk, but I noticed that ``secrets/airflow_jwt_secret.txt`` was 600.
+Nope, that wasn't it. And I still need secrets
+to be 50000 (I' running 777, so maybe I don't need the :0)
+Nope, trying 755/jimk:jimk, but I noticed that
+``secrets/airflow_jwt_secret.txt`` was 600.
 So I changed it to 644, jimk:jimk, and the service came up.
 It just couldn't read that one file.
 
 Now, I need to be able to touch and edit dag files in place.
-OK, so I've found out that running airflow under docker actually changes thhe owner of
+OK, so I've found out that running airflow under docker
+actually changes thhe owner of
 airflow files,
 
 ..code-block:: zsh
@@ -226,13 +238,15 @@ airflow files,
    drwxrwxrwx    - 50000 root 29 Jul 18:37  utils
 
 So, the next thing to do is to write a deploy script,
-like for the ``ao-workflows`` repo, that will chown the dags, logs, and plugins to 50000:0
+like for the ``ao-workflows`` repo, that will chown the dags,
+logs, and plugins to 50000:0
 
 Deploy Sync Helper
 ------------------
 
-Use the project deploy helper to copy only the runtime deploy set needed
-to run docker compose from the target directory:
+**Name**
+   ``deploy_project.sh`` - A project deployment script to copy only the
+   runtime deploy set needed to run docker compose from the target directory:
 
 - ``.env``
 - ``Dockerfile``
