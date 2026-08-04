@@ -1,1 +1,0 @@
-../make-drs-printmaster.sh

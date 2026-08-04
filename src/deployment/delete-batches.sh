@@ -1,1 +1,0 @@
-../delete-batches.sh

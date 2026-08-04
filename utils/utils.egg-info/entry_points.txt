@@ -1,3 +1,0 @@
-[console_scripts]
-scanBuild = ScanBuild.ScanBuild:scanBuild
-

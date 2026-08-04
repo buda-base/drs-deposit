@@ -1,1 +1,0 @@
-../makeOneFtp.sh
