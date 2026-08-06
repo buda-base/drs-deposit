@@ -1,5 +1,6 @@
 {
     "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
+    "githubIssues.workingBaseBranch": "prompt",
     "python.testing.pytestArgs": [
         "tests"
     ],

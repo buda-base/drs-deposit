@@ -1,0 +1,17 @@
+ObjTargetType,MorR,Field,Value,DefaultIfMand,Comment
+OBJECT,M,ObjResType,"Page-turned list",,"for Works"
+OBJECT,M,ObjResType,"Page-turned",,"For Volumes"
+OBJECT,M,ObjPurpose,,"Curatorial",
+OBJECT,ProcArchMode,"Manual|Auto|AutoClean","Manual",
+OBJECT,M,D3OSN,,,
+FILE,R,D3OSN,,,
+FILE,M,FilePurpose,,"Data",
+FILE,R,FileRole,"ARCHIVAL",,"Or metadata, or METS metadata, if we want to include that"
+FILE,R,FileRole,"PAGE_IMAGE",,"Contradicts above, but in an area specific to page turned objects"
+FILE,M,FileAccFlag,"P|R|N|B","R",
+FILE,R,FileProc,"Many",," - see \"Detailed Metadata element descriptions, FileProc\""
+FILE,R,MIXColorSpace,,,
+FILE,R,MIXCompScheme,,,
+FILE,R,MIXTileHt,,,
+FILE,R,MIXTileWidth,,,
+
