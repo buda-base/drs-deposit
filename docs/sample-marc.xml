@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim">
+  <marc:record>
+    <marc:leader>01190nam a22003133ia4500</marc:leader>
+    <marc:controlfield tag="001">W1AC29</marc:controlfield>
+    <marc:controlfield tag="003">MaCbBDRC</marc:controlfield>
+    <marc:controlfield tag="006">m     o  d        </marc:controlfield>
+    <marc:controlfield tag="007">cr |||||||||||</marc:controlfield>
+    <marc:controlfield tag="008">260806s2011    cc |||||o|||| 000 ||tibod</marc:controlfield>
+    <marc:datafield tag="024" ind1="7" ind2=" " desc="Other Standard Identifier">
+      <marc:subfield code="a" desc="Standard number or code">W1AC29</marc:subfield>
+      <marc:subfield code="2" desc="Source of number or code">bdrc</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="040" ind1=" " ind2=" " desc="Cataloging Source">
+      <marc:subfield code="a" desc="Original cataloging agency">NNC</marc:subfield>
+      <marc:subfield code="b" desc="Language of cataloging">eng</marc:subfield>
+      <marc:subfield code="e" desc="Description conventions">rda</marc:subfield>
+      <marc:subfield code="e" desc="Description conventions">pn</marc:subfield>
+      <marc:subfield code="c" desc="Transcribing agency">NNC</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="066" ind1=" " ind2=" " desc="Character Sets Present">
+      <marc:subfield code="c" desc="Alternate graphic representation">Tibt</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="245" ind1="0" ind2="0" desc="Title Statement">
+      <marc:subfield code="6" desc="Linkage">880-01</marc:subfield>
+      <marc:subfield code="a" desc="Title">Gsung ʼbum blo bzang tshe brtan.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="246" ind1="1" ind2="5" desc="Varying Form of Title">
+      <marc:subfield code="6" desc="Linkage">880-02</marc:subfield>
+      <marc:subfield code="a" desc="Title proper/short title">Tshe brtan lha rams paʼi gsung ʼbum (stod cha) dang (smad cha)</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="250" ind1=" " ind2=" " desc="Edition Statement">
+      <marc:subfield code="a" desc="Edition statement">Par gzhi dang po.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="264" ind1=" " ind2="1" desc="Production, Publication, Distribution, Manufacture, and Copyright Notice">
+      <marc:subfield code="a" desc="Place of production, publication, distribution, manufacture">Lha sa :</marc:subfield>
+      <marc:subfield code="b" desc="Name of producer, publisher, distributor, manufacturer">Ser gtsug nang bstan dpe rnying ʼtshol bsdu phyogs sgrig khang,</marc:subfield>
+      <marc:subfield code="c" desc="Date of production, publication, distribution, manufacture, or copyright notice">2011.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="300" ind1=" " ind2=" " desc="Physical Description">
+      <marc:subfield code="a" desc="Extent">1 online resource (2 volumes)</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="336" ind1=" " ind2=" " desc="Content Type">
+      <marc:subfield code="a" desc="Content type term">text</marc:subfield>
+      <marc:subfield code="b" desc="Content type code">txt</marc:subfield>
+      <marc:subfield code="2" desc="Source">rdacontent</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="337" ind1=" " ind2=" " desc="Media Type">
+      <marc:subfield code="a" desc="Media type term">computer</marc:subfield>
+      <marc:subfield code="b" desc="Media type code">c</marc:subfield>
+      <marc:subfield code="2" desc="Source">rdamedia</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="338" ind1=" " ind2=" " desc="Carrier Type">
+      <marc:subfield code="a" desc="Carrier type term">online resource</marc:subfield>
+      <marc:subfield code="b" desc="Carrier type code">cr</marc:subfield>
+      <marc:subfield code="2" desc="Source">rdacarrier</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="490" ind1="0" ind2=" " desc="Series Statement">
+      <marc:subfield code="a" desc="Series statement">Gangs can khyad nor dpe tshogs ;</marc:subfield>
+      <marc:subfield code="v" desc="Volume/sequential designation">309-310</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="546" ind1=" " ind2=" " desc="Language Note">
+      <marc:subfield code="a" desc="Language note">In Tibetan;</marc:subfield>
+      <marc:subfield code="b" desc="Information code or alphabet">Tibetan script.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="506" ind1="1" ind2=" " desc="Restrictions on Access Note">
+      <marc:subfield code="a" desc="Terms governing access">Access restricted in some countries.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="520" ind1=" " ind2=" " desc="Summary, Etc.">
+      <marc:subfield code="a" desc="Summary, etc.">Collected Works by Mongolian Geluk master Tseten Lharampa (18-19th Cent.).</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="533" ind1=" " ind2=" " desc="Reproduction Note">
+      <marc:subfield code="a" desc="Type of reproduction">Electronic reproduction.</marc:subfield>
+      <marc:subfield code="n" desc="Note about reproduction">Scanned at Tibetan Buddhist Resource Center, Southwest University of Nationalities, Chengdu, China.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="542" ind1="1" ind2=" " desc="Information Relating to Copyright Status">
+      <marc:subfield code="l" desc="Copyright status">Public domain</marc:subfield>
+      <marc:subfield code="u" desc="Uniform Resource Identifier">http://creativecommons.org/publicdomain/mark/1.0/</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="588" ind1=" " ind2=" " desc="Source of Description Note">
+      <marc:subfield code="a" desc="Source of description note">Description based on online resource (BDRC, viewed August 6, 2026)</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="653" ind1=" " ind2=" " desc="Index Term - Uncontrolled">
+      <marc:subfield code="a" desc="Uncontrolled term">Dge lugs</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="655" ind1=" " ind2="7" desc="Index Term - Genre/Form">
+      <marc:subfield code="a" desc="Genre/form data or focus term">གསུང་འབུམ།</marc:subfield>
+      <marc:subfield code="1" desc="Real World Object URI">http://purl.bdrc.io/resource/T208</marc:subfield>
+      <marc:subfield code="2" desc="Source of term">bdrc</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="655" ind1=" " ind2="4" desc="Index Term - Genre/Form">
+      <marc:subfield code="a" desc="Genre/form data or focus term">Collected works</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="710" ind1="2" ind2=" " desc="Added Entry - Corporate Name">
+      <marc:subfield code="a" desc="Corporate name">Buddhist Digital Resource Center.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="720" ind1="0" ind2=" " desc="Added Entry - Uncontrolled Name">
+      <marc:subfield code="6" desc="Linkage">880-03</marc:subfield>
+      <marc:subfield code="a" desc="Name">Har gdong dge bshes blo bzang tshe brtan,</marc:subfield>
+      <marc:subfield code="e" desc="Relator term">author.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="856" ind1="4" ind2="0" desc="Electronic Location and Access">
+      <marc:subfield code="y" desc="Link text">Buddhist Digital Resource Center</marc:subfield>
+      <marc:subfield code="u" desc="Uniform Resource Identifier">http://purl.bdrc.io/resource/W1AC29</marc:subfield>
+      <marc:subfield code="7" desc="Access status">0</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="880" ind1="0" ind2="0" desc="Alternate Graphic Representation">
+      <marc:subfield code="6" desc="Linkage">245-01</marc:subfield>
+      <marc:subfield code="a" desc="Field content in alternate script (linked by subfield 6)">གསུང་འབུམ། བློ་བཟང་ཚེ་བརྟན།.</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="880" ind1="1" ind2="5" desc="Alternate Graphic Representation">
+      <marc:subfield code="6" desc="Linkage">246-02</marc:subfield>
+      <marc:subfield code="a" desc="Field content in alternate script (linked by subfield 6)">ཚེ་བརྟན་ལྷ་རམས་པའི་གསུང་འབུམ། ༼སྟོད་ཆ༽ དང ༼སྨད་ཆ༽</marc:subfield>
+    </marc:datafield>
+    <marc:datafield tag="880" ind1="0" ind2=" " desc="Alternate Graphic Representation">
+      <marc:subfield code="6" desc="Linkage">720-03</marc:subfield>
+      <marc:subfield code="a" desc="Field content in alternate script (linked by subfield 6)">ཧར་གདོང་དགེ་བཤེས་བློ་བཟང་ཚེ་བརྟན།,</marc:subfield>
+      <marc:subfield code="e" desc="Relator term (from linked field)">author.</marc:subfield>
+    </marc:datafield>
+  </marc:record>
+</marc:collection>
