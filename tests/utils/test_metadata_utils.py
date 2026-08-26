@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from utils.metadata_utils import build_drs_eic_value_map
+from build_metadata_x import build_drs_eic_value_map
 
 
 def test_build_drs_eic_value_map_uses_defaults() -> None:
