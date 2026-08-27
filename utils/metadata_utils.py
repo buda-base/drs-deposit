@@ -5,396 +5,314 @@ Builds the csv inventory to submit volumes of a work
 from __future__ import annotations
 
 import dataclasses
+
+import requests
 import re
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET
+from dataclasses import dataclass
 
-SUBMITTAL_COLUMNS = {
-    "FullFolderOrFilePath": None,
-    "ObjResType": None,
-    "ProcArchMode": None,
-    "D3OSN": None,
-    "D3Label": None,
-    "FilePurpose": None,
-    "FileRole": None,
-    "FileAccFlag": None,
-    "MIXTileHt": None,
-    "MIXTileWidth": None,
-    "MODSTitle": None,
-    "MODSName": None,
-    "MODSPublisher": None,
-    "MODSPlace": None,
-    "MODSEdition": None,
-    "MODSAbstract": None,
-    "MODSSubject": None,
-    "MODSGenre": None,
-    "MODSIdentifier": None,
-    "MODSRelatedItem": None,
-    "MODSLanguage": None,
-    "D3SubName": None,
-}
-
-type Getter = Callable[[Any], Any]
-type RowMutator = Callable[[Any, dict[str, Any]], None]
+# This is the union of all the metadata we're going to provide. Any
+# given row in the submittal file will contain some of these values.
+# csv.Dictwriter provides sparse mapping (i.e. a row can be a dict with only
+# a subset of columns
+SUBMITTAL_COLUMNS = [
+    "FullFolderOrFilePath",
+    "ObjResType",
+    "ProcArchMode",
+    "D3OSN",
+    "D3Label",
+    "FilePurpose",
+    "FileRole",
+    "FileAccFlag",
+    "MIXTileHt",
+    "MIXTileWidth",
+    "MODSTitle",
+    "MODSName",
+    "MODSPublisher",
+    "MODSPlace",
+    "MODSEdition",
+    "MODSAbstract",
+    "MODSSubject",
+    "MODSGenre",
+    "MODSIdentifier",
+    "MODSRelatedItem",
+    "MODSLanguage",
+    "D3SubName"
+]
 
 MARC_NAMESPACE = "http://www.loc.gov/MARC21/slim"
 MARC_NAMESPACES = {"marc": MARC_NAMESPACE}
-MARC_SPEC_PATTERN = re.compile(r"^Marc\.tag\.(\d{1,3})\.code\.([A-Za-z0-9])$")
+BUDA_MARC_URL = "https://purl.bdrc.io/resource/{w}.xml"
 
 
-def _get_metadata_value(instance: Any, column_name: str) -> Any:
-    return instance.metadata.get(column_name)
+def _extract_marc_text(root: ET.ElementTree, tag: str, code: str | None) -> str:
 
-
-def _set_row_value(row: dict[str, Any], column_name: str, value: Any) -> None:
-    row[column_name] = value
-
-
-def _constant_mutator(column_name: str, value: Any) -> RowMutator:
-    def _mutate(_instance: Any, row: dict[str, Any]) -> None:
-        _set_row_value(row, column_name, value)
-
-    return _mutate
-
-
-def _getter_mutator(column_name: str, getter: Getter) -> RowMutator:
-    def _mutate(instance: Any, row: dict[str, Any]) -> None:
-        _set_row_value(row, column_name, getter(instance))
-
-    return _mutate
-
-
-def _metadata_mutator(column_name: str, metadata_key: str) -> RowMutator:
-    def _mutate(instance: Any, row: dict[str, Any]) -> None:
-        _set_row_value(row, column_name, _get_metadata_value(instance, metadata_key))
-
-    return _mutate
-
-
-def _marc_mutator(column_name: str, marc_spec: str) -> RowMutator:
-    def _mutate(instance: Any, row: dict[str, Any]) -> None:
-        if not hasattr(instance, "get_marc_value"):
-            _set_row_value(row, column_name, None)
-            return
-        _set_row_value(row, column_name, instance.get_marc_value(marc_spec))
-
-    return _mutate
-
-
-def _parse_marc_spec(marc_spec: str) -> tuple[str, str]:
-    match = MARC_SPEC_PATTERN.match(marc_spec)
-    if match is None:
-        msg = f"Invalid MARC spec format: {marc_spec!r}"
-        raise ValueError(msg)
-    tag = match.group(1).zfill(3)
-    code = match.group(2)
-    return tag, code
-
-
-def _extract_marc_text(root: ET.Element, marc_spec: str) -> str | None:
-    tag, code = _parse_marc_spec(marc_spec)
-    xpath = f".//marc:datafield[@tag='{tag}']/marc:subfield[@code='{code}']"
+    xpath = f".//marc:datafield[@tag='{tag}']"
+    xpath += f"/marc:subfield[@code='{code}']" if code else ""
     nodes = root.findall(xpath, MARC_NAMESPACES)
+
+    # return the first found
+    # Don't bother testing for strip - return empty string is fine
     for node in nodes:
-        if node.text and node.text.strip():
+        if node.text:
             return node.text.strip()
-    return None
+    return ""
 
 
-@dataclasses.dataclass
-class ImageFileForDRS3Metadata:
+def _get_metadata_value(instance: DRS3_Base, key: str) -> Any:
+    return "silence, PyLance"
+
+@dataclass
+class DRS3_Base:
+    """
+    Commmon methods for all the DRS3 objects
+    """
+
     path: Path
-    metadata: dict[str, Any] = dataclasses.field(default_factory=dict)
+    # Not a Image_Meta or DRTS3_Base
+    parent: ObjectBase | None
+
+    #----------- Common  accessors -----------------
+    @staticmethod
+    def get_path(instance: DRS3_Base) -> str:
+        parent_path = f"/{instance.parent.path.name}" if instance.parent else ""
+        return f"{parent_path}/{instance.path.name}" 
 
     @staticmethod
-    def get_path(instance: ImageFileForDRS3Metadata) -> str:
-        return str(instance.path)
+    def get_osn(instance: DRS3_Base) -> Any:
+        return instance.path.name
+
+    #-----    DRS3 Object accessors.  -----------
+    @staticmethod
+    def get_marc_value(instance: DRS3_Base, marc_spec: str) -> Any:
+        raise NotImplementedError("get_marc_value must be implemented by subclasses")
 
     @staticmethod
-    def get_obj_res_type(instance: ImageFileForDRS3Metadata) -> Any:
+    def get_obj_res_type(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_obj_res_type must be implemented by subclasses")
+
+    
+    @staticmethod
+    def get_d3_sub_name(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_d3_sub_name must be implemented by subclasses")
+
+    #--------       DRS3 File accessors. -------------
+    @staticmethod
+    def get_file_purpose(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_file_purpose must be implemented by subclasses")
+
+    @staticmethod
+    def get_file_role(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_file_role must be implemented by subclasses")
+    
+    @staticmethod
+    def get_file_acc_flag(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_file_acc_flag must be implemented by subclasses")
+
+    @staticmethod
+    def get_mix_tile_height(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_mix_tile_height must be implemented by subclasses")
+
+    @staticmethod
+    def get_mix_tile_width(instance: DRS3_Base) -> Any:
+        raise NotImplementedError("get_mix_tile_width must be implemented by subclasses ")
+
+
+@dataclass
+class ObjectBase(DRS3_Base):
+    """
+    Base class for all DRS3 objects of Object type
+    """
+
+    @staticmethod
+    def get_obj_res_type(instance: ObjectBase) -> Any:
         return _get_metadata_value(instance, "ObjResType")
 
-    @staticmethod
-    def get_file_purpose(instance: ImageFileForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "FilePurpose")
+
+@dataclass
+class Work_Meta(ObjectBase):
+
+    _marc_root: ET.ElementTree
+
+    @staticmethod   
+    def get_path(instance: Work_Meta) -> str:
+        """
+        Is simply the work name - the terminal node of the path, prefixed with '/'
+        """
+        return f"/{instance.path.name}"
 
     @staticmethod
-    def get_file_role(instance: ImageFileForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "FileRole")
-
-    @staticmethod
-    def get_file_acc_flag(instance: ImageFileForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "FileAccFlag")
-
-    @staticmethod
-    def get_mix_tile_height(instance: ImageFileForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "MIXTileHt")
-
-    @staticmethod
-    def get_mix_tile_width(instance: ImageFileForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "MIXTileWidth")
-
-    @staticmethod
-    def get_d3_sub_name(instance: ImageFileForDRS3Metadata) -> Any:
+    def get_d3_sub_name(instance: DRS3_Base) -> Any:
         return _get_metadata_value(instance, "D3SubName")
 
-    def to_submittal_dict(self) -> dict[str, Any]:
-        return build_submittal_dict(self)
-
-    def get_marc_value(self, marc_spec: str) -> Any:
-        raise NotImplementedError
-
-    def populate_metadata(self) -> None:
-        raise NotImplementedError
-
-
-@dataclasses.dataclass
-class VolumeForDRS3Metadata:
-    path: Path
-    image_files: list[ImageFileForDRS3Metadata] = dataclasses.field(default_factory=list)
-    metadata: dict[str, Any] = dataclasses.field(default_factory=dict)
+    @staticmethod
+    def get_osn(instance: Work_Meta) -> Any:
+        raise NotImplementedError("get_os must be implemented by subclasses")
 
     @staticmethod
-    def get_path(instance: VolumeForDRS3Metadata) -> str:
-        return str(instance.path)
-
-    @staticmethod
-    def get_obj_res_type(instance: VolumeForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "ObjResType")
-
-    @staticmethod
-    def get_proc_arch_mode(instance: VolumeForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "ProcArchMode")
-
-    @staticmethod
-    def get_osn(instance: VolumeForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "D3OSN")
-
-    @staticmethod
-    def get_d3_label(instance: VolumeForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "D3Label")
-
-    @staticmethod
-    def get_d3_sub_name(instance: VolumeForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "D3SubName")
-
-    def to_submittal_dict(self) -> dict[str, Any]:
-        return build_submittal_dict(self)
-
-    def get_marc_value(self, marc_spec: str) -> Any:
-        raise NotImplementedError
-
-    def discover_image_files(self) -> None:
-        raise NotImplementedError
-
-    def populate_metadata(self) -> None:
-        raise NotImplementedError
+    def get_marc_field(instance: Work_Meta, tag: str, code : str | None = None) -> Any:
+        return _extract_marc_text(instance._marc_root, tag, code)
 
 
-@dataclasses.dataclass
-class WorkForDRS3Metadata:
-    path: Path
-    volumes: list[VolumeForDRS3Metadata] = dataclasses.field(default_factory=list)
-    metadata: dict[str, Any] = dataclasses.field(default_factory=dict)
-    marc_xml_path: Path | None = None
-    _marc_root: ET.Element | None = dataclasses.field(default=None, init=False, repr=False)
-
-    @staticmethod
-    def get_path(instance: WorkForDRS3Metadata) -> str:
-        return str(instance.path)
-
-    @staticmethod
-    def get_obj_res_type(instance: WorkForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "ObjResType")
-
-    @staticmethod
-    def get_proc_arch_mode(instance: WorkForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "ProcArchMode")
-
-    @staticmethod
-    def get_osn(instance: WorkForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "D3OSN")
-
-    @staticmethod
-    def get_d3_label(instance: WorkForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "D3Label")
-
-    @staticmethod
-    def get_d3_sub_name(instance: WorkForDRS3Metadata) -> Any:
-        return _get_metadata_value(instance, "D3SubName")
-
-    def to_submittal_dict(self) -> dict[str, Any]:
-        return build_submittal_dict(self)
-
-    def get_marc_value(self, marc_spec: str) -> Any:
-        if marc_spec in self.metadata:
-            return self.metadata[marc_spec]
+    def populate_metadata(self) -> dict[str, str]:
+        """
+        Create a list of dictionaries that represents the work's metadata.
+        """
+        def get_marc_metadata( work_name: str) -> ET.Element:
+            """
+            Call purl.bdrc.io to retrieve the MARC XML metadata for the given work name, and 
+            return the xml element tree
+            """
+    
+            response = requests.get(BUDA_MARC_URL.format(w=work_name))
+            response.raise_for_status()
+            return ET.fromstring(response.content)
 
         if self._marc_root is None:
-            xml_path = self.marc_xml_path
-            if xml_path is None:
-                meta_xml_path = self.metadata.get("MarcXmlPath")
-                if isinstance(meta_xml_path, str) and meta_xml_path.strip():
-                    xml_path = Path(meta_xml_path)
-            if xml_path is None:
-                return None
-            tree = ET.parse(xml_path)
-            self._marc_root = tree.getroot()
+            self._marc_root = get_marc_metadata(self.path.name)
 
-        return _extract_marc_text(self._marc_root, marc_spec)
+        metadata = {}
+        for key, value in WORK_METADATA_TEMPLATE.items():
+            if isinstance(value, tuple) and len(value) > 1 and callable(value[0]):
+                metadata[key] = value[0](self, *value[1:])
+            elif callable(value):
+                metadata[key] = value(self)
+            else:
+                metadata[key] = value
+        return metadata
+   
 
+    #        ----    Instance Methods --------
     def discover_volumes(self) -> None:
         raise NotImplementedError
 
+@dataclass
+class Volume_Meta(ObjectBase):
+    image_files: list[Image_Meta] = dataclasses.field(default_factory=list)
+
+@dataclass
+class Image_Meta(DRS3_Base):
+    path: Path
+    parent: Volume_Meta
+
+    @staticmethod
+    def get_path(instance: Image_Meta) -> str:
+        return f"{instance.parent.get_path(instance.parent)}/{instance.path.name}"
+
+    @staticmethod
+    def get_file_role(instance: Image_Meta) -> Any:
+        return _get_metadata_value(instance, "FileRole")
+
+    @staticmethod
+    def get_file_acc_flag(instance: Image_Meta) -> Any:
+        return _get_metadata_value(instance, "FileAccFlag")
+
+    @staticmethod
+    def get_mix_tile_height(instance: Image_Meta) -> Any:
+        return _get_metadata_value(instance, "MIXTileHt")
+
+    @staticmethod
+    def get_mix_tile_width(instance: Image_Meta) -> Any:
+        return _get_metadata_value(instance, "MIXTileWidth")
+
     def populate_metadata(self) -> None:
         raise NotImplementedError
 
 
-_WORK_INDEX = 0
-_VOLUME_INDEX = 1
-_IMAGE_INDEX = 2
-
-
-# Column -> [work_populator, volume_populator, image_populator]
-COLUMN_POPULATORS: dict[str, list[RowMutator | None]] = {
-    "FullFolderOrFilePath": [
-        _getter_mutator("FullFolderOrFilePath", WorkForDRS3Metadata.get_path),
-        _getter_mutator("FullFolderOrFilePath", VolumeForDRS3Metadata.get_path),
-        _getter_mutator("FullFolderOrFilePath", ImageFileForDRS3Metadata.get_path),
-    ],
-    "ObjResType": [
-        _constant_mutator("ObjResType", "Page-turned list"),
-        _constant_mutator("ObjResType", "Page-turned"),
-        None,
-    ],
-    # Not used - DRS provides a default - will change to AutoClean
-    # When DRS releases it
-    # "ProcArchMode": [
-    #     WorkForDRS3Metadata.get_proc_arch_mode,     # You
-    #     VolumeForDRS3Metadata.get_proc_arch_mode,   # get the
-    #     None,                                       # idea
-    # ],
-    "D3OSN": [
-        _getter_mutator("D3OSN", WorkForDRS3Metadata.get_osn),
-        _getter_mutator("D3OSN", VolumeForDRS3Metadata.get_osn),
-        None,
-    ],
-    "D3Label": [
-        _getter_mutator("D3Label", WorkForDRS3Metadata.get_d3_label),
-        _getter_mutator("D3Label", VolumeForDRS3Metadata.get_d3_label),
-        None,
-    ],
-    "FilePurpose": [None, None, _constant_mutator("FilePurpose", "DATA")],
-    "FileRole": [None, None, _constant_mutator("FileRole", "PAGE_IMAGE")],
-    # DRS provides default - R Restricted to known internal users
-    # "FileAccFlag": [None, None, ImageFileForDRS3Metadata.get_file_acc_flag],
-    "MIXTileHt": [None, None, _getter_mutator("MIXTileHt", ImageFileForDRS3Metadata.get_mix_tile_height)],
-    "MIXTileWidth": [None, None, _getter_mutator("MIXTileWidth", ImageFileForDRS3Metadata.get_mix_tile_width)],
-    "MODSTitle": [_marc_mutator("MODSTitle", "Marc.tag.245.code.a"), None, None],
-    "MODSName": [_marc_mutator("MODSName", "Marc.tag.024.code.a"), None, None],
-    "MODSPublisher": [_marc_mutator("MODSPublisher", "Marc.tag.264.code.b"), None, None],
-    "MODSPlace": [_marc_mutator("MODSPlace", "Marc.tag.264.code.a"), None, None],
-    "MODSEdition": [_marc_mutator("MODSEdition", "Marc.tag.250.code.a"), None, None],
+WORK_METADATA_TEMPLATE = {
+    "FullFolderOrFilePath" : Work_Meta.get_path,
+    "D3OSN": Work_Meta.get_osn,
+#    "D3Label": Work_Meta.get_d3_label,
+    "ObjResType": "Page-turned list",
+    "MODSTitle": (Work_Meta.get_marc_field, "245" ,"a"),
+    "MODSName": (Work_Meta.get_marc_field, "024" , "a"),
+    "MODSPublisher": (Work_Meta.get_marc_field, "264" , "b"),
+    "MODSPlace": (Work_Meta.get_marc_field, "264" , "a"),
+    "MODSEdition": (Work_Meta.get_marc_field, "250" , "a"),
     # Not used
     # "MODSAbstract": [_metadata_populator(), None, None],
-    "MODSSubject": [_marc_mutator("MODSSubject", "Marc.tag.520.code.a"), None, None],
-    "MODSGenre": [_marc_mutator("MODSGenre", "Marc.tag.655.code.a"), None, None],
+    "MODSSubject": (Work_Meta.get_marc_field, "520" , "a"),
+    "MODSGenre": (Work_Meta.get_marc_field, "655" , "a"),
     # Not used
-    # "MODSIdentifier": [_metadata_populator("MODSIdentifier"), None, None],
-    # "MODSRelatedItem": [_metadata_populator("MODSRelatedItem"), None, None],
-    "MODSLanguage": [_marc_mutator("MODSLanguage", "Marc.tag.546.code.a"), None, None],
-    "D3SubName": [
-        _getter_mutator("D3SubName", WorkForDRS3Metadata.get_d3_sub_name),
-        None,
-        None,
-    ],
+    # "MODSIdentifier": 
+    # "MODSRelatedItem": 
+    "MODSLanguage": (Work_Meta.get_marc_field, "546" , "a"),
+    "D3SubName": Work_Meta.get_d3_sub_name,
+}
+
+VOLUME_METADATA_TEMPLATE = {
+    "FullFolderOrFilePath" : Volume_Meta.get_path,
+    "D3OSN": Volume_Meta.get_osn,
+    "ObjResType": "Page-turned",
+}
+
+FILE_METADATA_TEMPLATE = {
+    "FullFolderOrFilePath" : Image_Meta.get_path,
+    "D3OSN": Image_Meta.get_osn,
+    "FilePurpose":  "DATA",
+    "FileRole": "PAGE_IMAGE",
+    # Not used - take the system provided default of 'R'
+    # "FileAccFlag": None,
+    "MIXTileHt": None,
+    "MIXTileWidth": None,
+
 }
 
 
-def _instance_index(instance: Any) -> int:
-    if isinstance(instance, WorkForDRS3Metadata):
-        return _WORK_INDEX
-    if isinstance(instance, VolumeForDRS3Metadata):
-        return _VOLUME_INDEX
-    if isinstance(instance, ImageFileForDRS3Metadata):
-        return _IMAGE_INDEX
-    msg = f"Unsupported metadata type: {type(instance)!r}"
-    raise TypeError(msg)
+def populate_metadata(work_path: Path) -> list[dict[str, Any]]:
+    """
+    Build the work's metadata into a list of dictionairies. Output:
+    [
+        work_metadata_dict,
+        *[volume.populate_metadata() for volume in work.discover_volumes()],
+    ]
+    where each volume.populate_metadata() returns:
+    [ 
+        volume_metadata_dict,
+        [*file.populate_metadata() for file in volume.discover_files()]
+    ]
+    Each dictionary may have different keys, but each key will be a member of SUBMITTAL_COLUMNS.keys()
+    """
+    work_metadata = Work_Meta(path=work_path)
+    return [ work_metadata.populate_metadata(), *[volume.populate_metadata() for volume in  work_metadata.discover_volumes()]]
 
 
-def build_submittal_dict(instance: Any) -> dict[str, Any]:
-    index = _instance_index(instance)
-    row: dict[str, Any] = {column_name: None for column_name in SUBMITTAL_COLUMNS}
+def metadata_to_csv(metadata_list: list[dict[str, Any]], csv_path: Path) -> None:
+    """
+    Write a list of metadata dictionaries to a CSV file.
 
-    for column_name in SUBMITTAL_COLUMNS:
-        operations = COLUMN_POPULATORS.get(column_name, [None, None, None])
-        operation = operations[index]
-        if operation is not None:
-            operation(instance, row)
+    Each dictionary in the list represents a set of metadata fields for a work, volume, or file.
+    The keys of the dictionaries should correspond to the columns in the CSV.
 
-    return row
+    Args:
+        metadata_list: A list of dictionaries containing metadata.
+        csv_path: The path to the CSV file to write.
+    """
+    import csv
 
+    if not metadata_list:
+        return
 
-def build_submittal_rows_for_work(work: WorkForDRS3Metadata) -> list[dict[str, Any]]:
-    """Return submittal rows in this order: work, volumes, then image files."""
+    # Create a dictionary with all the keys in SUBMITTAL_COLUMNS (without touching SUBMITTAL_COLUMNS)
+    all_keys = {key for metadata in metadata_list for key in metadata.keys()}
+    all_rows: list[dict[str, Any]] = []
+    
+    # for each dictionary in metadata_list, create a new dictionary with all keys from all_keys
+    # and fill in the values from the original dictionary 
+    # (dict.get(key) returns  None if the key is missing)
+    #
+    # Achtung: the csv module will handle the escaping of values containing quotes or strings
+    for metadata in metadata_list:
+        row = {key: metadata.get(key) for key in all_keys}
+        all_rows.append(row)
 
-    rows: list[dict[str, Any]] = [work.to_submittal_dict()]
-
-    for volume in work.volumes:
-        rows.append(volume.to_submittal_dict())
-        rows.extend(image_file.to_submittal_dict() for image_file in volume.image_files)
-
-    return rows
-
-
-def build_example_work_tree() -> WorkForDRS3Metadata:
-    """Build a minimal sample object graph for testing row emission."""
-
-    image_1 = ImageFileForDRS3Metadata(
-        path=Path("/W1/work/v001/images/0001.tif"),
-        metadata={
-            "ObjResType": "Image",
-            "FilePurpose": "Data",
-            "FileRole": "PAGE_IMAGE",
-            "FileAccFlag": "Public",
-            "MIXTileHt": 4000,
-            "MIXTileWidth": 3000,
-            "D3SubName": "W1_v001_0001",
-        },
-    )
-
-    volume_1 = VolumeForDRS3Metadata(
-        path=Path("/W1/work/v001"),
-        image_files=[image_1],
-        metadata={
-            "ObjResType": "Volume",
-            "ProcArchMode": "Manual",
-            "D3OSN": "W1",
-            "D3Label": "Volume 1",
-            "D3SubName": "W1_v001",
-        },
-    )
-
-    work = WorkForDRS3Metadata(
-        path=Path("/W1/work"),
-        volumes=[volume_1],
-        metadata={
-            "ObjResType": "Page-turned list",
-            "ProcArchMode": "Manual",
-            "D3OSN": "W1",
-            "D3Label": "Work W1",
-            "MODSTitle": "Example Work",
-            "MODSName": "Example Creator",
-            "MODSPublisher": "Example Publisher",
-            "MODSPlace": "Lhasa",
-            "MODSEdition": "First edition",
-            "MODSSubject": "Buddhist literature",
-            "MODSGenre": "Collected works",
-            "MODSLanguage": "Tibetan",
-            "D3SubName": "W1_2026-08-25",
-        },
-    )
-
-    return work
+    with open(csv_path, mode="w", newline="", encoding="utf-8") as csv_file:
+        writer = csv.DictWriter(csv_file, 
+                                fieldnames=all_keys,
+                                extrasaction="ignore", # Copilot AI suggestion
+                                restval="" )           # Copilot AI suggestion
+        writer.writeheader()
+        writer.writerows(all_rows)
