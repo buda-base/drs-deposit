@@ -5,14 +5,16 @@ Builds the csv inventory to submit volumes of a work
 from __future__ import annotations
 
 import dataclasses
-
-import requests
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET
-from dataclasses import dataclass
+
+import requests
+from PIL import Image, UnidentifiedImageError
+from mypy.semanal import names_modified_by_assignment
 
 # This is the union of all the metadata we're going to provide. Any
 # given row in the submittal file will contain some of these values.
@@ -45,10 +47,21 @@ SUBMITTAL_COLUMNS = [
 
 MARC_NAMESPACE = "http://www.loc.gov/MARC21/slim"
 MARC_NAMESPACES = {"marc": MARC_NAMESPACE}
-BUDA_MARC_URL = "https://purl.bdrc.io/resource/{w}.xml"
+BUDA_MARC_URL = "https://purl.bdrc.io/resource/{w}.mrcx"
+IMAGE_GROUP_HOME="drs"
+
+def fetch_marc_metadata( work_name: str) -> ET.ElementTree:
+    """
+    Call purl.bdrc.io to retrieve the MARC XML metadata for the given work name, and 
+    return the xml element tree
+    """
+
+    response = requests.get(BUDA_MARC_URL.format(w=work_name))
+    response.raise_for_status()
+    return ET.ElementTree(ET.fromstring(response.content))
 
 
-def _extract_marc_text(root: ET.ElementTree, tag: str, code: str | None) -> str:
+def _extract_marc_text(root: ET.ElementTree , tag: str, code: str | None) -> str:
 
     xpath = f".//marc:datafield[@tag='{tag}']"
     xpath += f"/marc:subfield[@code='{code}']" if code else ""
@@ -65,6 +78,16 @@ def _extract_marc_text(root: ET.ElementTree, tag: str, code: str | None) -> str:
 def _get_metadata_value(instance: DRS3_Base, key: str) -> Any:
     return "silence, PyLance"
 
+
+def _read_image_dimensions(path: Path) -> tuple[int, int] | None:
+    """Return image (height, width) when Pillow can identify the file, else None."""
+    try:
+        with Image.open(path) as image:
+            return image.height, image.width
+    except (UnidentifiedImageError, OSError):
+        return None
+
+
 @dataclass
 class DRS3_Base:
     """
@@ -73,17 +96,49 @@ class DRS3_Base:
 
     path: Path
     # Not a Image_Meta or DRTS3_Base
-    parent: ObjectBase | None
+    parent: ObjectBase | None = None
 
     #----------- Common  accessors -----------------
     @staticmethod
     def get_path(instance: DRS3_Base) -> str:
+        """
+        Simply the terminal node, prefixed by the parent's terminal node if it exists.
+        """
         parent_path = f"/{instance.parent.path.name}" if instance.parent else ""
         return f"{parent_path}/{instance.path.name}" 
 
     @staticmethod
     def get_osn(instance: DRS3_Base) -> Any:
         return instance.path.name
+
+    def _populate_from_template(self, template: dict[str, Any]) -> dict[str, Any]:
+        """
+        Populate one metadata row for this instance from a template.
+        """
+
+        metadata: dict[str, Any] = {}
+        for key, value in template.items():
+            if isinstance(value, tuple) and len(value) > 1 and callable(value[0]):
+                metadata[key] = value[0](self, *value[1:])
+            elif callable(value):
+                metadata[key] = value(self)
+            else:
+                metadata[key] = value
+        return metadata
+
+    def get_metadata_template(self) -> dict[str, Any]:
+        raise NotImplementedError("get_metadata_template must be implemented by subclasses")
+
+    def discover_children(self) -> Sequence[DRS3_Base]:
+        return []
+
+    def populate_metadata(self) -> list[dict[str, Any]]:
+        """Recursively populate metadata rows for this instance and all children."""
+
+        rows: list[dict[str, Any]] = [self._populate_from_template(self.get_metadata_template())]
+        for child in self.discover_children():
+            rows.extend(child.populate_metadata())
+        return rows
 
     #-----    DRS3 Object accessors.  -----------
     @staticmethod
@@ -134,15 +189,15 @@ class ObjectBase(DRS3_Base):
 
 @dataclass
 class Work_Meta(ObjectBase):
+    volumes: list[Volume_Meta] = dataclasses.field(default_factory=list)
+    _marc_root: ET.ElementTree = field(init=False, repr=False, compare=False)
 
-    _marc_root: ET.ElementTree
 
-    @staticmethod   
-    def get_path(instance: Work_Meta) -> str:
-        """
-        Is simply the work name - the terminal node of the path, prefixed with '/'
-        """
-        return f"/{instance.path.name}"
+    def set_marc_root(self, root: ET.ElementTree) -> None:
+        self._marc_root = root
+
+ 
+# ..
 
     @staticmethod
     def get_d3_sub_name(instance: DRS3_Base) -> Any:
@@ -150,57 +205,87 @@ class Work_Meta(ObjectBase):
 
     @staticmethod
     def get_osn(instance: Work_Meta) -> Any:
-        raise NotImplementedError("get_os must be implemented by subclasses")
+        return instance.path.name
+
+    def get_metadata_template(self) -> dict[str, Any]:
+        return WORK_METADATA_TEMPLATE
 
     @staticmethod
     def get_marc_field(instance: Work_Meta, tag: str, code : str | None = None) -> Any:
+        """
+        Retrieve the value of a MARC field from the work's MARC metadata. Load it
+        as needed.
+        """
+        if not hasattr(instance, "_marc_root"):
+            instance.set_marc_root(fetch_marc_metadata(instance.path.name))
         return _extract_marc_text(instance._marc_root, tag, code)
 
 
-    def populate_metadata(self) -> dict[str, str]:
-        """
-        Create a list of dictionaries that represents the work's metadata.
-        """
-        def get_marc_metadata( work_name: str) -> ET.Element:
-            """
-            Call purl.bdrc.io to retrieve the MARC XML metadata for the given work name, and 
-            return the xml element tree
-            """
-    
-            response = requests.get(BUDA_MARC_URL.format(w=work_name))
-            response.raise_for_status()
-            return ET.fromstring(response.content)
-
-        if self._marc_root is None:
-            self._marc_root = get_marc_metadata(self.path.name)
-
-        metadata = {}
-        for key, value in WORK_METADATA_TEMPLATE.items():
-            if isinstance(value, tuple) and len(value) > 1 and callable(value[0]):
-                metadata[key] = value[0](self, *value[1:])
-            elif callable(value):
-                metadata[key] = value(self)
-            else:
-                metadata[key] = value
-        return metadata
-   
-
     #        ----    Instance Methods --------
-    def discover_volumes(self) -> None:
-        raise NotImplementedError
+    def discover_volumes(self) -> list[Volume_Meta]:
+        """
+        The volumes in a work are the names of the directories immediately under
+        the directory IMAGE_GROUP_HOME under the work's directory in the file system.
+        """
+        image_group_path = self.path / IMAGE_GROUP_HOME
+        if not image_group_path.exists() or not image_group_path.is_dir():
+            raise ValueError(f"Home of Volumes does not exist or is not a directory: {image_group_path}")
+
+        self.volumes = [
+            Volume_Meta(path=entry, parent=self)
+            for entry in sorted(image_group_path.iterdir())
+            if entry.is_dir()
+        ]
+        return self.volumes
+
+    def discover_children(self) -> Sequence[DRS3_Base]:
+        return self.discover_volumes()
 
 @dataclass
 class Volume_Meta(ObjectBase):
     image_files: list[Image_Meta] = dataclasses.field(default_factory=list)
 
+    def get_metadata_template(self) -> dict[str, Any]:
+        return VOLUME_METADATA_TEMPLATE
+
+    def discover_images(self) -> list[Image_Meta]:
+        """
+        The images in a volume are the names of the files immediately under
+        the volume's directory in the file system.
+        """
+
+        if not self.path.exists() or not self.path.is_dir():
+            raise ValueError(f"Images path does not exist or is not a directory: {self.path}")
+
+        self.image_files = []
+        for entry in sorted(self.path.iterdir()):
+            if not entry.is_file():
+                continue
+            dimensions = _read_image_dimensions(entry)
+            if dimensions is None:
+                continue
+            height, width = dimensions
+            self.image_files.append(
+                Image_Meta(path=entry, parent=self, image_height=height, image_width=width)
+            )
+        return self.image_files
+
+    def discover_children(self) -> Sequence[DRS3_Base]:
+        return self.discover_images()
+
 @dataclass
 class Image_Meta(DRS3_Base):
-    path: Path
-    parent: Volume_Meta
+    image_height: int = 0
+    image_width: int = 0
+
+    def get_metadata_template(self) -> dict[str, Any]:
+        return FILE_METADATA_TEMPLATE
 
     @staticmethod
     def get_path(instance: Image_Meta) -> str:
-        return f"{instance.parent.get_path(instance.parent)}/{instance.path.name}"
+        if instance.parent is None:
+            return f"/{instance.path.name}"
+        return f"{DRS3_Base.get_path(instance.parent)}/{instance.path.name}"
 
     @staticmethod
     def get_file_role(instance: Image_Meta) -> Any:
@@ -211,16 +296,12 @@ class Image_Meta(DRS3_Base):
         return _get_metadata_value(instance, "FileAccFlag")
 
     @staticmethod
-    def get_mix_tile_height(instance: Image_Meta) -> Any:
-        return _get_metadata_value(instance, "MIXTileHt")
+    def get_height(instance: Image_Meta) -> Any:
+        return instance.image_height
 
     @staticmethod
-    def get_mix_tile_width(instance: Image_Meta) -> Any:
-        return _get_metadata_value(instance, "MIXTileWidth")
-
-    def populate_metadata(self) -> None:
-        raise NotImplementedError
-
+    def get_width(instance: Image_Meta) -> Any:
+        return instance.image_width
 
 WORK_METADATA_TEMPLATE = {
     "FullFolderOrFilePath" : Work_Meta.get_path,
@@ -239,8 +320,8 @@ WORK_METADATA_TEMPLATE = {
     # Not used
     # "MODSIdentifier": 
     # "MODSRelatedItem": 
-    "MODSLanguage": (Work_Meta.get_marc_field, "546" , "a"),
-    "D3SubName": Work_Meta.get_d3_sub_name,
+    "MODSLanguage": (Work_Meta.get_marc_field, "546" , "a")
+#    "D3SubName": Work_Meta.get_d3_sub_name,
 }
 
 VOLUME_METADATA_TEMPLATE = {
@@ -256,8 +337,8 @@ FILE_METADATA_TEMPLATE = {
     "FileRole": "PAGE_IMAGE",
     # Not used - take the system provided default of 'R'
     # "FileAccFlag": None,
-    "MIXTileHt": None,
-    "MIXTileWidth": None,
+    "MIXTileHt": Image_Meta.get_height,
+    "MIXTileWidth": Image_Meta.get_width,
 
 }
 
@@ -277,7 +358,7 @@ def populate_metadata(work_path: Path) -> list[dict[str, Any]]:
     Each dictionary may have different keys, but each key will be a member of SUBMITTAL_COLUMNS.keys()
     """
     work_metadata = Work_Meta(path=work_path)
-    return [ work_metadata.populate_metadata(), *[volume.populate_metadata() for volume in  work_metadata.discover_volumes()]]
+    return work_metadata.populate_metadata()
 
 
 def metadata_to_csv(metadata_list: list[dict[str, Any]], csv_path: Path) -> None:
@@ -311,8 +392,20 @@ def metadata_to_csv(metadata_list: list[dict[str, Any]], csv_path: Path) -> None
 
     with open(csv_path, mode="w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, 
-                                fieldnames=all_keys,
+# This seems to emit a mishmash
+#                                fieldnames=all_keys,
+                                fieldnames=SUBMITTAL_COLUMNS,
                                 extrasaction="ignore", # Copilot AI suggestion
                                 restval="" )           # Copilot AI suggestion
         writer.writeheader()
         writer.writerows(all_rows)
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 3:
+        print("Usage: python utils/metadata_utils.py <work_path> <csv_path>")
+        sys.exit(1)
+    work_path = Path(sys.argv[1])
+    csv_path = Path(sys.argv[2])
+    metadata_list = populate_metadata(work_path)
+    metadata_to_csv(metadata_list, csv_path)
