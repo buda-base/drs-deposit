@@ -23,12 +23,12 @@ from mypy.semanal import names_modified_by_assignment
 SUBMITTAL_COLUMNS = [
     "FullFolderOrFilePath",
     "ObjResType",
-    "ProcArchMode",
+#    "ProcArchMode", Take default
     "D3OSN",
     "D3Label",
     "FilePurpose",
     "FileRole",
-    "FileAccFlag",
+# Take default    "FileAccFlag",
     "MIXTileHt",
     "MIXTileWidth",
     "MODSTitle",
@@ -41,8 +41,8 @@ SUBMITTAL_COLUMNS = [
     "MODSGenre",
     "MODSIdentifier",
     "MODSRelatedItem",
-    "MODSLanguage",
-    "D3SubName"
+    "MODSLanguage"
+#    "D3SubName" Unknown what to fill in
 ]
 
 MARC_NAMESPACE = "http://www.loc.gov/MARC21/slim"
@@ -377,28 +377,16 @@ def metadata_to_csv(metadata_list: list[dict[str, Any]], csv_path: Path) -> None
     if not metadata_list:
         return
 
-    # Create a dictionary with all the keys in SUBMITTAL_COLUMNS (without touching SUBMITTAL_COLUMNS)
-    all_keys = {key for metadata in metadata_list for key in metadata.keys()}
-    all_rows: list[dict[str, Any]] = []
-    
-    # for each dictionary in metadata_list, create a new dictionary with all keys from all_keys
-    # and fill in the values from the original dictionary 
-    # (dict.get(key) returns  None if the key is missing)
-    #
-    # Achtung: the csv module will handle the escaping of values containing quotes or strings
-    for metadata in metadata_list:
-        row = {key: metadata.get(key) for key in all_keys}
-        all_rows.append(row)
-
     with open(csv_path, mode="w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, 
-# This seems to emit a mishmash
-#                                fieldnames=all_keys,
                                 fieldnames=SUBMITTAL_COLUMNS,
                                 extrasaction="ignore", # Copilot AI suggestion
                                 restval="" )           # Copilot AI suggestion
         writer.writeheader()
-        writer.writerows(all_rows)
+
+        # NB that [md_entry.keys() for md_entry in metadata_list] is a subset of
+        # the columns in SUBMITTAL_COLUMNS. DictWriters handle the sparsity
+        writer.writerows(metadata_list)
 
 if __name__ == "__main__":
     import sys

@@ -5,14 +5,14 @@
             "name": "PyRun Current File",
             "type": "node-terminal",
             "request": "launch",
-            "command": "zsh -lc 'set -a; source \"${workspaceFolder}/.env\"; set +a; \"${workspaceFolder}/.venv/bin/python\" \"${file}\"'",
+            "command": "set -a; source \"${workspaceFolder}/.env\"; set +a; \"${workspaceFolder}/.venv/bin/python\" \"${file}\"",
             "cwd": "${workspaceFolder}"
         },
         {
             "name": "PyRun Current File (Prompt Args)",
             "type": "node-terminal",
             "request": "launch",
-            "command": "zsh -lc 'set -a; source \"${workspaceFolder}/.env\"; set +a; \"${workspaceFolder}/.venv/bin/python\" \"${file}\" ${input:terminalArgs}'",
+            "command": "set -a; source \"${workspaceFolder}/.env\"; set +a; \"${workspaceFolder}/.venv/bin/python\" \"${file}\" ${input:terminalArgs}",
             "cwd": "${workspaceFolder}"
         },
         {
@@ -36,7 +36,10 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": "${command:pickArgs}"
+            "args": [
+                "${input:debugArg1}",
+                "${input:debugArg2}"
+            ]
         },
         {
             "name": "Python: Attach to Container",
@@ -71,6 +74,18 @@
             "type": "promptString",
             "description": "Arguments to pass to the current Python file",
             "default": "/Users/jkatz/tmp/DRS3/staging/W00KG03993 /Users/jkatz/tmp/DRS3/staging/W00KG03993/submission2.csv" 
+        },
+        {
+            "id": "debugArg1",
+            "type": "promptString",
+            "description": "Python Debugger arg 1",
+            "default": "/Users/jkatz/tmp/DRS3/staging/W00KG03993"
+        },
+        {
+            "id": "debugArg2",
+            "type": "promptString",
+            "description": "Python Debugger arg 2",
+            "default": "/Users/jkatz/tmp/DRS3/staging/W00KG03993/submission2.csv"
         }
     ]
 }
