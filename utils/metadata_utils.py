@@ -5,8 +5,8 @@ Builds the csv inventory to submit volumes of a work
 from __future__ import annotations
 
 import dataclasses
-import re
-from collections.abc import Callable, Sequence
+import logging
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -14,7 +14,6 @@ from xml.etree import ElementTree as ET
 
 import requests
 from PIL import Image, UnidentifiedImageError
-from mypy.semanal import names_modified_by_assignment
 
 # This is the union of all the metadata we're going to provide. Any
 # given row in the submittal file will contain some of these values.
@@ -49,6 +48,8 @@ MARC_NAMESPACE = "http://www.loc.gov/MARC21/slim"
 MARC_NAMESPACES = {"marc": MARC_NAMESPACE}
 BUDA_MARC_URL = "https://purl.bdrc.io/resource/{w}.mrcx"
 IMAGE_GROUP_HOME="drs"
+
+logger = logging.getLogger(__name__)
 
 def fetch_marc_metadata( work_name: str) -> ET.ElementTree:
     """
@@ -137,6 +138,7 @@ class DRS3_Base:
 
         rows: list[dict[str, Any]] = [self._populate_from_template(self.get_metadata_template())]
         for child in self.discover_children():
+            logger.info(f"Populating metadata for child: {child.path.name}")
             rows.extend(child.populate_metadata())
         return rows
 
@@ -378,6 +380,7 @@ def metadata_to_csv(metadata_list: list[dict[str, Any]], csv_path: Path) -> None
         return
 
     with open(csv_path, mode="w", newline="", encoding="utf-8") as csv_file:
+        logger.info(f"Writing metadata to CSV at {csv_path}")
         writer = csv.DictWriter(csv_file, 
                                 fieldnames=SUBMITTAL_COLUMNS,
                                 extrasaction="ignore", # Copilot AI suggestion
@@ -387,7 +390,12 @@ def metadata_to_csv(metadata_list: list[dict[str, Any]], csv_path: Path) -> None
         # NB that [md_entry.keys() for md_entry in metadata_list] is a subset of
         # the columns in SUBMITTAL_COLUMNS. DictWriters handle the sparsity
         writer.writerows(metadata_list)
+        logger.info(f"Finished writing metadata to CSV at {csv_path}")
 
+def create_metadata_csv(work_path: Path, csv_path: Path) -> None:
+    metadata_list = populate_metadata(work_path)
+    metadata_to_csv(metadata_list, csv_path)
+    
 if __name__ == "__main__":
     import sys
     if len(sys.argv) != 3:
@@ -395,5 +403,3 @@ if __name__ == "__main__":
         sys.exit(1)
     work_path = Path(sys.argv[1])
     csv_path = Path(sys.argv[2])
-    metadata_list = populate_metadata(work_path)
-    metadata_to_csv(metadata_list, csv_path)
