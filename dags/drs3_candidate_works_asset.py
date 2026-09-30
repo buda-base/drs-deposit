@@ -14,8 +14,8 @@ from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOpe
 from airflow.sdk import task
 from populate_members import populate_members
 
-SRC_ROOT = os.environ.get("DRS3_ARCHIVE_ROOT", "/mnt/Archive")
-STAGING_ROOT = os.environ.get("DRS3_STAGING_ROOT", "/mnt/staging")
+SRC_ROOT =  os.environ["DRS3_SRC_ROOT"]
+STAGING_ROOT =  os.environ["DRS3_STAGING_ROOT"]
 DRS3_CANDIDATE_WORKS = Path(STAGING_ROOT, "drs3_candidate_works.lst")
 DRS3_CANDIDATE_TMP_DIR = Path(STAGING_ROOT, "tmp")
 DRS3_CANDIDATE_SNAPSHOT_PREFIX = ".tmp.drs3_candidate_works."
@@ -84,7 +84,7 @@ with DAG(
         There is no requirement to remove the old file.
         """
         if not DRS3_CANDIDATE_WORKS.exists():
-            logger.info("No candidate works file found.")
+            logger.info(f"Candidate works file {DRS3_CANDIDATE_WORKS.resolve()} found.")
             return []
 
         sorted_lines = _read_sorted_unique_lines(DRS3_CANDIDATE_WORKS)

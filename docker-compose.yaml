@@ -76,37 +76,25 @@ x-airflow-common:
     #
     # Application environments
     PYTHONPATH: /opt/airflow:/opt/airflow/utils
-    # Debian
-    DRS3_STAGING_ROOT: /mnt/staging
-    DRS3_ARCHIVE_ROOT: /mnt/Archive
-    DRS3_LOG_ROOT: /mnt/processing/logs/drs3-logs
-    # MacOS
-    # DRS3_STAGING_ROOT: /Users/jkatz/tmp/DRS3/staging
-    # DRS3_ARCHIVE_ROOT: /Users/jkatz/tmp/DRS3/Archive
-    # DRS3_LOG_ROOT: ${AIRFLOW_PROJ_DIR:-.}/logs
 
-    # 
-    # If these aren't set in a dev env, set them now.
+    #
+    # These are container specific paths
+    DRS3_SRC_ROOT : "/mnt/Archive"
+    DRS3_STAGING_ROOT : "/mnt/staging"
+    DRS3_ARCHIVE_ROOT : "/mnt/Archive"
     DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS: ${DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS:-4}
     DRS3_PROCESS_MAX_ACTIVE_RUNS: ${DRS3_PROCESS_MAX_ACTIVE_RUNS:-6}
-    DRS3_LIMIT_WORKS_TO_PROCESS: ${DRS3_LIMIT_WORKS_TO_PROCESS:-20}
+    DRS3_LIMIT_WORKS_TO_PROCESS: ${DRS3_LIMIT_WORKS_TO_PROCESS:-100}
+
   volumes:
-    - ${DRS3_ARCHIVE_ROOT}0:/mnt/Archive0
-    - ${DRS3_ARCHIVE_ROOT}1:/mnt/Archive1
-    - ${DRS3_ARCHIVE_ROOT}2:/mnt/Archive2
-    - ${DRS3_ARCHIVE_ROOT}3:/mnt/Archive3
-    # Debian
-    # - /vmpool/data/DRS3/staging:/mnt/staging
-    # - /mnt/processing/logs/drs3-logs:/opt/airflow/logs
-    # MacOS
-    - ${DRS3_STAGING_ROOT}:/mnt/staging
-    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
-    # Common
-    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-    - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
-    - ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
+  # All services use these.
+    - &airflow-dags-volume ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+    - &airflow-config-volume ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+    - &airflow-plugins-volume ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - &airflow-scripts-volume ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
+    - &airflow-utils-volume ${AIRFLOW_PROJ_DIR:-.}/utils:/opt/airflow/utils
+    # Host paths come from .env; defaults are the Debian prod locations.
+    - &airflow-logs-volume ${HOST_LOG_ROOT:-/mnt/processing/logs/drs3-logs}:/opt/airflow/logs
 
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
@@ -216,6 +204,18 @@ services:
         condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
+    volumes:
+      - *airflow-dags-volume
+      - *airflow-config-volume
+      - *airflow-plugins-volume
+      - *airflow-scripts-volume
+      - *airflow-logs-volume
+      - *airflow-utils-volume
+      - ${HOST_STAGING_ROOT:-/vmpool/data/DRS3/staging}:/mnt/staging
+      - ${HOST_ARCHIVE_ROOT:-/mnt/Archive}0:/mnt/Archive0
+      - ${HOST_ARCHIVE_ROOT:-/mnt/Archive}1:/mnt/Archive1
+      - ${HOST_ARCHIVE_ROOT:-/mnt/Archive}2:/mnt/Archive2
+      - ${HOST_ARCHIVE_ROOT:-/mnt/Archive}3:/mnt/Archive3
 
   airflow-triggerer:
     <<: *airflow-common

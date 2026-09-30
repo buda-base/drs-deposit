@@ -7,6 +7,7 @@ import logging
 import os
 from pathlib import Path
 
+import metadata_utils as mu
 import project_manager_utils as pmu
 import transcode_utils as tu
 from airflow import DAG
@@ -24,7 +25,7 @@ MAX_ACTIVE_RUNS = int(os.environ.get("DRS3_PROCESS_MAX_ACTIVE_RUNS", 4))
 
 with DAG(
     dag_id='drs3_process_launcher',
-    schedule="*/30 * * * *",
+    schedule="*/15 * * * *",
     catchup=False,
 ): 
     @task
@@ -91,6 +92,7 @@ with DAG(
     def transcode_staged_volumes(work_: pmu.pmItem):
         out_work: pmu.pmItem
         try:
+            logger.info(f"Transcoding staged volumes for work {work_.label}")
             out_work = tu.transcode_staged_volumes(STAGING_ROOT, work_)
         except Exception as e:
             raise AirflowFailException(f"Error transcoding work {work_.label}: {e}") from e
@@ -108,8 +110,9 @@ with DAG(
             raise AirflowFailException("No work to generate metadata for.")
         work_staging_root: Path = Path(STAGING_ROOT, work.label)
         try:
-            work_metadata_root: Path =  c.get_work_metadata_path(work_staging_root)
-            tu.create_metadata_file(work_staging_root, work_metadata_root)
+            work_metadata_root: Path =  c.get_work_drs_submission_path(work_staging_root)
+            logger.info(f"Generating metadata for work at {work_staging_root}")
+            mu.create_metadata_csv(work_staging_root, work_metadata_root)
         except Exception as err:
             raise AirflowFailException("Failed to generate metadata.") from err
         return work

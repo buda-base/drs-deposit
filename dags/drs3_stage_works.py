@@ -15,13 +15,6 @@ from airflow.sdk.exceptions import AirflowFailException
 from project_manager_utils import pmItem
 
 # File paths Must exist in docker. See docker-compose
-# Also, these statements are executed at dag parse time, 
-# so copying the references is valid in any module.
-# Note, this is a fallback - these values really should be set in
-# the docker-compose file
-os.environ.setdefault("DRS3_SRC_ROOT", "/mnt/Archive")
-os.environ.setdefault("DRS3_STAGING_ROOT", "/mnt/staging")
-os.environ.setdefault("DRS3_STAGE_WORKS_MAX_ACTIVE_RUNS", "4")
 
 SRC_ROOT = os.environ["DRS3_SRC_ROOT"]
 STAGING_ROOT = os.environ["DRS3_STAGING_ROOT"]

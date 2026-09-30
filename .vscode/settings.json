@@ -1,5 +1,11 @@
 {
+    // Empty so .env is not injected into terminals, where it would shadow
+    // docker compose interpolation of the same variable names.
+    "python.envFile": "",
+    // This is wikkid stoopit. Because when vscode does use an env file, it doesn't track changes
+    "python.terminal.useEnvFile": false,
     "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
+    "esbonio.sphinx.pythonCommand": "/Users/jkatz/dev/drs-deposit/.venv/bin/python",
     "python.testing.pytestArgs": [
         "tests"
     ],
