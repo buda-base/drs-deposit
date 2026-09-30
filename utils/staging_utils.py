@@ -111,21 +111,20 @@ def do_staging(
             volume_pms_item.extras[c.PROJECT_STEP_START_TIME_KEY] = pendulum.now("UTC")
             shutil.copytree(source_path, output_dir, dirs_exist_ok=True)
             logger.info(
-                f"Staged volume {volume_pms_item.label} {source_path=} {output_dir=}"
-                f" (id={volume_pms_item.o_id}) to {output_dir}")
+                f"Staged {volume_pms_item.label=} {source_path=} ({volume_pms_item.o_id=}) to {output_dir=}")
             step_rc = 0
         except Exception as e:
-            logger.error(f"Error staging volume {volume_pms_item.label} (id={volume_pms_item.o_id}): {e}")
+            logger.error(f"Error staging  {volume_pms_item.label=} ({volume_pms_item.o_id=}): {e}")
             step_rc = -1
         finally:
             # Update PMS with end time and result
-            volume_pms_item.extras["project_step_end_time"] = pendulum.now("UTC")
-            volume_pms_item.extras["project_step_result_code"] = step_rc # failure
+            volume_pms_item.extras[c.PROJECT_STEP_END_TIME_KEY] = pendulum.now("UTC")
+            volume_pms_item.extras[c.PROJECT_STEP_RESULT_CODE_KEY] = step_rc # failure
 
-    work_pms_item.extras["project_step_result_code"] = (
-        -1 if any(v.extras.get("project_step_result_code", -1) != 0 for v in volumes_pms_items) else 0
+    work_pms_item.extras[c.PROJECT_STEP_RESULT_CODE_KEY] = (
+        -1 if any(v.extras.get(c.PROJECT_STEP_RESULT_CODE_KEY, -1) != 0 for v in volumes_pms_items) else 0
     )
-    work_pms_item.extras["project_step_end_time"] = pendulum.now("UTC")
+    work_pms_item.extras[c.PROJECT_STEP_END_TIME_KEY] = pendulum.now("UTC")
 
     return work_pms_item
 
